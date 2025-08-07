@@ -1,19 +1,13 @@
 import "./nav.css"
+import { Link } from "react-router-dom"
 
 export default function Nav(){
     return(
         <nav className="nav">
-            <a className="anchorNav">Sobre</a>
-            <a className="anchorNav">Adequação</a>
-            <a className="anchorNav">Saiba Mais</a>
-            <a className="anchorNav">Ultilização</a>
-            <a className="anchorNav">F.A.Q</a>
-
-            
-            
-            
-            
-            
+            <Link className="anchorNav" to="/saiba_mais">Saiba Mais</Link>
+            <Link className="anchorNav" to="/faq">F.A.Q</Link>
+            <Link className="anchorNav" to="/adequacao">Adequação</Link>
+            <Link className="anchorNav" to="/ultilizacao">Ultilização</Link>
         </nav>
     )
 }
