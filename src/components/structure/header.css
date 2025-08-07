@@ -4,10 +4,14 @@
 }
 
 .imgHeader {
-    @apply rounded-2xl w-28
+    @apply rounded-2xl w-28 py-1
 }
 
 .txtHeader {
     font-family: Georgia, serif;
     @apply text-6xl p-5
+}
+
+.linkHeader {
+    @apply flex items-center
 }
