@@ -1,6 +1,10 @@
 .divHeader {
     background-color: #219EBC;
-    @apply text-white py-2 px-4 flex items-center
+    @apply text-white py-2 px-4 flex justify-between
+}
+
+.linkHeader {
+    @apply flex items-center
 }
 
 .imgHeader {
@@ -12,6 +16,6 @@
     @apply text-6xl p-5
 }
 
-.linkHeader {
+.buttonHeader {
     @apply flex items-center
 }
