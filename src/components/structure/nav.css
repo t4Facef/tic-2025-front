@@ -1,0 +1,8 @@
+.nav {
+    background-color: #9CDFFE;
+    @apply flex justify-evenly w-full
+}
+
+.anchorNav {
+    @apply p-4
+}
