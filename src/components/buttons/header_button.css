@@ -1,5 +1,5 @@
 .allButton {
-    @apply flex
+    @apply flex pr-6
 }
 
 .registerButton {

@@ -12,7 +12,7 @@ export default function Layout({ showLoginButton = false }: LayoutProps) {
     <div className="min-h-screen flex flex-col">
       <Header showLoginButton = {showLoginButton}/>
       <Nav />
-      <main className="flex-1 p-4">
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />
