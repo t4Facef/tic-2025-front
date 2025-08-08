@@ -1,4 +1,3 @@
 .divFooter {
-    background-color: #023047;
-    @apply text-black py-2 px-4 flex items-center
+    @apply bg-blue3 text-black py-2 px-4 flex items-center
 }

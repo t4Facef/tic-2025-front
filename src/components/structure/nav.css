@@ -1,6 +1,5 @@
 .nav {
-    background-color: #9CDFFE;
-    @apply flex justify-evenly w-full
+    @apply bg-blue4 flex justify-evenly w-full
 }
 
 .anchorNav {

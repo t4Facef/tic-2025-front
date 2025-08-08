@@ -7,7 +7,12 @@ module.exports = {
     extend: {
       colors: {
         'blue1': '#BDEAFC',
-        'blue2': '#219EBC'
+        'blue2': '#219EBC',
+        'blue3': '#023047',
+        'blue4': '#9CDFFE'
+      },
+      fontFamily: {
+        'georgia': 'Georgia, serif'
       }
     },
   },

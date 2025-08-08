@@ -1,6 +1,5 @@
 .divHeader {
-    background-color: #219EBC;
-    @apply text-white py-2 px-4 flex justify-between
+    @apply bg-blue2 text-white py-2 px-4 flex justify-between
 }
 
 .linkHeader {
@@ -12,8 +11,7 @@
 }
 
 .txtHeader {
-    font-family: Georgia, serif;
-    @apply text-6xl p-5
+    @apply text-6xl p-5 font-georgia 
 }
 
 .buttonHeader {
