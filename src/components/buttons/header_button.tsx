@@ -1,10 +1,12 @@
+import "./header_button.css"
+
 export default function HeaderButton(){
     return (
-        <div>
-            <button>
+        <div className="allButton">
+            <button className="loginButton">
                 Login        
             </button>
-            <button>
+            <button className="registerButton">
                 Registrar
             </button>
         </div>
