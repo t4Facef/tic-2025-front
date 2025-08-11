@@ -1,13 +1,12 @@
-import "../styles/home.css"
 import JobPosition from "../components/content/job_position"
 
 export default function Home(){
     return (
         <div>
-            <section className="sectionImagemHome" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
-                <div className="bgIntruductionHome"></div>
-                <div className="introductionAreaHome">
-                    <div className="introductionBoxHome">
+            <section className="relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
+                <div className="absolute inset-0 bg-white bg-opacity-50"></div>
+                <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 md:px-8">
+                    <div className="bg-blue1 bg-opacity-90 rounded-xl shadow-lg p-6 sm:p-8 md:p-10 max-w-2xl text-center">
                         <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
                             Bem-vindo ao nosso site!
                         </h1>
@@ -17,9 +16,9 @@ export default function Home(){
                     </div>
                 </div>
             </section>
-            <div className="topEmterprisesRow">
-                <img src="./icons/angulo-esquerdo.svg" alt="" className="enterpriseRowElement"/>
-                <img src="./icons/angulo-direito.svg" alt="" className="enterpriseRowElement"/>
+            <div className="bg-blue2 flex justify-between">
+                <img src="./icons/angulo-esquerdo.svg" alt="" className="w-24 py-3"/>
+                <img src="./icons/angulo-direito.svg" alt="" className="w-24 py-3"/>
             </div>
             <div className="flex flex-col px-8 items-center">
                 <JobPosition title="Titulo 1" profile="./ss">

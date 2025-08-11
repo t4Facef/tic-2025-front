@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import "./header.css"
 import HeaderButton from "../buttons/header_button";
 
 type HeaderProps = {
@@ -9,12 +8,12 @@ type HeaderProps = {
 
 export default function Header({ showLoginButton = false }: HeaderProps) {
   return (
-    <div className="divHeader">
-      <Link to="/" className="linkHeader">
-        <img src="./img/logo-apojobs.jpg" alt="logo-site" className="imgHeader" />
-        <span className="txtHeader">Apojobs</span>
+    <div className="bg-blue2 text-white py-2 px-4 flex justify-between">
+      <Link to="/" className="flex items-center">
+        <img src="./img/logo-apojobs.jpg" alt="logo-site" className="rounded-2xl w-28 py-1" />
+        <span className="text-6xl p-5 font-georgia">Apojobs</span>
       </Link>
-      <div className="buttonHeader">
+      <div className="flex items-center">
         {showLoginButton && <HeaderButton />}
       </div>
     </div>

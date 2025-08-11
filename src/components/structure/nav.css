@@ -1,7 +1,0 @@
-.nav {
-    @apply bg-blue4 flex justify-evenly w-full
-}
-
-.anchorNav {
-    @apply p-4
-}

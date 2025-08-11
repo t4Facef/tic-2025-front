@@ -1,12 +1,10 @@
-import "./header_button.css"
-
 export default function HeaderButton(){
     return (
-        <div className="allButton">
-            <button className="loginButton">
+        <div className="flex pr-6">
+            <button className="bg-blue4 rounded-tl-md rounded-bl-md p-2 text-black px-6">
                 Login        
             </button>
-            <button className="registerButton">
+            <button className="bg-blue3 rounded-r-md rounded-br-md p-2 px-4">
                 Registrar
             </button>
         </div>
