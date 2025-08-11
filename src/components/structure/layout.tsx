@@ -3,14 +3,10 @@ import Footer from "./footer";
 import Header from "./header";
 import Nav from "./nav";
 
-type LayoutProps = {
-  showLoginButton?: boolean;
-};
-
-export default function Layout({ showLoginButton = false }: LayoutProps) {
+export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header showLoginButton = {showLoginButton}/>
+      <Header/>
       <Nav />
       <main className="flex-1">
         <Outlet />

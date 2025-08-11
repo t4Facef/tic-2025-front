@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom"
 import HeaderButton from "../buttons/header_button";
 
-type HeaderProps = {
-  showLoginButton?: boolean;
-};
-
-
-export default function Header({ showLoginButton = false }: HeaderProps) {
+export default function Header() {
   return (
     <div className="bg-blue2 text-white py-2 px-4 flex justify-between">
       <Link to="/" className="flex items-center">
@@ -14,7 +9,7 @@ export default function Header({ showLoginButton = false }: HeaderProps) {
         <span className="text-6xl p-5 font-georgia">Apojobs</span>
       </Link>
       <div className="flex items-center">
-        {showLoginButton && <HeaderButton />}
+        <HeaderButton />
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Layout showLoginButton={true}/>}>
+        <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
           <Route path='/saiba_mais' element={<Sobre />}></Route>
           <Route path='/faq' element={<Faq/>}></Route>
