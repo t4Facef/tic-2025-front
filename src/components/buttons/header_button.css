@@ -3,12 +3,9 @@
 }
 
 .registerButton {
-    background-color: #023047;
-    @apply rounded-r-md rounded-br-md p-2 px-4
+    @apply bg-blue3 rounded-r-md rounded-br-md p-2 px-4
 }
 
 .loginButton {
-    background-color: #9CDFFE;
-    @apply rounded-tl-md rounded-bl-md p-2 text-black px-6
-
+    @apply bg-blue4 rounded-tl-md rounded-bl-md p-2 text-black px-6
 }
