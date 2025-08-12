@@ -2,7 +2,7 @@ import JobPosition from "../components/content/job_position"
 import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/structure/companies_row"
 
-const teste = ["./img/test/test_1.svg", "./img/test/test_1.svg", "./img/test/test_1.svg"]
+const teste = ["./img/logosTeste/teste1.jpeg", "./img/logosTeste/teste2.jpeg", "./img/logosTeste/teste3.jpeg", "./img/logosTeste/teste4.png", "./img/logosTeste/teste5.jpeg"] //Depende de como é armazenado as imagens no banco
 
 export default function Home(){
     return (
@@ -20,10 +20,8 @@ export default function Home(){
                     </div>
                 </div>
             </section>
-            <div className="bg-blue2 flex justify-between">
-                <img src="./icons/angulo-esquerdo.svg" alt="" className="w-24 py-3"/>
+            <div >
                 <CompaniesRow teste={teste}></CompaniesRow>
-                <img src="./icons/angulo-direito.svg" alt="" className="w-24 py-3"/>
             </div>
             <div className="flex flex-col px-8 items-center">
                 <div className="flex flex-col items-end">
