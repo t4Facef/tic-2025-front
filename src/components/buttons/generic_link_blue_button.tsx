@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 type GenericBlueButtonProps = {
     color: number;
     link: string;
-    children: ReactNode
+    children: ReactNode;
+    classEdit?: string //Não pode ser uma classe que ja foi aplicada, então não da pra alterar o p, px ou rounded, mas se precisar, tira esse estilo daqui e coloca onde são usados
 }
 
 const colorMap: {[key:number]: string} = {
@@ -15,7 +16,7 @@ const colorMap: {[key:number]: string} = {
 };
 
 
-export default function GenericBlueButton({color, link, children}: GenericBlueButtonProps){
+export default function GenericBlueButton({color, link, children, classEdit}: GenericBlueButtonProps){
     const colorButton = colorMap[color] || "bg-blue1";
     
     const navigate = useNavigate();
@@ -24,6 +25,6 @@ export default function GenericBlueButton({color, link, children}: GenericBlueBu
     }
 
     return (
-        <button className={`${colorButton} p-4 px-6 rounded-md`} onClick={handleClick}>{children}</button>
+        <button className={`${colorButton} p-4 px-6 rounded-md ${classEdit}`} onClick={handleClick}>{children}</button>
     )
 }

@@ -6,6 +6,8 @@ import Faq from './pages/faq';
 import Ultilizacao from './pages/ultilizacao';
 import Adequacao from './pages/adequacao';
 import NotFound from './pages/NotFound';
+import Login from './pages/login';
+import Cadastrar from './pages/cadastrar';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path='/faq' element={<Faq/>}></Route>
           <Route path='/ultilizacao' element={<Ultilizacao/>}></Route>
           <Route path='/adequacao' element={<Adequacao/>}></Route>
+          <Route path='/login' element={<Login/>}></Route>
+          <Route path='/registrar' element={<Cadastrar/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
