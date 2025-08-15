@@ -24,7 +24,7 @@ export default function Login(){
                                 <span>É sua primeira vez?</span>
                                 <Link to="/registrar" className="underline pt-1">CADASTRAR</Link>
                             </div>
-                            <GenericBlueButton color={3} link="/ai" classEdit="flex items-center max-h-[10px]">Entrar</GenericBlueButton> {/* A implementar */}
+                            <GenericBlueButton color={3} link="/usuarios/1" classEdit="flex items-center max-h-[10px]">Entrar</GenericBlueButton> {/* A implementar */}
                         </div>
                     </form>
 
