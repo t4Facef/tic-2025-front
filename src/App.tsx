@@ -8,6 +8,7 @@ import Adequacao from './pages/adequacao';
 import NotFound from './pages/NotFound';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
+import PgUsuario from './pages/pagina_usuario';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/adequacao' element={<Adequacao/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
+          <Route path='/usuarios/:id' element={<PgUsuario/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

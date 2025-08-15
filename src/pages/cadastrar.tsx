@@ -18,7 +18,7 @@ export default function Cadastrar(){
                         <div className="flex justify-between items-end pt-[9.5rem]">
                             <div className="flex flex-col text-[13px]">
                                 <span>Não é sua primeira vez?</span>
-                                <Link to="/login" className="underline pt-1">Entrar</Link>
+                                <Link to="/login" className="underline pt-1">ENTRAR</Link>
                             </div>
                             <GenericBlueButton color={3} link="/ai" classEdit="flex items-center max-h-[10px]">Registrar</GenericBlueButton> {/* A implementar */}
                         </div>

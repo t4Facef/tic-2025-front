@@ -22,7 +22,7 @@ export default function Login(){
                         <div className="flex justify-between items-end pt-32">
                             <div className="flex flex-col text-[13px]">
                                 <span>É sua primeira vez?</span>
-                                <Link to="/registrar" className="underline pt-1">Cadastrar</Link>
+                                <Link to="/registrar" className="underline pt-1">CADASTRAR</Link>
                             </div>
                             <GenericBlueButton color={3} link="/ai" classEdit="flex items-center max-h-[10px]">Entrar</GenericBlueButton> {/* A implementar */}
                         </div>
