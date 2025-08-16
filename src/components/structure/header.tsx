@@ -14,7 +14,7 @@ export default function Header({ showProfile = false }: HeaderProps) {
         <span className="text-6xl p-5 font-georgia">Apojobs</span>
       </Link>
       <div className="flex items-center">
-        {showProfile ? <ProfilePicture /> : <HeaderButton />}
+        {showProfile ? <ProfilePicture radius="16"/> : <HeaderButton />}
       </div>
     </div>
   );

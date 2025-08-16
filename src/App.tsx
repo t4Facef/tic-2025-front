@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import PgUsuario from './pages/pagina_usuario';
+import CandidateProfile from './pages/candidate_profile';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
           <Route path='/usuarios/:id' element={<PgUsuario/>}></Route>
+          <Route path='/usuarios/:id/perfil' element={<CandidateProfile/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
