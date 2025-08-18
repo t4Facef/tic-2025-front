@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
-type GenericBlueButtonProps = {
+interface GenericBlueButtonProps {
     color: number;
     link: string;
     children: ReactNode;
-    classEdit?: string //Não pode ser uma classe que ja foi aplicada, então não da pra alterar o p, px ou rounded, mas se precisar, tira esse estilo daqui e coloca onde são usados
+    classEdit?: string; //Não pode ser uma classe que ja foi aplicada, então não da pra alterar o p, px ou rounded, mas se precisar, tira esse estilo daqui e coloca onde são usados
 }
 
 const colorMap: {[key:number]: string} = {

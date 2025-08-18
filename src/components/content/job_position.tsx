@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-type JobPositionProps = {
+interface JobPositionProps {
   profile: string;       // caminho ou URL da imagem
   title: string;     // título da vaga
   children?: ReactNode;  // descrição da vaga
-};
+}
 
 export default function JobPosition({profile, title, children}: JobPositionProps){
     return (

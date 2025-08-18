@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-type StatisticBoxProps = {
-    title: string,
-    children: ReactNode
+interface StatisticBoxProps {
+    title: string;
+    children: ReactNode;
 }
 
 export default function StatisticBox({title ,children}: StatisticBoxProps){

@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-type TextSectionProps = {
-    id: string
-    title: string,
-    children: ReactNode
-    img?: string 
-    imgs?: string[] //A implementar
+interface TextSectionProps {
+    id: string;
+    title: string;
+    children: ReactNode;
+    img?: string;
+    imgs?: string[]; //A implementar
 }
 
 export default function TextSection({id, title, children, img}: TextSectionProps){

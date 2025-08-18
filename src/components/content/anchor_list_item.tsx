@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-type AnchorListItemProps = {
-    id: string,
-    children: ReactNode
+interface AnchorListItemProps {
+    id: string;
+    children: ReactNode;
 }
 
 export default function AnchorListItem({id, children}: AnchorListItemProps){
