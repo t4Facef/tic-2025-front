@@ -7,12 +7,18 @@ import GenericBlueButton from "../buttons/generic_link_blue_button"
 
 interface PerfilContentSectionProps {
     title: string;
-    formation_type: string;
+    formationType: string;
+    course?: string;
+    institut: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+    description?: string;
 }
 
-export default function PerfilContentSection({title, formation_type}: PerfilContentSectionProps){
+export default function PerfilContentSection({title, formationType, course, institut, startDate, endDate, status, description}: PerfilContentSectionProps){
     return (
-        <div className="bg-blue4 mt-8 px-6">
+        <div className="bg-blue4 mt-8 px-6 rounded-xl">
             <div>
                 <div className="font-semibold text-[22px] py-1">
                     {title}
@@ -20,15 +26,13 @@ export default function PerfilContentSection({title, formation_type}: PerfilCont
                 </div>
                 <hr className="border-black"/>
                 <div className="py-3">
-                    <p>{formation_type}</p>
-                    Curso - Instituição
-                    XXXX/XXXX - Situação
+                    <p className="text-[13px]">{formationType}</p>
+                    <p className="text-[22px] font-medium">{course} - {institut}</p>
+                    <p className="text-[15px]">{startDate} to {endDate} - {status}</p>
                 </div>
-
-                <h2>Descrição</h2>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia alias aliquid velit veritatis, dolores dolore dolor ipsa, aspernatur doloremque non provident illum, natus corrupti officiis. Tenetur dolorum saepe sit iste.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam quisquam quasi temporibus reprehenderit rem, earum repudiandae ipsum dolore, non eos aspernatur odio optio illo sint sed alias iste officia voluptates!
+                <h2 className="font-bold text-lg mt-4 mb-2">Descrição</h2>
+                <p className="mb-4">
+                    {description}
                 </p>
                 <div className="flex justify-end">
                     {<GenericBlueButton color={3} link="" classEdit="max-h-10 flex items-center m-3">Remover</GenericBlueButton>}
