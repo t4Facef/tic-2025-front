@@ -7,7 +7,7 @@ import GenericBlueButton from "../buttons/generic_link_blue_button"
 
 interface PerfilContentSectionProps {
     title: string;
-    formationType: string;
+    formationType?: string;
     course?: string;
     institut: string;
     startDate: string;
@@ -28,7 +28,7 @@ export default function PerfilContentSection({title, formationType, course, inst
                 <div className="py-3">
                     <p className="text-[13px]">{formationType}</p>
                     <p className="text-[22px] font-medium">{course} - {institut}</p>
-                    <p className="text-[15px]">{startDate} to {endDate} - {status}</p>
+                    <p className="text-[15px]">{startDate} até {endDate} - {status}</p>
                 </div>
                 <h2 className="font-bold text-lg mt-4 mb-2">Descrição</h2>
                 <p className="mb-4">

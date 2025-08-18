@@ -1,9 +1,12 @@
 // [TODO] - Organizar os dados de mock e types correspondentes em uma pasta types separada
+// [TODO] - Adicionar condicionais para se existe ou não um ou resultado para a caixa (se não existir descrição, não mostrar o titulo "descrição" e por ai vai)
+// [TODO] - Os dados deveriam vir em vetor, pois pode ter mais de uma formação experiencia etc
 
 import PerfilContentSection from "../components/content/perfil_content_section";
+import TagContainer from "../components/content/tag_container";
 
 interface InfoType {
-    formationType: string;
+    formationType?: string;
     institut: string;
     course: string;
     startDate: string;
@@ -16,14 +19,16 @@ interface DumpDataType {
     id: number;
     nome: string;
     desc: string;
-    info: InfoType;
+    info1: InfoType;
+    info2: InfoType;
+    info3: InfoType;
 } //Só pra deixar registrado como deve ser, posteriormente vamos substituir isso pelo get no banco de dados
 
 const dumpData: DumpDataType = {
     id: 1,
     nome: "João Guilherme",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
-    info: {
+    info1: {
         formationType: "Graduação",
         institut: "Uni-FACEF",
         course: "Engenharia de Software",
@@ -31,7 +36,25 @@ const dumpData: DumpDataType = {
         endDate: "01/2024",
         status: "Cursando",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
-    }   
+    }   ,
+    info2: {
+        formationType: "Estágio",
+        institut: "Magazine",
+        course: "Estágiario em desenvolvimento",
+        startDate: "05/2023",
+        endDate: "08/2025",
+        status: "Emprego atual",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
+    },
+    info3: {
+        formationType: "Curso",
+        institut: "Udemy",
+        course: "React Avançado",
+        startDate: "05/2025",
+        endDate: "08/2025",
+        status: "Finalizado",
+        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
+    }
 }
 
 export default function CandidateProfile(){
@@ -48,14 +71,37 @@ export default function CandidateProfile(){
             </div>
             <PerfilContentSection 
                 title="Formação Acadêmica" 
-                formationType={dumpData.info.formationType}
-                course={dumpData.info.course}
-                institut={dumpData.info.institut}
-                startDate={dumpData.info.startDate}
-                endDate={dumpData.info.endDate}
-                status={dumpData.info.status}
-                description={dumpData.info.desc}
+                formationType={dumpData.info1.formationType}
+                course={dumpData.info1.course}
+                institut={dumpData.info1.institut}
+                startDate={dumpData.info1.startDate}
+                endDate={dumpData.info1.endDate}
+                status={dumpData.info1.status}
+                description={dumpData.info1.desc}
             />
+
+            <PerfilContentSection 
+                title="Experiência Profissional" 
+                formationType={dumpData.info2.formationType}
+                course={dumpData.info2.course}
+                institut={dumpData.info2.institut}
+                startDate={dumpData.info2.startDate}
+                endDate={dumpData.info2.endDate}
+                status={dumpData.info2.status}
+                description={dumpData.info2.desc}
+            />
+
+            <PerfilContentSection 
+                title="Cursos complementares" 
+                formationType={dumpData.info3.formationType}
+                course={dumpData.info3.course}
+                institut={dumpData.info3.institut}
+                startDate={dumpData.info3.startDate}
+                endDate={dumpData.info3.endDate}
+                status={dumpData.info3.status}
+                description={dumpData.info3.desc}
+            />
+            <TagContainer>Habilidades</TagContainer>
         </div>
     )
 }
