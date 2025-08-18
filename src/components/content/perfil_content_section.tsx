@@ -1,4 +1,4 @@
-export default function PerfilContentBox(){
+export default function PerfilContentSection(){
     return (
         <div>
 

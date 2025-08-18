@@ -2,7 +2,7 @@ import GenericBlueButton from "../components/buttons/generic_link_blue_button";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 
-export default function PgUsuario(){
+export default function UserDashboard(){
     return (
         <div className="flex flex-col items-center">
             <div className="flex flex-col">
@@ -16,7 +16,7 @@ export default function PgUsuario(){
                         <GenericBlueButton color={3} link="/ai" classEdit="py-3">Acessar minhas vagas</GenericBlueButton>
                     </div>
                 </div>
-                <p className="pt-12">Recomedações de vaga para você</p>
+                <p className="pt-12">Recomendações de vaga para você</p>
                 <div className="flex flex-col justify-center items-center bg-blue1 mb-12">
                     <div className="flex flex-col items-end px-3">
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>

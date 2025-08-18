@@ -3,12 +3,12 @@ import Home from './pages/home';
 import Layout from './components/structure/layout';
 import Sobre from './pages/sobre';
 import Faq from './pages/faq';
-import Ultilizacao from './pages/ultilizacao';
+import Utilizacao from './pages/utilizacao';
 import Adequacao from './pages/adequacao';
 import NotFound from './pages/NotFound';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
-import PgUsuario from './pages/pagina_usuario';
+import UserDashboard from './pages/user_dashboard';
 import CandidateProfile from './pages/candidate_profile';
 
 function App() {
@@ -19,11 +19,11 @@ function App() {
           <Route index element={<Home />}/>
           <Route path='/saiba_mais' element={<Sobre />}></Route>
           <Route path='/faq' element={<Faq/>}></Route>
-          <Route path='/ultilizacao' element={<Ultilizacao/>}></Route>
+          <Route path='/utilizacao' element={<Utilizacao/>}></Route>
           <Route path='/adequacao' element={<Adequacao/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
-          <Route path='/usuarios/:id' element={<PgUsuario/>}></Route>
+          <Route path='/usuarios/:id' element={<UserDashboard/>}></Route>
           <Route path='/usuarios/:id/perfil' element={<CandidateProfile/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
