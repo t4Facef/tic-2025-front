@@ -22,6 +22,8 @@ interface DumpDataType {
     info1: InfoType;
     info2: InfoType;
     info3: InfoType;
+    skills: string[];
+    barriers: string[];
 } //Só pra deixar registrado como deve ser, posteriormente vamos substituir isso pelo get no banco de dados
 
 const dumpData: DumpDataType = {
@@ -54,7 +56,9 @@ const dumpData: DumpDataType = {
         endDate: "08/2025",
         status: "Finalizado",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
-    }
+    },
+    skills: ["js"],
+    barriers: ["js"]
 }
 
 export default function CandidateProfile(){
@@ -101,7 +105,7 @@ export default function CandidateProfile(){
                 status={dumpData.info3.status}
                 description={dumpData.info3.desc}
             />
-            <TagContainer>Habilidades</TagContainer>
+            <TagContainer tags={dumpData.skills}>Habilidades</TagContainer>
         </div>
     )
 }
