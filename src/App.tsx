@@ -10,6 +10,7 @@ import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import UserDashboard from './pages/user_dashboard';
 import CandidateProfile from './pages/candidate_profile';
+import PositionsList from './pages/positions_list';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/adequacao' element={<Adequacao/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
+          <Route path='/vagas' element={<PositionsList/>}></Route>
           <Route path='/usuarios/:id' element={<UserDashboard/>}></Route>
           <Route path='/usuarios/:id/perfil' element={<CandidateProfile/>}></Route>
         </Route>

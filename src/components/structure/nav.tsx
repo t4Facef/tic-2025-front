@@ -6,7 +6,7 @@ export default function Nav(){
             <NavElement link="/saiba_mais">Saiba Mais</NavElement>
             <NavElement link="/faq">F.A.Q</NavElement>
             <NavElement link="/adequacao">Adequação</NavElement>
-            <NavElement link="/ultilizacao">Utilização</NavElement>
+            <NavElement link="/utilizacao">Utilização</NavElement>
         </nav>
     )
 }

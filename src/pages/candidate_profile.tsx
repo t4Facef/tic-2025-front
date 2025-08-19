@@ -57,8 +57,8 @@ const dumpData: DumpDataType = {
         status: "Finalizado",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto aut officiis, veniam harum, neque consectetur assumenda distinctio qui sequi rem, modi itaque. Harum, esse nihil. Ullam eos sapiente iusto maiores.",
     },
-    skills: ["js"],
-    barriers: ["js"]
+    skills: ["JavaScript", "Java", "C#", "Node.js", "React", "TypeScript", "Python", "SQL", "Git", "HTML/CSS", "MongoDB", "Express", "Docker", "AWS"],
+    barriers: ["Dificuldade de locomoção", "Necessita ambiente silencioso", "Requer pausas frequentes", "Limitação visual parcial", "Sensibilidade a ruídos altos"]
 }
 
 export default function CandidateProfile(){
@@ -106,6 +106,7 @@ export default function CandidateProfile(){
                 description={dumpData.info3.desc}
             />
             <TagContainer tags={dumpData.skills}>Habilidades</TagContainer>
+            <TagContainer tags={dumpData.barriers}>Limitações</TagContainer>
         </div>
     )
 }
