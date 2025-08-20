@@ -1,3 +1,5 @@
+// [TODO] - Fazer com que quando direicionar pelo botão para a listagem de vagas colocar os filtros apropriados (descobrir como fazer algo assim)
+
 import GenericBlueButton from "../components/buttons/generic_link_blue_button";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
@@ -13,7 +15,7 @@ export default function UserDashboard(){
                         <StatisticBox title="Candidatura abertas">XX</StatisticBox>            
                     </div>
                     <div className="flex justify-end mt-2 pr-2">
-                        <GenericBlueButton color={3} link="/ai" classEdit="py-3">Acessar minhas vagas</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3">Acessar minhas vagas</GenericBlueButton>
                     </div>
                 </div>
                 <p className="pt-12">Recomendações de vaga para você</p>
@@ -22,7 +24,7 @@ export default function UserDashboard(){
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
-                        <GenericBlueButton color={3} link="/ai" classEdit="py-3 my-5">Ver mais</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3 my-5">Ver mais</GenericBlueButton>
                     </div>
                 </div>
             </div>

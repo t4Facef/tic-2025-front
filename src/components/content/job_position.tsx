@@ -8,7 +8,7 @@ interface JobPositionProps {
 
 export default function JobPosition({profile, title, children}: JobPositionProps){
     return (
-        <div className="max-w-[120vh] min-w-[120vh] flex pt-8">
+        <div className="max-w-[140vh] min-w-[140vh] flex pt-8">
             <div className="w-28 h-28 bg-orange1 border-black border-2"> 
                 <img src= {profile} alt="perfil-img" />
             </div>

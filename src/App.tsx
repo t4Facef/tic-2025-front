@@ -11,6 +11,7 @@ import Cadastrar from './pages/cadastrar';
 import UserDashboard from './pages/user_dashboard';
 import CandidateProfile from './pages/candidate_profile';
 import PositionsList from './pages/positions_list';
+import CompanyDashboard from './pages/company_dashboard';
 
 function App() {
   return (
@@ -25,8 +26,9 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
           <Route path='/vagas' element={<PositionsList/>}></Route>
-          <Route path='/usuarios/:id' element={<UserDashboard/>}></Route>
-          <Route path='/usuarios/:id/perfil' element={<CandidateProfile/>}></Route>
+          <Route path='/usuarios/candidatos/:id/dashboard' element={<UserDashboard/>}></Route>
+          <Route path='/usuarios/candidatos/:id/perfil' element={<CandidateProfile/>}></Route>
+          <Route path='/usuarios/empresas/:id/dashboard' element={<CompanyDashboard/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
