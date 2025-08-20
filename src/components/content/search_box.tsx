@@ -1,4 +1,5 @@
 // [TODO] - Ajustar a caixa de pesquisa para quando for selecionada a borda não engrossar é arredondar lados errados
+// [TODO] - Juntar os dashboards de empresas e candidatos
 
 import {Search} from "lucide-react"
 
