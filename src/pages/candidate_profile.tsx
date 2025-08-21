@@ -65,7 +65,7 @@ export default function CandidateProfile(){
     return(
         <div className="px-20 py-10"> {/*Deixa px-52 definitivo e px-20 para testes, depois adicionar responsividade*/}
             <div className="flex items-center">
-                <img src="/img/profile-default.svg" alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5"/>
+                <img src="/img/profile-default.png" alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5"/>
                 <div>
                     <h1 className="font-bold text-[32px]">{dumpData.nome}</h1>
                     <p>
