@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { User } from "lucide-react";
 import TextSection from "./text_section";
 import TagContainer from "./tag_container";
@@ -13,12 +13,24 @@ interface JobModalProps {
 export default function JobModal({ open, onClose, title, children }: JobModalProps) {
   const dumpTags = ["lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum"];
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-hidden flex-col" onClick={onClose}>
-      <div className="max-w-[100vh] w-full py-10" onClick={(e) => e.stopPropagation()}>
-        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg max-h-[80vh] overflow-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4" onClick={onClose}>
+      <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto">
           <div className="flex flex-1 justify-between">
             <div className="flex-[7]">
               <h2 className="text-xl font-bold mb-4 text-[70px] py-7">{title}</h2>
@@ -37,12 +49,12 @@ export default function JobModal({ open, onClose, title, children }: JobModalPro
             <TagContainer tags={dumpTags}>Apoio da empresa</TagContainer>
           </div>
         </div>
-        <div className="bg-white border border-y-black flex justify-center py-3">
+        <div className="bg-white border border-y-black flex justify-center py-2">
           <span>Você é XX% compátivel com essa vaga</span>
         </div>
         <div className="flex flex-1">
-          <button className="bg-blue3 text-white flex-[5] border-black border-[2px] text-[60px] rounded-bl-3xl" onClick={onClose}>Fechar</button>
-          <button className="bg-blue3 text-white flex-[5] border-black border-[2px] text-[60px] rounded-br-3xl" onClick={onClose}>Inscrever</button>
+          <button className="bg-blue3 text-white flex-[5] border-black border-[2px] text-[35px] rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>
+          <button className="bg-blue3 text-white flex-[5] border-black border-[2px] text-[35px] rounded-br-3xl py-2" onClick={onClose}>Inscrever</button>
         </div>
       </div>
     </div>
