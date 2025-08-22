@@ -12,6 +12,7 @@ import UserDashboard from './pages/user_dashboard';
 import CandidateProfile from './pages/candidate_profile';
 import PositionsList from './pages/positions_list';
 import CompanyDashboard from './pages/company_dashboard';
+import AuthEntry from './components/content/auth_entry';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/faq' element={<Faq/>}></Route>
           <Route path='/utilizacao' element={<Utilizacao/>}></Route>
           <Route path='/adequacao' element={<Adequacao/>}></Route>
+          <Route path='/autenticacao' element={<AuthEntry/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/registrar' element={<Cadastrar/>}></Route>
           <Route path='/vagas' element={<PositionsList/>}></Route>
