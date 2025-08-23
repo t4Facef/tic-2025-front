@@ -10,9 +10,9 @@ export default function CompanyDashboard(){
             <div className="flex flex-col">
                 <div className="flex flex-col w-[72rem] bg-blue2 p-2 mt-5 rounded-lg">
                     <div className="flex justify-between">
-                        <StatisticBox title="Candidaturas Hoje">XX</StatisticBox>
-                        <StatisticBox title="Vagas Abertas">XX</StatisticBox>
-                        <StatisticBox title="Candidaturas Hoje">XX</StatisticBox>           
+                        <StatisticBox title="Candidaturas Hoje" animation={true} finalValue={1000}>1000</StatisticBox>
+                        <StatisticBox title="Vagas Abertas" animation={true} finalValue={25}>25</StatisticBox>
+                        <StatisticBox title="Candidatos Ativos" animation={true} finalValue={150}>150</StatisticBox>           
                     </div>
                 </div>
                 <p className="pt-12">Vagas Recentes</p>

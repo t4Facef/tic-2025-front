@@ -8,6 +8,6 @@ type navElementProps = {
 
 export default function NavElement({link, children}: navElementProps){
     return (
-        <Link className="p-4" to={link}>{children}</Link>
+        <Link className="p-4 hover:bg-blue1" to={link}>{children}</Link>
     )
 }
