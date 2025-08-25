@@ -9,10 +9,11 @@ import NotFound from './pages/NotFound';
 import Login from './pages/login';
 import Cadastrar from './pages/cadastrar';
 import UserDashboard from './pages/user_dashboard';
-import CandidateProfile from './pages/candidate_profile';
+import UserProfile from './pages/user_profile';
 import PositionsList from './pages/positions_list';
 import CompanyDashboard from './pages/company_dashboard';
 import AuthEntry from './components/content/auth_entry';
+import CompanyProfile from './pages/company_profile';
 
 function App() {
   return (
@@ -29,8 +30,9 @@ function App() {
           <Route path='/registrar' element={<Cadastrar/>}></Route>
           <Route path='/vagas' element={<PositionsList/>}></Route>
           <Route path='/usuarios/candidatos/:id/dashboard' element={<UserDashboard/>}></Route>
-          <Route path='/usuarios/candidatos/:id/perfil' element={<CandidateProfile/>}></Route>
+          <Route path='/usuarios/candidatos/:id/perfil' element={<UserProfile/>}></Route>
           <Route path='/usuarios/empresas/:id/dashboard' element={<CompanyDashboard/>}></Route>
+          <Route path='/usuarios/empresas/:id/perfil' element={<CompanyProfile/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
