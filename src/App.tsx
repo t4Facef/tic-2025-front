@@ -12,7 +12,7 @@ import UserDashboard from './pages/user_dashboard';
 import UserProfile from './pages/user_profile';
 import PositionsList from './pages/positions_list';
 import CompanyDashboard from './pages/company_dashboard';
-import AuthEntry from './components/content/auth_entry';
+import AuthEntry from './pages/auth_entry';
 import CompanyProfile from './pages/company_profile';
 
 function App() {
