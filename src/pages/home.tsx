@@ -37,7 +37,7 @@ export default function Home(){
                 <CompaniesRow teste={teste}></CompaniesRow>
             </div>
             <div className="flex flex-col px-8 items-center">
-                <div className="flex flex-col items-end">
+                <div className="flex flex-col items-end px-36">
                     <JobPosition title="Titulo 1" profile="./ss">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis adipisci veniam harum doloribus ipsam qui veritatis ad officia porro totam itaque impedit corrupti, sunt consectetur voluptatem cumque deleniti dolor voluptatum!
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia ipsam rerum totam aperiam laudantium nulla, aliquam omnis accusantium cum laborum facilis culpa perferendis, ullam esse dolore deserunt delectus et!
