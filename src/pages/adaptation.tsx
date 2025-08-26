@@ -1,3 +1,5 @@
+import GenericBlueButton  from "../components/buttons/generic_link_blue_button";
+
 export default function Adaptation() {
   const h1Style: React.CSSProperties = {
     fontWeight: "bold",
@@ -58,6 +60,12 @@ export default function Adaptation() {
         sequi, impedit accusamus! Eum culpa modi distinctio.
         lorem
         </p>
+      </div>
+      <div className="mt-10 items-end flex w-full flex-col">
+        <div className="space-y-2">
+          <p className="font-semibold text-lg italic">Se interessou?</p>
+          <GenericBlueButton color={3} link="/auth/entry" size="md">Registre-se agora</GenericBlueButton>
+        </div>
       </div>
     </div>
   );
