@@ -12,7 +12,7 @@ export default function JobPosition({ profile, title, children }: JobPositionPro
 
   return (
     <>
-      <div className={`max-w-[140vh] min-w-[140vh] flex pt-8 cursor-pointer transition-opacity ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
+      <div className={`w-full flex pt-8 cursor-pointer transition-opacity ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
         <div className="w-28 h-28 bg-orange1 border-black border-2 rounded-l-md"> 
           <img src={profile} alt="perfil-img" />
         </div>

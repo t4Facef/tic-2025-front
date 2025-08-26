@@ -7,7 +7,7 @@ interface GenericBlueButtonProps {
     color: number;              
     link: string;              
     children: ReactNode;        
-    size?: 'sm' | 'md' | 'lg'; 
+    size?: 'sm' | 'md' | 'mdy' | 'lg' ; 
 }
 
 // Mapeamento de cores - cada número corresponde a uma cor da paleta dentre os tons de azul
@@ -21,7 +21,8 @@ const colorMap: {[key:number]: string} = {
 // Tamanhos disponíveis - controla padding e tamanho do texto, caso precise de um botão diferente e queira usar esse componente pode adicionar mais algum, só não pode esquecer de adicionar no prop tbm
 const sizeMap = {
   sm: "px-3 py-1 text-sm",  // Pequeno: menos padding, texto menor
-  md: "px-4 py-2",          // Médio: padrão
+  md: "px-7 py-2",          // Médio: padrão
+  mdy: "px-7 py-3", // Médio um pouco maior no eixo y
   lg: "px-24 py-3 text-[1.5rem]"   // Grande: mais padding, texto maior
 };
 

@@ -20,7 +20,7 @@ export default function Register(){
                                 <span>Não é sua primeira vez?</span>
                                 <Link to="/auth/login" className="underline pt-1">ENTRAR</Link>
                             </div>
-                            <GenericBlueButton color={3} link="/ai" classEdit="flex items-center max-h-[10px]">Registrar</GenericBlueButton> {/* A implementar */}
+                            <GenericBlueButton color={3} link="/ai">Registrar</GenericBlueButton> {/* A implementar */}
                         </div>
                     </form>
                 </div>

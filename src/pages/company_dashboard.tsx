@@ -21,7 +21,9 @@ export default function CompanyDashboard(){
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
-                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3 my-5">Ver todas</GenericBlueButton>
+                        <div className="py-5">
+                            <GenericBlueButton color={3} link="/vagas">Ver todas</GenericBlueButton>
+                        </div>
                     </div>
                 </div>
                 <p className="pt-6">Vagas Encerradas</p>
@@ -30,7 +32,9 @@ export default function CompanyDashboard(){
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
-                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3 my-5">Ver todas</GenericBlueButton>
+                        <div className="py-5">
+                            <GenericBlueButton color={3} link="/vagas">Ver todas</GenericBlueButton>
+                        </div>
                     </div>
                 </div>
             </div>

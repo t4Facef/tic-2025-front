@@ -5,7 +5,7 @@ import GenericBlueButton from "../components/buttons/generic_link_blue_button";
 
 export default function AuthEntry(){
     return (
-        <div className="bg-blue4 m-24 min-h-screen">
+        <div className="bg-blue1 m-24 min-h-screen">
             <div className="flex flex-col items-center p-10 min-h-screen px-36">
                 <h1 className="font-bold text-6xl py-10">Seja bem vindo!</h1>
                 <div className="flex flex-col items-center justify-center py-6 w-full">
