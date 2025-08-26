@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 export default function HeaderButton(){
     const navigate = useNavigate();
     function handleClickLogin() {
-        navigate("/login");
+        navigate("/auth/login");
     }
     function handleClickRegister() {
-        navigate("/registrar");
+        navigate("/auth/register");
 
     }
 

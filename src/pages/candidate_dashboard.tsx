@@ -15,7 +15,7 @@ export default function CandidateDashboard(){
                         <StatisticBox title="Candidatura abertas">XX</StatisticBox>            
                     </div>
                     <div className="flex justify-end mt-2 pr-2">
-                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3">Acessar minhas vagas</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/jobs" classEdit="py-3">Acessar minhas vagas</GenericBlueButton>
                     </div>
                 </div>
                 <p className="pt-12">Recomendações de vaga para você</p>
@@ -24,7 +24,7 @@ export default function CandidateDashboard(){
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                         <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
-                        <GenericBlueButton color={3} link="/vagas" classEdit="py-3 my-5">Ver mais</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/jobs" classEdit="py-3 my-5">Ver mais</GenericBlueButton>
                     </div>
                 </div>
             </div>
