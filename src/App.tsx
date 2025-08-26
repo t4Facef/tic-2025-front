@@ -14,6 +14,7 @@ import PositionsList from './pages/positions_list';
 import CompanyDashboard from './pages/company_dashboard';
 import AuthEntry from './pages/auth_entry';
 import CompanyProfile from './pages/company_profile';
+import CreateJobPosition from './pages/create_job_position';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path='/usuarios/candidatos/:id/perfil' element={<UserProfile/>}></Route>
           <Route path='/usuarios/empresas/:id/dashboard' element={<CompanyDashboard/>}></Route>
           <Route path='/usuarios/empresas/:id/perfil' element={<CompanyProfile/>}></Route>
+          <Route path='/vagas/nova/:id' element={<CreateJobPosition/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

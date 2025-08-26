@@ -44,7 +44,6 @@ export default function CompanyProfile(){
                         </p>
                     </div>
                 </div>
-                <img src="/img/tester.png" alt="" className="py-6 h-96 w-full object-cover"/>
             </div>
             <div className="bg-blue1 flex justify-between p-6 my-6">
                 <InfoList items={[
@@ -61,6 +60,7 @@ export default function CompanyProfile(){
             <div className="mt-5">
                 <TagContainer tags={["lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum"]}>Capacidade de Apoio</TagContainer>
             </div>
+            <img src="/img/tester.png" alt="" className="py-6 h-96 w-full object-cover"/>
         </div>
     )
 }
