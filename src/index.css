@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
-  font-family: arial, serif;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* centraliza na horizontal */
+  align-items: flex-start; /* mantém alinhado no topo (se não quiser no meio da tela) */
+  min-width: 320px;
+  min-height: 100vh;
 }

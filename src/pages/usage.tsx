@@ -1,7 +1,7 @@
 import AnchorListItem from "../components/content/anchor_list_item";
 import TextSection from "../components/content/text_section";
 
-export default function Utilizacao(){
+export default function Usage(){
     return(
         <div className="flex-1 flex min-h-screen">
             <nav className="flex-[1] bg-blue2 p-4 flex-col font-georgia text-white">

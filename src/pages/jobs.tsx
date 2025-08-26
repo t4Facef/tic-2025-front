@@ -4,7 +4,7 @@ import JobPosition from "../components/content/job_position";
 import SearchBox from "../components/content/search_box";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function PositionsList(){
+export default function Jobs(){
     return (
         <div className="flex flex-1">
             <div className="bg-blue2 flex-[2] flex justify-center text-[16px] p-1 min-h-screen">

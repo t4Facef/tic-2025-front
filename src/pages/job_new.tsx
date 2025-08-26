@@ -1,4 +1,4 @@
-export default function CreateJobPosition(){
+export default function JobNew(){
     return (
         <div className="p-12">
             <div className="bg-blue1 p-6">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_link_blue_button";
 
-export default function Cadastrar(){
+export default function Register(){
     return (
         <div className="flex justify-center">
             <div className="bg-blue1 border border-black w-[28rem] my-12 rounded-lg">

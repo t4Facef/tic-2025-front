@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // garante que Tailwind escaneie tudo na pasta src
-  ],
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {

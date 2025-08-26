@@ -61,7 +61,7 @@ const dumpData: DumpDataType = {
     barriers: ["Dificuldade de locomoção", "Necessita ambiente silencioso", "Requer pausas frequentes", "Limitação visual parcial", "Sensibilidade a ruídos altos"]
 }
 
-export default function UserProfile(){
+export default function CandidateProfile(){
     return(
         <div className="px-20 py-10"> {/*Deixa px-52 definitivo e px-20 para testes, depois adicionar responsividade*/}
             <div className="flex items-center">

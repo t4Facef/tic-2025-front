@@ -4,7 +4,7 @@ import GenericBlueButton from "../components/buttons/generic_link_blue_button";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 
-export default function UserDashboard(){
+export default function CandidateDashboard(){
     return (
         <div className="flex flex-col items-center">
             <div className="flex flex-col">

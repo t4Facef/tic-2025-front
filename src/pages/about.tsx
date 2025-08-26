@@ -1,6 +1,6 @@
 import TextSection from "../components/content/text_section";
 
-export default function Sobre(){
+export default function About(){
     return(
         <div className="p-8 flex flex-col font-georgia">
             <h1 className="text-5xl font-bold py-4">Sobre</h1>
