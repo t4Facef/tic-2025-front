@@ -11,9 +11,9 @@ interface GenericBlueButtonProps {
 
 // Mapeamento de cores - cada número corresponde a uma cor da paleta dentre os tons de azul
 const colorMap: {[key:number]: string} = {
-  1: "bg-blue1 hover:bg-blue2",        
-  2: "bg-blue2 text-white hover:bg-blue3",
-  3: "bg-blue3 text-white hover:bg-blue2",
+  1: "bg-blue1",        
+  2: "bg-blue2 text-white",
+  3: "bg-blue3 text-white hover:bg-blue3H",
   4: "bg-blue4 hover:bg-blue1",        
 };
 

@@ -1,7 +1,13 @@
 // [TODO] - Verificar se os dados obrigatorios foram preenchidos
+// [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
 
 import { useState } from 'react'
 import GenericBlueButton from '../components/buttons/generic_blue_button'
+import StepIndicator from '../components/content/step_indicator'
+import CandidateForm1 from '../components/forms/register/candidate_form1'
+import CandidateForm2 from '../components/forms/register/candidate_form2'
+import CandidateForm3 from '../components/forms/register/candidate_form3'
+import CandidateForm4 from '../components/forms/register/candidate_form4'
 
 export default function Register(){
     const [step, setStep] = useState(1)
@@ -23,23 +29,23 @@ export default function Register(){
     }
 
     return (
-        <div className="px-32 py-10 space-y-5">
+        <div className="px-32 py-10 space-y-10">
             <div className="space-y-4">
                 <h1 className="font-medium text-4xl">Vamos dar o primeiro passo</h1>
-                <p>Conte um pouco sobre você para começarmos</p>
+                <p>Preencha algumas informações para começarmos</p>
             </div>
             <div>
-                <div className="bg-blue3 rounded-t-lg text-white p-3 text-center">
-                    W.I.P
+                <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
+                    <StepIndicator step={step}></StepIndicator>
                 </div>
-                <div className="bg-blue4 rounded-b-lg border-black text-center px-8 py-4 space-y-4 ">
-                    {step == 1 && <span>Step1</span>}
-                    {step == 2 && <span>Step2</span>}
-                    {step == 3 && <span>Step3</span>}
-                    {step == 4 && <span>Step4</span>}
+                <div className="bg-blue4 rounded-b-lg border-black text-center px-16 py-4 space-y-4 w-full">
+                    {step == 1 && <CandidateForm1/>}
+                    {step == 2 && <CandidateForm2/>}
+                    {step == 3 && <CandidateForm3/>}
+                    {step == 4 && <CandidateForm4/>}
                     <div className='flex justify-between'>
                         <GenericBlueButton 
-                            color={2} 
+                            color={3} 
                             size='md' 
                             {...(step === 1 
                                 ? { link: "/" }  // Step 1: vai pra home
