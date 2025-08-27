@@ -1,5 +1,5 @@
 import JobPosition from "../components/content/job_position"
-import GenericBlueButton from "../components/buttons/generic_link_blue_button"
+import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
 
 const teste = ["./img/logosTeste/teste1.jpeg", "./img/logosTeste/teste2.jpeg", "./img/logosTeste/teste3.jpeg", "./img/logosTeste/teste4.png", "./img/logosTeste/teste5.jpeg"] //Depende de como é armazenado as imagens no banco

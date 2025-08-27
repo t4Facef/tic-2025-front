@@ -1,7 +1,7 @@
 // [TODO] - Fazer com que quando direicionar pelo botão para a listagem de vagas colocar os filtros apropriados (descobrir como fazer algo assim)
 // [TODO] - Ajeitar tamanho das vagas + caixa de estatistica
 
-import GenericBlueButton from "../components/buttons/generic_link_blue_button";
+import GenericBlueButton from "../components/buttons/generic_blue_button";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 

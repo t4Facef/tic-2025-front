@@ -1,6 +1,6 @@
 // Fazer com que as caixas de estatisticas não ultrapassem o limite da pagina
 
-import GenericBlueButton from "../components/buttons/generic_link_blue_button";
+import GenericBlueButton from "../components/buttons/generic_blue_button";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 

@@ -1,28 +1,65 @@
-import { Link } from "react-router-dom";
-import GenericBlueButton from "../components/buttons/generic_link_blue_button";
+// [TODO] - Verificar se os dados obrigatorios foram preenchidos
+
+import { useState } from 'react'
+import GenericBlueButton from '../components/buttons/generic_blue_button'
 
 export default function Register(){
+    const [step, setStep] = useState(1)
+    
+    // Mapeamento dos textos dos botões baseado no step
+    const buttonTexts = {
+        back: {
+            1: "Cancelar",
+            2: "Voltar", 
+            3: "Voltar",
+            4: "Voltar"
+        },
+        next: {
+            1: "Continuar",
+            2: "Próximo",
+            3: "Quase lá",
+            4: "Finalizar"
+        }
+    }
+
     return (
-        <div className="flex justify-center">
-            <div className="bg-blue1 border border-black w-[28rem] my-12 rounded-lg">
-                <div className="flex border-b border-black">
-                    <button className="border-r border-black w-[14rem] rounded-tl-md text-[21px] p-2">Candidato</button>
-                    <button className="border-l border-black w-[14rem] rounded-tr-md text-[21px] p-2">Empresa</button>
+        <div className="px-32 py-10 space-y-5">
+            <div className="space-y-4">
+                <h1 className="font-medium text-4xl">Vamos dar o primeiro passo</h1>
+                <p>Conte um pouco sobre você para começarmos</p>
+            </div>
+            <div>
+                <div className="bg-blue3 rounded-t-lg text-white p-3 text-center">
+                    W.I.P
                 </div>
-                <div className="flex flex-col items-center">
-                    <form className="flex flex-col w-[18rem] justify-center py-5">
-                        <label htmlFor="cpfRegister">CPF</label>
-                        <input type="text" id="cpfRegister" name="cpfRegister" placeholder="Digite o CPF" className="border border-black rounded-md p-2 pl-2"/>
-                        <label htmlFor="nomeRegister" className="pt-6">Nome</label>
-                        <input type="text" id="nomeRegister" name="nomeRegister" placeholder="Digite o nome" className="border border-black rounded-md p-2 pl-2"/>
-                        <div className="flex justify-between items-end pt-[9.5rem]">
-                            <div className="flex flex-col text-[13px]">
-                                <span>Não é sua primeira vez?</span>
-                                <Link to="/auth/login" className="underline pt-1">ENTRAR</Link>
-                            </div>
-                            <GenericBlueButton color={3} link="/ai">Registrar</GenericBlueButton> {/* A implementar */}
-                        </div>
-                    </form>
+                <div className="bg-blue4 rounded-b-lg border-black text-center px-8 py-4 space-y-4 ">
+                    {step == 1 && <span>Step1</span>}
+                    {step == 2 && <span>Step2</span>}
+                    {step == 3 && <span>Step3</span>}
+                    {step == 4 && <span>Step4</span>}
+                    <div className='flex justify-between'>
+                        <GenericBlueButton 
+                            color={2} 
+                            size='md' 
+                            {...(step === 1 
+                                ? { link: "/" }  // Step 1: vai pra home
+                                : { onClick: () => setStep(step - 1) }  // Outros: volta step
+                            )}
+                        >
+                            {buttonTexts.back[step as keyof typeof buttonTexts.back]}
+                        </GenericBlueButton>
+                        
+                        <GenericBlueButton 
+                            color={3} 
+                            size='md' 
+                            {...(step === 4 
+                                ? { link: "/candidates/1/dashboard" }  // Step 4: vai pro dashboard
+                                : { onClick: () => setStep(step + 1) }  // Outros: avança step
+                            )}
+                        >
+                            {buttonTexts.next[step as keyof typeof buttonTexts.next]}
+                        </GenericBlueButton>
+                    </div>
                 </div>
             </div>
         </div>

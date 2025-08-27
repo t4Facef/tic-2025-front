@@ -3,7 +3,7 @@
 // [TODO] - Adicionar um componente proprio para alteração na própria pagina, ao invés de usar um botão genérico de link
 // [TODO] - Procurar um icone de setinha e implementar abrir e fechar
 
-import GenericBlueButton from "../buttons/generic_link_blue_button"
+import GenericBlueButton from "../buttons/generic_blue_button"
 
 interface PerfilContentSectionProps {
     title: string;

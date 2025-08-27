@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import GenericBlueButton from "../components/buttons/generic_link_blue_button";
+import GenericBlueButton from "../components/buttons/generic_blue_button";
 
 export default function Login(){
     return (
