@@ -9,7 +9,7 @@ export default function Home(){
         <div>
             <section className="relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
                 <div className="absolute inset-0 bg-white bg-opacity-50"></div>
-                <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 md:px-8 ">
+                <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 md:px-8">
                     <div className="bg-blue1 bg-opacity-90 rounded-xl shadow-lg p-6 sm:p-8 md:p-10 max-w-7xl flex flex-1 max-h-full">
                         <div className="flex-[8] font-georgia">
                             <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
