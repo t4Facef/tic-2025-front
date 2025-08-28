@@ -4,14 +4,14 @@ import GenericBlueButton from "../../buttons/generic_blue_button";
 export default function JobRegistrationForm() {
   return (
     <form className="flex-col text-start space-5 text-blue3">
-      <h2 className="p-1 text-white text-[1.5rem] bg-blue3 border border-black min-w-[28rem] my-12 rounded-t-lg">
+      <h2 className="p-3 text-white text-[1.5rem] bg-blue3 border border-black min-w-[28rem] my-2 rounded-t-lg">
         Cadastre sua vaga
       </h2>
-      <div className="p-3">
+      <div className="p-3 space-y-5">
         <GenericFormField id="job_registration" type="text">
           Nome da vaga
         </GenericFormField>
-        <div className="flex gap-4">
+        <div className="flex gap-24">
           <GenericFormField id="start_date" type="date">
             Início das inscrições
           </GenericFormField>
@@ -35,7 +35,7 @@ export default function JobRegistrationForm() {
         <GenericFormField
           id="job_level"
           type="select"
-          options={["Júnior", "Pleno", "Sênior"]}
+          options={["Estágio", "Júnior", "Pleno", "Sênior"]}
         >
           Nível da vaga
         </GenericFormField>
