@@ -15,7 +15,6 @@ import CompanyDashboard from './pages/company_dashboard';
 import AuthEntry from './pages/auth_entry';
 import CompanyProfile from './pages/company_profile';
 import JobNew from './pages/job_new';
-import CompanyJobRegistration from './pages/company_job_registration'
 
 function App() {
   return (
@@ -36,7 +35,6 @@ function App() {
           <Route path='/companies/:id/dashboard' element={<CompanyDashboard/>}></Route>
           <Route path='/companies/:id/profile' element={<CompanyProfile/>}></Route>
           <Route path='/jobs/new' element={<JobNew/>}></Route>
-          <Route path='/company-registration' element={<CompanyJobRegistration/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
