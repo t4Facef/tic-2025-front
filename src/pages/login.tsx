@@ -22,9 +22,9 @@ export default function Login(){
                         <div className="flex justify-between items-end pt-32">
                             <div className="flex flex-col text-[13px]">
                                 <span>É sua primeira vez?</span>
-                                <Link to="/registrar" className="underline pt-1">CADASTRAR</Link>
+                                <Link to="/auth/register" className="underline pt-1">CADASTRAR</Link>
                             </div>
-                            <GenericBlueButton color={3} link="/usuarios/1">Entrar</GenericBlueButton> {/* A implementar */}
+                            <GenericBlueButton color={3} link="/candidates/1/dashboard">Entrar</GenericBlueButton> {/* A implementar */}
                         </div>
                     </form>
 

@@ -10,8 +10,8 @@ export default function CandidateForm1 (){
                 <GenericFormField id="candidate_birth_date_register" type="date">Data de Nascimento</GenericFormField>
             </div>
             <div className="flex justify-between space-x-16">
-                <GenericFormField>Sexualidade</GenericFormField>
-                <GenericFormField>Gênero</GenericFormField>
+                <GenericFormField id="candidate_sexualite_register" type="">Sexualidade</GenericFormField>
+                <GenericFormField id="candidate_gender_register" type="">Gênero</GenericFormField>
             </div>
         </form>
     )

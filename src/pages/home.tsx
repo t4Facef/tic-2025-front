@@ -27,7 +27,7 @@ export default function Home(){
                                 <img className="bro" src="./img/homepage/Teste.png" alt="home-img-2"/>
                             </div>
                             <div className="flex justify-end items-end">
-                                <GenericBlueButton color={3} link='/saiba_mais' size="mdy">Conheça Mais Sobre</GenericBlueButton> 
+                                <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton> 
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ export default function Home(){
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo ea cum quam eius sequi temporibus alias ad totam recusandae rem iste nemo et vel consequuntur, voluptatibus eum, blanditiis sit. Tenetur?            
                     </JobPosition>
                     <div className="my-6">
-                        <GenericBlueButton color={3} link="/registrar" size="mdy">Registre-se Agora!</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/auth/register" size="mdy">Registre-se Agora!</GenericBlueButton>
                     </div>
                 </div>
             </div>

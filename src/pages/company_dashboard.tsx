@@ -22,7 +22,7 @@ export default function CompanyDashboard(){
                                 <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                                 <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                                 <div className="py-5">
-                                    <GenericBlueButton color={3} link="/vagas">Ver todas</GenericBlueButton>
+                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +33,7 @@ export default function CompanyDashboard(){
                                 <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                                 <JobPosition profile="/a" title="lorem">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere facilis omnis odio ipsum odit iure a inventore iusto nihil, eum accusantium assumenda sunt aspernatur similique cum quo, nostrum ullam quaerat!</JobPosition>
                                 <div className="py-5">
-                                    <GenericBlueButton color={3} link="/vagas">Ver todas</GenericBlueButton>
+                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
                                 </div>
                             </div>
                         </div>
