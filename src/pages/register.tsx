@@ -38,7 +38,7 @@ export default function Register(){
                 <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
                     <StepIndicator step={step}></StepIndicator>
                 </div>
-                <div className="bg-blue4 rounded-b-lg border-black text-center px-16 py-4 space-y-4 w-full">
+                <div className="bg-blue4 rounded-b-lg border-black text-center px-16 py-4 space-y-12 w-full">
                     {step == 1 && <CandidateForm1/>}
                     {step == 2 && <CandidateForm2/>}
                     {step == 3 && <CandidateForm3/>}
