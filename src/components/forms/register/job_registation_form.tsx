@@ -13,16 +13,13 @@ export default function JobRegistrationForm(){
           Fim das inscrições
         </GenericFormField>
       </div>
-      <GenericFormField id='job_registration_description' type='text'>Descrição da vaga</GenericFormField>
-      <div>
-        <h2>Características da vaga</h2>
-        <GenericFormField id='job_registration_infos' type='checkbox'>Remoto</GenericFormField>
-        <GenericFormField id='job_registration_infos' type='checkbox'>Presencial</GenericFormField>
-        <GenericFormField id='job_registration_infos' type='checkbox'>Híbrido</GenericFormField>
-      </div>
-       <GenericFormField id='job_registration' type='text'>Salário</GenericFormField>
-       <GenericFormField id='job_registration' type='text'>Nível da vaga</GenericFormField>
-       <GenericFormField id='job_registration' type='text'>Carga Horária</GenericFormField>
+      <GenericFormField id='job_description' type='textarea'>Descrição da vaga</GenericFormField>
+      
+      <GenericFormField id='job_characteristics' type='radio' options={["Remoto", "Presencial", "Híbrido"]}>Características da vaga</GenericFormField>
+      
+       <GenericFormField id='job_salary' type='text'>Salário</GenericFormField>
+       <GenericFormField id='job_level' type='select' options={["Júnior", "Pleno", "Sênior"]}>Nível da vaga</GenericFormField>
+       <GenericFormField id='job_workload' type='text'>Carga Horária</GenericFormField>
     </form>
   )
 }
