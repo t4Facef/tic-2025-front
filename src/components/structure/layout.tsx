@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./footer";
 import Header from "./header";
 import Nav from "./nav";
+import DevMenu from "./dev_menu";
 
 export default function Layout() {
   // Obtém a rota atual (ex: /usuarios, /home, etc)
@@ -21,6 +22,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <DevMenu />
     </div>
   );
 }
