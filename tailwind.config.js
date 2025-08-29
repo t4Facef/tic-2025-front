@@ -9,6 +9,7 @@ module.exports = {
         'blue3': '#023047',
         'blue3H': '#054D71', //Hover para o blue3
         'blue4': '#9CDFFE',
+        'blue5H': '#85D8FF',
         'blue5': '#64CEFF',
         'orange1': '#FF950C',
         'orange2': '#FFDCAD'

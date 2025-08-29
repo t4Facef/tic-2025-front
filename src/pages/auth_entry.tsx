@@ -17,7 +17,7 @@ export default function AuthEntry(){
                 </div>
                 <div className="flex flex-col w-full py-12 px-16">
                     <p className="font-semibold text-[1.5rem]">Ou entre também por</p>
-                    <div className="w-full bg-orange2 flex justify-center items-center py-12">
+                    <div className="w-full bg-blue2 flex justify-center items-center py-12">
                         W.I.P
                     </div>
                 </div>

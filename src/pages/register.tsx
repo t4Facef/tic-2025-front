@@ -1,6 +1,7 @@
 // [TODO] - Verificar se os dados obrigatorios foram preenchidos
 // [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
 // [TODO] - Geral para todos os formulários separados, verificar quais serão obrigatórios ou não, colocar verificação no front e adicinar erro caso não tenho todos os necessários
+// [TODO] - Fazer com que os dado persistam entre os steps do formulário
 
 import { useState } from 'react'
 import GenericBlueButton from '../components/buttons/generic_blue_button'

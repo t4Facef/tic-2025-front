@@ -15,9 +15,10 @@ interface GenericFormFieldProps {
     type?: string;
     placeholder?: string;
     options?: string[] | {name: string, value: string}[];
+    autoComplete?: string;
 }
 
-export default function GenericFormField({children, id, placeholder, type = "text", options}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, type = "text", options, autoComplete}: GenericFormFieldProps){
     const baseClass = "border border-gray-400 rounded-md p-2";
     
     // SELECT
@@ -93,7 +94,7 @@ export default function GenericFormField({children, id, placeholder, type = "tex
     return (
         <div className="flex flex-col w-full">
             <label htmlFor={id}>{children}</label>
-            <input type={type} name={id} id={id} placeholder={placeholder} className={baseClass} />
+            <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={baseClass} />
         </div>
     );
 }
