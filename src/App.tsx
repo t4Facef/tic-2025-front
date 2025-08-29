@@ -29,14 +29,15 @@ function App() {
           <Route path='/adaptation' element={<Adaptation/>}></Route>
           <Route path='/auth/entry' element={<AuthEntry/>}></Route>
           <Route path='/auth/login' element={<Login/>}></Route>
-          <Route path='/auth/register' element={<Register/>}></Route>
+          <Route path='/auth/register/main' element={<MainRegister/>}></Route>
+          <Route path='/auth/register/candidates' element={<Register/>}></Route>
+          <Route path='/auth/register/companies' element={<Register/>}></Route>
           <Route path='/jobs' element={<Jobs/>}></Route>
           <Route path='/candidates/:id/dashboard' element={<CandidateDashboard/>}></Route>
           <Route path='/candidates/:id/profile' element={<CandidateProfile/>}></Route>
           <Route path='/companies/:id/dashboard' element={<CompanyDashboard/>}></Route>
           <Route path='/companies/:id/profile' element={<CompanyProfile/>}></Route>
           <Route path='/jobs/new' element={<JobNew/>}></Route>
-          <Route path='/main/register' element={<MainRegister/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
