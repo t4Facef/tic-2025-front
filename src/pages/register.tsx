@@ -1,5 +1,6 @@
 // [TODO] - Verificar se os dados obrigatorios foram preenchidos
 // [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
+// [TODO] - Geral para todos os formulários separados, verificar quais serão obrigatórios ou não, colocar verificação no front e adicinar erro caso não tenho todos os necessários
 
 import { useState } from 'react'
 import GenericBlueButton from '../components/buttons/generic_blue_button'
@@ -8,6 +9,7 @@ import CandidateForm1 from '../components/forms/register/candidate_form1'
 import CandidateForm2 from '../components/forms/register/candidate_form2'
 import CandidateForm3 from '../components/forms/register/candidate_form3'
 import CandidateForm4 from '../components/forms/register/candidate_form4'
+import CandidateForm5 from '../components/forms/register/candidate_form5'
 
 export default function Register(){
     const [step, setStep] = useState(1)
@@ -18,31 +20,34 @@ export default function Register(){
             1: "Cancelar",
             2: "Voltar", 
             3: "Voltar",
-            4: "Voltar"
+            4: "Voltar",
+            5: "voltar"
         },
         next: {
             1: "Continuar",
             2: "Próximo",
-            3: "Quase lá",
-            4: "Finalizar"
+            3: "Próximo",
+            4: "Quase lá",
+            5: "Finalizar"
         }
     }
 
     return (
-        <div className="px-32 py-10 space-y-10">
+        <div className="px-52 py-10 space-y-10">
             <div className="space-y-4">
                 <h1 className="font-medium text-4xl">Vamos dar o primeiro passo</h1>
                 <p>Preencha algumas informações para começarmos</p>
             </div>
             <div>
                 <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
-                    <StepIndicator step={step}></StepIndicator>
+                    <StepIndicator step={step} stepsTitles={{1: "Dados Pessoais", 2: "Contatos", 3: "Currículo", 4: "Acessibilidade", 5: "Finalização"}}></StepIndicator>
                 </div>
-                <div className="bg-blue4 rounded-b-lg border-black text-center px-16 py-4 space-y-12 w-full">
+                <div className="bg-blue4 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
                     {step == 1 && <CandidateForm1/>}
                     {step == 2 && <CandidateForm2/>}
                     {step == 3 && <CandidateForm3/>}
                     {step == 4 && <CandidateForm4/>}
+                    {step == 5 && <CandidateForm5/>}
                     <div className='flex justify-between'>
                         <GenericBlueButton 
                             color={3} 
@@ -58,7 +63,7 @@ export default function Register(){
                         <GenericBlueButton 
                             color={3} 
                             size='md' 
-                            {...(step === 4 
+                            {...(step === 5 
                                 ? { link: "/candidates/1/dashboard" }  // Step 4: vai pro dashboard
                                 : { onClick: () => setStep(step + 1) }  // Outros: avança step
                             )}

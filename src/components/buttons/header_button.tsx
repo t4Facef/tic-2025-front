@@ -6,7 +6,7 @@ export default function HeaderButton(){
         navigate("/auth/login");
     }
     function handleClickRegister() {
-        navigate("/auth/register");
+        navigate("/auth/register/main");
 
     }
 

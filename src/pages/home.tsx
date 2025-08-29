@@ -54,7 +54,7 @@ export default function Home(){
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo ea cum quam eius sequi temporibus alias ad totam recusandae rem iste nemo et vel consequuntur, voluptatibus eum, blanditiis sit. Tenetur?            
                     </JobPosition>
                     <div className="my-6">
-                        <GenericBlueButton color={3} link="/auth/register" size="mdy">Registre-se Agora!</GenericBlueButton>
+                        <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
                     </div>
                 </div>
             </div>
