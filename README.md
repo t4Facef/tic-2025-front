@@ -24,19 +24,27 @@ O Apojobs foi criado para facilitar a inclusão de pessoas com deficiência no m
 ```
 src/
 ├── components/           # Componentes reutilizáveis
-│   ├── buttons/         # Botões customizados
-│   ├── content/         # Componentes de conteúdo
+│   ├── buttons/         # Botões customizados (GenericBlueButton, HeaderButton)
+│   ├── content/         # Componentes de conteúdo (JobPosition, StepIndicator, etc.)
+│   ├── forms/           # Formulários e campos
+│   │   ├── register/    # Formulários de cadastro (candidate_form1-5, companie_form1-4)
+│   │   └── generic_form_field.tsx # Campo de formulário genérico
 │   ├── profile/         # Componentes de perfil
-│   └── structure/       # Componentes estruturais (header, footer, layout)
-├── data/                # Dados mockados
+│   └── structure/       # Componentes estruturais (Layout, Header, Footer, DevMenu)
+├── data/                # Dados mockados (fakedata.tsx)
 ├── pages/               # Páginas da aplicação
 │   ├── home.tsx         # Página inicial
+│   ├── auth_entry.tsx   # Entrada de autenticação
+│   ├── main_register.tsx # Seleção de tipo de cadastro
+│   ├── register.tsx     # Formulário multi-step de cadastro
 │   ├── login.tsx        # Página de login
-│   ├── cadastrar.tsx    # Página de cadastro
-│   ├── candidate_profile.tsx # Perfil do candidato
-│   ├── sobre.tsx        # Sobre a plataforma
+│   ├── candidate_*.tsx  # Páginas do candidato (dashboard, profile)
+│   ├── company_*.tsx    # Páginas da empresa (dashboard, profile)
+│   ├── jobs.tsx         # Listagem de vagas
+│   ├── about.tsx        # Sobre a plataforma
 │   ├── faq.tsx          # Perguntas frequentes
-│   └── ...
+│   ├── adaptation.tsx   # Processo de adequação
+│   └── usage.tsx        # Guia de utilização
 └── App.tsx              # Componente principal com roteamento
 ```
 
@@ -46,7 +54,9 @@ src/
 - **blue1**: `#BDEAFC` - Azul claro
 - **blue2**: `#219EBC` - Azul médio
 - **blue3**: `#023047` - Azul escuro
+- **blue3H**: `#054D71` - Azul escuro hover
 - **blue4**: `#9CDFFE` - Azul suave
+- **blue5**: `#64CEFF` - Azul adicional
 - **orange1**: `#FF950C` - Laranja principal
 - **orange2**: `#FFDCAD` - Laranja claro
 
@@ -91,29 +101,42 @@ npm run eject
 
 ### Páginas Principais
 - **Home** - Apresentação da plataforma e vagas inclusivas em destaque
-- **Login/Cadastro** - Autenticação para candidatos PCDs e recrutadores
-- **Perfil do Candidato** - Visualização e edição de perfis acessíveis
-- **Sobre** - Informações sobre o projeto de inclusão
+- **Auth Entry** - Página de entrada para autenticação
+- **Main Register** - Seleção entre cadastro de candidato ou empresa
+- **Register** - Formulário multi-step para cadastro de candidatos (5 etapas)
+- **Login** - Autenticação de usuários
+- **Dashboards** - Painéis personalizados para candidatos e empresas
+- **Profiles** - Perfis detalhados de candidatos e empresas
+- **Jobs** - Listagem e busca de vagas inclusivas
+- **About** - Informações sobre o projeto de inclusão
 - **FAQ** - Perguntas frequentes sobre acessibilidade
-- **Adequação** - Processo de adequação de perfis para vagas inclusivas
-- **Utilização** - Guia de uso da plataforma com foco em acessibilidade
+- **Adaptation** - Processo de adequação de perfis para vagas inclusivas
+- **Usage** - Guia de uso da plataforma com foco em acessibilidade
 
 ### Componentes Principais
-- **Layout** - Estrutura base acessível com header e footer
-- **Navigation** - Sistema de navegação responsivo e inclusivo
+- **Layout** - Estrutura base acessível com header, footer e menu de desenvolvimento
+- **GenericFormField** - Campo de formulário reutilizável com suporte a autocomplete
+- **StepIndicator** - Indicador visual de progresso em formulários multi-step
+- **GenericBlueButton** - Botão padronizado com variações de cor e tamanho
+- **DevMenu** - Menu lateral de desenvolvimento para navegação rápida
 - **Job Position** - Exibição de vagas inclusivas
 - **Companies Row** - Carrossel de empresas comprometidas com inclusão
-- **Profile Components** - Componentes para perfis de candidatos PCDs
+- **Profile Components** - Componentes para perfis de candidatos e empresas
 
 ## 🔧 Desenvolvimento
 
 ### Status Atual
 - ✅ Estrutura base do projeto
-- ✅ Sistema de roteamento
-- ✅ Design system com Tailwind CSS
-- ✅ Componentes estruturais básicos
-- 🚧 Funcionalidades com TypeScript (em desenvolvimento)
-- 📋 Integração com backend Node.js (planejado)
+- ✅ Sistema de roteamento completo (15+ páginas)
+- ✅ Design system com Tailwind CSS personalizado
+- ✅ Componentes estruturais e de formulário
+- ✅ Formulários multi-step com validação
+- ✅ Sistema de autocomplete em formulários
+- ✅ Menu de desenvolvimento para testes
+- ✅ Scroll suave para navegação interna
+- 🚧 Persistência de dados entre steps (planejado)
+- 🚧 Integração com APIs (CEP, localização)
+- 📋 Backend com Node.js (planejado)
 
 ### Estrutura de Componentes
 - Componentes funcionais com TypeScript
@@ -122,11 +145,14 @@ npm run eject
 - React Router para navegação
 
 ### Padrões de Código
-- Componentes em PascalCase
-- Arquivos em snake_case
-- Props tipadas com TypeScript
-- Responsividade mobile-first
-- Foco em acessibilidade (WCAG)
+- **Componentes** em PascalCase (ex: `GenericFormField`)
+- **Arquivos** em snake_case (ex: `candidate_form1.tsx`)
+- **Props** tipadas com TypeScript interfaces
+- **Responsividade** mobile-first com Tailwind CSS
+- **Acessibilidade** seguindo padrões WCAG
+- **Autocomplete** implementado conforme HTML5 standards
+- **Estados** gerenciados com React Hooks
+- **Roteamento** declarativo com React Router DOM
 
 ## 🧪 Testes
 
@@ -169,15 +195,40 @@ Projeto desenvolvido como trabalho de faculdade para o **TIC 2025**, com foco em
 - Responsabilidade social corporativa
 - Tecnologias React e TypeScript
 
+## ✨ Funcionalidades Implementadas
+
+### Formulários Inteligentes
+- **Multi-step Registration** - Cadastro em 5 etapas para candidatos
+- **Autocomplete Nativo** - Campos com suporte a preenchimento automático
+- **Validação de Campos** - Tipos específicos (email, date, select)
+- **Campos Inclusivos** - Orientação sexual e identidade de gênero respeitosas
+
+### Experiência do Usuário
+- **Navegação Fluida** - Scroll suave entre seções
+- **Design Responsivo** - Layout adaptável para diferentes telas
+- **Menu de Desenvolvimento** - Navegação rápida entre páginas (temporário)
+- **Indicadores Visuais** - Progresso claro em formulários
+
+### Acessibilidade
+- **Labels Semânticos** - Todos os campos com labels apropriados
+- **Autocomplete Standards** - Seguindo padrões HTML5 de acessibilidade
+- **Cores Contrastantes** - Paleta otimizada para legibilidade
+- **Estrutura Semântica** - HTML estruturado para screen readers
+
 ## 🚀 Roadmap
 
 - [x] Estrutura base do frontend
 - [x] Design system inclusivo
-- [ ] Funcionalidades avançadas com TypeScript
+- [x] Sistema de roteamento completo
+- [x] Formulários multi-step
+- [x] Componentes reutilizáveis
+- [ ] Persistência de dados entre steps
+- [ ] Integração com APIs externas (CEP, localização)
 - [ ] Backend com Node.js
-- [ ] Sistema de autenticação
+- [ ] Sistema de autenticação JWT
 - [ ] Matching inteligente PCD-Empresa
-- [ ] Recursos de acessibilidade avançados
+- [ ] Recursos de acessibilidade avançados (ARIA, teclado)
+- [ ] Testes automatizados
 
 ---
 
