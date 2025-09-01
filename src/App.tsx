@@ -16,6 +16,7 @@ import AuthEntry from './pages/auth_entry';
 import CompanyProfile from './pages/company_profile';
 import JobNew from './pages/job_new';
 import MainRegister from './pages/main_register';
+import { ResetPassword } from './pages/reset_password';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path='/auth/register/main' element={<MainRegister/>}></Route>
           <Route path='/auth/register/candidates' element={<Register/>}></Route>
           <Route path='/auth/register/companies' element={<Register/>}></Route>
+          <Route path='/auth/reset' element={<ResetPassword/>}></Route>
           <Route path='/jobs' element={<Jobs/>}></Route>
           <Route path='/candidates/:id/dashboard' element={<CandidateDashboard/>}></Route>
           <Route path='/candidates/:id/profile' element={<CandidateProfile/>}></Route>

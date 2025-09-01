@@ -10,7 +10,7 @@
 */
 
 interface GenericFormFieldProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     id: string;
     type?: string;
     placeholder?: string;
