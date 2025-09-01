@@ -4,28 +4,30 @@ import GenericFormField from "../components/forms/generic_form_field";
 
 export function ResetPassword() {
     return (
-        <div className="mx-36 my-12 p-12 border border-black rounded-lg bg-blue1 space-y-5">
-            <div className=" bg-blue3 text-center text-blue1 font-bold text-[1.4rem] p-4 rounded-md">
+        <div className="mx-4 md:mx-16 lg:mx-32 xl:mx-64 my-12 p-12 border border-black rounded-lg bg-blue1 space-y-5 flex flex-col items-center">
+            <div className=" bg-blue3 text-center text-blue1 font-bold text-[1.4rem] p-4 rounded-md w-full">
                 <h2>Redefinição de senha</h2>
             </div>
-            <p className="font-semibold text-blue3">
-                Digite seu e-mail no campo abaixo para realizar a redefinição de senha!
-            </p>
-            <div className="">
-                <form action="">
-                    <GenericFormField
-                        id="candidate_email_register"
-                        type="email"
-                        placeholder="Digite seu e-mail">
-                        Informe seu e-mail
-                    </GenericFormField>
-                </form>
+            <div className="w-full flex flex-col items-center">
+                <p className="font-semibold text-blue3 text-[1.2rem]">
+                    Digite seu e-mail no campo abaixo para realizar a redefinição de senha!
+                </p>
+                <div className="text-blue3 font-semibold w-full">
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <div className="w-full my-6">
+                            <GenericFormField
+                                id="reset_password_email"
+                                type="email"
+                                placeholder="Digite seu e-mail">
+                                E-mail
+                            </GenericFormField>
+                        </div>
+                        <GenericBlueButton color={3} link="">Redefinir senha</GenericBlueButton>
+                    </form>
+                </div>
             </div>
-            <div>
-                <GenericBlueButton color={3} link="">Redefinir senha</GenericBlueButton>
-            </div>
-            <div>
-                <p>Lembrou sua senha? <Link to={"/auth/login"}>Faça seu login</Link></p>
+            <div className="text-blue3">
+                <p>Lembrou sua senha? <Link to={"/auth/login"} className="underline">Faça o login</Link></p>
             </div>
         </div>
     )
