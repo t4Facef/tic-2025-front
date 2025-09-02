@@ -22,7 +22,9 @@ export function ResetPassword() {
                                 E-mail
                             </GenericFormField>
                         </div>
-                        <GenericBlueButton color={3} link="">Redefinir senha</GenericBlueButton>
+                        <div className="flex flex-col items-center text-blue1">
+                            <GenericBlueButton color={3} link="/auth/reset/password">Redefinir senha</GenericBlueButton>
+                        </div>
                     </form>
                 </div>
             </div>
