@@ -12,7 +12,9 @@ module.exports = {
         'blue5H': '#85D8FF',
         'blue5': '#64CEFF',
         'orange1': '#FF950C',
-        'orange2': '#FFDCAD'
+        'orange2': '#FFDCAD',
+        'red1': '#FF7979',
+        'red2': '#CA0000'
       },
       fontFamily: {
         'georgia': 'Georgia, serif'
