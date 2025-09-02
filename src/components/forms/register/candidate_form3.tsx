@@ -14,7 +14,7 @@ export default function CandidateForm3() {
                     <GenericFormField id="Candidate_scholarship_level_register" type="select" options={['Selecione', 'Não alfabetizado', 'Ensino Fundamental', 'Ensino Médio', 'Ensino Técnico', 'Ensino Superior', 'Pós-graduação', 'Mestrado', 'Doutorado', 'Educação de Jovens e Adultos (EJA)', 'Educação Especial', 'Curso Profissionalizante']}>Nível de Escolaridade</GenericFormField>
                 </div>
                 <div className="flex-[2]">
-                    <GenericFormField id="Candidate_scholarship_situation_register" type="select" options={['Selecione', 'Cursando', 'Completo', 'Incompleto', 'Trancado', 'Transferido', 'Abandonado']}>Situação</GenericFormField>
+                    <GenericFormField id="Candidate_scholarship_situation_register" type="select" options={['Selecione', 'Completo', 'Cursando', 'Incompleto', 'Abandonado']}>Situação</GenericFormField>
                 </div>
             </div>
             <div className="flex flex-1 space-x-12">

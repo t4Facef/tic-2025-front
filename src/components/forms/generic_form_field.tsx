@@ -125,7 +125,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                 <div className="relative">
                     <input type={passwordType} name={id} id={id} className={`${baseClass} pr-10 w-full`} />
                     <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={toggleView}>
-                        {viewPassword ? <Eye size={20}/> : <EyeClosed size={20}/>}
+                        {viewPassword ? <EyeClosed size={20}/> : <Eye size={20}/>}
                     </button>
                 </div>
             </div>

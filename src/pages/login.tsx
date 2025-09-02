@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
+import GenericFormField from "../components/forms/generic_form_field";
 
 export default function Login(){
     return (
@@ -7,11 +8,9 @@ export default function Login(){
             <div className="bg-blue1 border border-black min-w-[28rem] my-12 rounded-md">
                 <span className="flex justify-center border-b border-black text-[20px] font-semibold py-2">Login</span>
                 <div className="flex justify-center pb-5">
-                    <form className="flex flex-col min-w-[18rem]">
-                        <label htmlFor="user" className="pt-5">Usuário</label>
-                        <input type="text" id="user" name="user" placeholder="E-mail, CPF ou CNPJ" className="p-2 rounded-md border border-black"/>
-                        <label htmlFor="senha" className="pt-4">Senha</label>
-                        <input type="password" id="senha" name="senha" placeholder="*********" className="p-2 pb-1 rounded-md border border-black"/>
+                    <form className="flex flex-col min-w-[18rem] space-y-4">
+                        <GenericFormField id="user" type="text" placeholder="E-mail, CPF ou CNPJ" autoComplete="username">Usuário</GenericFormField>
+                        <GenericFormField id="senha" type="password" placeholder="Digite sua senha" autoComplete="current-password">Senha</GenericFormField>
                         <div className="flex justify-between text-[14px] py-2">
                             <Link to="/auth/password/forgot" className="underline">Esqueci a senha</Link>
                             <label htmlFor="rememberMe">

@@ -27,6 +27,7 @@ export default function ResetPasswordNew() {
                 id="reset_password_field"
                 type="password"
                 placeholder="Digite sua nova senha"
+                autoComplete="new-password"
               >
                 Nova senha
               </GenericFormField>
@@ -36,6 +37,7 @@ export default function ResetPasswordNew() {
                 id="reset_password_confirmation"
                 type="password"
                 placeholder="Confirme sua nova senha"
+                autoComplete="new-password"
               >
                 Digite a senha novamente
               </GenericFormField>
