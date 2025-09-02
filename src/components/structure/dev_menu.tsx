@@ -12,6 +12,8 @@ export default function DevMenu() {
         { path: "/auth/register/main", name: "Registro Principal" },
         { path: "/auth/register/candidates", name: "Registro Candidatos" },
         { path: "/auth/register/companies", name: "Registro Empresas" },
+        { path: "/auth/password/forgot", name: "Esqueci Senha" },
+        { path: "/auth/password/reset", name: "Redefinir Senha" },
         { path: "/jobs", name: "Vagas" },
         { path: "/candidates/1/dashboard", name: "Dashboard Candidato" },
         { path: "/candidates/1/profile", name: "Perfil Candidato" },

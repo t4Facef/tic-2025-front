@@ -13,7 +13,7 @@ export default function Login(){
                         <label htmlFor="senha" className="pt-4">Senha</label>
                         <input type="password" id="senha" name="senha" placeholder="*********" className="p-2 pb-1 rounded-md border border-black"/>
                         <div className="flex justify-between text-[14px] py-2">
-                            <Link to="/ai" className="underline">Esqueci a senha</Link> {/* A implementar */}
+                            <Link to="/auth/password/forgot" className="underline">Esqueci a senha</Link>
                             <label htmlFor="rememberMe">
                                 <input type="checkbox" id="rememberMe"/>
                                 <span> Lembre de mim</span>
@@ -22,7 +22,7 @@ export default function Login(){
                         <div className="flex justify-between items-end pt-32">
                             <div className="flex flex-col text-[13px]">
                                 <span>É sua primeira vez?</span>
-                                <Link to="/auth/register" className="underline pt-1">CADASTRAR</Link>
+                                <Link to="/auth/register/main" className="underline pt-1">CADASTRAR</Link>
                             </div>
                             <GenericBlueButton color={3} link="/candidates/1/dashboard">Entrar</GenericBlueButton> {/* A implementar */}
                         </div>

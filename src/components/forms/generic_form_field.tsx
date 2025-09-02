@@ -9,6 +9,9 @@
   - Textarea: <GenericFormField id="desc" type="textarea">Descrição</GenericFormField>
 */
 
+import { Eye, EyeClosed } from "lucide-react";
+import { useState } from "react";
+
 interface GenericFormFieldProps {
     children?: React.ReactNode;
     id: string;
@@ -20,7 +23,8 @@ interface GenericFormFieldProps {
 }
 
 export default function GenericFormField({children, id, placeholder, options, autoComplete, type = "text", textOrientation = 1}: GenericFormFieldProps){
-    
+    const [viewPassword, setViewPassword] = useState(true)
+
     // Mapeamento de orientação de texto
     const textAlignClasses = {
         1: "text-left",
@@ -108,6 +112,24 @@ export default function GenericFormField({children, id, placeholder, options, au
                 <input type="file" name={id} id={id} className={`${baseClass} bg-white`} />
             </div>
         );
+    }
+
+    // PASSWORD
+    if (type === "password"){
+        const toggleView = () => setViewPassword(!viewPassword)
+        const passwordType = viewPassword ? "password" : "text"
+
+        return (
+            <div className="flex flex-col w-full">
+                <label htmlFor={id} className={textAlign}>{children}</label>
+                <div className="relative">
+                    <input type={passwordType} name={id} id={id} className={`${baseClass} pr-10 w-full`} />
+                    <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={toggleView}>
+                        {viewPassword ? <Eye size={20}/> : <EyeClosed size={20}/>}
+                    </button>
+                </div>
+            </div>
+        )
     }
     
     

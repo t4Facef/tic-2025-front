@@ -7,7 +7,8 @@ import Usage from './pages/usage';
 import Adaptation from './pages/adaptation';
 import NotFound from './pages/NotFound';
 import Login from './pages/login';
-import Register from './pages/register';
+import RegisterCandidate from './pages/register_candidate';
+import RegisterCompanies from './pages/register_companies';
 import CandidateDashboard from './pages/candidate_dashboard';
 import CandidateProfile from './pages/candidate_profile';
 import Jobs from './pages/jobs';
@@ -32,10 +33,10 @@ function App() {
           <Route path='/auth/entry' element={<AuthEntry/>}></Route>
           <Route path='/auth/login' element={<Login/>}></Route>
           <Route path='/auth/register/main' element={<MainRegister/>}></Route>
-          <Route path='/auth/register/candidates' element={<Register/>}></Route>
-          <Route path='/auth/register/companies' element={<Register/>}></Route>
-          <Route path='/auth/reset' element={<ResetPassword/>}></Route>
-          <Route path='/auth/reset/password' element={<ResetPasswordNew/>}></Route>
+          <Route path='/auth/register/candidates' element={<RegisterCandidate/>}></Route>
+          <Route path='/auth/register/companies' element={<RegisterCompanies/>}></Route>
+          <Route path='/auth/password/forgot' element={<ResetPassword/>}></Route>
+          <Route path='/auth/password/reset' element={<ResetPasswordNew/>}></Route>
           <Route path='/jobs' element={<Jobs/>}></Route>
           <Route path='/candidates/:id/dashboard' element={<CandidateDashboard/>}></Route>
           <Route path='/candidates/:id/profile' element={<CandidateProfile/>}></Route>
