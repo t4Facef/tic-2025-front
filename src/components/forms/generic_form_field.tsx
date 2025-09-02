@@ -123,7 +123,7 @@ export default function GenericFormField({children, id, placeholder, options, au
             <div className="flex flex-col w-full">
                 <label htmlFor={id} className={textAlign}>{children}</label>
                 <div className="relative">
-                    <input type={passwordType} name={id} id={id} className={`${baseClass} pr-10 w-full`} />
+                    <input type={passwordType} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} pr-10 w-full`} />
                     <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={toggleView}>
                         {viewPassword ? <EyeClosed size={20}/> : <Eye size={20}/>}
                     </button>

@@ -20,8 +20,8 @@ export default function ResetPasswordNew() {
         <p>Por favor, insira sua nova senha nos campos abaixo.</p>
       </div>
       <div className="text-blue3 font-semibold w-full">
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-16">
-          <div className="w-full my-6 space-y-12 px-96">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-14">
+          <div className="w-full my-4 space-y-8 ">
             <div>
               <GenericFormField
                 id="reset_password_field"
@@ -39,7 +39,7 @@ export default function ResetPasswordNew() {
                 placeholder="Confirme sua nova senha"
                 autoComplete="new-password"
               >
-                Digite a senha novamente
+                Confirme a senha
               </GenericFormField>
             </div>
           </div>
