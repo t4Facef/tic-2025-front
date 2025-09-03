@@ -1,19 +1,24 @@
 // [TODO] - Terminar de implementar as apis
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
+import email from "../data/mockdata/email"; //E-mails existentes para fins de teste, apagar depois
+import { useState } from "react";
 
 export default function AuthEntry(){
+    const [testEmail, setTestEmail] = useState("")
+    const navigate = useNavigate()
+
     return (
         <div className="bg-blue1 m-24 min-h-screen">
             <div className="flex flex-col items-center p-10 min-h-screen px-36">
                 <h1 className="font-bold text-6xl py-10">Seja bem vindo!</h1>
                 <div className="flex flex-col items-center justify-center py-6 w-full">
                     <label htmlFor="auth_email" className="py-6">Digite um endereço de e-mail para prosseguir</label>
-                    <input type="text" placeholder="nome@email.com" name="auth_email" id="auth_email" className="w-full py-4 border border-black rounded-md text-center text-lg"/>
+                    <input type="text" placeholder="nome@email.com" name="auth_email" id="auth_email" className="w-full py-4 border border-black rounded-md text-center text-lg" onChange={(e) => setTestEmail(e.target.value)}/>
                 </div>
                 <div className="my-5">
-                    <GenericBlueButton color={3} size="lg" link="/">Continuar</GenericBlueButton>
+                    <GenericBlueButton color={3} size="lg" onClick={handleContinue}>Continuar</GenericBlueButton>
                 </div>
                 <div className="flex flex-col w-full py-12 px-16">
                     <p className="font-semibold text-[1.5rem]">Ou entre também por</p>
@@ -28,4 +33,14 @@ export default function AuthEntry(){
             </div>
         </div>
     )
+
+    function handleContinue() {
+        if (email.includes(testEmail)) {
+            navigate('/auth/login');
+        } 
+        else {
+            navigate('/auth/register/main');
+        }
+    }
+
 }
