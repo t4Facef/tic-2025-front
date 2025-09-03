@@ -13,13 +13,13 @@ export function ResetPassword() {
             <h2 className=" bg-blue3 text-center text-white font-bold text-[1.4rem] p-4 rounded-t-md w-full">Redefinição de senha</h2>
             <div className="p-8">
                 <div className="w-full flex flex-col items-center">
-                    <p className="font-semibold text-blue3 text-[1.2rem]">
+                    <p className="font-semibold text-blue3 text-[1.2rem] mb-6">
                         Digite seu e-mail no campo abaixo para realizar a redefinição de senha!
                     </p>
                     {!emailConfirm && 
-                        <div className="flex flex-row justify-center w-full p-4 bg-red1 text-red2 font-semibold rounded-lg">
+                        <div className="self-start flex flex-row p-3 bg-red1 text-red2 font-semibold rounded-lg space-x-3 mb-4">
                             <CircleX/>
-                            <div className="">
+                            <div >
                                 <p>E-mail não encontrado</p>
                             </div>
                         </div>

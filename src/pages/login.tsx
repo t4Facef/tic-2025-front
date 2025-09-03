@@ -4,7 +4,7 @@ import GenericFormField from "../components/forms/generic_form_field";
 
 export default function Login(){
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center text-blue3">
             <div className="bg-blue1 border border-black min-w-[28rem] my-12 rounded-md">
                 <span className="flex justify-center border-b border-black text-white text-[20px] font-semibold py-2 bg-blue3">Login</span>
                 <div className="flex justify-center py-5">

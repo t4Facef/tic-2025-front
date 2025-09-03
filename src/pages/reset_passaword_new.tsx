@@ -4,7 +4,7 @@ import GenericFormField from "../components/forms/generic_form_field";
 
 export default function ResetPasswordNew() {
   return (
-    <div className="mx-96 my-28 border border-black rounded-lg bg-blue1 space-y-8 flex flex-col items-center">
+    <div className="mx-96 my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
       <h2 className=" bg-blue3 text-center text-white font-bold text-[1.4rem] p-4 rounded-t-md w-full">
         Redefinição de senha
       </h2>
