@@ -19,7 +19,7 @@ interface PerfilContentSectionProps {
 export default function PerfilContentSection({title, formationType, course, institut, startDate, endDate, status, description}: PerfilContentSectionProps){
     return (
         <div className="bg-blue4 mt-8 px-6 rounded-xl">
-            <div>
+            <div className="py-2">
                 <div className="font-semibold text-[22px] py-1">
                     {title}
                     <img src="" alt="" />
@@ -34,9 +34,9 @@ export default function PerfilContentSection({title, formationType, course, inst
                 <p className="mb-4">
                     {description}
                 </p>
-                <div className="flex justify-end">
-                    {<GenericBlueButton color={3} link="" classEdit="max-h-10 flex items-center m-3">Remover</GenericBlueButton>}
-                    {<GenericBlueButton color={3} link="" classEdit="max-h-10 flex items-center m-3">Adicionar</GenericBlueButton>}
+                <div className="flex justify-end gap-5 m-3">
+                    <GenericBlueButton color={3} size="md">Remover</GenericBlueButton>
+                    <GenericBlueButton color={3} size="md">Adicionar</GenericBlueButton>
                 </div>
             </div>
         </div>
