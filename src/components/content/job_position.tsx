@@ -1,40 +1,39 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import JobModal from "./job_modal";
 
+import { JobData } from "../../data/mockdata/jobs";
+import ProfileLink from "../profile/profile_link";
+
 interface JobPositionProps {
-  profile: string;       // caminho ou URL da imagem
-  title: string;         // título da vaga
-  children?: ReactNode;  // descrição da vaga
+  jobData: JobData;
 }
 
-export default function JobPosition({ profile, title, children }: JobPositionProps) {
+export default function JobPosition({ jobData }: JobPositionProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <div className={`w-full flex pt-8 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
         <div className="w-28 h-28 bg-blue2 border-blue3 border-2 rounded-l-md"> 
-          <img src={profile} alt="perfil-img" />
+          <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
         </div>
         
         <div className="flex flex-col flex-1 max-h-28">
           <div className="bg-blue2 border-blue3 border-2 flex-[1] flex justify-between items-center px-2 rounded-tr-md">
-            <span className="font-georgia">{title}</span>
+            <span className="font-georgia">{jobData.title}</span>
           </div>
 
           <div className="bg-blue1 border-blue3 border-2 flex-[3] overflow-auto p-2 break-words rounded-br-md">
-            <p className="font-georgia">{children}</p>
+            <p className="font-georgia">{jobData.shortDescription}</p>
           </div>
         </div>
       </div>
       
       <JobModal 
+        jobData={jobData}
         open={open} 
         onClose={() => setOpen(false)}
-        title={title}
-      >
-        {children}
-      </JobModal>
+      />
     </>
   );
 }

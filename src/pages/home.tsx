@@ -1,6 +1,7 @@
-import JobPosition from "../components/content/job_position"
 import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
+import JobPosition from "../components/content/job_position"
+import mockJobs from "../data/mockdata/jobs"
 
 const teste = ["./img/logosTeste/teste1.jpeg", "./img/logosTeste/teste2.jpeg", "./img/logosTeste/teste3.jpeg", "./img/logosTeste/teste4.png", "./img/logosTeste/teste5.jpeg"] //Depende de como é armazenado as imagens no banco
 
@@ -38,21 +39,9 @@ export default function Home(){
             </div>
             <div className="flex flex-col px-8 items-center">
                 <div className="flex flex-col items-end px-36">
-                    <JobPosition title="Titulo 1" profile="./ss">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis adipisci veniam harum doloribus ipsam qui veritatis ad officia porro totam itaque impedit corrupti, sunt consectetur voluptatem cumque deleniti dolor voluptatum!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia ipsam rerum totam aperiam laudantium nulla, aliquam omnis accusantium cum laborum facilis culpa perferendis, ullam esse dolore deserunt delectus et!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo ea cum quam eius sequi temporibus alias ad totam recusandae rem iste nemo et vel consequuntur, voluptatibus eum, blanditiis sit. Tenetur?            
-                    </JobPosition>
-                    <JobPosition title="Titulo 2" profile="./ss">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis adipisci veniam harum doloribus ipsam qui veritatis ad officia porro totam itaque impedit corrupti, sunt consectetur voluptatem cumque deleniti dolor voluptatum!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia ipsam rerum totam aperiam laudantium nulla, aliquam omnis accusantium cum laborum facilis culpa perferendis, ullam esse dolore deserunt delectus et!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo ea cum quam eius sequi temporibus alias ad totam recusandae rem iste nemo et vel consequuntur, voluptatibus eum, blanditiis sit. Tenetur?            
-                    </JobPosition>
-                    <JobPosition title="Titulo 3" profile="./ss">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis adipisci veniam harum doloribus ipsam qui veritatis ad officia porro totam itaque impedit corrupti, sunt consectetur voluptatem cumque deleniti dolor voluptatum!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia ipsam rerum totam aperiam laudantium nulla, aliquam omnis accusantium cum laborum facilis culpa perferendis, ullam esse dolore deserunt delectus et!
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo ea cum quam eius sequi temporibus alias ad totam recusandae rem iste nemo et vel consequuntur, voluptatibus eum, blanditiis sit. Tenetur?            
-                    </JobPosition>
+                    <JobPosition jobData={mockJobs[6]}/>
+                    <JobPosition jobData={mockJobs[7]}/>
+                    <JobPosition jobData={mockJobs[8]}/>
                     <div className="my-6">
                         <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
                     </div>

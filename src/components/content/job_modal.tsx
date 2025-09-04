@@ -1,17 +1,20 @@
-import { ReactNode, useEffect } from "react";
-import { User } from "lucide-react";
+import { useEffect } from "react";
 import TextSection from "./text_section";
 import TagContainer from "./tag_container";
+import ProfileLink from "../profile/profile_link";
+import { JobData } from "../../data/mockdata/jobs";
 
 interface JobModalProps {
   open: boolean;
   onClose: () => void;
-  title: string;
-  children?: ReactNode;
+  jobData: JobData;
 }
 
-export default function JobModal({ open, onClose, title, children }: JobModalProps) {
-  const dumpTags = ["lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum"];
+export default function JobModal({ 
+  open, 
+  onClose, 
+  jobData
+}: JobModalProps) {
 
   useEffect(() => {
     if (open) {
@@ -33,24 +36,24 @@ export default function JobModal({ open, onClose, title, children }: JobModalPro
         <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto">
           <div className="flex flex-1 justify-between">
             <div className="flex-[7]">
-              <h2 className="text-xl font-bold mb-4 text-[70px] py-7">{title}</h2>
-              <div className="">{children}</div>
+              <h2 className="text-xl font-bold mb-4 text-[70px] py-7">{jobData.title}</h2>
+              <div className="">{jobData.shortDescription}</div>
             </div>
-            <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black">
-                <User size={100}/>
+            <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black overflow-hidden">
+              <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
             </div>
           </div>
           <div className="my-3">
-            <TextSection title="Lorem Ipsum" id="1">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit delectus earum ab facilis, dolor aliquid aspernatur quibusdam consequuntur laborum provident nam voluptatum dolorem facere ea quaerat illo ex adipisci magni. Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ut voluptatum minima mollitia doloremque. Illo cumque officia itaque inventore facere dignissimos. Ab reiciendis culpa molestiae laudantium nesciunt unde sunt eaque! lorem</TextSection>
-            <TextSection title="Lorem Ipsum" id="1">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit delectus earum ab facilis, dolor aliquid aspernatur quibusdam consequuntur laborum provident nam voluptatum dolorem facere ea quaerat illo ex adipisci magni. Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis ut voluptatum minima mollitia doloremque. Illo cumque officia itaque inventore facere dignissimos. Ab reiciendis culpa molestiae laudantium nesciunt unde sunt eaque! lorem</TextSection>
+            <TextSection title={jobData.description1Title} id="1">{jobData.description1Content}</TextSection>
+            <TextSection title={jobData.description2Title} id="2">{jobData.description2Content}</TextSection>
           </div>
           <div>
-            <TagContainer tags={dumpTags}>Habilidades esperadas</TagContainer>
-            <TagContainer tags={dumpTags}>Apoio da empresa</TagContainer>
+            <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
+            <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
           </div>
         </div>
         <div className="bg-white border border-y-black flex justify-center py-2">
-          <span>Você é XX% compátivel com essa vaga</span>
+          <span>Você é {jobData.compatibility}% compátivel com essa vaga</span>
         </div>
         <div className="flex flex-1">
           <button className="bg-blue3 text-white flex-[5] border-black border-[2px] text-[35px] rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>

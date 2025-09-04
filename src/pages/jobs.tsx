@@ -4,6 +4,7 @@
 import JobPosition from "../components/content/job_position";
 import SearchBox from "../components/content/search_box";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import mockJobs from "../data/mockdata/jobs";
 
 export default function Jobs(){
     return (
@@ -15,11 +16,11 @@ export default function Jobs(){
                 <div>
                     <SearchBox/>
                 <div>
-                    <JobPosition profile="" title="Lorem Impsum">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quidem cum eum facere laudantium pariatur enim officia esse. Doloribus sed minus sunt nesciunt incidunt cumque perferendis maiores. Fuga, assumenda veniam? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi doloremque corrupti ratione ut doloribus et hic, adipisci nostrum architecto est nesciunt exercitationem! Aspernatur error odit vero esse ad molestiae amet.</JobPosition>
-                    <JobPosition profile="" title="Lorem Impsum">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quidem cum eum facere laudantium pariatur enim officia esse. Doloribus sed minus sunt nesciunt incidunt cumque perferendis maiores. Fuga, assumenda veniam? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi doloremque corrupti ratione ut doloribus et hic, adipisci nostrum architecto est nesciunt exercitationem! Aspernatur error odit vero esse ad molestiae amet.</JobPosition>
-                    <JobPosition profile="" title="Lorem Impsum">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quidem cum eum facere laudantium pariatur enim officia esse. Doloribus sed minus sunt nesciunt incidunt cumque perferendis maiores. Fuga, assumenda veniam? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi doloremque corrupti ratione ut doloribus et hic, adipisci nostrum architecto est nesciunt exercitationem! Aspernatur error odit vero esse ad molestiae amet.</JobPosition>
-                    <JobPosition profile="" title="Lorem Impsum">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quidem cum eum facere laudantium pariatur enim officia esse. Doloribus sed minus sunt nesciunt incidunt cumque perferendis maiores. Fuga, assumenda veniam? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi doloremque corrupti ratione ut doloribus et hic, adipisci nostrum architecto est nesciunt exercitationem! Aspernatur error odit vero esse ad molestiae amet.</JobPosition>
-                    <JobPosition profile="" title="Lorem Impsum">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quidem cum eum facere laudantium pariatur enim officia esse. Doloribus sed minus sunt nesciunt incidunt cumque perferendis maiores. Fuga, assumenda veniam? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi doloremque corrupti ratione ut doloribus et hic, adipisci nostrum architecto est nesciunt exercitationem! Aspernatur error odit vero esse ad molestiae amet.</JobPosition>
+                    <JobPosition jobData={mockJobs[1]}/>
+                    <JobPosition jobData={mockJobs[2]}/>
+                    <JobPosition jobData={mockJobs[3]}/>
+                    <JobPosition jobData={mockJobs[4]}/>
+                    <JobPosition jobData={mockJobs[5]}/>
                 </div>
                 <div className="flex font-semibold my-4">
                     <ChevronLeft/>
