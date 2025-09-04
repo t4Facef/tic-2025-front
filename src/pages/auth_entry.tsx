@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import email from "../data/mockdata/email"; //E-mails existentes para fins de teste, apagar depois
 import { useState } from "react";
+import { CircleX } from "lucide-react";
 
 export default function AuthEntry(){
     const [testEmail, setTestEmail] = useState("")
+    const [noEmail, setNoEmail] = useState(false)
     const navigate = useNavigate()
 
     return (
@@ -14,6 +16,14 @@ export default function AuthEntry(){
             <div className="flex flex-col items-center p-10 min-h-screen px-36">
                 <h1 className="font-bold text-6xl py-10">Seja bem vindo!</h1>
                 <div className="flex flex-col items-center justify-center py-6 w-full">
+                    {noEmail && 
+                        <div className="flex flex-row p-3 bg-red1 text-red2 font-semibold rounded-lg space-x-3 mb-4">
+                            <CircleX/>
+                            <div >
+                                <p>Por favor, digite um endereço de e-mail</p>
+                            </div>
+                        </div>
+                    }
                     <label htmlFor="auth_email" className="py-6">Digite um endereço de e-mail para prosseguir</label>
                     <input type="text" placeholder="nome@email.com" name="auth_email" id="auth_email" className="w-full py-4 border border-black rounded-md text-center text-lg" onChange={(e) => setTestEmail(e.target.value)}/>
                 </div>
@@ -38,6 +48,11 @@ export default function AuthEntry(){
         if (email.includes(testEmail)) {
             navigate('/auth/login');
         } 
+
+        else if (!testEmail.trim()){
+            setNoEmail(true)
+        }
+
         else {
             navigate('/auth/register/main');
         }
