@@ -9,7 +9,7 @@ export default function Layout() {
   const location = useLocation();
   
   // Define quais rotas devem mostrar o perfil
-  const profileRoutes = ['/candidate', '/company', '/jobs'];
+  const profileRoutes = ['/candidates', '/companies', '/jobs'];
   
   // Verifica se a rota atual começa com alguma das rotas de perfil
   const showProfile = profileRoutes.some(route => location.pathname.startsWith(route));
