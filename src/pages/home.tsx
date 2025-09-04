@@ -3,7 +3,7 @@ import CompaniesRow from "../components/content/companies_row"
 import JobPosition from "../components/content/job_position"
 import mockJobs from "../data/mockdata/jobs"
 
-const teste = ["./img/logosTeste/teste1.jpeg", "./img/logosTeste/teste2.jpeg", "./img/logosTeste/teste3.jpeg", "./img/logosTeste/teste4.png", "./img/logosTeste/teste5.jpeg"] //Depende de como é armazenado as imagens no banco
+const companyIds = [1, 2, 3, 4, 5]; // IDs das empresas
 
 export default function Home(){
     return (
@@ -16,16 +16,14 @@ export default function Home(){
                             <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
                                 Conheça Apojobs!
                             </h1>
-                            <p className="text-gray-700 text-base sm:text-lg">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti est autem, voluptatum eos animi error natus id corrupti assumenda nobis necessitatibus voluptas exercitationem eius, amet voluptatem cum, sint obcaecati facilis?
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis sunt omnis iste assumenda adipisci fuga odit suscipit! Illo molestias odit laborum autem praesentium soluta quos quo natus! Debitis, harum expedita.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus ab officiis, tenetur nihil natus delectus minus iste aliquam eveniet libero reiciendis quas ut et, dolore, id praesentium quos numquam consectetur?
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste voluptate dicta et quas nam magnam, quibusdam sint. In omnis, assumenda cumque id dolorem recusandae quisquam, temporibus explicabo magni soluta facilis?
+                            <p className="text-gray-700 text-base sm:text-lg mb-4">
+                                Nosso site nasceu com a missão de aproximar pessoas e oportunidades, promovendo inclusão e acessibilidade no mercado de trabalho. Sabemos que encontrar vagas pode ser um desafio para profissionais com deficiência, assim como para empresas que desejam contratar e não sabem por onde começar. Por isso, criamos um espaço simples e intuitivo, onde candidatos podem descobrir vagas pensadas especialmente para PCDs e empresas comprometidas com a diversidade podem encontrar talentos qualificados. Mais do que conectar currículos a oportunidades, queremos construir pontes que incentivem práticas justas, humanas e inclusivas. Acreditamos que cada pessoa tem muito a oferecer e que ambientes diversos transformam a vida profissional e social de todos. Se você é candidato, cadastre seu perfil e explore novas possibilidades; se é empresa, publique suas vagas e faça parte dessa rede que valoriza a inclusão.
                             </p>
+                            
                         </div>
                         <div className="flex-[3] flex justify-between flex-col">
                             <div>
-                                <img className="bro" src="./img/homepage/Teste.png" alt="home-img-2"/>
+                                <img className="" src="./img/homepage/Teste.png" alt="home-img-2"/>
                             </div>
                             <div className="flex justify-end items-end">
                                 <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton> 
@@ -35,7 +33,7 @@ export default function Home(){
                 </div>
             </section>
             <div >
-                <CompaniesRow teste={teste}></CompaniesRow>
+                <CompaniesRow companyIds={companyIds} />
             </div>
             <div className="flex flex-col px-8 items-center">
                 <div className="flex flex-col items-end px-36">
