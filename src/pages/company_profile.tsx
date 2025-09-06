@@ -53,7 +53,7 @@ export default function CompanyProfile(){
                 ]} />
                 <InfoList items={[
                     { label: "Funcionários", value: "500+" },
-                    { label: "Certificações", value: "ISO 9001" },
+                    { label: "Nivel de Acessibilidade", value: "Alto" },
                     { label: "Site", value: "www.empresa.com" }
                 ]} />
             </div>
