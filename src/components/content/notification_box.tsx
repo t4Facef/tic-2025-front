@@ -1,22 +1,22 @@
 // src/components/notification.tsx
 import { useState } from "react";
 import { Bell, BellDot } from "lucide-react";
+import GenericBlueButton from "../buttons/generic_blue_button";
 
 interface Notification {
   id: number;
   message: string;
 }
 
-export default function Notification() {
+export default function NotificationBox() {
   const [isOpen, setIsOpen] = useState(false);
 
   // Exemplo de notificações (pode vir de props ou API futuramente)
   const [notifications] = useState<Notification[]>([
-   { id: 1, message: "Nova vaga disponível: Desenvolvedor Frontend" },
+    { id: 1, message: "Nova vaga disponível: Desenvolvedor Frontend" },
     { id: 2, message: "Sua candidatura foi visualizada pela empresa XYZ" },
-    { id: 3, message: "Lembrete: Complete seu perfil para mais oportunidades" }
+    { id: 3, message: "Lembrete: Complete seu perfil para mais oportunidades" },
   ]);
-  
 
   const hasNotifications = notifications.length > 0;
 
@@ -37,6 +37,7 @@ export default function Notification() {
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-50">
+          <p className="text-blue3 my-2">Veja suas notificações</p>
           {hasNotifications ? (
             <ul className="space-y-2">
               {notifications.map((notif) => (
@@ -47,6 +48,10 @@ export default function Notification() {
                   {notif.message}
                 </li>
               ))}
+              <div className="flex flex-row space-x-10">
+                <p className="text-blue3">Marcar todas lidas</p>
+                <GenericBlueButton color={3} size="sm" link="/notifications">Ver todas</GenericBlueButton>
+              </div>
             </ul>
           ) : (
             <div className="text-center text-gray-500 text-sm">
