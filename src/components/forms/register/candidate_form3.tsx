@@ -2,6 +2,9 @@
 // [TODO] - Implementar formulario para adicionar novas experiencias, cursos e formações academicas
 // [TODO] - Aqui está pedindo poucas informações, preencher o curriculo depois com experiencia profissional, cursos e formações academicas
 // [TODO] - Colocar mais opções nos selects a fim de testes no fake data e posteriormente aplicar um fatch no banco
+// [TODO] - Incluir a primeira experiencia completa
+// [TODO] - Rever as opções para semantica
+// [TODO] - Agrupar informaçãos certinho para requisições
 
 import GenericFormField from "../generic_form_field";
 

@@ -10,7 +10,7 @@ export default function Login(){
                     Login
                 </div>
                 <div className="bg-blue1 border-x border-b border-black rounded-b-lg">
-                    <div className="flex justify-center py-6 px-6">
+                    <div className="flex justify-center py-6 px-16">
                         <form className="flex flex-col w-full space-y-4">
                             <GenericFormField id="user" type="text" placeholder="E-mail, CPF ou CNPJ" autoComplete="username">Usuário</GenericFormField>
                             <GenericFormField id="senha" type="password" placeholder="Digite sua senha" autoComplete="current-password">Senha</GenericFormField>
