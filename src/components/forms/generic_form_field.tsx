@@ -42,7 +42,7 @@ export default function GenericFormField({children, id, placeholder, options, au
         return (
             <div className="flex flex-col w-full">
                 <label htmlFor={id} className={textAlign}>{children}</label>
-                <select name={id} id={id} className={`${baseClass} ${textAlign}`} onChange={onChange} value={value}>
+                <select name={id} id={id} className={`${baseClass} ${textAlign} cursor-pointer`} onChange={onChange} value={value}>
                     {placeholder && <option value="">{placeholder}</option>}
                     {options?.map((opt, i) => (
                         <option key={i} value={typeof opt === 'string' ? opt : opt.value}>
@@ -111,7 +111,7 @@ export default function GenericFormField({children, id, placeholder, options, au
         return (
             <div className="flex flex-col w-full">
                 <label htmlFor={id} className={textAlign}>{children}</label>
-                <input type="file" name={id} id={id} className={`${baseClass} bg-white`} onChange={onChange} />
+                <input type="file" name={id} id={id} className={`${baseClass} bg-white cursor-pointer`} onChange={onChange} />
             </div>
         );
     }
@@ -139,7 +139,7 @@ export default function GenericFormField({children, id, placeholder, options, au
     return (
         <div className="flex flex-col w-full">
             <label htmlFor={id} className={textAlign}>{children}</label>
-            <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} ${textAlign}`} onChange={onChange} value={value} />
+            <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} ${textAlign} ${type === 'date' ? 'cursor-pointer' : ''}`} onChange={onChange} value={value} />
         </div>
     );
 }
