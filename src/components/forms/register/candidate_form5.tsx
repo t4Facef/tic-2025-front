@@ -1,15 +1,26 @@
 // [TODO] - Fazer com que a recomendações de senha mude de forma dinâmica
+// [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
 import GenericFormField from "../generic_form_field";
 
 export default function CandidateForm5 (){
     return (
         <form className="flex-col text-start space-y-8">
-            <h2 className="font-semibold text-[1.3rem]">Estamos quase lá!</h2>
-            <p>Para finalizar seu cadastro, vamos criar uma senha segura para proteger sua conta e garantir que apenas você tenha acesso às suas informações.</p>
-            <div className="space-y-4 max-w-[28rem]">
-                <GenericFormField id="Candidate_password_register" type="password" autoComplete="new-password">Senha</GenericFormField>
-                <GenericFormField id="Candidate_password_confirm_register" type="password" autoComplete="new-password">Confirme sua senha</GenericFormField>
+            <div className="space-y-4">
+                <h2 className="font-semibold text-[1.3rem]">Estamos Quase Lá!</h2>
+                <p className="text-gray-700 leading-relaxed">Para finalizar seu cadastro, precisamos de uma senha segura para proteger sua conta e uma foto de perfil para que os recrutadores possam conhecê-lo melhor.</p>
+            </div>
+            
+            <div className="space-y-6">
+                <div className="max-w-[28rem]">
+                    <GenericFormField id="candidate_profile_photo_register" type="file">Foto de Perfil (Opcional)</GenericFormField>
+                    <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
+                </div>
+                
+                <div className="space-y-4 max-w-[28rem]">
+                    <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password">Senha</GenericFormField>
+                    <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password">Confirme sua Senha</GenericFormField>
+                </div>
             </div>
             <div className="bg-white border border-gray-400 rounded-xl p-4">
                 <h3 className="font-medium text-[1.15rem] mb-3">Requisitos da senha</h3>
