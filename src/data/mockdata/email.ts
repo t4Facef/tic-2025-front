@@ -3,5 +3,6 @@ export default [
     "company@test.com",
     "joao@email.com",
     "maria@empresa.com",
-    "admin@apojobs.com"
+    "admin@apojobs.com",
+    "lmazaraojr@gmail.com"
 ]

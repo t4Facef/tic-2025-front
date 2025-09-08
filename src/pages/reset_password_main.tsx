@@ -1,12 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";
 import { useState } from "react";
 import { CircleX } from "lucide-react";
+import mockEmails from "../data/mockdata/email";
 
 
 export function ResetPassword() {
-    const [ emailConfirm, setEmailConfirm ] = useState(true)
+    const [emailConfirm, setEmailConfirm] = useState(true);
+    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+
+    const handleResetPassword = () => {
+        const emailExists = mockEmails.includes(email.toLowerCase());
+        setEmailConfirm(emailExists);
+        
+        if (emailExists) {
+            navigate("/auth/password/reset");
+        }
+    };
 
     return (
         <div className="mx-96 my-24 border border-black rounded-lg bg-blue1 space-y-5 flex flex-col items-center">
@@ -30,12 +42,14 @@ export function ResetPassword() {
                                 <GenericFormField
                                     id="reset_password_email"
                                     type="email"
-                                    placeholder="Digite seu e-mail">
+                                    placeholder="Digite seu e-mail"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}>
                                     E-mail
                                 </GenericFormField>
                             </div>
                             <div className="flex flex-col items-center my-8">
-                                <GenericBlueButton color={3} onClick={() => setEmailConfirm(!emailConfirm)}>Redefinir senha</GenericBlueButton>
+                                <GenericBlueButton color={3} onClick={handleResetPassword}>Redefinir senha</GenericBlueButton>
                             </div>
                         </form>
                     </div>

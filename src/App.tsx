@@ -18,7 +18,7 @@ import CompanyProfile from './pages/company_profile';
 import JobNew from './pages/job_new';
 import MainRegister from './pages/main_register';
 import { ResetPassword } from './pages/reset_password_main';
-import ResetPasswordNew from './pages/reset_passaword_new';
+import ResetPasswordNew from './pages/reset_password_new';
 import Notification from './pages/notification';
 
 function App() {
