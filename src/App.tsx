@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
 import About from './pages/about';
@@ -21,9 +21,9 @@ import { ResetPassword } from './pages/reset_password_main';
 import ResetPasswordNew from './pages/reset_password_new';
 import Notification from './pages/notification';
 
-function App() {
+export default function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
@@ -48,8 +48,6 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
-
-export default App;
