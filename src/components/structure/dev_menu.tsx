@@ -24,15 +24,15 @@ export default function DevMenu() {
 
     return (
         <div className="fixed top-0 left-0 h-full w-2 z-50 group">
-            <div className="absolute left-0 top-0 h-full w-2 bg-transparent group-hover:w-48 transition-all duration-300">
+            <div className="absolute left-0 top-0 h-full w-2 bg-gray-800 group-hover:w-48 transition-all duration-300">
                 <div className="hidden group-hover:block bg-gray-800 text-white h-full w-48 p-4 shadow-lg overflow-y-auto">
                     <h3 className="text-sm font-bold mb-4">Dev Menu</h3>
-                    <div className="space-y-2">
+                    <div className="space-y-1">
                         {routes.map((route) => (
                             <Link
                                 key={route.path}
                                 to={route.path}
-                                className="block text-xs hover:bg-gray-700 p-2 rounded"
+                                className="block text-xs hover:bg-gray-700 p-2 rounded transition-colors"
                             >
                                 {route.name}
                             </Link>

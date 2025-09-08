@@ -18,8 +18,8 @@ export default function TagContainer({ children, edit = false, tags = [] }: TagC
                     <p className="inline-flex bg-blue2 text-black p-2 px-3 rounded-t-xl text-center justify-center items-center">{children}</p>
                     {edit &&
                         <div className="flex gap-6 justify-end pb-2">
-                            <GenericBlueButton size="md" color={6} rounded="lg">Remover</GenericBlueButton>
-                            <GenericBlueButton size="md" color={6} rounded="lg">Adicionar</GenericBlueButton>
+                            <GenericBlueButton size="md" color={3} rounded="lg">Remover</GenericBlueButton>
+                            <GenericBlueButton size="md" color={3} rounded="lg">Adicionar</GenericBlueButton>
                         </div>
                     }
                 </div>

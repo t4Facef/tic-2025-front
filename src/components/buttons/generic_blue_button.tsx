@@ -16,8 +16,7 @@ const colorMap: {[key:number]: string} = {
   2: "bg-blue2 text-white",
   3: "bg-blue3 text-white hover:bg-blue3H",
   4: "bg-blue4 hover:bg-blue1",
-  5: "bg-black text-white",       
-  6: "bg-gray text-white hover:bg-grayH" 
+  5: "bg-black text-white"
 };
 
 // Tamanhos disponíveis - controla padding e tamanho do texto
