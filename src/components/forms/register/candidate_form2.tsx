@@ -51,7 +51,7 @@ export default function CandidateForm2 (){
             </div>
             <div>
                 <p>Endereço</p>
-                <div className="bg-blue4 rounded-lg py-6 px-12 border border-blue3 space-y-5"> {/*Verificar possiblidades de cores*/}
+                <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
                     <div className="w-[30rem] space-y-5">
                         <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange}>CEP</GenericFormField>
                         <div className="flex flex-1 space-x-5">
