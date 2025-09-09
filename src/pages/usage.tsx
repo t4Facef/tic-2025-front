@@ -3,9 +3,9 @@ import TextSection from "../components/content/text_section";
 
 export default function Usage(){
     return(
-        <div className="flex-1 flex min-h-screen">
-            <nav className="flex-[1] bg-blue2 p-4 flex-col font-georgia text-white">
-                <h1 className="text-[2rem]">Tópicos</h1>
+        <div className="flex flex-1">
+            <nav className="w-52 shrink-0 bg-blue2 p-4 pb-16 flex flex-col font-georgia text-white h-fit">
+                <h1 className="text-[2rem] whitespace-nowrap">Tópicos</h1>
                 <ul className="list-disc list-inside space-y-3">
                     <AnchorListItem id="1">Tópico 1</AnchorListItem>
                     <AnchorListItem id="2">Tópico 2</AnchorListItem>
@@ -15,7 +15,7 @@ export default function Usage(){
                     <AnchorListItem id="6">Tópico 6</AnchorListItem>
                 </ul>
             </nav>
-            <div className="flex-[7] p-6">
+            <div className="flex-1 p-6">
                 <h1 className="font-bold text-[2rem]">Guia de Utilização do Site</h1>
                 <TextSection id="1" title="Tópico 1">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus optio corporis eveniet molestiae quia exercitationem minima eos voluptatibus! Ipsam fugit soluta nulla enim nemo impedit temporibus, fugiat id deserunt quas.
