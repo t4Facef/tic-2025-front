@@ -9,10 +9,20 @@ import mockJobs from "../data/mockdata/jobs";
 export default function Jobs(){
     return (
         <div className="flex flex-1">
-            <div className="bg-blue2 flex-[2] flex justify-center text-[16px] p-1 min-h-screen">
-                <p className="text-white">Filtros</p>
+            <div className="min-w-36 sm:min-w-40 md:min-w-44">
+                <div className="bg-blue2 w-full py-6 flex flex-col items-center px-3">
+                    <p className="text-white px-4 text-center mb-4">Filtros</p>
+                    <div className="flex flex-col gap-4 w-full">
+                        {["Teste 1", "teste 2", "teste 3", "teste 4", "teste 5"].map((option, i) => (
+                            <label key={i} className="flex items-center gap-2 text-white text-sm justify-center">
+                                <input type="checkbox" name={`job_filter_${i}`} value={option} />
+                                {option}
+                            </label>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <div className="flex flex-[11] flex-col items-center mt-7 px-36">
+            <div className="flex-1 flex flex-col items-center mt-7 px-36">
                 <div>
                     <SearchBox/>
                 <div>
