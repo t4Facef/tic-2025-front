@@ -1,3 +1,5 @@
+// [TODO] - Colocar os requisitos de uma senha nova aqui
+
 import { CircleCheck } from "lucide-react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";

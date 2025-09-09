@@ -135,6 +135,57 @@ export default function GenericFormField({children, id, placeholder, options, au
     }
     
     
+    // CURRENCY (for salary formatting)
+    if (type === "currency") {
+        const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const inputValue = e.target.value;
+            
+            // Remove tudo exceto números
+            const numbers = inputValue.replace(/[^\d]/g, '');
+            
+            let formattedValue;
+            
+            // Se não há números, mantém apenas "R$ "
+            if (!numbers) {
+                formattedValue = "R$ ";
+            } else {
+                // Converte centavos para reais
+                const valueInReais = parseInt(numbers) / 100;
+                formattedValue = valueInReais.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 2
+                });
+            }
+            
+            // Cria evento com valor formatado
+            const syntheticEvent = {
+                ...e,
+                target: {
+                    ...e.target,
+                    value: formattedValue
+                }
+            };
+            
+            if (onChange) onChange(syntheticEvent as React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>);
+        };
+
+        return (
+            <div className="flex flex-col w-full">
+                <label htmlFor={id} className={textAlign}>{children}</label>
+                <input 
+                    type="text" 
+                    name={id} 
+                    id={id} 
+                    placeholder={placeholder || "R$ 0,00"} 
+                    className={`${baseClass} ${textAlign}`} 
+                    onChange={handleCurrencyChange}
+                    value={value || "R$ "}
+                />
+            </div>
+        );
+    }
+    
     // INPUT PADRÃO (text, email, password, date, etc.)
     return (
         <div className="flex flex-col w-full">

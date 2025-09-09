@@ -1,16 +1,23 @@
 import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
+import { useState } from "react";
   
 export default function JobRegistrationForm() {
+  const [salario, setSalario] = useState("R$ ");
+
+  const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setSalario(e.target.value);
+  };
+
   return (
-    <div className="my-16 mx-36">
+    <div className="my-16 mx-64">
       <div className="p-3 text-white text-[1.5rem] bg-blue3 border border-black min-w-[28rem] rounded-t-lg">
         <h2>
         Cadastre sua vaga
       </h2>
       </div>
-      <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-4">
+      <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-12">
       <div className="p-3 space-y-5">
         <GenericFormField id="job_registration" type="text" placeholder="Titulo da vaga">
           Nome da vaga
@@ -26,7 +33,13 @@ export default function JobRegistrationForm() {
         <GenericFormField id="job_description" type="textarea" placeholder="Descreva sua vaga aqui...">
           Descrição da vaga
         </GenericFormField>  
-        <GenericFormField id="job_salary" type="text" placeholder="R$0,00">
+        <GenericFormField 
+          id="job_salary" 
+          type="currency" 
+          placeholder="R$ 0,00" 
+          value={salario}
+          onChange={handleSalarioChange}
+        >
           Salário
         </GenericFormField>
         <GenericFormField
@@ -46,7 +59,7 @@ export default function JobRegistrationForm() {
         >
           Características da vaga
         </GenericFormField>
-        <TagContainer tags={["Java", "Python", "C++", "C#", "JavaScript", "PHP", "Ruby", "Go", "Rust", "Swift", "Kotlin", "TypeScript", "Scala", "Perl", "R", "Haskell", "Lua", "Elixir", "Clojure", "Dart", "Julia"]}>
+        <TagContainer tags={[]} edit={true}>
           Habilidades
         </TagContainer>
       </div>
