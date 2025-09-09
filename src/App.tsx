@@ -44,6 +44,7 @@ export default function App() {
           <Route path='/companies/:id/dashboard' element={<CompanyDashboard/>}></Route>
           <Route path='/companies/:id/profile' element={<CompanyProfile/>}></Route>
           <Route path='/jobs/new' element={<JobNew/>}></Route>
+          <Route path='/jobs/:id/edit' element={<JobNew/>}></Route>
           <Route path='/notifications' element={<Notification/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />

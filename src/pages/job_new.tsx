@@ -2,8 +2,11 @@ import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
   
-export default function JobRegistrationForm() {
+export default function JobForm() {
+  const { id } = useParams();
+  const isEditing = Boolean(id);
   const [salario, setSalario] = useState("R$ ");
 
   const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -14,7 +17,7 @@ export default function JobRegistrationForm() {
     <div className="my-16 mx-64">
       <div className="p-3 text-white text-[1.5rem] bg-blue3 border border-black min-w-[28rem] rounded-t-lg">
         <h2>
-        Cadastre sua vaga
+        {isEditing ? 'Edite sua vaga' : 'Cadastre sua vaga'}
       </h2>
       </div>
       <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-12">
@@ -64,7 +67,7 @@ export default function JobRegistrationForm() {
         </TagContainer>
       </div>
       <div className="flex justify-end p-4">
-        <GenericBlueButton color={3}>Cadastrar Vaga</GenericBlueButton>
+        <GenericBlueButton color={3}>{isEditing ? 'Salvar Alterações' : 'Cadastrar Vaga'}</GenericBlueButton>
       </div>
     </form>
     </div>
