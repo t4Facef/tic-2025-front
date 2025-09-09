@@ -5,35 +5,49 @@
 
 import GenericBlueButton from "../buttons/generic_blue_button"
 
-interface PerfilContentSectionProps {
-    title: string;
+interface InfoType {
     formationType?: string;
-    course?: string;
     institut: string;
+    course: string;
     startDate: string;
     endDate: string;
     status: string;
+    desc: string;
+}
+
+interface PerfilContentSectionProps {
+    title: string;
+    info: InfoType[];
     description?: string;
 }
 
-export default function PerfilContentSection({title, formationType, course, institut, startDate, endDate, status, description}: PerfilContentSectionProps){
+export default function PerfilContentSection({title, info, description}: PerfilContentSectionProps){
     return (
-        <div className="bg-blue4 mt-8 px-6 rounded-xl">
+        <div className="bg-blue4 px-6 rounded-xl">
             <div className="py-2">
-                <div className="font-semibold text-[22px] py-1">
+                <div className="font-semibold text-[22px] py-1 mb-4">
                     {title}
                     <img src="" alt="" />
                 </div>
-                <hr className="border-black"/>
-                <div className="py-3">
-                    <p className="text-[13px]">{formationType}</p>
-                    <p className="text-[22px] font-medium">{course} - {institut}</p>
-                    <p className="text-[15px]">{startDate} até {endDate} - {status}</p>
+                {description && (
+                    <p className="text-gray-600 text-sm mb-4 italic">{description}</p>
+                )}
+                <hr className="border-black mb-6"/>
+                <div className="space-y-4 mt-4">
+                    {info.map((item, index) => (
+                        <div key={index} className="p-4 border border-blue3 bg-blue1 rounded-lg">
+                            <div className="py-3">
+                                <p className="text-[13px]">{item.formationType}</p>
+                                <p className="text-[22px] font-medium">{item.course} - {item.institut}</p>
+                                <p className="text-[15px]">{item.startDate} até {item.endDate} - {item.status}</p>
+                            </div>
+                            <h2 className="font-bold text-lg mt-4 mb-2">Descrição</h2>
+                            <p className="mb-4">
+                                {item.desc}
+                            </p>
+                        </div>
+                    ))}
                 </div>
-                <h2 className="font-bold text-lg mt-4 mb-2">Descrição</h2>
-                <p className="mb-4">
-                    {description}
-                </p>
                 <div className="flex justify-end gap-5 m-3">
                     <GenericBlueButton color={3} size="md">Remover</GenericBlueButton>
                     <GenericBlueButton color={3} size="md">Adicionar</GenericBlueButton>
