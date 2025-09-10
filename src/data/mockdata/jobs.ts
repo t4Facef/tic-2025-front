@@ -7,10 +7,7 @@ export interface JobData {
     location: string;
     type: string;
     shortDescription: string;
-    description1Title: string;
-    description1Content: string;
-    description2Title: string;
-    description2Content: string;
+    description: string;
     skillsTags: string[];
     supportTags: string[];
     compatibility: number;
@@ -26,10 +23,7 @@ export const mockJobs: JobData[] = [
         location: "São Paulo, SP",
         type: "CLT - Presencial",
         shortDescription: "Desenvolva interfaces acessíveis e inclusivas usando React e TypeScript em uma equipe que valoriza diversidade. Trabalhe em projetos que impactam milhares de usuários, incluindo pessoas com deficiência, em ambiente totalmente adaptado com tecnologias assistivas e políticas ativas de inclusão.",
-        description1Title: "Sobre a Vaga",
-        description1Content: "Estamos buscando um desenvolvedor frontend apaixonado por criar interfaces acessíveis e inclusivas. Você trabalhará em projetos que impactam milhares de usuários, incluindo pessoas com deficiência. Nossa equipe valoriza a diversidade e oferece um ambiente totalmente adaptado para PCDs.",
-        description2Title: "Responsabilidades",
-        description2Content: "Desenvolver interfaces responsivas usando React e TypeScript, implementar recursos de acessibilidade seguindo padrões WCAG, colaborar com designers UX/UI para criar experiências inclusivas, participar de code reviews e mentorar outros desenvolvedores, trabalhar com metodologias ágeis em um ambiente colaborativo.",
+        description: "Estamos buscando um desenvolvedor frontend apaixonado por criar interfaces acessíveis e inclusivas que impactem milhares de usuários, incluindo pessoas com deficiência. Nossa equipe valoriza a diversidade e oferece um ambiente totalmente adaptado para PCDs.\n\nVocê será responsável por desenvolver interfaces responsivas usando React e TypeScript, implementar recursos de acessibilidade seguindo padrões WCAG 2.1, colaborar com designers UX/UI para criar experiências verdadeiramente inclusivas, participar de code reviews construtivos e mentorear outros desenvolvedores. Trabalhamos com metodologias ágeis em um ambiente colaborativo onde cada voz é ouvida e valorizada.\n\nBuscamos alguém que compartilhe nossa paixão por tecnologia inclusiva e que queira fazer a diferença na vida de pessoas com diferentes habilidades através do código.",
         skillsTags: ["React", "TypeScript", "HTML5", "CSS3", "JavaScript", "Git", "Acessibilidade Web"],
         supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
         compatibility: 87
@@ -43,10 +37,7 @@ export const mockJobs: JobData[] = [
         location: "Rio de Janeiro, RJ",
         type: "CLT - Híbrido",
         shortDescription: "Analise big data usando Python, SQL e Power BI para gerar insights que transformam negócios. Empresa que prioriza inclusão oferece mentoria especializada, plano de carreira estruturado e ambiente com workstation adaptada, horários flexíveis e acompanhamento psicológico para profissionais PCDs.",
-        description1Title: "Descrição da Oportunidade",
-        description1Content: "Junte-se à nossa equipe de análise de dados em uma empresa que prioriza a inclusão e diversidade. Trabalhamos com big data para gerar insights que transformam negócios. Oferecemos mentoria especializada e um plano de carreira estruturado para profissionais PCDs que desejam crescer na área de dados.",
-        description2Title: "O que você fará",
-        description2Content: "Analisar grandes volumes de dados usando Python e SQL, criar dashboards interativos no Power BI e Tableau, desenvolver relatórios automatizados para diferentes áreas da empresa, colaborar com equipes multidisciplinares para identificar oportunidades de melhoria, participar de projetos de machine learning básico.",
+        description: "Junte-se à nossa equipe de análise de dados em uma empresa que prioriza a inclusão e diversidade, onde trabalhamos com big data para gerar insights que transformam negócios. Oferecemos mentoria especializada e um plano de carreira estruturado para profissionais PCDs que desejam crescer na área de dados.\n\nComo Analista de Dados Júnior, você será responsável por analisar grandes volumes de dados usando Python e SQL, criar dashboards interativos no Power BI e Tableau, desenvolver relatórios automatizados para diferentes áreas da empresa e colaborar com equipes multidisciplinares para identificar oportunidades de melhoria. Também participará de projetos básicos de machine learning, sempre com suporte e orientação da nossa equipe sênior.\n\nBuscamos alguém curioso, analítico e que tenha paixão por descobrir histórias nos dados, contribuindo para decisões estratégicas que impactam positivamente nossos clientes e a sociedade.",
         skillsTags: ["Python", "SQL", "Power BI", "Excel Avançado", "Estatística", "Tableau", "Machine Learning"],
         supportTags: ["Workstation adaptada", "Monitor de alta resolução", "Teclado especial", "Horário flexível", "Transporte fretado", "Acompanhamento psicológico"],
         compatibility: 72
@@ -60,10 +51,7 @@ export const mockJobs: JobData[] = [
         location: "São Paulo, SP",
         type: "CLT - Híbrido",
         shortDescription: "Lidere equipe de desenvolvimento de APIs RESTful e microserviços usando Node.js, Docker e Kubernetes. Arquitete soluções escaláveis, mentoreie desenvolvedores júnior e implemente práticas DevOps em ambiente inclusivo com políticas ativas de acessibilidade e tecnologias assistivas.",
-        description1Title: "Oportunidade de Liderança",
-        description1Content: "Procuramos um desenvolvedor backend sênior para liderar nossa equipe de desenvolvimento de APIs e microserviços. Você terá a oportunidade de arquitetar soluções escaláveis e mentorear desenvolvedores júnior. Valorizamos a inclusão e temos políticas ativas de acessibilidade no ambiente de trabalho.",
-        description2Title: "Desafios Técnicos",
-        description2Content: "Projetar e implementar APIs RESTful robustas, trabalhar com arquitetura de microserviços usando Docker e Kubernetes, otimizar performance de bancos de dados, implementar práticas de DevOps e CI/CD, liderar revisões de código e definir padrões de desenvolvimento.",
+        description: "Procuramos um desenvolvedor backend sênior para liderar nossa equipe de desenvolvimento de APIs e microserviços, com oportunidade de arquitetar soluções escaláveis e mentorear desenvolvedores júnior. Valorizamos a inclusão e temos políticas ativas de acessibilidade no ambiente de trabalho.\n\nNesta posição de liderança técnica, você será responsável por projetar e implementar APIs RESTful robustas, trabalhar com arquitetura de microserviços usando Docker e Kubernetes, otimizar performance de bancos de dados e implementar práticas avançadas de DevOps e CI/CD. Também liderará revisões de código, definirá padrões de desenvolvimento e contribuirá para a evolução da nossa arquitetura tecnológica.\n\nBuscamos um profissional experiente que combine excelência técnica com habilidades de liderança, capaz de inspirar e desenvolver outros desenvolvedores enquanto constrói soluções que impactam milhões de usuários.",
         skillsTags: ["Node.js", "Python", "Docker", "Kubernetes", "PostgreSQL", "MongoDB", "AWS", "Microserviços"],
         supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
         compatibility: 91
@@ -77,10 +65,7 @@ export const mockJobs: JobData[] = [
         location: "Rio de Janeiro, RJ",
         type: "CLT - Presencial",
         shortDescription: "Desenvolva modelos preditivos e algoritmos de machine learning usando Python, TensorFlow e Apache Spark. Trabalhe com tecnologias de ponta em projetos que revolucionam decisões empresariais, com ferramentas adaptativas, flexibilidade de horários e suporte completo para profissionais PCDs.",
-        description1Title: "Inovação em IA",
-        description1Content: "Junte-se ao nosso time de ciência de dados para desenvolver modelos de machine learning que revolucionam a tomada de decisões empresariais. Trabalhamos com tecnologias de ponta e oferecemos um ambiente inclusivo com total suporte para profissionais PCDs, incluindo ferramentas adaptativas e flexibilidade de horários.",
-        description2Title: "Projetos Desafiadores",
-        description2Content: "Desenvolver modelos preditivos usando algoritmos de machine learning, criar pipelines de dados automatizados, realizar análises estatísticas complexas, apresentar insights para stakeholders, colaborar com engenheiros de dados para implementar soluções em produção.",
+        description: "Junte-se ao nosso time de ciência de dados para desenvolver modelos de machine learning que revolucionam a tomada de decisões empresariais. Trabalhamos com tecnologias de ponta e oferecemos um ambiente inclusivo com total suporte para profissionais PCDs, incluindo ferramentas adaptativas e flexibilidade de horários.\n\nComo Cientista de Dados Pleno, você desenvolverá modelos preditivos usando algoritmos avançados de machine learning, criará pipelines de dados automatizados e realizará análises estatísticas complexas. Também apresentará insights estratégicos para stakeholders e colaborará estreitamente com engenheiros de dados para implementar soluções robustas em produção.\n\nProcuramos um profissional que combine sólido conhecimento técnico com capacidade analítica excepcional, capaz de transformar dados complexos em soluções práticas que geram valor real para o negócio.",
         skillsTags: ["Python", "R", "TensorFlow", "Scikit-learn", "Pandas", "Apache Spark", "Deep Learning", "Estatística"],
         supportTags: ["Workstation adaptada", "Monitor de alta resolução", "Teclado especial", "Horário flexível", "Transporte fretado", "Acompanhamento psicológico"],
         compatibility: 78
@@ -94,10 +79,7 @@ export const mockJobs: JobData[] = [
         location: "Belo Horizonte, MG",
         type: "CLT - Híbrido",
         shortDescription: "Lidere estratégias de marketing digital inclusivo coordenando equipes de design e conteúdo. Gerencie campanhas em redes sociais e Google Ads em agência pioneira em conteúdos acessíveis, com ambiente criativo totalmente adaptado, software de design acessível e foco na representatividade.",
-        description1Title: "Lidere Campanhas Inovadoras",
-        description1Content: "Procuramos um coordenador criativo para liderar nossas campanhas de marketing digital inclusivo. Nossa agência é pioneira em criar conteúdos acessíveis e representativos. Oferecemos um ambiente de trabalho totalmente adaptado, com foco na criatividade e inclusão de pessoas com deficiência.",
-        description2Title: "Responsabilidades Criativas",
-        description2Content: "Desenvolver estratégias de marketing digital inclusivo, coordenar equipes de design e conteúdo, gerenciar campanhas em redes sociais, analisar métricas de performance, criar briefings criativos acessíveis, apresentar resultados para clientes e stakeholders.",
+        description: "Procuramos um coordenador criativo para liderar nossas campanhas de marketing digital inclusivo em uma agência pioneira em criar conteúdos acessíveis e representativos. Oferecemos um ambiente de trabalho totalmente adaptado, com foco na criatividade e inclusão de pessoas com deficiência.\n\nComo Coordenador de Marketing Digital, você desenvolverá estratégias inovadoras de marketing inclusivo, coordenará equipes talentosas de design e conteúdo, gerenciará campanhas impactantes em redes sociais e analisará métricas de performance para otimização contínua. Também criará briefings criativos acessíveis e apresentará resultados estratégicos para clientes e stakeholders.\n\nBuscamos um líder criativo que compartilhe nossa paixão por representatividade e inclusão, capaz de transformar ideias em campanhas que não apenas vendem, mas também educam e inspiram mudanças sociais positivas.",
         skillsTags: ["Marketing Digital", "Google Ads", "Facebook Ads", "SEO", "Analytics", "Photoshop", "Canva", "Copywriting"],
         supportTags: ["Ambiente criativo adaptado", "Software de design acessível", "Mesa regulavel", "Iluminação ajustável", "Pausas flexíveis", "Transporte próprio"],
         compatibility: 65
@@ -111,10 +93,7 @@ export const mockJobs: JobData[] = [
         location: "Belo Horizonte, MG",
         type: "PJ - Remoto",
         shortDescription: "Crie interfaces acessíveis seguindo diretrizes WCAG usando Figma e Adobe XD. Desenvolva protótipos inclusivos e realize testes de usabilidade com usuários PCDs em projetos que impactam pessoas com diferentes habilidades, com expertise em design universal e pesquisa em acessibilidade digital.",
-        description1Title: "Design para Todos",
-        description1Content: "Buscamos um designer especializado em criar experiências digitais verdadeiramente inclusivas. Você trabalhará em projetos que impactam a vida de pessoas com diferentes habilidades. Nossa equipe valoriza a diversidade e tem expertise em design universal e acessibilidade digital.",
-        description2Title: "Impacto Social",
-        description2Content: "Criar interfaces acessíveis seguindo diretrizes WCAG, desenvolver prototipos inclusivos no Figma, realizar testes de usabilidade com usuários PCDs, colaborar com desenvolvedores para implementação, pesquisar tendências em design inclusivo e acessibilidade.",
+        description: "Buscamos um designer especializado em criar experiências digitais verdadeiramente inclusivas, trabalhando em projetos que impactam a vida de pessoas com diferentes habilidades. Nossa equipe valoriza a diversidade e tem expertise reconhecida em design universal e acessibilidade digital.\n\nComo Designer UX/UI Inclusivo, você criará interfaces acessíveis seguindo rigorosamente as diretrizes WCAG, desenvolverá protótipos inclusivos no Figma e realizará testes de usabilidade com usuários PCDs para garantir experiências autênticamente acessíveis. Também colaborará estreitamente com desenvolvedores para implementação fiel dos designs e pesquisará constantemente tendências em design inclusivo.\n\nProcuramos um profissional que enxergue o design como ferramenta de transformação social, capaz de criar soluções que não apenas funcionam para todos, mas que celebram a diversidade humana.",
         skillsTags: ["Figma", "Adobe XD", "Sketch", "Acessibilidade Web", "Design System", "Prototipagem", "User Research", "WCAG"],
         supportTags: ["Ambiente criativo adaptado", "Software de design acessível", "Mesa regulavel", "Iluminação ajustável", "Pausas flexíveis", "Transporte próprio"],
         compatibility: 82
@@ -128,10 +107,7 @@ export const mockJobs: JobData[] = [
         location: "Salvador, BA",
         type: "CLT - Presencial",
         shortDescription: "Integre equipe administrativa de hospital inclusivo com foco no atendimento humanizado. Organize documentos médicos, atenda pacientes com cordialidade e auxilie na recepção em ambiente totalmente acessível com treinamento especializado, sinalização em Braille e apoio psicológico.",
-        description1Title: "Cuidado e Organização",
-        description1Content: "Junte-se à nossa equipe administrativa em um dos hospitais mais inclusivos do país. Trabalhamos com foco no atendimento humanizado e temos uma política sólida de inclusão de PCDs. Oferecemos treinamento especializado e um ambiente de trabalho totalmente acessível na área da saúde.",
-        description2Title: "Atividades Diárias",
-        description2Content: "Organizar documentos e prontuários médicos, atender pacientes e familiares com cordialidade, agendar consultas e exames, auxiliar na recepção e triagem, manter organização de arquivos físicos e digitais, apoiar equipe médica com tarefas administrativas.",
+        description: "Junte-se à nossa equipe administrativa em um dos hospitais mais inclusivos do país, onde trabalhamos com foco no atendimento humanizado e temos uma política sólida de inclusão de PCDs. Oferecemos treinamento especializado e um ambiente de trabalho totalmente acessível na área da saúde.\n\nComo Assistente Administrativo, você organizará documentos e prontuários médicos com precisão, atenderá pacientes e familiares com cordialidade e empatia, agendará consultas e exames de forma eficiente e auxiliará na recepção e triagem. Também manterá a organização de arquivos físicos e digitais e apoiará a equipe médica com tarefas administrativas essenciais.\n\nBuscamos alguém que combine organização excepcional com genuína vocação para o cuidado, contribuindo para um ambiente hospitalar mais acolhedor e inclusivo.",
         skillsTags: ["Atendimento ao Cliente", "Excel", "Organização", "Comunicação", "Pacote Office", "Gestão de Agenda", "Arquivo Médico"],
         supportTags: ["Rampa hospitalar", "Elevador", "Banheiro adaptado", "Sinalização em Braille", "Cadeira ergonômica", "Apoio psicológico"],
         compatibility: 69
@@ -145,10 +121,7 @@ export const mockJobs: JobData[] = [
         location: "Salvador, BA",
         type: "CLT - Presencial",
         shortDescription: "Atue em cuidados inclusivos auxiliando enfermeiros no atendimento direto aos pacientes. Hospital referência em acessibilidade oferece capacitação contínua, equipamentos adaptados, sinalização em Braille e ambiente diverso que valoriza profissionais com deficiência na área da saúde.",
-        description1Title: "Cuidado Especializado",
-        description1Content: "Procuramos técnico em enfermagem para integrar nossa equipe de cuidados inclusivos. Nosso hospital é referência em acessibilidade e atendimento a PCDs. Oferecemos capacitação contínua, equipamentos adaptados e um ambiente de trabalho que valoriza a diversidade na área da saúde.",
-        description2Title: "Cuidados Essenciais",
-        description2Content: "Auxiliar enfermeiros no cuidado direto aos pacientes, administrar medicações conforme prescrição médica, monitorar sinais vitais, realizar curativos e procedimentos básicos, manter organização e higiene do ambiente hospitalar, dar suporte emocional aos pacientes e familiares.",
+        description: "Procuramos técnico em enfermagem para integrar nossa equipe de cuidados inclusivos em um hospital referência em acessibilidade e atendimento a PCDs. Oferecemos capacitação contínua, equipamentos de última geração adaptados e um ambiente de trabalho que valoriza a diversidade na área da saúde.\n\nComo Técnico em Enfermagem, você auxiliará enfermeiros no cuidado direto aos pacientes, administrará medicações conforme prescrição médica, monitorará sinais vitais com precisão e realizará curativos e procedimentos básicos. Também manterá a organização e higiene do ambiente hospitalar e dará suporte emocional aos pacientes e familiares.\n\nBuscamos um profissional dedicado que combine competência técnica com sensibilidade humana, contribuindo para um cuidado de saúde verdadeiramente inclusivo e humanizado.",
         skillsTags: ["Técnicas de Enfermagem", "Administração de Medicamentos", "Sinais Vitais", "Curativos", "Higienização", "Primeiros Socorros", "Empatia"],
         supportTags: ["Rampa hospitalar", "Elevador", "Banheiro adaptado", "Sinalização em Braille", "Cadeira ergonômica", "Apoio psicológico"],
         compatibility: 74
@@ -162,10 +135,7 @@ export const mockJobs: JobData[] = [
         location: "Brasília, DF",
         type: "CLT - Híbrido",
         shortDescription: "Atenda clientes com necessidades especiais de investimento elaborando planejamentos financeiros personalizados. Empresa valoriza inclusão oferecendo produtos financeiros acessíveis, escritório totalmente adaptado, software financeiro acessível e políticas flexíveis para profissionais PCDs.",
-        description1Title: "Consultoria Especializada",
-        description1Content: "Junte-se à nossa equipe de consultoria financeira que atende clientes com necessidades especiais de investimento. Somos uma empresa que valoriza a inclusão e oferece produtos financeiros acessíveis. Nosso escritório é totalmente adaptado e temos políticas flexíveis para profissionais PCDs.",
-        description2Title: "Assessoria Financeira",
-        description2Content: "Analisar perfil de risco dos clientes, elaborar planejamentos financeiros personalizados, apresentar opções de investimento, acompanhar carteiras de investimento, realizar reuniões de acompanhamento, manter-se atualizado sobre o mercado financeiro e produtos disponíveis.",
+        description: "Junte-se à nossa equipe de consultoria financeira especializada em atender clientes com necessidades especiais de investimento. Somos uma empresa que valoriza a inclusão e oferece produtos financeiros verdadeiramente acessíveis. Nosso escritório é totalmente adaptado e temos políticas flexíveis para profissionais PCDs.\n\nComo Consultor Financeiro, você analisará o perfil de risco dos clientes, elaborará planejamentos financeiros personalizados e apresentará opções de investimento adequadas a cada situação. Também acompanhará carteiras de investimento, realizará reuniões periódicas de acompanhamento e manter-se-á constantemente atualizado sobre o mercado financeiro e produtos disponíveis.\n\nProcuramos um profissional que combine excelência técnica com habilidades de relacionamento, capaz de construir confiança e orientar clientes em suas jornadas de independência financeira.",
         skillsTags: ["Planejamento Financeiro", "Análise de Investimentos", "Excel Avançado", "CPA-10", "Atendimento ao Cliente", "Mercado Financeiro", "Apresentações"],
         supportTags: ["Escritório adaptado", "Software financeiro acessível", "Mesa ajustável", "Monitor duplo", "Horário flexível", "Vale transporte especial"],
         compatibility: 71
@@ -179,10 +149,7 @@ export const mockJobs: JobData[] = [
         location: "Brasília, DF",
         type: "CLT - Presencial",
         shortDescription: "Trabalhe com contabilidade inclusiva realizando lançamentos contábeis e elaborando demonstrações financeiras. Equipe financeira experiente oferece ambiente acessível com tecnologias assistivas, software financeiro adaptado e políticas que promovem inclusão de profissionais com deficiência.",
-        description1Title: "Precisão e Organização",
-        description1Content: "Procuramos analista contábil para integrar nossa equipe financeira. Trabalhamos com empresas de diversos portes e temos expertise em contabilidade inclusiva. Oferecemos um ambiente de trabalho acessível, com tecnologias assistivas e políticas que promovem a inclusão de profissionais com deficiência.",
-        description2Title: "Gestão Contábil",
-        description2Content: "Realizar lançamentos contábeis no sistema, elaborar demonstrações financeiras, calcular e apurar impostos, fazer conciliações bancárias, auxiliar na elaboração do balanço patrimonial, manter organização da documentação fiscal e contábil.",
+        description: "Procuramos analista contábil para integrar nossa equipe financeira especializada em trabalhar com empresas de diversos portes, com expertise reconhecida em contabilidade inclusiva. Oferecemos um ambiente de trabalho acessível, com tecnologias assistivas avançadas e políticas que promovem ativamente a inclusão de profissionais com deficiência.\n\nComo Analista Contábil, você realizará lançamentos contábeis precisos no sistema, elaborará demonstrações financeiras detalhadas, calculará e apurará impostos conforme legislação vigente e fará conciliações bancárias. Também auxiliará na elaboração do balanço patrimonial e manterá organização rigorosa da documentação fiscal e contábil.\n\nBuscamos um profissional detalhista e organizado, que valorize a precisão e tenha paixão por números, contribuindo para a saúde financeira de nossos clientes.",
         skillsTags: ["Contabilidade Geral", "Demonstrações Financeiras", "Impostos", "Conciliação Bancária", "Excel", "Sistemas Contábeis", "Legislação Fiscal"],
         supportTags: ["Escritório adaptado", "Software financeiro acessível", "Mesa ajustável", "Monitor duplo", "Horário flexível", "Vale transporte especial"],
         compatibility: 76
@@ -196,10 +163,7 @@ export const mockJobs: JobData[] = [
         location: "São Paulo, SP",
         type: "CLT - Remoto",
         shortDescription: "Desenvolva aplicativos móveis acessíveis usando React Native e TypeScript. Crie experiências mobile inclusivas com foco em usabilidade para PCDs, implementando recursos de acessibilidade nativa e trabalhando em equipe diversa com suporte completo a tecnologias assistivas.",
-        description1Title: "Desenvolvimento Mobile Inclusivo",
-        description1Content: "Buscamos desenvolvedor mobile para criar aplicativos verdadeiramente acessíveis. Você trabalhará com React Native implementando recursos nativos de acessibilidade para iOS e Android. Nossa equipe prioriza a inclusão digital e oferece ambiente de trabalho remoto totalmente adaptado.",
-        description2Title: "Responsabilidades Mobile",
-        description2Content: "Desenvolver aplicativos React Native com foco em acessibilidade, implementar navegação por gestos e voz, integrar com APIs RESTful, otimizar performance para diferentes dispositivos, colaborar com designers UX/UI para experiências inclusivas, realizar testes em dispositivos reais.",
+        description: "Buscamos desenvolvedor mobile para criar aplicativos verdadeiramente acessíveis usando React Native, implementando recursos nativos de acessibilidade para iOS e Android. Nossa equipe prioriza a inclusão digital e oferece ambiente de trabalho remoto totalmente adaptado.\n\nComo Desenvolvedor Mobile React Native, você desenvolverá aplicativos com foco em acessibilidade, implementará navegação por gestos e voz, integrará com APIs RESTful e otimizará performance para diferentes dispositivos. Também colaborará com designers UX/UI para criar experiências inclusivas e realizará testes rigorosos em dispositivos reais.\n\nProcuramos um desenvolvedor que combine expertise técnica com paixão por inclusão, criando apps que funcionam perfeitamente para todos os usuários.",
         skillsTags: ["React Native", "TypeScript", "iOS", "Android", "JavaScript", "Redux", "Acessibilidade Mobile"],
         supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
         compatibility: 85
@@ -213,10 +177,7 @@ export const mockJobs: JobData[] = [
         location: "São Paulo, SP",
         type: "CLT - Híbrido",
         shortDescription: "Garanta qualidade em produtos digitais inclusivos realizando testes de acessibilidade e usabilidade. Trabalhe com automação de testes, validação WCAG e testes com usuários PCDs em ambiente que valoriza diversidade e oferece ferramentas adaptativas para profissionais com deficiência.",
-        description1Title: "Qualidade e Acessibilidade",
-        description1Content: "Procuramos analista de QA especializado em testes de acessibilidade. Você será responsável por garantir que nossos produtos atendam aos mais altos padrões de inclusão digital. Oferecemos treinamento especializado em ferramentas de teste acessível e ambiente de trabalho adaptado.",
-        description2Title: "Testes Especializados",
-        description2Content: "Realizar testes funcionais e de acessibilidade, automatizar testes com Selenium e Cypress, validar conformidade WCAG, conduzir testes com usuários PCDs, documentar bugs e melhorias, colaborar com equipes de desenvolvimento para correções, criar planos de teste inclusivos.",
+        description: "Procuramos analista de QA especializado em testes de acessibilidade para garantir que nossos produtos atendam aos mais altos padrões de inclusão digital. Oferecemos treinamento especializado em ferramentas de teste acessível e ambiente de trabalho totalmente adaptado.\n\nComo Analista de QA Sênior, você realizará testes funcionais e de acessibilidade abrangentes, automatizará testes com Selenium e Cypress, validará conformidade WCAG e conduzirá testes com usuários PCDs. Também documentará bugs e melhorias, colaborará com equipes de desenvolvimento para correções e criará planos de teste inclusivos.\n\nBuscamos um profissional meticuloso que enxergue a qualidade como garantia de inclusão, assegurando que cada produto seja verdadeiramente acessível.",
         skillsTags: ["Selenium", "Cypress", "WCAG", "Testes Automatizados", "JavaScript", "Acessibilidade Web", "Jira"],
         supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
         compatibility: 79
@@ -230,10 +191,7 @@ export const mockJobs: JobData[] = [
         location: "São Paulo, SP",
         type: "CLT - Presencial",
         shortDescription: "Gerencie infraestrutura cloud e pipelines CI/CD para aplicações inclusivas. Trabalhe com AWS, Docker e Kubernetes implementando práticas DevOps que suportam desenvolvimento acessível, em equipe diversa com ambiente totalmente adaptado e políticas ativas de inclusão.",
-        description1Title: "Infraestrutura Inclusiva",
-        description1Content: "Buscamos DevOps Engineer para gerenciar nossa infraestrutura cloud focada em aplicações acessíveis. Você trabalhará com tecnologias modernas garantindo alta disponibilidade para nossos produtos inclusivos. Oferecemos ambiente de trabalho adaptado e crescimento profissional.",
-        description2Title: "Operações Cloud",
-        description2Content: "Gerenciar infraestrutura AWS, implementar pipelines CI/CD, configurar monitoramento e alertas, automatizar deploys com Docker e Kubernetes, otimizar custos cloud, garantir segurança e compliance, colaborar com equipes de desenvolvimento, manter documentação técnica.",
+        description: "Buscamos DevOps Engineer para gerenciar nossa infraestrutura cloud focada em aplicações acessíveis, trabalhando com tecnologias modernas para garantir alta disponibilidade dos nossos produtos inclusivos. Oferecemos ambiente de trabalho adaptado e excelentes oportunidades de crescimento profissional.\n\nComo DevOps Engineer, você gerenciará infraestrutura AWS, implementará pipelines CI/CD robustos, configurará monitoramento e alertas proativos e automatizará deploys com Docker e Kubernetes. Também otimizará custos cloud, garantirá segurança e compliance, colaborará com equipes de desenvolvimento e manterá documentação técnica atualizada.\n\nProcuramos um profissional que combine expertise técnica com visão estratégica, capaz de construir infraestruturas que suportem aplicações verdadeiramente inclusivas.",
         skillsTags: ["AWS", "Docker", "Kubernetes", "Jenkins", "Terraform", "Linux", "CI/CD"],
         supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
         compatibility: 88
@@ -247,10 +205,7 @@ export const mockJobs: JobData[] = [
         location: "Rio de Janeiro, RJ",
         type: "CLT - Híbrido",
         shortDescription: "Construa pipelines de dados robustos usando Apache Spark, Kafka e Python para processar big data inclusivo. Trabalhe com arquiteturas modernas de dados em empresa que valoriza diversidade, oferecendo workstation adaptada, horários flexíveis e mentoria especializada para profissionais PCDs.",
-        description1Title: "Engenharia de Dados Avançada",
-        description1Content: "Junte-se à nossa equipe de engenharia de dados para construir a infraestrutura que alimenta nossas soluções de analytics inclusivas. Trabalhamos com tecnologias de ponta e oferecemos um ambiente colaborativo que valoriza a diversidade e inclusão de profissionais com deficiência.",
-        description2Title: "Arquitetura de Dados",
-        description2Content: "Projetar e implementar pipelines de dados escaláveis, trabalhar com Apache Spark e Kafka, otimizar consultas em bancos de dados, implementar soluções de streaming, colaborar com cientistas de dados, garantir qualidade e governança dos dados, monitorar performance dos sistemas.",
+        description: "Junte-se à nossa equipe de engenharia de dados para construir a infraestrutura que alimenta nossas soluções de analytics inclusivas. Trabalhamos com tecnologias de ponta e oferecemos um ambiente colaborativo que valoriza a diversidade e inclusão de profissionais com deficiência.\n\nComo Engenheiro de Dados, você projetará e implementará pipelines de dados escaláveis, trabalhará com Apache Spark e Kafka, otimizará consultas em bancos de dados e implementará soluções de streaming avançadas. Também colaborará com cientistas de dados, garantirá qualidade e governança dos dados e monitorará performance dos sistemas.\n\nBuscamos um profissional que enxergue dados como ferramenta de transformação social, construindo arquiteturas que suportem insights inclusivos e impactantes.",
         skillsTags: ["Apache Spark", "Kafka", "Python", "SQL", "Hadoop", "ETL", "Data Warehouse"],
         supportTags: ["Workstation adaptada", "Monitor de alta resolução", "Teclado especial", "Horário flexível", "Transporte fretado", "Acompanhamento psicológico"],
         compatibility: 83
@@ -264,10 +219,7 @@ export const mockJobs: JobData[] = [
         location: "Rio de Janeiro, RJ",
         type: "CLT - Presencial",
         shortDescription: "Desenvolva dashboards e relatórios inteligentes usando Tableau, Power BI e SQL para apoiar decisões estratégicas inclusivas. Transforme dados em insights acionáveis em ambiente que prioriza acessibilidade, com ferramentas adaptativas e políticas flexíveis para profissionais PCDs.",
-        description1Title: "Inteligência de Negócios",
-        description1Content: "Procuramos analista de BI para transformar dados complexos em insights claros e acionáveis. Você trabalhará diretamente com stakeholders criando soluções de visualização que impactam decisões estratégicas. Oferecemos ambiente inclusivo e oportunidades de crescimento.",
-        description2Title: "Visualização de Dados",
-        description2Content: "Criar dashboards interativos no Tableau e Power BI, desenvolver relatórios automatizados, analisar tendências e padrões de negócio, colaborar com áreas de negócio para entender necessidades, otimizar consultas SQL, apresentar insights para liderança, manter documentação de processos.",
+        description: "Procuramos analista de BI para transformar dados complexos em insights claros e acionáveis, trabalhando diretamente com stakeholders para criar soluções de visualização que impactam decisões estratégicas. Oferecemos ambiente inclusivo e excelentes oportunidades de crescimento.\n\nComo Analista de Business Intelligence, você criará dashboards interativos no Tableau e Power BI, desenvolverá relatórios automatizados e analisará tendências e padrões de negócio. Também colaborará com áreas de negócio para entender necessidades, otimizará consultas SQL, apresentará insights para liderança e manterá documentação de processos.\n\nBuscamos um profissional que transforme números em narrativas, criando visualizações que orientem decisões inclusivas e impactantes.",
         skillsTags: ["Tableau", "Power BI", "SQL", "Excel Avançado", "Python", "Estatística", "Data Visualization"],
         supportTags: ["Workstation adaptada", "Monitor de alta resolução", "Teclado especial", "Horário flexível", "Transporte fretado", "Acompanhamento psicológico"],
         compatibility: 77
@@ -281,10 +233,7 @@ export const mockJobs: JobData[] = [
         location: "Rio de Janeiro, RJ",
         type: "CLT - Remoto",
         shortDescription: "Desenvolva algoritmos de ML avançados usando TensorFlow, PyTorch e Scikit-learn para criar soluções de IA inclusivas. Trabalhe com deep learning e NLP em projetos inovadores, com total flexibilidade remota, ferramentas adaptativas e suporte especializado para profissionais PCDs.",
-        description1Title: "Inteligência Artificial Avançada",
-        description1Content: "Junte-se ao nosso time de especialistas em ML para desenvolver soluções de IA que transformam negócios. Trabalhamos com projetos desafiadores em deep learning e processamento de linguagem natural. Oferecemos trabalho 100% remoto e ambiente totalmente inclusivo.",
-        description2Title: "Pesquisa e Desenvolvimento",
-        description2Content: "Desenvolver modelos de deep learning, implementar algoritmos de NLP, otimizar performance de modelos, realizar pesquisa aplicada em IA, colaborar com equipes multidisciplinares, publicar resultados em conferências, mentorear outros cientistas de dados, manter-se atualizado com tendências.",
+        description: "Junte-se ao nosso time de especialistas em ML para desenvolver soluções de IA que transformam negócios, trabalhando com projetos desafiadores em deep learning e processamento de linguagem natural. Oferecemos trabalho 100% remoto e ambiente totalmente inclusivo.\n\nComo Especialista em Machine Learning, você desenvolverá modelos avançados de deep learning, implementará algoritmos sofisticados de NLP, otimizará performance de modelos e realizará pesquisa aplicada em IA. Também colaborará com equipes multidisciplinares, publicará resultados em conferências, mentoreará outros cientistas de dados e manter-se-á atualizado com tendências.\n\nProcuramos um pesquisador que combine excelência acadêmica com visão prática, desenvolvendo IA que não apenas funciona, mas que beneficia toda a sociedade.",
         skillsTags: ["TensorFlow", "PyTorch", "Deep Learning", "NLP", "Python", "Scikit-learn", "Computer Vision"],
         supportTags: ["Workstation adaptada", "Monitor de alta resolução", "Teclado especial", "Horário flexível", "Transporte fretado", "Acompanhamento psicológico"],
         compatibility: 92
@@ -298,10 +247,7 @@ export const mockJobs: JobData[] = [
         location: "Belo Horizonte, MG",
         type: "CLT - Híbrido",
         shortDescription: "Crie conteúdos publicitários inclusivos e acessíveis para campanhas que representam diversidade. Desenvolva copy para diferentes mídias com foco em linguagem inclusiva, trabalhando em agência pioneira em representação PCD com ambiente criativo adaptado e equipe diversa.",
-        description1Title: "Criatividade Inclusiva",
-        description1Content: "Buscamos redator especializado em criar conteúdos que celebram a diversidade e promovem inclusão. Você trabalhará em campanhas inovadoras que representam pessoas com deficiência de forma autêntica. Nossa agência é referência em comunicação inclusiva e acessibilidade.",
-        description2Title: "Conteúdo Estratégico",
-        description2Content: "Desenvolver copy para campanhas publicitárias inclusivas, criar conteúdo para redes sociais acessíveis, escrever roteiros para vídeos com audiodescrição, colaborar com designers para peças inclusivas, pesquisar tendências em comunicação acessível, revisar materiais para conformidade inclusiva.",
+        description: "Buscamos redator especializado em criar conteúdos que celebram a diversidade e promovem inclusão, trabalhando em campanhas inovadoras que representam pessoas com deficiência de forma autêntica. Nossa agência é referência em comunicação inclusiva e acessibilidade.\n\nComo Redator Publicitário Inclusivo, você desenvolverá copy para campanhas publicitárias inclusivas, criará conteúdo para redes sociais acessíveis, escreverá roteiros para vídeos com audiodescrição e colaborará com designers para peças inclusivas. Também pesquisará tendências em comunicação acessível e revisará materiais para conformidade inclusiva.\n\nProcuramos um contador de histórias que enxergue palavras como pontes, criando narrativas que conectam, representam e inspiram mudanças sociais positivas.",
         skillsTags: ["Copywriting", "Redação Publicitária", "Linguagem Inclusiva", "Redes Sociais", "SEO", "Storytelling", "Comunicação Acessível"],
         supportTags: ["Ambiente criativo adaptado", "Software de design acessível", "Mesa regulavel", "Iluminação ajustável", "Pausas flexíveis", "Transporte próprio"],
         compatibility: 73
@@ -315,10 +261,7 @@ export const mockJobs: JobData[] = [
         location: "Belo Horizonte, MG",
         type: "PJ - Híbrido",
         shortDescription: "Crie animações e motion graphics acessíveis usando After Effects e Cinema 4D. Desenvolva conteúdo visual inclusivo com legendas, audiodescrição e recursos de acessibilidade, trabalhando em projetos inovadores que promovem representação e inclusão digital.",
-        description1Title: "Animação Inclusiva",
-        description1Content: "Procuramos motion designer para criar animações que são verdadeiramente acessíveis a todos. Você trabalhará em projetos que incorporam recursos de acessibilidade desde a concepção. Nossa equipe valoriza a criatividade inclusiva e oferece ambiente de trabalho totalmente adaptado.",
-        description2Title: "Produção Visual",
-        description2Content: "Criar animações em After Effects com recursos acessíveis, desenvolver motion graphics inclusivos, produzir vídeos com legendas e audiodescrição, colaborar com equipe criativa em projetos multimídia, otimizar animações para diferentes plataformas, manter consistência visual da marca.",
+        description: "Procuramos motion designer para criar animações que são verdadeiramente acessíveis a todos, trabalhando em projetos que incorporam recursos de acessibilidade desde a concepção. Nossa equipe valoriza a criatividade inclusiva e oferece ambiente de trabalho totalmente adaptado.\n\nComo Motion Designer, você criará animações em After Effects com recursos acessíveis, desenvolverá motion graphics inclusivos, produzirá vídeos com legendas e audiodescrição e colaborará com equipe criativa em projetos multimídia. Também otimizará animações para diferentes plataformas e manterá consistência visual da marca.\n\nBuscamos um artista visual que enxergue movimento como linguagem universal, criando animações que comunicam e encantam todos os públicos.",
         skillsTags: ["After Effects", "Cinema 4D", "Premiere Pro", "Illustrator", "Motion Graphics", "3D Animation", "Acessibilidade Visual"],
         supportTags: ["Ambiente criativo adaptado", "Software de design acessível", "Mesa regulavel", "Iluminação ajustável", "Pausas flexíveis", "Transporte próprio"],
         compatibility: 81
@@ -332,10 +275,7 @@ export const mockJobs: JobData[] = [
         location: "Belo Horizonte, MG",
         type: "CLT - Presencial",
         shortDescription: "Gerencie estratégias de mídias sociais inclusivas criando conteúdo acessível e engajador. Desenvolva campanhas que promovem representação PCD, analise métricas de inclusão e trabalhe com ferramentas de acessibilidade digital em agência pioneira em diversidade.",
-        description1Title: "Mídias Sociais Inclusivas",
-        description1Content: "Buscamos especialista em mídias sociais para liderar nossas estratégias de conteúdo inclusivo. Você será responsável por criar presença digital que representa e engaja comunidades diversas. Oferecemos ambiente criativo que valoriza inovação e acessibilidade.",
-        description2Title: "Estratégia Digital",
-        description2Content: "Desenvolver estratégias de conteúdo para redes sociais inclusivas, criar posts acessíveis com alt-text e legendas, gerenciar comunidades online diversas, analisar métricas de engajamento inclusivo, colaborar com influenciadores PCDs, monitorar tendências em acessibilidade digital.",
+        description: "Buscamos especialista em mídias sociais para liderar nossas estratégias de conteúdo inclusivo, sendo responsável por criar presença digital que representa e engaja comunidades diversas. Oferecemos ambiente criativo que valoriza inovação e acessibilidade.\n\nComo Especialista em Mídias Sociais, você desenvolverá estratégias de conteúdo para redes sociais inclusivas, criará posts acessíveis com alt-text e legendas, gerenciará comunidades online diversas e analisará métricas de engajamento inclusivo. Também colaborará com influenciadores PCDs e monitorará tendências em acessibilidade digital.\n\nProcuramos um comunicador digital que enxergue redes sociais como espaços de representação, criando conteúdos que conectam e empoderam comunidades diversas.",
         skillsTags: ["Redes Sociais", "Marketing Digital", "Analytics", "Canva", "Photoshop", "Copywriting", "Acessibilidade Digital"],
         supportTags: ["Ambiente criativo adaptado", "Software de design acessível", "Mesa regulavel", "Iluminação ajustável", "Pausas flexíveis", "Transporte próprio"],
         compatibility: 68
@@ -349,10 +289,7 @@ export const mockJobs: JobData[] = [
         location: "Salvador, BA",
         type: "CLT - Presencial",
         shortDescription: "Atenda pacientes e visitantes com cordialidade em hospital referência em inclusão. Gerencie agendamentos, orientações e informações em ambiente totalmente acessível com sinalização em Braille, intérprete de Libras e treinamento especializado em atendimento humanizado.",
-        description1Title: "Primeiro Contato Humanizado",
-        description1Content: "Junte-se à nossa equipe de recepção em um hospital que é modelo de inclusão na área da saúde. Você será o primeiro contato dos pacientes, oferecendo atendimento acolhedor e humanizado. Oferecemos treinamento contínuo em atendimento inclusivo e ambiente de trabalho totalmente adaptado.",
-        description2Title: "Atendimento Especializado",
-        description2Content: "Recepcionar pacientes e visitantes com cordialidade, gerenciar agendamentos de consultas e exames, fornecer informações sobre serviços hospitalares, auxiliar na orientação de pessoas com deficiência, manter organização da recepção, colaborar com equipe multidisciplinar.",
+        description: "Junte-se à nossa equipe de recepção em um hospital que é modelo de inclusão na área da saúde, sendo o primeiro contato dos pacientes e oferecendo atendimento acolhedor e humanizado. Oferecemos treinamento contínuo em atendimento inclusivo e ambiente de trabalho totalmente adaptado.\n\nComo Recepcionista Hospitalar, você recepcionará pacientes e visitantes com cordialidade, gerenciará agendamentos de consultas e exames, fornecerá informações sobre serviços hospitalares e auxiliará na orientação de pessoas com deficiência. Também manterá organização da recepção e colaborará com equipe multidisciplinar.\n\nBuscamos alguém que combine organização com empatia, criando o primeiro contato hospitalar acolhedor e inclusivo para todos os pacientes.",
         skillsTags: ["Atendimento ao Cliente", "Comunicação", "Organização", "Empatia", "Pacote Office", "Gestão de Agenda", "Atendimento Inclusivo"],
         supportTags: ["Rampa hospitalar", "Elevador", "Banheiro adaptado", "Sinalização em Braille", "Cadeira ergonômica", "Apoio psicológico"],
         compatibility: 71
@@ -366,10 +303,7 @@ export const mockJobs: JobData[] = [
         location: "Salvador, BA",
         type: "CLT - Presencial",
         shortDescription: "Atue na reabilitação de pacientes com foco em cuidados inclusivos e especializados. Trabalhe com equipamentos adaptados, técnicas avançadas de fisioterapia e atendimento humanizado em hospital referência em acessibilidade, com equipe multidisciplinar e ambiente totalmente adaptado.",
-        description1Title: "Reabilitação Especializada",
-        description1Content: "Procuramos fisioterapeuta para integrar nossa equipe de reabilitação inclusiva. Você trabalhará com pacientes diversos, incluindo pessoas com deficiência, oferecendo cuidados especializados. Nosso hospital oferece equipamentos de última geração e ambiente de trabalho que valoriza a diversidade.",
-        description2Title: "Cuidados Terapêuticos",
-        description2Content: "Realizar avaliações fisioterápicas especializadas, desenvolver planos de tratamento individualizados, aplicar técnicas de reabilitação avançadas, orientar pacientes e familiares, trabalhar em equipe multidisciplinar, manter registros clínicos atualizados, participar de programas de educação continuada.",
+        description: "Procuramos fisioterapeuta para integrar nossa equipe de reabilitação inclusiva, trabalhando com pacientes diversos, incluindo pessoas com deficiência, oferecendo cuidados especializados. Nosso hospital oferece equipamentos de última geração e ambiente de trabalho que valoriza a diversidade.\n\nComo Fisioterapeuta, você realizará avaliações fisioterápicas especializadas, desenvolverá planos de tratamento individualizados, aplicará técnicas de reabilitação avançadas e orientará pacientes e familiares. Também trabalhará em equipe multidisciplinar, manterá registros clínicos atualizados e participará de programas de educação continuada.\n\nBuscamos um profissional que combine conhecimento técnico com sensibilidade humana, contribuindo para a recuperação e bem-estar de pacientes com diferentes necessidades.",
         skillsTags: ["Fisioterapia", "Reabilitação", "Avaliação Clínica", "Cinesioterapia", "Eletroterapia", "Anatomia", "Atendimento Humanizado"],
         supportTags: ["Rampa hospitalar", "Elevador", "Banheiro adaptado", "Sinalização em Braille", "Cadeira ergonômica", "Apoio psicológico"],
         compatibility: 86
@@ -383,10 +317,7 @@ export const mockJobs: JobData[] = [
         location: "Salvador, BA",
         type: "CLT - Híbrido",
         shortDescription: "Ofereça suporte psicológico especializado a pacientes, familiares e equipe em hospital inclusivo. Trabalhe com psicologia hospitalar, atendimento a PCDs e saúde mental, em ambiente que valoriza diversidade e oferece recursos adaptativos para profissionais e pacientes com deficiência.",
-        description1Title: "Saúde Mental Inclusiva",
-        description1Content: "Junte-se à nossa equipe de saúde mental em um hospital que é referência em cuidados inclusivos. Você oferece suporte psicológico especializado, trabalhando com diversidade e inclusão. Oferecemos ambiente de trabalho adaptado e oportunidades de especialização em psicologia inclusiva.",
-        description2Title: "Atendimento Psicológico",
-        description2Content: "Realizar atendimentos psicológicos individuais e em grupo, oferecer suporte a pacientes com deficiência, orientar familiares em processos de adaptação, colaborar com equipe multidisciplinar, desenvolver programas de saúde mental inclusiva, participar de discussões de casos clínicos.",
+        description: "Junte-se à nossa equipe de saúde mental em um hospital que é referência em cuidados inclusivos, oferecendo suporte psicológico especializado e trabalhando com diversidade e inclusão. Oferecemos ambiente de trabalho adaptado e oportunidades de especialização em psicologia inclusiva.\n\nComo Psicólogo Hospitalar, você realizará atendimentos psicológicos individuais e em grupo, oferecerá suporte especializado a pacientes com deficiência, orientará familiares em processos de adaptação e colaborará com equipe multidisciplinar. Também desenvolverá programas de saúde mental inclusiva e participará de discussões de casos clínicos.\n\nProcuramos um profissional que combine expertise clínica com sensibilidade para diversidade, promovendo saúde mental em um ambiente verdadeiramente inclusivo.",
         skillsTags: ["Psicologia Clínica", "Psicologia Hospitalar", "Terapia Cognitiva", "Avaliação Psicológica", "Saúde Mental", "Atendimento Inclusivo", "Comunicação Terapêutica"],
         supportTags: ["Rampa hospitalar", "Elevador", "Banheiro adaptado", "Sinalização em Braille", "Cadeira ergonômica", "Apoio psicológico"],
         compatibility: 79
@@ -400,10 +331,7 @@ export const mockJobs: JobData[] = [
         location: "Brasília, DF",
         type: "CLT - Presencial",
         shortDescription: "Auxilie consultores no atendimento a clientes com necessidades especiais de investimento. Organize carteiras, prepare relatórios e dê suporte operacional em consultoria que valoriza inclusão, oferecendo escritório adaptado, software financeiro acessível e crescimento profissional estruturado.",
-        description1Title: "Suporte Especializado",
-        description1Content: "Junte-se à nossa equipe de investimentos como assistente em uma consultoria que prioriza a inclusão financeira. Você dará suporte direto aos consultores no atendimento a clientes diversos. Oferecemos treinamento especializado e ambiente de trabalho totalmente adaptado para profissionais PCDs.",
-        description2Title: "Operações Financeiras",
-        description2Content: "Auxiliar consultores no atendimento a clientes, organizar documentação de investimentos, preparar relatórios de performance, acompanhar movimentações de carteiras, dar suporte em apresentações, manter atualização de dados de clientes, colaborar em processos operacionais.",
+        description: "Junte-se à nossa equipe de investimentos como assistente em uma consultoria que prioriza a inclusão financeira, dando suporte direto aos consultores no atendimento a clientes diversos. Oferecemos treinamento especializado e ambiente de trabalho totalmente adaptado para profissionais PCDs.\n\nComo Assistente de Investimentos, você auxiliará consultores no atendimento a clientes, organizará documentação de investimentos, preparará relatórios de performance e acompanhará movimentações de carteiras. Também dará suporte em apresentações, manterá atualização de dados de clientes e colaborará em processos operacionais.\n\nBuscamos um profissional organizado e detalhista, que queira crescer no mercado financeiro contribuindo para a inclusão financeira de todos os clientes.",
         skillsTags: ["Mercado Financeiro", "Excel Avançado", "Atendimento ao Cliente", "Organização", "Comunicação", "Análise de Dados", "Produtos Financeiros"],
         supportTags: ["Escritório adaptado", "Software financeiro acessível", "Mesa ajustável", "Monitor duplo", "Horário flexível", "Vale transporte especial"],
         compatibility: 74
@@ -417,10 +345,7 @@ export const mockJobs: JobData[] = [
         location: "Brasília, DF",
         type: "CLT - Híbrido",
         shortDescription: "Avalie riscos de investimentos e desenvolva modelos de análise para carteiras inclusivas. Trabalhe com matemática financeira, estatística e ferramentas de risco em consultoria pioneira em produtos financeiros acessíveis, com tecnologias assistivas e políticas flexíveis para PCDs.",
-        description1Title: "Gestão de Riscos",
-        description1Content: "Procuramos analista de riscos para integrar nossa equipe de gestão de investimentos inclusivos. Você será responsável por avaliar e monitorar riscos de carteiras diversificadas. Oferecemos ambiente de trabalho híbrido e ferramentas tecnológicas avançadas adaptadas para acessibilidade.",
-        description2Title: "Análise Quantitativa",
-        description2Content: "Desenvolver modelos de análise de risco, monitorar indicadores de performance, avaliar volatilidade de carteiras, criar relatórios de risco detalhados, colaborar com equipe de investimentos, implementar controles de risco, manter atualização sobre regulamentações financeiras.",
+        description: "Procuramos analista de riscos para integrar nossa equipe de gestão de investimentos inclusivos, sendo responsável por avaliar e monitorar riscos de carteiras diversificadas. Oferecemos ambiente de trabalho híbrido e ferramentas tecnológicas avançadas adaptadas para acessibilidade.\n\nComo Analista de Riscos, você desenvolverá modelos de análise de risco, monitorará indicadores de performance, avaliará volatilidade de carteiras e criará relatórios de risco detalhados. Também colaborará com equipe de investimentos, implementará controles de risco e manter-se-á atualizado sobre regulamentações financeiras.\n\nProcuramos um profissional analítico que combine rigor matemático com visão estratégica, protegendo investimentos e promovendo segurança financeira inclusiva.",
         skillsTags: ["Análise de Riscos", "Matemática Financeira", "Estatística", "Excel Avançado", "VaR", "Mercado Financeiro", "Modelagem Quantitativa"],
         supportTags: ["Escritório adaptado", "Software financeiro acessível", "Mesa ajustável", "Monitor duplo", "Horário flexível", "Vale transporte especial"],
         compatibility: 82
@@ -434,10 +359,7 @@ export const mockJobs: JobData[] = [
         location: "Brasília, DF",
         type: "CLT - Presencial",
         shortDescription: "Gerencie conformidade regulatória e processos de compliance em consultoria financeira inclusiva. Desenvolva políticas, treinamentos e controles internos garantindo aderência às normas, em ambiente que promove diversidade com tecnologias assistivas e oportunidades de liderança para PCDs.",
-        description1Title: "Conformidade Regulatória",
-        description1Content: "Junte-se à nossa equipe como coordenador de compliance em uma consultoria que valoriza ética e inclusão. Você será responsável por garantir conformidade com regulamentações financeiras e desenvolver cultura de compliance inclusiva. Oferecemos oportunidades de liderança e crescimento.",
-        description2Title: "Gestão de Compliance",
-        description2Content: "Desenvolver políticas de compliance inclusivas, monitorar aderência a regulamentações CVM e BACEN, conduzir treinamentos sobre ética e compliance, gerenciar processos de auditoria interna, elaborar relatórios regulatórios, manter relacionamento com órgãos reguladores, liderar equipe de compliance.",
+        description: "Junte-se à nossa equipe como coordenador de compliance em uma consultoria que valoriza ética e inclusão, sendo responsável por garantir conformidade com regulamentações financeiras e desenvolver cultura de compliance inclusiva. Oferecemos oportunidades de liderança e crescimento.\n\nComo Coordenador de Compliance, você desenvolverá políticas de compliance inclusivas, monitorará aderência a regulamentações CVM e BACEN, conduzirá treinamentos sobre ética e compliance e gerenciará processos de auditoria interna. Também elaborará relatórios regulatórios, manterá relacionamento com órgãos reguladores e liderará equipe de compliance.\n\nBuscamos um líder ético que combine conhecimento regulatório com visão inclusiva, garantindo conformidade que protege e promove oportunidades para todos.",
         skillsTags: ["Compliance", "Regulamentação Financeira", "CVM", "BACEN", "Auditoria", "Gestão de Riscos", "Liderança"],
         supportTags: ["Escritório adaptado", "Software financeiro acessível", "Mesa ajustável", "Monitor duplo", "Horário flexível", "Vale transporte especial"],
         compatibility: 87

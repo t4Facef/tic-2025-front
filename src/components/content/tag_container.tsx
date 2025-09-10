@@ -71,7 +71,7 @@ export default function TagContainer({ children, edit = false, tags = [] }: TagC
                             <button 
                                 type="button"
                                 onClick={handleAddTag}
-                                className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-200 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
+                                className="ml-2 text-blue3 hover:text-blue3H hover:bg-blue1 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
                             >
                                 +
                             </button>

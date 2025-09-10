@@ -44,8 +44,9 @@ export default function JobModal({
             </div>
           </div>
           <div className="my-3">
-            <TextSection title={jobData.description1Title} id="1">{jobData.description1Content}</TextSection>
-            <TextSection title={jobData.description2Title} id="2">{jobData.description2Content}</TextSection>
+            <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+              {jobData.description}
+            </div>
           </div>
           <div>
             <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>

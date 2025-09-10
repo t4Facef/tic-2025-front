@@ -1,6 +1,7 @@
 import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
+import MarkdownEditor from "../components/forms/markdown_editor";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
   
@@ -8,9 +9,15 @@ export default function JobForm() {
   const { id } = useParams();
   const isEditing = Boolean(id);
   const [salario, setSalario] = useState("R$ ");
+  const [description, setDescription] = useState("");
 
   const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setSalario(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    console.log("Descrição HTML:", description);
+    // Aqui você salvaria no banco
   };
 
   return (
@@ -33,9 +40,12 @@ export default function JobForm() {
             Fim das inscrições
           </GenericFormField>
         </div>
-        <GenericFormField id="job_description" type="textarea" placeholder="Descreva sua vaga aqui...">
-          Descrição da vaga
-        </GenericFormField>  
+        <MarkdownEditor
+          value={description}
+          onChange={setDescription}
+          placeholder="Descreva sua vaga aqui..."
+          label="Descrição da vaga"
+        />  
         <GenericFormField 
           id="job_salary" 
           type="currency" 
@@ -67,7 +77,7 @@ export default function JobForm() {
         </TagContainer>
       </div>
       <div className="flex justify-end p-4">
-        <GenericBlueButton color={3}>{isEditing ? 'Salvar Alterações' : 'Cadastrar Vaga'}</GenericBlueButton>
+        <GenericBlueButton color={3} onClick={handleSubmit}>{isEditing ? 'Salvar Alterações' : 'Cadastrar Vaga'}</GenericBlueButton>
       </div>
     </form>
     </div>
