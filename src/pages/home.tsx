@@ -37,9 +37,9 @@ export default function Home(){
             </div>
             <div className="flex flex-col px-8 items-center">
                 <div className="flex flex-col items-end px-36">
-                    <JobPosition jobData={mockJobs[0]}/>
-                    <JobPosition jobData={mockJobs[1]}/>
-                    <JobPosition jobData={mockJobs[2]}/>
+                    <JobPosition jobData={mockJobs[6]}/>
+                    <JobPosition jobData={mockJobs[7]}/>
+                    <JobPosition jobData={mockJobs[8]}/>
                     <div className="my-6">
                         <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
                     </div>
