@@ -37,7 +37,7 @@ export default function JobModal({
           <div className="flex flex-1 justify-between">
             <div className="flex-[7]">
               <h2 className="text-xl font-bold mb-4 text-[70px] py-7">{jobData.title}</h2>
-              <div className="">{jobData.shortDescription}</div>
+              <div className="">{jobData.description.split('\n')[0]}</div>
             </div>
             <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black overflow-hidden">
               <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>

@@ -11,6 +11,10 @@ interface JobPositionProps {
 export default function JobPosition({ jobData }: JobPositionProps) {
   const [open, setOpen] = useState(false);
 
+  if (!jobData) {
+    return null;
+  }
+
   return (
     <>
       <div className={`w-full flex pt-8 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
@@ -24,7 +28,7 @@ export default function JobPosition({ jobData }: JobPositionProps) {
           </div>
 
           <div className="bg-blue1 border-blue3 border-2 flex-[3] overflow-auto p-2 break-words rounded-br-md">
-            <p className="font-georgia">{jobData.shortDescription}</p>
+            <p className="font-georgia">{jobData.description.split('\n')[0]}</p>
           </div>
         </div>
       </div>
