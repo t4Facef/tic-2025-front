@@ -35,7 +35,7 @@ export default function PerfilContentSection({title, info, description}: PerfilC
                 <hr className="border-black mb-6"/>
                 <div className="space-y-4 mt-4">
                     {info.map((item, index) => (
-                        <div key={index} className="p-4 border border-blue3 bg-blue1 rounded-lg">
+                        <div key={index} className="p-4 bg-blue1 rounded-lg">
                             <div className="py-3">
                                 <p className="text-[13px]">{item.formationType}</p>
                                 <p className="text-[22px] font-medium">{item.course} - {item.institut}</p>
