@@ -17,7 +17,7 @@ export default function JobPosition({ jobData }: JobPositionProps) {
 
   return (
     <>
-      <div className={`w-full flex pt-8 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
+      <div className={`w-full flex cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
         <div className="w-28 h-28 bg-blue2 border-blue3 border-2 rounded-l-md"> 
           <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
         </div>

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import TextSection from "./text_section";
 import TagContainer from "./tag_container";
 import ProfileLink from "../profile/profile_link";
 import { JobData } from "../../data/mockdata/jobs";
@@ -31,7 +30,7 @@ export default function JobModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4 space-y-8" onClick={onClose}>
       <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto">
           <div className="flex flex-1 justify-between">
@@ -48,7 +47,7 @@ export default function JobModal({
               {jobData.description}
             </div>
           </div>
-          <div>
+          <div className="space-y-8">
             <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
             <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
           </div>
