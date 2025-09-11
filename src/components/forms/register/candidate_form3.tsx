@@ -4,8 +4,12 @@
 // [TODO] - Adicionar "nome do curso" dependendo da resposta do tipo de formação
 
 import GenericFormField from "../generic_form_field";
+import { useState } from "react";
 
 export default function CandidateForm3() {
+    const [stillWorking, setStillWorking] = useState(false);
+    const [stillStudying, setStillStudying] = useState(false);
+
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Perfil Profissional</h2>
@@ -23,12 +27,23 @@ export default function CandidateForm3() {
                         </div>
                     </div>
                     <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso">Nome do Curso</GenericFormField>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-end">
                         <div>
                             <GenericFormField id="candidate_education_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_education_end_date_register" type="date">Data de Conclusão</GenericFormField>
+                            <GenericFormField id="candidate_education_end_date_register" type="date" disabled={stillStudying}>Data de Conclusão</GenericFormField>
+                        </div>
+                        <div className="pb-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="checkbox" 
+                                    checked={stillStudying}
+                                    onChange={(e) => setStillStudying(e.target.checked)}
+                                    className="w-4 h-4"
+                                />
+                                <span className="text-sm">Ainda estudo aqui</span>
+                            </label>
                         </div>
                     </div>
                     <GenericFormField id="candidate_education_institution_register" placeholder="Digite o nome da instituição de ensino">Instituição de Ensino</GenericFormField>
@@ -47,12 +62,23 @@ export default function CandidateForm3() {
                         </div>
                     </div>
                     <GenericFormField id="candidate_company_name_register" placeholder="Digite o nome da empresa">Empresa</GenericFormField>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-end">
                         <div>
                             <GenericFormField id="candidate_job_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_job_end_date_register" type="date">Data de Saída</GenericFormField>
+                            <GenericFormField id="candidate_job_end_date_register" type="date" disabled={stillWorking}>Data de Saída</GenericFormField>
+                        </div>
+                        <div className="pb-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                    type="checkbox" 
+                                    checked={stillWorking}
+                                    onChange={(e) => setStillWorking(e.target.checked)}
+                                    className="w-4 h-4"
+                                />
+                                <span className="text-sm">Ainda trabalho aqui</span>
+                            </label>
                         </div>
                     </div>
                     <GenericFormField id="candidate_job_description_register" type="textarea" placeholder="Descreva suas principais atividades e responsabilidades">Descrição das Atividades</GenericFormField>
