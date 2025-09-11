@@ -1,3 +1,5 @@
+// [TODO] - Para a pré visualização, pegar também a foto de perfil da empresa e as formas de suporte
+
 import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
@@ -15,14 +17,14 @@ export default function JobForm() {
 
   const [dataForm, setDataForm] = useState<JobData>({
     id: 0,
-    idEmpresa: 0,
+    idEmpresa: 1,
     title: '',
-    company: '',
-    companyLogo: '',
+    company: 'TechCorp Solutions',
+    companyLogo: '/img/logosTeste/teste1.jpeg',
     location: '',
     description: '',
     skillsTags: [],
-    supportTags: [],
+    supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
     compatibility: 0,
     startDate: new Date(),
     endDate: new Date(),
@@ -129,6 +131,14 @@ export default function JobForm() {
               onChange={(tags) => setDataForm(prev => ({ ...prev, skillsTags: tags }))}
             >
               Habilidades
+            </TagContainer>
+            
+            <TagContainer
+              tags={dataForm.supportTags}
+              edit={true}
+              onChange={(tags) => setDataForm(prev => ({ ...prev, supportTags: tags }))}
+            >
+              Apoio da Empresa
             </TagContainer>
           </div>
           <div className="flex justify-end p-4">
