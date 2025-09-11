@@ -28,7 +28,10 @@ export default function JobPosition({ jobData }: JobPositionProps) {
           </div>
 
           <div className="bg-blue1 border-blue3 border-2 flex-[3] overflow-auto p-2 break-words rounded-br-md">
-            <p className="font-georgia">{jobData.description.split('\n')[0]}</p>
+            <p className="font-georgia">
+              {jobData.description.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').substring(0, 360)}
+              {jobData.description.length > 360 ? '...' : ''}
+            </p>
           </div>
         </div>
       </div>

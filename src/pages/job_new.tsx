@@ -35,6 +35,12 @@ export default function JobForm() {
 
   const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setSalario(e.target.value);
+    setDataForm(prev => ({ ...prev, payment: e.target.value }))
+  };
+
+  const handleDescriptionChange = (value: string) => {
+    setDescription(value);
+    setDataForm(prev => ({ ...prev, description: value }));
   };
 
   const handleSubmit = () => {
@@ -64,7 +70,7 @@ export default function JobForm() {
             </div>
             <MarkdownEditor
               value={description}
-              onChange={setDescription}
+              onChange={handleDescriptionChange}
               placeholder="Descreva sua vaga aqui..."
               label="Descrição da vaga"
             />
@@ -81,11 +87,12 @@ export default function JobForm() {
               id="job_level"
               type="select"
               options={["Estágio", "Júnior", "Pleno", "Sênior"]}
+              onChange={e => setDataForm(prev => ({ ...prev, workLevel: e.target.value }))}
             >
               Nível da vaga
             </GenericFormField>
-            <GenericFormField id="job_workload" type="text" placeholder="Horas">
-              Carga Horária
+            <GenericFormField id="job_workload" type="text" placeholder="Digite o horário de trabalho para o candidato" onChange={e => setDataForm(prev => ({ ...prev, timeShift: e.target.value }))}>
+              Horário de trabalho
             </GenericFormField>
             <div>
               <p>Caracteristicas da vaga</p>
@@ -108,7 +115,19 @@ export default function JobForm() {
                 </GenericFormField>
               </div>
             </div>
-            <TagContainer tags={[]} edit={true}>
+            {["Presencial", "Híbrido"].includes(dataForm.typeWork) &&
+              <div>
+                <GenericFormField id="job_location" type="text" placeholder="Digite o a cidade onde será a vaga presencial" onChange={e => setDataForm(prev => ({...prev, location: e.target.value}))}>
+                  Local de Trabalho
+                </GenericFormField>
+              </div>
+            }
+
+            <TagContainer
+              tags={dataForm.skillsTags}
+              edit={true}
+              onChange={(tags) => setDataForm(prev => ({ ...prev, skillsTags: tags }))}
+            >
               Habilidades
             </TagContainer>
           </div>

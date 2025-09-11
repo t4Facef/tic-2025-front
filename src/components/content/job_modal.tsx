@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import TagContainer from "./tag_container";
 import ProfileLink from "../profile/profile_link";
+import MarkdownRenderer from "./markdown_renderer";
 import { JobData } from "../../data/mockdata/jobs";
 
 interface JobModalProps {
@@ -34,23 +35,23 @@ export default function JobModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4" onClick={onClose}>
       <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-6">
-          <div className="flex justify-between">
-            <div className="flex-[7] space-y-4">
+        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-3">
+          <div className="flex justify-between items-center">
+            <div className="flex-[7] text-center">
               <div className="space-y-1">
                 <h2 className="font-bold text-4xl">{jobData.title}</h2>
                 <p className="text-xs">Período de Inscrição: {jobData.startDate.toLocaleDateString('pt-BR')} até {jobData.endDate.toLocaleDateString('pt-BR')}</p>
               </div>
-              <div>{jobData.description.split('\n')[0]}</div>
             </div>
             <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black overflow-hidden">
               <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
             </div>
           </div>
 
-          <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-            {jobData.description}
-          </div>
+          <MarkdownRenderer 
+            content={jobData.description} 
+            className="text-gray-700 leading-relaxed text-justify"
+          />
 
           <div className="space-y-2">
             <p className="font-medium">Características da vaga</p>

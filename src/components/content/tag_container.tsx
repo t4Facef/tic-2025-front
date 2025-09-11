@@ -7,20 +7,25 @@ interface TagContainerProps {
     children: ReactNode;
     edit?: boolean;
     tags?: string[];
+    onChange?: (tags: string[]) => void;
 }
 
-export default function TagContainer({ children, edit = false, tags = [] }: TagContainerProps) {
+export default function TagContainer({ children, edit = false, tags = [], onChange }: TagContainerProps) {
     const [currentTags, setCurrentTags] = useState(tags);
     const [newTagText, setNewTagText] = useState("");
 
     const handleRemoveTag = (indexToRemove: number) => {
-        setCurrentTags(currentTags.filter((_, index) => index !== indexToRemove));
+        const newTags = currentTags.filter((_, index) => index !== indexToRemove);
+        setCurrentTags(newTags);
+        onChange?.(newTags);
     };
 
     const handleAddTag = () => {
         if (newTagText.trim()) {
-            setCurrentTags([...currentTags, newTagText.trim()]);
+            const newTags = [...currentTags, newTagText.trim()];
+            setCurrentTags(newTags);
             setNewTagText("");
+            onChange?.(newTags);
         }
     };
 
@@ -33,6 +38,7 @@ export default function TagContainer({ children, edit = false, tags = [] }: TagC
 
     const handleClearAll = () => {
         setCurrentTags([]);
+        onChange?.([]);
     };
 
     return (
