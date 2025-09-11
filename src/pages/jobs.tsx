@@ -6,7 +6,7 @@ import SearchBox from "../components/content/search_box";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import mockJobs from "../data/mockdata/jobs";
 
-export default function Jobs(){
+export default function Jobs() {
     return (
         <div className="flex flex-1">
             <div className="min-w-36 sm:min-w-40 md:min-w-44">
@@ -22,28 +22,31 @@ export default function Jobs(){
                     </div>
                 </div>
             </div>
-            <div className="flex-1 flex flex-col items-center mt-7 px-36">
-                <div>
-                    <SearchBox/>
-                <div>
-                    <JobPosition jobData={mockJobs[1]}/>
-                    <JobPosition jobData={mockJobs[2]}/>
-                    <JobPosition jobData={mockJobs[3]}/>
-                    <JobPosition jobData={mockJobs[4]}/>
-                    <JobPosition jobData={mockJobs[5]}/>
-                </div>
-                <div className="flex font-semibold my-4">
-                    <ChevronLeft/>
-                    <nav className="flex space-x-3">
-                        <a href="/1">1</a>
-                        <a href="/1">2</a>
-                        <a href="/1">3</a>
-                        <a href="/1">4</a>
-                        <a href="/1">5</a>
-                        <a href="/i">...</a>
-                    </nav>
-                    <ChevronRight/>
-                </div>
+            <div className="flex-1 flex flex-col items-center my-7 px-36">
+                <div className="space-y-8">
+                    <SearchBox />
+                    <div>
+                        <div className="space-y-8">
+                            <JobPosition jobData={mockJobs[1]} />
+                            <JobPosition jobData={mockJobs[2]} />
+                            <JobPosition jobData={mockJobs[3]} />
+                            <JobPosition jobData={mockJobs[4]} />
+                            <JobPosition jobData={mockJobs[5]} />
+
+                        </div>
+                        <div className="flex font-semibold my-4">
+                            <ChevronLeft />
+                            <nav className="flex space-x-3">
+                                <a href="/1">1</a>
+                                <a href="/1">2</a>
+                                <a href="/1">3</a>
+                                <a href="/1">4</a>
+                                <a href="/1">5</a>
+                                <a href="/i">...</a>
+                            </nav>
+                            <ChevronRight />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

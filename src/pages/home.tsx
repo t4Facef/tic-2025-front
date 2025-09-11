@@ -5,7 +5,7 @@ import mockJobs from "../data/mockdata/jobs"
 
 const companyIds = [1, 2, 3, 4, 5]; // IDs das empresas
 
-export default function Home(){
+export default function Home() {
     return (
         <div>
             <section className="relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
@@ -19,14 +19,13 @@ export default function Home(){
                             <p className="text-gray-700 text-base sm:text-lg mb-4">
                                 Nosso site nasceu com a missão de aproximar pessoas e oportunidades, promovendo inclusão e acessibilidade no mercado de trabalho. Sabemos que encontrar vagas pode ser um desafio para profissionais com deficiência, assim como para empresas que desejam contratar e não sabem por onde começar. Por isso, criamos um espaço simples e intuitivo, onde candidatos podem descobrir vagas pensadas especialmente para PCDs e empresas comprometidas com a diversidade podem encontrar talentos qualificados. Mais do que conectar currículos a oportunidades, queremos construir pontes que incentivem práticas justas, humanas e inclusivas. Acreditamos que cada pessoa tem muito a oferecer e que ambientes diversos transformam a vida profissional e social de todos. Se você é candidato, cadastre seu perfil e explore novas possibilidades; se é empresa, publique suas vagas e faça parte dessa rede que valoriza a inclusão.
                             </p>
-                            
                         </div>
                         <div className="flex-[3] flex justify-between flex-col">
                             <div>
-                                <img className="" src="./img/homepage/Teste.png" alt="home-img-2"/>
+                                <img className="" src="./img/homepage/Teste.png" alt="home-img-2" />
                             </div>
                             <div className="flex justify-end items-end">
-                                <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton> 
+                                <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton>
                             </div>
                         </div>
                     </div>
@@ -35,14 +34,12 @@ export default function Home(){
             <div >
                 <CompaniesRow companyIds={companyIds} />
             </div>
-            <div className="flex flex-col px-8 items-center">
-                <div className="flex flex-col items-end px-36">
-                    <JobPosition jobData={mockJobs[6]}/>
-                    <JobPosition jobData={mockJobs[7]}/>
-                    <JobPosition jobData={mockJobs[8]}/>
-                    <div className="my-6">
-                        <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
-                    </div>
+            <div className="flex flex-col px-8 items-center my-8">
+                <div className="flex flex-col items-end px-36 space-y-8">
+                    <JobPosition jobData={mockJobs[6]} />
+                    <JobPosition jobData={mockJobs[7]} />
+                    <JobPosition jobData={mockJobs[8]} />
+                    <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
                 </div>
             </div>
         </div>

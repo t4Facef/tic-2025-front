@@ -25,7 +25,7 @@ function CompanyImage({ id, basePath = "./img/logosTeste", extensions = ["jpeg",
     return (
         <button 
             onClick={() => navigate(`/companies/${id}/profile`)}
-            className="transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
+            className="transition-all duration-300 ease-in-out hover:scale-110"
         >
             <img 
                 src={`${basePath}/teste${id}.${extensions[0]}`}

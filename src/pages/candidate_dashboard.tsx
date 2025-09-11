@@ -30,12 +30,12 @@ export default function CandidateDashboard(){
                             </div>
                         </div>
                         <p className="pt-12">Recomendações de vaga para você</p>
-                        <div className="flex flex-col justify-center items-center bg-blue1 mb-12 px-10">
-                            <div className="flex flex-col items-end px-3">
+                        <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
+                            <div className="flex flex-col items-end px-3 space-y-6">
                                 <JobPosition jobData={mockJobs[9]}/>
                                 <JobPosition jobData={mockJobs[8]}/>
                                 <JobPosition jobData={mockJobs[7]}/>
-                                <div className="py-5">
+                                <div>
                                     <GenericBlueButton color={3} link="/jobs">Ver mais</GenericBlueButton>
                                 </div>
                             </div>
