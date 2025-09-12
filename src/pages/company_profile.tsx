@@ -5,62 +5,67 @@
 
 import TagContainer from "../components/content/tag_container";
 import InfoList from "../components/content/info_list";
+import { useParams } from "react-router-dom";
+import { mockCompanies } from "../data/mockdata/companies";
+import NotFoundScreen from "../components/content/not_found_screen";
 
-export default function CompanyProfile(){
-    return (
-        <div className="p-12 px-60">
-            <div className="flex items-center">
-                <img src="/img/profile-default.png" alt="Profile-pic" className="rounded-full border border-black w-52 h-52 mr-7"/>
-                <div className="mt-4">
-                    <h1 className="font-bold text-4xl">Company Name</h1>
-                    <p className="mt-3 text-justify">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae autem aliquid nostrum sint asperiores maiores quas accusamus delectus obcaecati, ipsam, ratione excepturi, error molestiae unde deserunt! Nam sed quas dicta?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum, itaque ipsa, vel veritatis odio perferendis architecto omnis accusantium illum, dolore expedita laborum sed? Consequatur eum culpa, ea aliquid unde sequi.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quo molestiae, debitis odit nisi beatae natus ipsum praesentium sed, doloribus maiores accusantium, delectus dolores. Deserunt accusamus dolores repellat natus rerum.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem cumque dolorem possimus ab magni nihil facilis praesentium nostrum natus, incidunt rem, dolores magnam expedita? Iste totam molestias dolore fugiat aliquam!
-                    </p>
-                </div>
-            </div>
-            <div>
-                <div className="mt-8">
-                    <h2 className="font-semibold">Nossa História</h2>
-                    <div className="flex mt-3">
-                        <p className="text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque placeat sit qui quia enim aliquam quidem temporibus mollitia eum, eveniet maxime atque unde maiores harum tenetur incidunt vitae saepe distinctio.
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia accusamus, vitae labore ipsum voluptate blanditiis veniam temporibus ullam deserunt, ad tempore tenetur architecto fuga adipisci quidem? Et labore assumenda similique?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi vitae rerum deleniti culpa voluptate, in ut non optio architecto magnam voluptates voluptatem, officia corporis repudiandae, earum explicabo perspiciatis voluptatum molestiae.
-                        </p>
-                        <img src="/img/tester.png" alt="retangulo-de-teste" className="w-72 ml-3"/>
+export default function CompanyProfile() {
+    const { id } = useParams()
+
+    const companie = mockCompanies.find(comp => comp.id === Number(id))
+
+    if (companie) {
+        return (
+            <div className="p-12 px-60">
+                <div className="flex items-center">
+                    <img src={companie.logo} alt="Profile-pic" className="rounded-full border border-black w-52 h-52 mr-7" />
+                    <div className="mt-4">
+                        <h1 className="font-bold text-4xl">{companie.name}</h1>
+                        <p className="mt-3 text-justify">{companie.description}</p>
                     </div>
                 </div>
-                <div className="my-8">
-                    <h2 className="font-semibold">Missão e Valor</h2>
-                    <div className="flex mt-3">
-                        <img src="/img/tester.png" alt="retangulo-de-teste" className="w-72 mr-3"/>
-                        <p className="text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque placeat sit qui quia enim aliquam quidem temporibus mollitia eum, eveniet maxime atque unde maiores harum tenetur incidunt vitae saepe distinctio.
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia accusamus, vitae labore ipsum voluptate blanditiis veniam temporibus ullam deserunt, ad tempore tenetur architecto fuga adipisci quidem? Et labore assumenda similique?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi vitae rerum deleniti culpa voluptate, in ut non optio architecto magnam voluptates voluptatem, officia corporis repudiandae, earum explicabo perspiciatis voluptatum molestiae.
-                        </p>
+                <div>
+                    <div className="mt-8">
+                        <h2 className="font-semibold">Nossa História</h2>
+                        <div className="flex mt-3">
+                            <p className="text-justify">{companie.history}</p>
+                            <img src={companie.img1} alt="Imagem-empresa-1" className="w-72 ml-3" />
+                        </div>
+                    </div>
+                    <div className="my-8">
+                        <h2 className="font-semibold">Missão e Valor</h2>
+                        <div className="flex mt-3">
+                            <img src={companie.img2} alt="Imagem-empresa-2" className="w-72 mr-3" />
+                            <p className="text-justify">{companie.mission}</p>
+                        </div>
                     </div>
                 </div>
+                <div className="bg-blue1 flex justify-between p-6 my-6">
+                    <InfoList items={[
+                        { label: "Localização", value: companie.location },
+                        { label: "Ano de Fundação", value: String(companie.foundedYear) },
+                        { label: "Área de Atuação", value: companie.sector }
+                    ]} />
+                    <InfoList items={[
+                        { label: "Funcionários", value: companie.employeeCount },
+                        { label: "Nivel de Acessibilidade", value: companie.acessibilityLevel },
+                        { label: "Site", value: companie.website }
+                    ]} />
+                </div>
+                <div className="mt-5">
+                    <TagContainer tags={companie.supportTags}>Capacidade de Apoio</TagContainer>
+                </div>
+                <img src="/img/tester.png" alt="" className="py-6 h-96 w-full object-cover" />
             </div>
-            <div className="bg-blue1 flex justify-between p-6 my-6">
-                <InfoList items={[
-                    { label: "Localização", value: "São Paulo, SP" },
-                    { label: "Tempo de Atuação", value: "15 anos" },
-                    { label: "Área de Atuação", value: "Tecnologia" }
-                ]} />
-                <InfoList items={[
-                    { label: "Funcionários", value: "500+" },
-                    { label: "Nivel de Acessibilidade", value: "Alto" },
-                    { label: "Site", value: "www.empresa.com" }
-                ]} />
-            </div>
-            <div className="mt-5">
-                <TagContainer tags={["lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum", "lorem", "ipsum"]}>Capacidade de Apoio</TagContainer>
-            </div>
-            <img src="/img/tester.png" alt="" className="py-6 h-96 w-full object-cover"/>
-        </div>
-    )
+        )
+    }
+    else {
+        return (
+            <NotFoundScreen
+                title="Empresa não encontrada"
+                message="O perfil que você está procurando não existe ou foi removido."
+                icon="👤"
+            />
+        )
+    }
 }

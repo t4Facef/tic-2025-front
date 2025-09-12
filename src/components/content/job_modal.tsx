@@ -1,4 +1,5 @@
 // [TODO] - Fazer com que os campos só apareçam na visualização se existir o dado no banco (pra evitar ficar espaço vazio)
+// [TODO] - Adicionar uma view diferente caso seja um usuario não logado, logado e dono da vaga
 
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -36,7 +37,7 @@ export default function JobModal({
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4" style={{ zIndex: 9999 }} onClick={onClose}>
       <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-3">
+        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-6">
           <div className="flex justify-between items-center">
             <div className="flex-[7] text-center">
               <div className="space-y-1">
@@ -72,7 +73,7 @@ export default function JobModal({
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
             <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
           </div>
@@ -83,8 +84,8 @@ export default function JobModal({
         </div>
 
         <div className="flex w-full">
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-1" onClick={onClose}>Fechar</button>
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-1 " onClick={onClose}>Inscrever</button>
+          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>
+          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2 " onClick={onClose}>Inscrever</button>
         </div>
       </div>
     </div>,
