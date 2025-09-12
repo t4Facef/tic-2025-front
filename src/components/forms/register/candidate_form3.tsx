@@ -26,7 +26,6 @@ interface CandidateForm3Data {
 
 export default function CandidateForm3() {
     const [stillWorking, setStillWorking] = useState(false);
-    const [stillStudying, setStillStudying] = useState(false);
     
     const [formData, setFormData] = useState<CandidateForm3Data>({
         workArea: '',
@@ -56,16 +55,6 @@ export default function CandidateForm3() {
         }
     }
 
-    function handleStillStudying(e: React.ChangeEvent<HTMLInputElement>){
-        setStillStudying(e.target.checked)
-        if (e.target.checked) {
-            const today = new Date().toISOString().split('T')[0];
-            setFormData(prev => ({ ...prev, educationEndDate: today }));
-        } else {
-            setFormData(prev => ({ ...prev, educationEndDate: '' }));
-        }
-    }
-
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Perfil Profissional</h2>
@@ -83,23 +72,12 @@ export default function CandidateForm3() {
                         </div>
                     </div>
                     <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso">Nome do Curso</GenericFormField>
-                    <div className="flex gap-4 items-end">
+                    <div className="flex gap-4">
                         <div>
                             <GenericFormField id="candidate_education_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_education_end_date_register" type="date" disabled={stillStudying} value={formData.educationEndDate}>Data de Conclusão</GenericFormField>
-                        </div>
-                        <div className="pb-2">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input 
-                                    type="checkbox" 
-                                    checked={stillStudying}
-                                    onChange={(e) => handleStillStudying(e)}
-                                    className="w-4 h-4"
-                                />
-                                <span className="text-sm">Ainda estudo aqui</span>
-                            </label>
+                            <GenericFormField id="candidate_education_end_date_register" type="date">Data de Término Prevista</GenericFormField>
                         </div>
                     </div>
                     <GenericFormField id="candidate_education_institution_register" placeholder="Digite o nome da instituição de ensino">Instituição de Ensino</GenericFormField>
@@ -123,7 +101,16 @@ export default function CandidateForm3() {
                             <GenericFormField id="candidate_job_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_job_end_date_register" type="date" disabled={stillWorking} value={formData.jobEndDate}>Data de Saída</GenericFormField>
+                            {stillWorking ? (
+                                <div className="flex flex-col w-full">
+                                    <label className="text-left">Data de Saída</label>
+                                    <div className="border border-gray-400 rounded-md p-2 bg-gray-200 text-gray-600">
+                                        Emprego atual
+                                    </div>
+                                </div>
+                            ) : (
+                                <GenericFormField id="candidate_job_end_date_register" type="date">Data de Saída</GenericFormField>
+                            )}
                         </div>
                         <div className="pb-2">
                             <label className="flex items-center gap-2 cursor-pointer">
@@ -144,4 +131,4 @@ export default function CandidateForm3() {
             <GenericFormField id="candidate_curriculum_register" type="file">Anexar Currículo (Opcional)</GenericFormField>
         </form>
     )
-} 
+}
