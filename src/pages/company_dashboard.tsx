@@ -13,6 +13,7 @@ export default function CompanyDashboard() {
 
     if (companyExists) {
         const statistics = mockCompanyStats.find(stat => stat.companyId === companyId)
+        const recentJobs = mockJobs.filter(job => job.idEmpresa === companyId).slice(0, 3)
 
         return (
             <div className="flex flex-col items-center">
@@ -27,18 +28,14 @@ export default function CompanyDashboard() {
                             <p className="pt-12">Vagas Recentes</p>
                             <div className="flex flex-col justify-center items-center bg-blue1 mb-6">
                                 <div className="flex flex-col items-end p-6 space-y-6">
-                                    <JobPosition jobData={mockJobs[1]} />
-                                    <JobPosition jobData={mockJobs[2]} />
-                                    <JobPosition jobData={mockJobs[3]} />
+                                    {recentJobs.map(job => <JobPosition jobData={job}/>)}
                                     <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
                                 </div>
                             </div>
                             <p className="pt-6">Vagas Encerradas</p>
                             <div className="flex flex-col justify-center items-center bg-blue1 mb-12">
                                 <div className="flex flex-col items-end p-6 space-y-6">
-                                    <JobPosition jobData={mockJobs[4]} />
-                                    <JobPosition jobData={mockJobs[5]} />
-                                    <JobPosition jobData={mockJobs[6]} />
+                                    {recentJobs.map(job => <JobPosition jobData={job}/>)}
                                     <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
                                 </div>
                             </div>
