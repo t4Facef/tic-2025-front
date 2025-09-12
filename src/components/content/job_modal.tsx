@@ -1,6 +1,7 @@
 // [TODO] - Fazer com que os campos só apareçam na visualização se existir o dado no banco (pra evitar ficar espaço vazio)
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import TagContainer from "./tag_container";
 import ProfileLink from "../profile/profile_link";
 import MarkdownRenderer from "./markdown_renderer";
@@ -32,8 +33,8 @@ export default function JobModal({
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4" onClick={onClose}>
+  return createPortal(
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4" style={{ zIndex: 9999 }} onClick={onClose}>
       <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-3">
           <div className="flex justify-between items-center">
@@ -81,11 +82,12 @@ export default function JobModal({
           <span className="m-2">Você é {jobData.compatibility}% compatível com essa vaga</span>
         </div>
 
-        <div className="flex">
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl" onClick={onClose}>Fechar</button>
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl" onClick={onClose}>Inscrever</button>
+        <div className="flex w-full">
+          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-1" onClick={onClose}>Fechar</button>
+          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-1 " onClick={onClose}>Inscrever</button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
