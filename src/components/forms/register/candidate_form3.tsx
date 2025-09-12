@@ -6,9 +6,65 @@
 import GenericFormField from "../generic_form_field";
 import { useState } from "react";
 
+interface CandidateForm3Data {
+    workArea: string;
+    educationType: string;
+    educationStatus: string;
+    courseName: string;
+    educationStartDate: string;
+    educationEndDate: string;
+    educationInstitution: string;
+    educationDescription: string;
+    jobTitle: string;
+    jobType: string;
+    companyName: string;
+    jobStartDate: string;
+    jobEndDate: string;
+    jobDescription: string;
+    curriculum: File | null;
+}
+
 export default function CandidateForm3() {
     const [stillWorking, setStillWorking] = useState(false);
     const [stillStudying, setStillStudying] = useState(false);
+    
+    const [formData, setFormData] = useState<CandidateForm3Data>({
+        workArea: '',
+        educationType: '',
+        educationStatus: '',
+        courseName: '',
+        educationStartDate: '',
+        educationEndDate: '',
+        educationInstitution: '',
+        educationDescription: '',
+        jobTitle: '',
+        jobType: '',
+        companyName: '',
+        jobStartDate: '',
+        jobEndDate: '',
+        jobDescription: '',
+        curriculum: null
+    });
+
+    function handleStillWorking(e: React.ChangeEvent<HTMLInputElement>){
+        setStillWorking(e.target.checked)
+        if (e.target.checked) {
+            const today = new Date().toISOString().split('T')[0];
+            setFormData(prev => ({ ...prev, jobEndDate: today }));
+        } else {
+            setFormData(prev => ({ ...prev, jobEndDate: '' }));
+        }
+    }
+
+    function handleStillStudying(e: React.ChangeEvent<HTMLInputElement>){
+        setStillStudying(e.target.checked)
+        if (e.target.checked) {
+            const today = new Date().toISOString().split('T')[0];
+            setFormData(prev => ({ ...prev, educationEndDate: today }));
+        } else {
+            setFormData(prev => ({ ...prev, educationEndDate: '' }));
+        }
+    }
 
     return (
         <form className="flex-col text-start space-y-8">
@@ -32,14 +88,14 @@ export default function CandidateForm3() {
                             <GenericFormField id="candidate_education_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_education_end_date_register" type="date" disabled={stillStudying}>Data de Conclusão</GenericFormField>
+                            <GenericFormField id="candidate_education_end_date_register" type="date" disabled={stillStudying} value={formData.educationEndDate}>Data de Conclusão</GenericFormField>
                         </div>
                         <div className="pb-2">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input 
                                     type="checkbox" 
                                     checked={stillStudying}
-                                    onChange={(e) => setStillStudying(e.target.checked)}
+                                    onChange={(e) => handleStillStudying(e)}
                                     className="w-4 h-4"
                                 />
                                 <span className="text-sm">Ainda estudo aqui</span>
@@ -67,14 +123,14 @@ export default function CandidateForm3() {
                             <GenericFormField id="candidate_job_start_date_register" type="date">Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_job_end_date_register" type="date" disabled={stillWorking}>Data de Saída</GenericFormField>
+                            <GenericFormField id="candidate_job_end_date_register" type="date" disabled={stillWorking} value={formData.jobEndDate}>Data de Saída</GenericFormField>
                         </div>
                         <div className="pb-2">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input 
                                     type="checkbox" 
                                     checked={stillWorking}
-                                    onChange={(e) => setStillWorking(e.target.checked)}
+                                    onChange={(e) => handleStillWorking(e)}
                                     className="w-4 h-4"
                                 />
                                 <span className="text-sm">Ainda trabalho aqui</span>
