@@ -2,7 +2,7 @@ import { ReactNode, useState, useEffect } from "react";
 
 interface StatisticBoxProps {
     title: string;
-    children: ReactNode;
+    children?: ReactNode;
     animation?: boolean;
     finalValue?: number;
 }

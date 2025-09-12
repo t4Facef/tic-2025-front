@@ -18,7 +18,7 @@ export default function CompanyProfile() {
         return (
             <div className="p-12 px-60">
                 <div className="flex items-center">
-                    <img src={companie.logo} alt="Profile-pic" className="rounded-full border border-black w-52 h-52 mr-7" />
+                    <img src={companie.logo} alt="Profile-pic" className="rounded-full border border-gray-500 w-52 h-52 mr-7" />
                     <div className="mt-4">
                         <h1 className="font-bold text-4xl">{companie.name}</h1>
                         <p className="mt-3 text-justify">{companie.description}</p>
