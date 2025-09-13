@@ -23,9 +23,10 @@ interface GenericFormFieldProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     value?: string;
     disabled?: boolean;
+    itemsOrientation?: 1 | 2;
 }
 
-export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, disabled = false}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false}: GenericFormFieldProps){
     const [viewPassword, setViewPassword] = useState(true)
 
     // Mapeamento de orientação de texto
@@ -34,6 +35,11 @@ export default function GenericFormField({children, id, placeholder, options, au
         2: "text-center", 
         3: "text-right"
     };
+
+    const itemsOrientation = {
+        1: "flex flex-col",
+        2: "flex flex-row"
+    }
     
     const textAlign = textAlignClasses[textOrientation];
     const baseClass = "border border-gray-400 rounded-md p-2";

@@ -5,20 +5,16 @@ import JobPosition from "../components/content/job_position";
 import SearchBox from "../components/content/search_box";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import mockJobs from "../data/mockdata/jobs";
+import JobFilters from "../components/forms/filters/job_filters";
 
 export default function Jobs() {
     return (
         <div className="flex flex-1">
             <div className="min-w-36 sm:min-w-40 md:min-w-44">
                 <div className="bg-blue2 w-full py-6 flex flex-col items-center px-3">
-                    <p className="text-white px-4 text-center mb-4">Filtros</p>
+                    <p className="text-white px-4 text-center mb-4 font-bold text-lg">Filtros</p>
                     <div className="flex flex-col gap-4 w-full">
-                        {["Teste 1", "teste 2", "teste 3", "teste 4", "teste 5"].map((option, i) => (
-                            <label key={i} className="flex items-center gap-2 text-white text-sm justify-center">
-                                <input type="checkbox" name={`job_filter_${i}`} value={option} />
-                                {option}
-                            </label>
-                        ))}
+                        <JobFilters />
                     </div>
                 </div>
             </div>
