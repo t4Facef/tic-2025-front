@@ -11,8 +11,8 @@ export default function Jobs() {
     return (
         <div className="flex flex-1">
             <div className="min-w-36 sm:min-w-40 md:min-w-44">
-                <div className="bg-blue2 w-full py-6 flex flex-col items-center px-3">
-                    <p className="text-white px-4 text-center mb-4 font-bold text-lg">Filtros</p>
+                <div className="bg-blue1 w-full py-6 flex flex-col items-center px-3">
+                    <p className="text-black px-4 text-center mb-4 font-bold text-lg">Filtros</p>
                     <div className="flex flex-col gap-4 w-full">
                         <JobFilters />
                     </div>
