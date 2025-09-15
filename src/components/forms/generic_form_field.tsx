@@ -26,7 +26,7 @@ interface GenericFormFieldProps {
     itemsOrientation?: 1 | 2;
 }
 
-export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, disabled = false}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false}: GenericFormFieldProps){
     const [viewPassword, setViewPassword] = useState(true)
 
     // Mapeamento de orientação de texto
@@ -35,6 +35,11 @@ export default function GenericFormField({children, id, placeholder, options, au
         2: "text-center", 
         3: "text-right"
     };
+
+    const itemsOrientationClasses = {
+        1: "flex flex-row gap-4",
+        2: "flex flex-col gap-2"
+    }
 
     
     const textAlign = textAlignClasses[textOrientation];
@@ -61,8 +66,8 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "radio") {
         return (
             <div className="flex flex-col w-full">
-                <span className={`mb-2 ${textAlign}`}>{children}</span>
-                <div className="flex gap-4">
+                <span className={`mb-2 ${textAlign} font-semibold`}>{children}</span>
+                <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
                         const value = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
@@ -82,8 +87,8 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "checkbox") {
         return (
             <div className="flex flex-col w-full">
-                <span className={`mb-2 ${textAlign}`}>{children}</span>
-                <div className="flex flex-wrap gap-4">
+                <span className={`mb-2 ${textAlign} font-semibold`}>{children}</span>
+                <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
                         const value = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
