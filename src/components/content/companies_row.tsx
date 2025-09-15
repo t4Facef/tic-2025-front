@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import CompanyImage from "./company_image";
 
 type CompaniesRowPropries = {
   companyIds: number[];
@@ -8,47 +8,9 @@ type CompaniesRowPropries = {
   extensions?: string[];
 };
 
-function CompanyImage({id, basePath = "./img/logosTeste", extensions = ["jpeg", "jpg", "png", "webp"]}: {
-  id: number;
-  basePath?: string;
-  extensions?: string[];
-}) {
-  const navigate = useNavigate();
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    const currentExt = img.src.split('.').pop() || "";
-    const currentIndex = extensions.indexOf(currentExt);
-    
-    if (currentIndex >= 0 && currentIndex < extensions.length - 1) {
-      img.src = `${basePath}/teste${id}.${extensions[currentIndex + 1]}`;
-    }
-  };
-
-  return (
-    <button
-      onClick={() => navigate(`/companies/${id}/profile`)}
-      className="transition-transform duration-200 hover:scale-110 hover:z-10 mx-1 relative"
-    >
-      <img
-        src={`${basePath}/teste${id}.${extensions[0]}`}
-        alt={`Company ${id}`}
-        onError={handleImageError}
-        className="w-32 h-32 object-cover rounded-full"
-      />
-    </button>
-  );
-}
-
-export default function CompaniesRow({
-  companyIds,
-  basePath,
-  extensions
-}: CompaniesRowPropries) {
+export default function CompaniesRow({ companyIds, basePath, extensions }: CompaniesRowPropries) {
   const [startIndex, setStartIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(
-    Math.max(1, companyIds.length - 2)
-  );
+  const [visibleCount, setVisibleCount] = useState(Math.max(1, companyIds.length - 2));
 
   useEffect(() => {
     const updateVisibleCount = () => {
@@ -64,13 +26,8 @@ export default function CompaniesRow({
 
   const maxStartIndex = companyIds.length - visibleCount;
 
-  const handleLeft = () => {
-    setStartIndex(prev => (prev <= 0 ? maxStartIndex : prev - 1));
-  };
-  
-  const handleRight = () => {
-    setStartIndex(prev => (prev >= maxStartIndex ? 0 : prev + 1));
-  };
+  const handleLeft = () => setStartIndex(prev => (prev <= 0 ? maxStartIndex : prev - 1));
+  const handleRight = () => setStartIndex(prev => (prev >= maxStartIndex ? 0 : prev + 1));
 
   const trackWidth = `${(companyIds.length / visibleCount) * 100}%`;
   const itemWidth = `${100 / companyIds.length}%`;
@@ -81,7 +38,7 @@ export default function CompaniesRow({
         onClick={handleLeft}
         className="transition-all duration-300 hover:scale-110 hover:opacity-80"
       >
-        <ChevronLeft size={60} />
+        <ChevronLeft size={120} />
       </button>
 
       <div className="overflow-hidden flex-1 mx-2 py-4">
@@ -98,11 +55,7 @@ export default function CompaniesRow({
               style={{ width: itemWidth }}
               className="flex justify-center px-2"
             >
-              <CompanyImage 
-                id={id} 
-                basePath={basePath} 
-                extensions={extensions} 
-              />
+              <CompanyImage id={id} basePath={basePath} extensions={extensions} />
             </div>
           ))}
         </div>
@@ -112,7 +65,7 @@ export default function CompaniesRow({
         onClick={handleRight}
         className="transition-all duration-300 hover:scale-110 hover:opacity-80"
       >
-        <ChevronRight size={60} />
+        <ChevronRight size={120} />
       </button>
     </div>
   );
