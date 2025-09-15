@@ -3,7 +3,7 @@ import CompaniesRow from "../components/content/companies_row"
 import JobPosition from "../components/content/job_position"
 import mockJobs from "../data/mockdata/jobs"
 
-const companyIds = [1, 2, 3, 4, 5]; // IDs das empresas
+const companyIds = [1, 2, 3, 4, 5, 1, 2]; // IDs das empresas
 
 export default function Home() {
     return (
