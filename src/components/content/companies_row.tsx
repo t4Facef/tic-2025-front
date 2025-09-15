@@ -8,11 +8,7 @@ type CompaniesRowPropries = {
   extensions?: string[];
 };
 
-function CompanyImage({
-  id,
-  basePath = "./img/logosTeste",
-  extensions = ["jpeg", "jpg", "png", "webp"]
-}: {
+function CompanyImage({id, basePath = "./img/logosTeste", extensions = ["jpeg", "jpg", "png", "webp"]}: {
   id: number;
   basePath?: string;
   extensions?: string[];
@@ -32,7 +28,7 @@ function CompanyImage({
   return (
     <button
       onClick={() => navigate(`/companies/${id}/profile`)}
-      className="transition-transform duration-200 hover:scale-110 mx-1"
+      className="transition-transform duration-200 hover:scale-110 hover:z-10 mx-1 relative"
     >
       <img
         src={`${basePath}/teste${id}.${extensions[0]}`}
@@ -88,7 +84,7 @@ export default function CompaniesRow({
         <ChevronLeft size={60} />
       </button>
 
-      <div className="overflow-hidden flex-1 mx-2">
+      <div className="overflow-hidden flex-1 mx-2 py-4">
         <div
           className="flex transition-transform duration-300"
           style={{
@@ -100,7 +96,7 @@ export default function CompaniesRow({
             <div
               key={id}
               style={{ width: itemWidth }}
-              className="flex justify-center"
+              className="flex justify-center px-2"
             >
               <CompanyImage 
                 id={id} 
