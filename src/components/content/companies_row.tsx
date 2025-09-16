@@ -2,35 +2,53 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CompanyImage from "./company_image";
 
-type CompaniesRowPropries = {
+type CompaniesRowProps = {
   companyIds: number[];
   basePath?: string;
   extensions?: string[];
 };
 
-export default function CompaniesRow({ companyIds, basePath, extensions }: CompaniesRowPropries) {
-  const [startIndex, setStartIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(Math.max(1, companyIds.length - 2));
+export default function CompaniesRow({ companyIds, basePath, extensions }: CompaniesRowProps) {
+  const [currentIndex, setCurrentIndex] = useState(companyIds.length);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const visibleCount = Math.min(5, companyIds.length);
 
+  // Create infinite array: [...original, ...original, ...original]
+  const infiniteIds = [...companyIds, ...companyIds, ...companyIds];
+  const totalItems = infiniteIds.length;
+
+  const handleLeft = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev - 1);
+  };
+
+  const handleRight = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev + 1);
+  };
+
+  // Reset position when reaching boundaries
   useEffect(() => {
-    const updateVisibleCount = () => {
-      const calculatedCount = Math.max(1, companyIds.length - 2);
-      setVisibleCount(calculatedCount);
-    };
-    
-    updateVisibleCount();
-    window.addEventListener("resize", updateVisibleCount);
-    
-    return () => window.removeEventListener("resize", updateVisibleCount);
-  }, [companyIds.length]);
+    if (currentIndex <= 0) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(companyIds.length);
+      }, 300);
+    } else if (currentIndex >= companyIds.length * 2) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(companyIds.length);
+      }, 300);
+    } else {
+      setTimeout(() => setIsTransitioning(false), 300);
+    }
+  }, [currentIndex, companyIds.length]);
 
-  const maxStartIndex = companyIds.length - visibleCount;
-
-  const handleLeft = () => setStartIndex(prev => (prev <= 0 ? maxStartIndex : prev - 1));
-  const handleRight = () => setStartIndex(prev => (prev >= maxStartIndex ? 0 : prev + 1));
-
-  const trackWidth = `${(companyIds.length / visibleCount) * 100}%`;
-  const itemWidth = `${100 / companyIds.length}%`;
+  const itemWidth = `${100 / totalItems}%`;
+  const containerWidth = `${(totalItems / visibleCount) * 100}%`;
+  const translateX = `translateX(-${(currentIndex * 100) / totalItems}%)`;
 
   return (
     <div className="flex items-center justify-between w-full overflow-hidden bg-blue2 p-3 py-4">
@@ -43,15 +61,15 @@ export default function CompaniesRow({ companyIds, basePath, extensions }: Compa
 
       <div className="overflow-hidden flex-1 mx-2 py-4">
         <div
-          className="flex transition-transform duration-300"
+          className={`flex ${isTransitioning ? 'transition-transform duration-300' : ''}`}
           style={{
-            width: trackWidth,
-            transform: `translateX(-${(startIndex * 100) / companyIds.length}%)`
+            width: containerWidth,
+            transform: translateX
           }}
         >
-          {companyIds.map(id => (
+          {infiniteIds.map((id, index) => (
             <div
-              key={id}
+              key={`${id}-${index}`}
               style={{ width: itemWidth }}
               className="flex justify-center px-2"
             >
