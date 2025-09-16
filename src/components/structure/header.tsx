@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import HeaderButton from "../buttons/header_button";
-import ProfilePicture from "../profile/profile_picture";
+import UserInfo from "../profile/user_info";
 
 interface HeaderProps {
   showProfile?: boolean;
@@ -14,7 +14,7 @@ export default function Header({ showProfile = false }: HeaderProps) {
         <span className="text-6xl p-5 font-georgia">Apojobs</span>
       </Link>
       <div className="flex items-center">
-        {showProfile ? <ProfilePicture/> : <HeaderButton />}
+        {showProfile ? <UserInfo/> : <HeaderButton />}
       </div>
     </div>
   );

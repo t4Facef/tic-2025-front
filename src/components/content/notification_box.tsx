@@ -5,8 +5,12 @@ import GenericBlueButton from "../buttons/generic_blue_button";
 import { mockNotifications, NotificationData } from "../../data/mockdata/notification";
 import { Link } from "react-router-dom";
 
-export default function NotificationBox() {
-  const [isOpen, setIsOpen] = useState(false);
+interface NotificationBoxProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export default function NotificationBox({ isOpen, onToggle }: NotificationBoxProps) {
   const [notifications, setNotifications] = useState<NotificationData[]>(mockNotifications);
 
   const hasNotifications = notifications.some((n) => !n.read);
@@ -24,7 +28,7 @@ export default function NotificationBox() {
     <div className="relative">
       {/* Ícone do sino */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         className="p-2 rounded-full bg-gray-200 transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none"
       >
         {hasNotifications ? (
