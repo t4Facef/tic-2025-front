@@ -1,13 +1,51 @@
-// [TODO] - Procurar uma api com os estados e cidades automaticamente, talvez no mesmo lugar da cep automatica
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GenericFormField from "../generic_form_field";
 import { CandidateForm2Data } from "../../../types/forms/candidate";
 
 export default function CandidateForm2 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm2Data) => void, formId: string, initialData?: CandidateForm2Data}){
     const [form2, setForm2] = useState<CandidateForm2Data>(initialData || {} as CandidateForm2Data)
+    const [estados, setEstados] = useState<string[]>(['Selecione'])
+    const [cidades, setCidades] = useState<string[]>(['Selecione'])
+    
+    useEffect(() => {
+        const fetchEstados = async () => {
+            try {
+                const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+                const data = await response.json()
+                
+                // Extrai apenas as siglas e ordena alfabeticamente
+                const siglas = data.map((estado: { sigla: string }) => estado.sigla).sort()
+                setEstados(['Selecione', ...siglas])
+            }
+            catch (error) {
+                console.error("Erro ao buscar estados:", error);
+            }
+        }
+        
+        fetchEstados()
+    }, [])
 
-
+    useEffect(() => {
+        const fetchCidades = async () => {
+            if (form2.state && form2.state !== 'Selecione') {
+                try {
+                    const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${form2.state}/municipios`)
+                    const data = await response.json()
+                    
+                    // Extrai apenas os nomes das cidades e ordena alfabeticamente
+                    const nomes = data.map((cidade: { nome: string }) => cidade.nome).sort()
+                    setCidades(['Selecione', ...nomes])
+                } catch (error) {
+                    console.error('Erro ao buscar cidades:', error)
+                    setCidades(['Selecione'])
+                }
+            } else {
+                setCidades(['Selecione'])
+            }
+        }
+        
+        fetchCidades()
+    }, [form2.state])
 
     const handleCepChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const cleanValue = e.target.value.replace(/\D/g, ''); // Remove tudo que não é número
@@ -76,7 +114,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                 <GenericFormField 
                                     id="candidate_estado_register" 
                                     type="select" 
-                                    options={['Selecione', form2.state].filter(Boolean)}
+                                    options={estados}
                                     onChange={(e) => setForm2((prev) => ({...prev, state: e.target.value}))} 
                                     value={form2.state || ""}
                                     required
@@ -88,7 +126,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                 <GenericFormField 
                                     id="candidate_cidade_register" 
                                     type="select" 
-                                    options={['Selecione', form2.city].filter(Boolean)}
+                                    options={cidades}
                                     value={form2.city || ""}
                                     onChange={(e) => setForm2((prev) => ({...prev, city: e.target.value}))}
                                     required
