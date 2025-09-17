@@ -1,5 +1,6 @@
 // [TODO] - Tornar a pagina dinamica para cada usuario quando fazer uma context api
 
+import { Link } from "react-router-dom";
 import GenericBlueButton from "../buttons/generic_blue_button";
 
 interface ProfilePictureProps {
@@ -33,9 +34,13 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               <p className="text-sm text-justify">Desc curta? ou coisa semelhante  Delectus ipsa dolorem consequatur culpa persp Aperiam cum facilis accusantium vitae labore.</p>
             </div>
           </div>
-          <hr className="border-gray-300" />
           <div className="flex w-full justify-center">
             <GenericBlueButton color={3}>Visitar minha pagina</GenericBlueButton>
+          </div>
+          <hr className="border-gray-300" />
+          <div className="space-y-2">
+            <Link to={"/"} className="text-gray-400 text-md flex justify-center">Configurações</Link> 
+            <Link to={"/"} className="text-gray-400 text-md flex justify-center">Sair</Link>
           </div>
         </div>
       )}
