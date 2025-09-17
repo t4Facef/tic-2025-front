@@ -44,16 +44,16 @@ export default function CandidateForm2 (){
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Informações de Contato</h2>
-            <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email">Endereço de Email</GenericFormField>
+            <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email" required>Endereço de Email</GenericFormField>
             <div className="flex space-x-24">
-                <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel">Telefone 1</GenericFormField>
+                <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel" required>Telefone 1</GenericFormField>
                 <GenericFormField id="candidate_telefone2_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel">Telefone 2</GenericFormField>
             </div>
             <div>
                 <p>Endereço</p>
                 <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
                     <div className="w-[30rem] space-y-5">
-                        <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange}>CEP</GenericFormField>
+                        <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required>CEP</GenericFormField>
                         <div className="flex flex-1 space-x-5">
                             <div className="flex-[3] w-full">
                                 <GenericFormField 
@@ -62,6 +62,7 @@ export default function CandidateForm2 (){
                                     options={['Selecione', endereco.estado].filter(Boolean)}
                                     value={endereco.estado}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setEndereco({...endereco, estado: e.target.value})}
+                                    required
                                 >
                                     Estado
                                 </GenericFormField>
@@ -73,6 +74,7 @@ export default function CandidateForm2 (){
                                     options={['Selecione', endereco.cidade].filter(Boolean)}
                                     value={endereco.cidade}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setEndereco({...endereco, cidade: e.target.value})}
+                                    required
                                 >
                                     Cidade
                                 </GenericFormField>
@@ -87,6 +89,7 @@ export default function CandidateForm2 (){
                                 autoComplete="address-line1"
                                 value={endereco.rua}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setEndereco({...endereco, rua: e.target.value})}
+                                required
                             >
                                 Rua
                             </GenericFormField>
@@ -99,10 +102,11 @@ export default function CandidateForm2 (){
                                 autoComplete="address-level2"
                                 value={endereco.bairro}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setEndereco({...endereco, bairro: e.target.value})}
+                                required
                             >
                                 Bairro
                             </GenericFormField>
-                            <GenericFormField id="candidate_numero_register" placeholder="Digite aqui o número">Número</GenericFormField>
+                            <GenericFormField id="candidate_numero_register" placeholder="Digite aqui o número" required>Número</GenericFormField>
                         </div>
                     </div>
                 </div>

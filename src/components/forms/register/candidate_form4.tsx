@@ -9,10 +9,10 @@ export default function CandidateForm4 (){
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Informações sobre acessibilidade</h2>
             <div className="flex flex-row gap-24">
-                <GenericFormField id="candidate_type_register" type="select" options={['W', 'I', 'P']} placeholder="Selecione">Tipo de Necessidade</GenericFormField>
-                <GenericFormField id="candidate_sub_type_register" type="select" options={['W', 'I', 'P']} placeholder="Selecione">Subtipo de Necessidade</GenericFormField>
+                <GenericFormField id="candidate_type_register" type="select" options={['W', 'I', 'P']} placeholder="Selecione" required>Tipo de Necessidade</GenericFormField>
+                <GenericFormField id="candidate_sub_type_register" type="select" options={['W', 'I', 'P']} placeholder="Selecione" required>Subtipo de Necessidade</GenericFormField>
             </div>
-            <GenericFormField id="candidate_sub_type_register" type="file">Laudo Médico</GenericFormField>
+            <GenericFormField id="candidate_medical_report_register" type="file" required>Laudo Médico</GenericFormField>
             <TagContainer edit={true}>Necessidades de Apoio</TagContainer>
             {/* Verificar viabilidade dessa parte
             <div className="bg-blue4 p-6 space-y-4 rounded-lg">

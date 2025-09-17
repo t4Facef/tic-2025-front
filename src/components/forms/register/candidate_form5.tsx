@@ -13,13 +13,13 @@ export default function CandidateForm5 (){
             
             <div className="space-y-6">
                 <div className="max-w-[28rem]">
-                    <GenericFormField id="candidate_profile_photo_register" type="file">Foto de Perfil (Opcional)</GenericFormField>
+                    <GenericFormField id="candidate_profile_photo_register" type="file" required>Foto de Perfil</GenericFormField>
                     <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
                 </div>
                 
                 <div className="space-y-4 max-w-[28rem]">
-                    <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password">Senha</GenericFormField>
-                    <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password">Confirme sua Senha</GenericFormField>
+                    <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required>Senha</GenericFormField>
+                    <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password" required>Confirme sua Senha</GenericFormField>
                 </div>
             </div>
             <div className="bg-white border border-gray-400 rounded-xl p-4">
