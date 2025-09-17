@@ -1,12 +1,18 @@
 // [TODO] - Linkar as APIs para o o conteúdo do Select, pegando dados especificos de subtipo de necessidade dependendo do tipo
 
+import { CandidateForm4Data } from "../../../types/forms/candidate";
 import TagContainer from "../../content/tag_container";
 import GenericFormField from "../generic_form_field";
 
 
-export default function CandidateForm4 (){
+export default function CandidateForm4 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data}){
+    const [form4, setForm4] = useState<CandidateForm4Data>(initialData || {} as CandidateForm4Data)
+
     return (
-        <form className="flex-col text-start space-y-8">
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+            e.preventDefault();
+            formFunc(form4)
+        }}>
             <h2 className="font-semibold text-[1.3rem]">Informações sobre acessibilidade</h2>
             <div className="flex flex-row gap-24">
                 <GenericFormField id="candidate_type_register" type="select" options={['W', 'I', 'P']} placeholder="Selecione" required>Tipo de Necessidade</GenericFormField>

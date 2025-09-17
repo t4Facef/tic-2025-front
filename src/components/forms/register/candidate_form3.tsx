@@ -3,47 +3,14 @@
 // [TODO] - Colocar mais opções nos selects a fim de testes no fake data e posteriormente aplicar um fatch no banco
 // [TODO] - Adicionar "nome do curso" dependendo da resposta do tipo de formação
 
+import { CandidateForm3Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 import { useState } from "react";
 
-interface CandidateForm3Data {
-    workArea: string;
-    educationType: string;
-    educationStatus: string;
-    courseName: string;
-    educationStartDate: string;
-    educationEndDate: string;
-    educationInstitution: string;
-    educationDescription: string;
-    jobTitle: string;
-    jobType: string;
-    companyName: string;
-    jobStartDate: string;
-    jobEndDate: string;
-    jobDescription: string;
-    curriculum: File | null;
-}
-
-export default function CandidateForm3() {
-    const [stillWorking, setStillWorking] = useState(false);
+export default function CandidateForm3({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm3Data) => void, formId: string, initialData?: CandidateForm3Data}) {
+    const [form3, setForm3] = useState<CandidateForm3Data>(initialData || {} as CandidateForm3Data)
     
-    const [formData, setFormData] = useState<CandidateForm3Data>({
-        workArea: '',
-        educationType: '',
-        educationStatus: '',
-        courseName: '',
-        educationStartDate: '',
-        educationEndDate: '',
-        educationInstitution: '',
-        educationDescription: '',
-        jobTitle: '',
-        jobType: '',
-        companyName: '',
-        jobStartDate: '',
-        jobEndDate: '',
-        jobDescription: '',
-        curriculum: null
-    });
+    const [stillWorking, setStillWorking] = useState(false);
 
     function handleStillWorking(e: React.ChangeEvent<HTMLInputElement>){
         setStillWorking(e.target.checked)
@@ -56,7 +23,10 @@ export default function CandidateForm3() {
     }
 
     return (
-        <form className="flex-col text-start space-y-8">
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+            e.preventDefault();
+            formFunc(form3)
+        }}>
             <h2 className="font-semibold text-[1.3rem]">Perfil Profissional</h2>
             
             <GenericFormField id="candidate_work_area_register" type="select" options={['Selecione', 'Tecnologia', 'Administração', 'Vendas', 'Marketing', 'Recursos Humanos', 'Financeiro', 'Logística', 'Produção', 'Atendimento', 'Design', 'Educação', 'Saúde', 'Jurídico', 'Engenharia', 'Outros']} required>Área de Interesse Profissional</GenericFormField>

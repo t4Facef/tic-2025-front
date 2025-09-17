@@ -20,7 +20,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
         />
       </div>
       {isOpen && (
-        <div className="absolute z-50 bg-white right-0 mt-2 w-80 shadow-lg p-4 rounded-lg border border-gray-300 text-black space-y-4">
+        <div className="absolute z-50 bg-white right-0 mt-2 w-72 shadow-lg p-4 rounded-lg border border-gray-300 text-black space-y-4">
           <div className="flex-1 flex flex-row">
             <div className="flex-[2] h-max">
               <img

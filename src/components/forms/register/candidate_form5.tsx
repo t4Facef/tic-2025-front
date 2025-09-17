@@ -1,11 +1,17 @@
 // [TODO] - Fazer com que a recomendações de senha mude de forma dinâmica
 // [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
+import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 
-export default function CandidateForm5 (){
+export default function CandidateForm5 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data}){
+    const [form5, setForm5] = useState<CandidateForm5Data>(initialData || {} as CandidateForm5Data)
+
     return (
-        <form className="flex-col text-start space-y-8">
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+            e.preventDefault();
+            formFunc(form5)
+        }}>
             <div className="space-y-4">
                 <h2 className="font-semibold text-[1.3rem]">Estamos Quase Lá!</h2>
                 <p className="text-gray-700 leading-relaxed">Para finalizar seu cadastro, precisamos de uma senha segura para proteger sua conta e uma foto de perfil para que os recrutadores possam conhecê-lo melhor.</p>

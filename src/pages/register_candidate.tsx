@@ -10,26 +10,26 @@ import CandidateForm2 from '../components/forms/register/candidate_form2'
 import CandidateForm3 from '../components/forms/register/candidate_form3'
 import CandidateForm4 from '../components/forms/register/candidate_form4'
 import CandidateForm5 from '../components/forms/register/candidate_form5'
-import { 
-  CandidateRegisterData, 
-  CandidateForm1Data, 
-  CandidateForm2Data, 
-  CandidateForm3Data, 
-  CandidateForm4Data, 
-  CandidateForm5Data 
+import {
+    CandidateRegisterData,
+    CandidateForm1Data,
+    CandidateForm2Data,
+    CandidateForm3Data,
+    CandidateForm4Data,
+    CandidateForm5Data
 } from '../types/forms/candidate'
 
 
 
-export default function Register(){
+export default function Register() {
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState<CandidateRegisterData>({} as CandidateRegisterData)
-    
+
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
         back: {
             1: "Cancelar",
-            2: "Voltar", 
+            2: "Voltar",
             3: "Voltar",
             4: "Voltar",
             5: "voltar"
@@ -43,11 +43,27 @@ export default function Register(){
         }
     }
 
-    const buttonFunctions = {
-        back: {
+    const handlesForm = {
+        1: (data: CandidateForm1Data) => {
+            setFormData(prev => ({ ...prev, formdata1: data }))
+            setStep(2)
         },
-        next: {
-            1: (data: CandidateRegisterData) => setFormData(...data, )
+        2: (data: CandidateForm2Data) => {
+            setFormData(prev => ({ ...prev, formdata2: data }))
+            setStep(3)
+        },
+        3: (data: CandidateForm3Data) => {
+            setFormData(prev => ({ ...prev, formdata3: data }))
+            setStep(4)
+        },
+        4: (data: CandidateForm4Data) => {
+            setFormData(prev => ({ ...prev, formdata4: data }))
+            setStep(5)
+        },
+        5: (data: CandidateForm5Data) => {
+            setFormData(prev => ({ ...prev, formdata5: data }))
+            // Step 5: aqui você pode enviar para API
+            console.log("Dados completos:", { ...formData, formdata5: data })
         }
     }
 
@@ -59,32 +75,32 @@ export default function Register(){
             </div>
             <div>
                 <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
-                    <StepIndicator step={step} stepsTitles={{1: "Dados Pessoais", 2: "Contatos", 3: "Perfil Profissional", 4: "Acessibilidade", 5: "Finalização"}}></StepIndicator>
+                    <StepIndicator step={step} stepsTitles={{ 1: "Dados Pessoais", 2: "Contatos", 3: "Perfil Profissional", 4: "Acessibilidade", 5: "Finalização" }}></StepIndicator>
                 </div>
                 <div className="bg-blue1 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
-                    {step == 1 && <CandidateForm1/>}
-                    {step == 2 && <CandidateForm2/>}
-                    {step == 3 && <CandidateForm3/>}
-                    {step == 4 && <CandidateForm4/>}
-                    {step == 5 && <CandidateForm5/>}
+                    {step == 1 && <CandidateForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1}/>}
+                    {step == 2 && <CandidateForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2}/>}
+                    {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3}/>}
+                    {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4}/>}
+                    {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5}/>}
                     <div className='flex justify-between'>
-                        <GenericBlueButton 
-                            color={3} 
-                            size='md' 
-                            {...(step === 1 
+                        <GenericBlueButton
+                            color={3}
+                            size='md'
+                            {...(step === 1
                                 ? { link: "/" }  // Step 1: vai pra home
                                 : { onClick: () => setStep(step - 1) }  // Outros: volta step
                             )}
                         >
                             {buttonTexts.back[step as keyof typeof buttonTexts.back]}
                         </GenericBlueButton>
-                        
-                        <GenericBlueButton 
-                            color={3} 
-                            size='md' 
-                            {...(step === 5 
-                                ? { link: "/candidates/1/dashboard" }  // Step 4: vai pro dashboard
-                                : { onClick: () => setStep(step + 1) }  // Outros: avança step
+
+                        <GenericBlueButton
+                            color={3}
+                            size='md'
+                            {...(step === 5
+                                ? { link: "/candidates/1/dashboard" }  // Step 5: vai pro dashboard
+                                : { submit: true, form: `step${step}Form` }  // Outros: submit do formulário
                             )}
                         >
                             {buttonTexts.next[step as keyof typeof buttonTexts.next]}

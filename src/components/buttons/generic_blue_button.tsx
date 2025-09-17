@@ -8,6 +8,8 @@ interface GenericBlueButtonProps {
     children: ReactNode;        
     size?: 'sm' | 'md' | 'mdy' | 'lg';
     rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';  // Para bordas arredondadas
+    submit?: boolean;           // Para type="submit"
+    form?: string;              // Para conectar com formulário específico
 }
 
 // Mapeamento de cores - cada número corresponde a uma cor da paleta dentre os tons de azul
@@ -42,7 +44,9 @@ export default function GenericBlueButton({
   onClick,
   children, 
   size = 'md',       // Valor padrão: médio
-  rounded = 'md'     // Valor padrão: arredondamento médio
+  rounded = 'md',    // Valor padrão: arredondamento médio
+  submit = false,    // Valor padrão: não é submit
+  form               // ID do formulário para conectar
 }: GenericBlueButtonProps){
     // Pega as classes CSS baseadas nas props
     const colorButton = colorMap[color] || "bg-blue1";  // Se cor inválida, usa blue1
@@ -62,6 +66,8 @@ export default function GenericBlueButton({
 
     return (
         <button 
+          type={submit ? "submit" : "button"}
+          form={form}
           className={`${colorButton} ${sizeButton} ${roundedButton} flex justify-center items-center transition-colors whitespace-nowrap`} 
           onClick={handleClick}
         >
