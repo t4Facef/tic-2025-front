@@ -35,7 +35,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
           </div>
           <hr className="border-gray-300" />
           <div className="flex w-full justify-center">
-            <GenericBlueButton color={3}>Visitar a pagina</GenericBlueButton>
+            <GenericBlueButton color={3}>Visitar minha pagina</GenericBlueButton>
           </div>
         </div>
       )}

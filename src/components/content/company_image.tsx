@@ -32,7 +32,7 @@ export default function CompanyImage({
         src={`${basePath}/teste${id}.${extensions[0]}`}
         alt={`Company ${id}`}
         onError={handleImageError}
-        className="w-32 h-32 object-cover rounded-full"
+        className="w-32 h-32 object-cover rounded-full shadow-lg"
       />
     </button>
   );

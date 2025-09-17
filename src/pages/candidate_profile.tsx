@@ -13,9 +13,8 @@ export default function CandidateProfile(){
     if(candidateData){
         return(
         <div className="px-20 py-10 space-y-8">
-
             <div className="flex items-center">
-                <img src="/img/profile-default.png" alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5"/>
+                <img src="/img/profile-default.png" alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5 shadow-xl border-[0.5px]"/>
                 <div>
                     <h1 className="font-bold text-[32px]">{candidateData.nome}</h1>
                     <p>
