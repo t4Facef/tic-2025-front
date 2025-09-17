@@ -61,9 +61,15 @@ export default function Register() {
             setStep(5)
         },
         5: (data: CandidateForm5Data) => {
-            setFormData(prev => ({ ...prev, formdata5: data }))
-            // Step 5: aqui você pode enviar para API
-            console.log("Dados completos:", { ...formData, formdata5: data })
+            const candidateInformation = {
+                ...formData.formdata1,
+                ...formData.formdata2,
+                ...formData.formdata3,
+                ...formData.formdata4,
+                ...data // usa os dados atuais do form5
+            }
+            // Aqui você enviaria para a API
+            console.log('Dados para enviar:', candidateInformation)
         }
     }
 

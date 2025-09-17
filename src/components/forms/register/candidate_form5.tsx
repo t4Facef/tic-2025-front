@@ -1,6 +1,7 @@
 // [TODO] - Fazer com que a recomendações de senha mude de forma dinâmica
 // [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
+import { useState } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 
@@ -19,13 +20,13 @@ export default function CandidateForm5 ({ formFunc, formId, initialData } : {for
             
             <div className="space-y-6">
                 <div className="max-w-[28rem]">
-                    <GenericFormField id="candidate_profile_photo_register" type="file" required>Foto de Perfil</GenericFormField>
+                    <GenericFormField id="candidate_profile_photo_register" type="file" required onChange={(e) => setForm5(prev => ({...prev, profilePicture: (e.target as HTMLInputElement).files?.[0] || null}))} value={form5.profilePicture?.name || ""}>Foto de Perfil</GenericFormField>
                     <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
                 </div>
                 
                 <div className="space-y-4 max-w-[28rem]">
-                    <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required>Senha</GenericFormField>
-                    <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password" required>Confirme sua Senha</GenericFormField>
+                    <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required onChange={(e) => setForm5(prev => ({...prev, password: e.target.value}))} value={form5.password || ""}>Senha</GenericFormField>
+                    <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password" required onChange={(e) => setForm5(prev => ({...prev, confirmPassword: e.target.value}))} value={form5.confirmPassword || ""}>Confirme sua Senha</GenericFormField>
                 </div>
             </div>
             <div className="bg-white border border-gray-400 rounded-xl p-4">

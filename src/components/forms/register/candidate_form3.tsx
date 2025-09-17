@@ -2,6 +2,7 @@
 // [TODO] - Aqui está pedindo poucas informações, preencher o curriculo depois com experiencia profissional, cursos e formações academicas
 // [TODO] - Colocar mais opções nos selects a fim de testes no fake data e posteriormente aplicar um fatch no banco
 // [TODO] - Adicionar "nome do curso" dependendo da resposta do tipo de formação
+// [TODO] - Adicionar verificação para os campos de curso, formação e experiencia para preencher os dados principais (tipo um required) caso começe a ser preenchido
 
 import { CandidateForm3Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
@@ -16,9 +17,9 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
         setStillWorking(e.target.checked)
         if (e.target.checked) {
             const today = new Date().toISOString().split('T')[0];
-            setFormData(prev => ({ ...prev, jobEndDate: today }));
+            setForm3(prev => ({ ...prev, jobEndDate: today }));
         } else {
-            setFormData(prev => ({ ...prev, jobEndDate: '' }));
+            setForm3(prev => ({ ...prev, jobEndDate: '' }));
         }
     }
 
@@ -29,29 +30,29 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
         }}>
             <h2 className="font-semibold text-[1.3rem]">Perfil Profissional</h2>
             
-            <GenericFormField id="candidate_work_area_register" type="select" options={['Selecione', 'Tecnologia', 'Administração', 'Vendas', 'Marketing', 'Recursos Humanos', 'Financeiro', 'Logística', 'Produção', 'Atendimento', 'Design', 'Educação', 'Saúde', 'Jurídico', 'Engenharia', 'Outros']} required>Área de Interesse Profissional</GenericFormField>
+            <GenericFormField id="candidate_work_area_register" type="select" options={['Selecione', 'Tecnologia', 'Administração', 'Vendas', 'Marketing', 'Recursos Humanos', 'Financeiro', 'Logística', 'Produção', 'Atendimento', 'Design', 'Educação', 'Saúde', 'Jurídico', 'Engenharia', 'Outros']} required onChange={(e) => setForm3((prev) => ({...prev, workArea: e.target.value}))} value={form3.workArea || ""}>Área de Interesse Profissional</GenericFormField>
             <div>
                 <p className="font-semibold text-lg">Formação Mais Recente</p>
                 <div className="bg-blue4 rounded-lg p-4 space-y-6">
                     <div className="flex flex-1 gap-24">
                         <div className="flex-[6]">
-                            <GenericFormField id="candidate_education_type_register" type="select" options={['Selecione', 'Sem escolaridade formal', 'Ensino Fundamental', 'Ensino Médio', 'Ensino Técnico', 'Ensino Superior', 'Pós-graduação', 'Mestrado', 'Doutorado', 'Educação de Jovens e Adultos (EJA)', 'Educação Especial', 'Curso Profissionalizante']} required>Tipo de Formação</GenericFormField>
+                            <GenericFormField id="candidate_education_type_register" type="select" options={['Selecione', 'Sem escolaridade formal', 'Ensino Fundamental', 'Ensino Médio', 'Ensino Técnico', 'Ensino Superior', 'Pós-graduação', 'Mestrado', 'Doutorado', 'Educação de Jovens e Adultos (EJA)', 'Educação Especial', 'Curso Profissionalizante']} onChange={(e) => setForm3((prev) => ({...prev, educationType: e.target.value}))} value={form3.educationType || ""}>Tipo de Formação</GenericFormField>
                         </div>
                         <div className="flex-[4]">
-                            <GenericFormField id="candidate_education_status_register" type="select" options={['Selecione', 'Completo', 'Cursando', 'Incompleto', 'Interrompido']} required>Situação</GenericFormField>
+                            <GenericFormField id="candidate_education_status_register" type="select" options={['Selecione', 'Completo', 'Cursando', 'Incompleto', 'Interrompido']} onChange={(e) => setForm3((prev) => ({...prev, educationStatus: e.target.value}))} value={form3.educationStatus || ""}>Situação</GenericFormField>
                         </div>
                     </div>
-                    <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso" required>Nome do Curso</GenericFormField>
+                    <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso" onChange={(e) => setForm3((prev) => ({...prev, courseName: e.target.value}))} value={form3.courseName || ""}>Nome do Curso</GenericFormField>
                     <div className="flex gap-4">
                         <div>
-                            <GenericFormField id="candidate_education_start_date_register" type="date" required>Data de Início</GenericFormField>
+                            <GenericFormField id="candidate_education_start_date_register" type="date" onChange={(e) => setForm3((prev) => ({...prev, educationStartDate: e.target.value}))} value={form3.educationStartDate || ""}>Data de Início</GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_education_end_date_register" type="date" required>Data de Término Prevista</GenericFormField>
+                            <GenericFormField id="candidate_education_end_date_register" type="date" onChange={(e) => setForm3((prev) => ({...prev, educationEndDate: e.target.value}))} value={form3.educationEndDate || ""}>Data de Término Prevista</GenericFormField>
                         </div>
                     </div>
-                    <GenericFormField id="candidate_education_institution_register" placeholder="Digite o nome da instituição de ensino" required>Instituição de Ensino</GenericFormField>
-                    <GenericFormField id="candidate_education_description_register" type="textarea" placeholder="Descreva sua formação acadêmica" required>Descrição da Formação</GenericFormField>
+                    <GenericFormField id="candidate_education_institution_register" placeholder="Digite o nome da instituição de ensino" onChange={(e) => setForm3((prev) => ({...prev, educationInstitution: e.target.value}))} value={form3.educationInstitution || ""}>Instituição de Ensino</GenericFormField>
+                    <GenericFormField id="candidate_education_description_register" type="textarea" placeholder="Descreva sua formação acadêmica" onChange={(e) => setForm3((prev) => ({...prev, educationDescription: e.target.value}))} value={form3.educationDescription || ""}>Descrição da Formação</GenericFormField>
                 </div>    
             </div>
             <div>
@@ -59,16 +60,16 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
                 <div className="bg-blue4 rounded-lg p-4 space-y-6">
                     <div className="flex flex-1 gap-24">
                          <div className="flex-[7]">
-                            <GenericFormField id="candidate_job_title_register" placeholder="Digite o cargo da sua experiência mais recente" required>Cargo/Função</GenericFormField>
+                            <GenericFormField id="candidate_job_title_register" placeholder="Digite o cargo da sua experiência mais recente" onChange={(e) => setForm3((prev) => ({...prev, jobTitle: e.target.value}))} value={form3.jobTitle || ""}>Cargo/Função</GenericFormField>
                         </div>
                         <div className="flex-[3]">
-                            <GenericFormField id="candidate_job_type_register" type="select" options={['Selecione', 'CLT', 'PJ', 'Estágio', 'Freelancer', 'Temporário', 'Meio período', 'Integral']} required>Tipo de Contrato</GenericFormField>
+                            <GenericFormField id="candidate_job_type_register" type="select" options={['Selecione', 'CLT', 'PJ', 'Estágio', 'Freelancer', 'Temporário', 'Meio período', 'Integral']} onChange={(e) => setForm3((prev) => ({...prev, jobType: e.target.value}))} value={form3.jobType || ""}>Tipo de Contrato</GenericFormField>
                         </div>
                     </div>
-                    <GenericFormField id="candidate_company_name_register" placeholder="Digite o nome da empresa" required>Empresa</GenericFormField>
+                    <GenericFormField id="candidate_company_name_register" placeholder="Digite o nome da empresa" onChange={(e) => setForm3((prev) => ({...prev, companyName: e.target.value}))} value={form3.companyName || ""}>Empresa</GenericFormField>
                     <div className="flex gap-4 items-end">
                         <div>
-                            <GenericFormField id="candidate_job_start_date_register" type="date" required>Data de Início</GenericFormField>
+                            <GenericFormField id="candidate_job_start_date_register" type="date" onChange={(e) => setForm3((prev) => ({...prev, jobStartDate: e.target.value}))} value={form3.jobStartDate || ""}>Data de Início</GenericFormField>
                         </div>
                         <div>
                             {stillWorking ? (
@@ -79,7 +80,7 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
                                     </div>
                                 </div>
                             ) : (
-                                <GenericFormField id="candidate_job_end_date_register" type="date" required>Data de Saída</GenericFormField>
+                                <GenericFormField id="candidate_job_end_date_register" type="date" onChange={(e) => setForm3((prev) => ({...prev, jobEndDate: e.target.value}))} value={form3.jobEndDate || ""}>Data de Saída</GenericFormField>
                             )}
                         </div>
                         <div className="pb-2">
@@ -94,11 +95,11 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
                             </label>
                         </div>
                     </div>
-                    <GenericFormField id="candidate_job_description_register" type="textarea" placeholder="Descreva suas principais atividades e responsabilidades" required>Descrição das Atividades</GenericFormField>
+                    <GenericFormField id="candidate_job_description_register" type="textarea" placeholder="Descreva suas principais atividades e responsabilidades" onChange={(e) => setForm3((prev) => ({...prev, jobDescription: e.target.value}))} value={form3.jobDescription || ""}>Descrição das Atividades</GenericFormField>
 
                 </div>
             </div>
-            <GenericFormField id="candidate_curriculum_register" type="file" required>Anexar Currículo</GenericFormField>
+            <GenericFormField id="candidate_curriculum_register" type="file" onChange={(e) => setForm3((prev) => ({...prev, curriculum: (e.target as HTMLInputElement).files?.[0] || null}))} value={form3.curriculum?.name || ""}>Anexar Currículo</GenericFormField>
         </form>
     )
 }
