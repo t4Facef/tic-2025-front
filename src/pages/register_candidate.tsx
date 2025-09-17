@@ -1,4 +1,3 @@
-// [TODO] - Verificar se os dados obrigatorios foram preenchidos
 // [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
 // [TODO] - Geral para todos os formulários separados, verificar quais serão obrigatórios ou não, colocar verificação no front e adicinar erro caso não tenho todos os necessários
 // [TODO] - Fazer com que os dado persistam entre os steps do formulário
@@ -11,9 +10,20 @@ import CandidateForm2 from '../components/forms/register/candidate_form2'
 import CandidateForm3 from '../components/forms/register/candidate_form3'
 import CandidateForm4 from '../components/forms/register/candidate_form4'
 import CandidateForm5 from '../components/forms/register/candidate_form5'
+import { 
+  CandidateRegisterData, 
+  CandidateForm1Data, 
+  CandidateForm2Data, 
+  CandidateForm3Data, 
+  CandidateForm4Data, 
+  CandidateForm5Data 
+} from '../types/forms/candidate'
+
+
 
 export default function Register(){
     const [step, setStep] = useState(1)
+    const [formData, setFormData] = useState<CandidateRegisterData>({} as CandidateRegisterData)
     
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -30,6 +40,14 @@ export default function Register(){
             3: "Próximo",
             4: "Quase lá",
             5: "Finalizar"
+        }
+    }
+
+    const buttonFunctions = {
+        back: {
+        },
+        next: {
+            1: (data: CandidateRegisterData) => setFormData(...data, )
         }
     }
 

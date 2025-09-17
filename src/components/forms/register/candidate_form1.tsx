@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import GenericFormField from '../generic_form_field';
 
 export default function CandidateForm1 (){
+    const [formData1, setFormData1] = useState()
+
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Informações Pessoais</h2>
