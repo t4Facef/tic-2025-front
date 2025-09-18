@@ -1,43 +1,60 @@
 import { useState } from 'react';
 import GenericFormField from '../generic_form_field';
 import { CandidateForm1Data } from '../../../types/forms/candidate';
+import { formatCPF, validateCPF } from '../../../utils/cpf';
 
 export default function CandidateForm1({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
     const [form1, setForm1] = useState<CandidateForm1Data>(initialData || {} as CandidateForm1Data)
     const [cpfError, setCpfError] = useState<string>('')
     const [isCheckingCpf, setIsCheckingCpf] = useState(false)
 
+    const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const maskedValue = formatCPF(e.target.value);
+        setForm1((prev) => ({...prev, cpf: maskedValue}));
+    }
+
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
             
             setIsCheckingCpf(true)
-            setCpfError('')            
-            
-            try{
-                const responseCpf = await fetch(`http://localhost:3001/api/auth/check-cpf?cpf=${form1.cpf}`)
-                const data = await responseCpf.json();
-                
-                if(data.exists){
-                    setCpfError('Este CPF já está cadastrado. Tente fazer login.')
-                    return
+            setCpfError('')
+
+            const cleanedData = {
+                ...form1,
+                zipCode: form1.cpf?.replace(/\D/g, '') || ""
+            };
+
+            if(validateCPF(cleanedData.cpf)){
+                try{
+                    const responseCpf = await fetch(`http://localhost:3001/api/auth/check-cpf?cpf=${cleanedData.cpf}`)
+                    const data = await responseCpf.json();
+                    
+                    if(data.exists){
+                        setCpfError('Este CPF já está cadastrado. Tente fazer login.')
+                        return
+                    }
+                    formFunc(cleanedData)
                 }
-                
-                formFunc(form1)
+                catch{
+                    // Se der erro na verificação, continua (pode ser problema de rede)
+                    formFunc(cleanedData)
+                }
+                finally {
+                    setIsCheckingCpf(false)
+                }
             }
-            catch{
-                // Se der erro na verificação, continua (pode ser problema de rede)
-                formFunc(form1)
-            }
-            finally {
+            else{
                 setIsCheckingCpf(false)
+                setCpfError("CPF invalido, tente novamente")
             }
+            
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações Pessoais</h2>
             <GenericFormField id="candidate_name_register" type="text" placeholder='Digite aqui o seu nome completo' autoComplete="name" required onChange={(e) => setForm1((prev) => ({ ...prev, name: e.target.value }))} value={form1.name || ""}>Nome completo</GenericFormField>
             <div className="flex justify-between space-x-16">
                 <div>
-                    <GenericFormField id="candidate_cpf_register" type="text" placeholder='Digite aqui seu CPF' required onChange={(e) => setForm1((prev) => ({ ...prev, cpf: e.target.value }))} value={form1.cpf || ""}>CPF</GenericFormField>
+                    <GenericFormField id="candidate_cpf_register" type="text" placeholder='Digite aqui seu CPF' required onChange={(e) => handleCpfChange(e)} value={form1.cpf || ""}>CPF</GenericFormField>
                     {cpfError && (
                         <p className="text-red-600 text-sm mt-1">❌ {cpfError}</p>
                     )}
