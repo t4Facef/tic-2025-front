@@ -17,6 +17,7 @@ import AuthEntry from './pages/auth_entry';
 import CompanyProfile from './pages/company_profile';
 import JobNew from './pages/job_new';
 import MainRegister from './pages/main_register';
+import RegisterSuccess from './pages/register_success';
 import { ResetPassword } from './pages/reset_password_main';
 import ResetPasswordNew from './pages/reset_password_new';
 import Notification from './pages/notification';
@@ -36,6 +37,7 @@ export default function App() {
           <Route path='/auth/register/main' element={<MainRegister/>}></Route>
           <Route path='/auth/register/candidates' element={<RegisterCandidate/>}></Route>
           <Route path='/auth/register/companies' element={<RegisterCompanies/>}></Route>
+          <Route path='/auth/register/success' element={<RegisterSuccess/>}></Route>
           <Route path='/auth/password/forgot' element={<ResetPassword/>}></Route>
           <Route path='/auth/password/reset' element={<ResetPasswordNew/>}></Route>
           <Route path='/jobs' element={<Jobs/>}></Route>

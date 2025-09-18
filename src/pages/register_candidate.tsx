@@ -3,6 +3,7 @@
 // [TODO] - Fazer com que os dado persistam entre os steps do formulário
 
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import GenericBlueButton from '../components/buttons/generic_blue_button'
 import StepIndicator from '../components/content/step_indicator'
 import CandidateForm1 from '../components/forms/register/candidate_form1'
@@ -24,6 +25,9 @@ import {
 export default function Register() {
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState<CandidateRegisterData>({} as CandidateRegisterData)
+    const [apiMessage, setApiMessage] = useState<string>('')
+    const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -61,15 +65,59 @@ export default function Register() {
             setStep(5)
         },
         5: (data: CandidateForm5Data) => {
-            const candidateInformation = {
-                ...formData.formdata1,
-                ...formData.formdata2,
-                ...formData.formdata3,
-                ...formData.formdata4,
-                ...data // usa os dados atuais do form5
+            setIsLoading(true)
+            setApiMessage('🔄 Enviando dados...')
+            
+            const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
+            
+            const candidatePayload = {
+                nome: allData.name,
+                email: allData.email,
+                senha: allData.password,
+                cpf: allData.cpf,
+                dataNascimento: allData.birthDate,
+                sexo: allData.sexuality,
+                genero: allData.gender,
+                telefones: [allData.phoneNumber1, allData.phoneNumber2].filter(Boolean),
+                endereco: {
+                    cep: allData.zipCode,
+                    estado: allData.state,
+                    cidade: allData.city,
+                    bairro: allData.neighborhood,
+                    rua: allData.street,
+                    numero: allData.number,
+                    complemento: allData.complement
+                }
             }
-            // Aqui você enviaria para a API
-            console.log('Dados para enviar:', candidateInformation)
+            
+            fetch('http://localhost:3001/api/auth/candidato/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(candidatePayload)
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const errorData = await response.json()
+                    const errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
+                    throw new Error(errorMessage)
+                }
+                
+                return response.json()
+            })
+            .then(() => {
+                // Limpar dados do formulário
+                localStorage.removeItem('candidateFormData')
+                // Navegar para página de sucesso
+                navigate('/auth/register/success')
+            })
+            .catch(error => {
+                setApiMessage(`❌ ${error.message}`)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         }
     }
 
@@ -89,6 +137,15 @@ export default function Register() {
                     {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3}/>}
                     {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4}/>}
                     {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5}/>}
+                    {apiMessage && (
+                        <div className={`border-2 p-4 text-center rounded-lg ${
+                            apiMessage.includes('❌') 
+                                ? 'bg-red-100 border-red-300 text-red-700' 
+                                : 'bg-blue-100 border-blue-300 text-blue-700'
+                        }`}>
+                            <p className="text-lg font-medium">{apiMessage}</p>
+                        </div>
+                    )}
                     <div className='flex justify-between'>
                         <GenericBlueButton
                             color={3}
@@ -105,11 +162,11 @@ export default function Register() {
                             color={3}
                             size='md'
                             {...(step === 5
-                                ? { link: "/candidates/1/dashboard" }  // Step 5: vai pro dashboard
+                                ? { submit: true, form: `step${step}Form` }  // Step 5: submit do formulário
                                 : { submit: true, form: `step${step}Form` }  // Outros: submit do formulário
                             )}
                         >
-                            {buttonTexts.next[step as keyof typeof buttonTexts.next]}
+                            {isLoading ? '🔄 Enviando...' : buttonTexts.next[step as keyof typeof buttonTexts.next]}
                         </GenericBlueButton>
                     </div>
                 </div>
