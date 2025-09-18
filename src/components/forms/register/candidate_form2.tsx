@@ -6,6 +6,8 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
     const [form2, setForm2] = useState<CandidateForm2Data>(initialData || {} as CandidateForm2Data)
     const [estados, setEstados] = useState<string[]>(['Selecione'])
     const [cidades, setCidades] = useState<string[]>(['Selecione'])
+    const [emailError, setEmailError] = useState<string>('')
+    const [isCheckingEmail, setIsCheckingEmail] = useState(false)
     
     useEffect(() => {
         const fetchEstados = async () => {
@@ -89,17 +91,48 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
     };
 
     return (
-        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
             // Limpa CEP antes de enviar para API
             const cleanedData = {
                 ...form2,
                 zipCode: form2.zipCode?.replace(/\D/g, '') || ""
             };
-            formFunc(cleanedData)
+
+            setIsCheckingEmail(true)
+            setEmailError('')
+            
+            try{
+                const responseEmail = await fetch(`http://localhost:3001/api/auth/check-email?email=${cleanedData.email}`)
+                const data = await responseEmail.json();
+                
+                if(data.exists){
+                    setEmailError('Este email já está cadastrado. Tente fazer login.')
+                    return
+                }
+                
+                formFunc(cleanedData)
+            }
+            catch(error){
+                console.error("Erro ao verificar email:", error);
+                // Se der erro na verificação, continua (pode ser problema de rede)
+                formFunc(cleanedData)
+            }
+            finally {
+                setIsCheckingEmail(false)
+            }
+
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações de Contato</h2>
-            <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""}>Endereço de Email</GenericFormField>
+            <div>
+                <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""}>Endereço de Email</GenericFormField>
+                {emailError && (
+                    <p className="text-red-600 text-sm mt-1">❌ {emailError}</p>
+                )}
+                {isCheckingEmail && (
+                    <p className="text-blue-600 text-sm mt-1">🔄 Verificando email...</p>
+                )}
+            </div>
             <div className="flex space-x-24">
                 <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel" required  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber1: e.target.value}))} value={form2.phoneNumber1 || ""}>Telefone 1</GenericFormField>
                 <GenericFormField id="candidate_telefone2_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel"  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber2: e.target.value}))} value={form2.phoneNumber2 || ""}>Telefone 2</GenericFormField>
