@@ -21,6 +21,7 @@ export default function DevMenu() {
         { path: "/companies/1/profile", name: "Perfil Empresa" },
         { path: "/jobs/new", name: "Nova Vaga" },
         { path: "/notifications", name: "Notificações" },
+        { path: "/test", name: "Testes" },
     ];
 
     return (

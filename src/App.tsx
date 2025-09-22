@@ -21,6 +21,7 @@ import RegisterSuccess from './pages/register_success';
 import { ResetPassword } from './pages/reset_password_main';
 import ResetPasswordNew from './pages/reset_password_new';
 import Notification from './pages/notification';
+import TestPage from './pages/test';
 
 export default function App() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
           <Route path='/jobs/new' element={<JobNew/>}></Route>
           <Route path='/jobs/:id/edit' element={<JobNew/>}></Route>
           <Route path='/notifications' element={<Notification/>}></Route>
+          <Route path='/test' element={<TestPage/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

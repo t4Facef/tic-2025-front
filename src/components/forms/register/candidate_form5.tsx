@@ -1,40 +1,59 @@
 // [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
+import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 
-export default function CandidateForm5 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data}){
+export default function CandidateForm5({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data }) {
     const [form5, setForm5] = useState<CandidateForm5Data>(initialData || {} as CandidateForm5Data)
     const [passwordError, setPasswordError] = useState<string>('')
     const [passwordRequirements, setPasswordRequirements] = useState([
-        {text: "Pelo menos 8 caracteres", valid: (form5.password || "").length >= 8 },
-        {text: "Pelo menos uma letra maiúscula", valid: (/[A-Z]/.test(form5.password))},
-        {text: "Pelo menos um número", valid: (/[0-9]/.test(form5.password))},
-        {text: "Pelo menos um caractere especial", valid: (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form5.password || ""))},
-        {text: "As senhas coincidem", valid: form5.password === form5.confirmPassword},
+        { text: "Pelo menos 8 caracteres", valid: (form5.password || "").length >= 8 },
+        { text: "Pelo menos uma letra maiúscula", valid: (/[A-Z]/.test(form5.password)) },
+        { text: "Pelo menos um número", valid: (/[0-9]/.test(form5.password)) },
+        { text: "Pelo menos um caractere especial", valid: (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form5.password || "")) },
+        { text: "As senhas coincidem", valid: form5.password === form5.confirmPassword },
     ])
 
     const updatePasswordRequirements = (password: string, confirmPassword: string) => {
         setPasswordRequirements([
-            {text: "Pelo menos 8 caracteres", valid: password.length >= 8},
-            {text: "Pelo menos uma letra maiúscula", valid: /[A-Z]/.test(password)},
-            {text: "Pelo menos um número", valid: /[0-9]/.test(password)},
-            {text: "Pelo menos um caractere especial", valid: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)},
-            {text: "As senhas coincidem", valid: password === confirmPassword && password.length > 0},
+            { text: "Pelo menos 8 caracteres", valid: password.length >= 8 },
+            { text: "Pelo menos uma letra maiúscula", valid: /[A-Z]/.test(password) },
+            { text: "Pelo menos um número", valid: /[0-9]/.test(password) },
+            { text: "Pelo menos um caractere especial", valid: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password) },
+            { text: "As senhas coincidem", valid: password === confirmPassword && password.length > 0 },
         ])
     }
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const newPassword = e.target.value
-        setForm5(prev => ({...prev, password: newPassword}))
+        setForm5(prev => ({ ...prev, password: newPassword }))
         updatePasswordRequirements(newPassword, form5.confirmPassword || "")
     }
-    
+
     const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const newConfirmPassword = e.target.value
-        setForm5(prev => ({...prev, confirmPassword: newConfirmPassword}))
+        setForm5(prev => ({ ...prev, confirmPassword: newConfirmPassword }))
         updatePasswordRequirements(form5.password || "", newConfirmPassword)
+    }
+
+    // Organizar melhor depois
+    const [imgSrc, setImgSrc] = useState('')
+    const [crop, setCrop] = useState<Crop>()
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+    const imgRef = useRef<HTMLImageElement>(null)
+    const previewCanvasRef = useRef<HTMLCanvasElement>(null)
+
+    function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.files && e.target.files.length > 0) {
+            setCrop(undefined) // Makes crop preview update between images.
+            const reader = new FileReader()
+            reader.addEventListener('load', () =>
+                setImgSrc(reader.result?.toString() || ''),
+            )
+            reader.readAsDataURL(e.target.files[0])
+        }
     }
 
 
@@ -42,7 +61,7 @@ export default function CandidateForm5 ({ formFunc, formId, initialData } : {for
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
             e.preventDefault();
             setPasswordError('')
-            
+
             if (passwordRequirements.every(req => req.valid)) {
                 formFunc(form5)
             } else {
@@ -53,13 +72,49 @@ export default function CandidateForm5 ({ formFunc, formId, initialData } : {for
                 <h2 className="font-semibold text-[1.3rem]">Estamos Quase Lá!</h2>
                 <p className="text-gray-700 leading-relaxed">Para finalizar seu cadastro, precisamos de uma senha segura para proteger sua conta e uma foto de perfil para que os recrutadores possam conhecê-lo melhor.</p>
             </div>
-            
+
             <div className="space-y-6">
                 <div className="max-w-[28rem]">
-                    <GenericFormField id="candidate_profile_photo_register" type="file" required onChange={(e) => setForm5(prev => ({...prev, profilePicture: (e.target as HTMLInputElement).files?.[0] || null}))} value={form5.profilePicture?.name || ""}>Foto de Perfil</GenericFormField>
+                    <input
+                        type="file"
+                        accept=".jpg, .jpeg, .png, .webp"
+                        onChange={(e) => handleSelectFile(e)}
+                    />
                     <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
+                    {!!imgSrc && (
+                        <ReactCrop
+                            crop={crop}
+                            onChange={(_, percentCrop) => setCrop(percentCrop)}
+                            onComplete={(c) => setCompletedCrop(c)}
+                            aspect={undefined}
+                            // minWidth={400}
+                            minHeight={100}
+                            circularCrop
+                        >
+                            <img
+                                ref={imgRef}
+                                alt="Crop me"
+                                src={imgSrc}
+                            />
+                        </ReactCrop>
+                    )}
+                    {!!completedCrop && (
+                        <>
+                            <div>
+                                <canvas
+                                    ref={previewCanvasRef}
+                                    style={{
+                                        border: '1px solid black',
+                                        objectFit: 'contain',
+                                        width: completedCrop.width,
+                                        height: completedCrop.height,
+                                    }}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
-                
+
                 <div className="space-y-4 max-w-[28rem]">
                     <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required onChange={(e) => handlePasswordChange(e)} value={form5.password || ""}>Senha</GenericFormField>
                     <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password" required onChange={(e) => handleConfirmPasswordChange(e)} value={form5.confirmPassword || ""}>Confirme sua Senha</GenericFormField>
