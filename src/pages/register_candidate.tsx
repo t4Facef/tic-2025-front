@@ -70,7 +70,11 @@ export default function Register() {
             
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
             
-            const candidatePayload = {
+            // Usar FormData para enviar arquivo
+            const formDataToSend = new FormData()
+            
+            // Dados do candidato
+            const candidateData = {
                 nome: allData.name,
                 email: allData.email,
                 senha: allData.password,
@@ -90,12 +94,17 @@ export default function Register() {
                 }
             }
             
-            fetch('http://localhost:3001/api/auth/candidato/register', {
+            // Adicionar dados como JSON
+            formDataToSend.append('candidateData', JSON.stringify(candidateData))
+            
+            // Adicionar foto se existir
+            if (allData.profilePicture) {
+                formDataToSend.append('profilePicture', allData.profilePicture)
+            }
+            
+            fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'}/api/auth/candidato/register`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(candidatePayload)
+                body: formDataToSend
             })
             .then(async response => {
                 if (!response.ok) {

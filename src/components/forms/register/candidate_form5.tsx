@@ -1,16 +1,9 @@
 // [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
-import ReactCrop, {
-    Crop,
-    PixelCrop,
-    convertToPixelCrop,
-} from 'react-image-crop'
-import 'react-image-crop/dist/ReactCrop.css'
-import { useDebounceEffect } from "../../../utils/useDebounceEffect";
-import { canvasPreview } from "../../../utils/canvasPreview";
+import ImageCropper from "../../image/image_cropper";
 
 
 export default function CandidateForm5({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data }) {
@@ -46,114 +39,9 @@ export default function CandidateForm5({ formFunc, formId, initialData }: { form
         updatePasswordRequirements(form5.password || "", newConfirmPassword)
     }
 
-    // Organizar melhor depois
-
-    const [imgSrc, setImgSrc] = useState('')
-    const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const imgRef = useRef<HTMLImageElement>(null)
-    const hiddenAnchorRef = useRef<HTMLAnchorElement>(null)
-    const blobUrlRef = useRef('')
-    const [crop, setCrop] = useState<Crop>()
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
-    const [scale] = useState(1)
-    const [rotate] = useState(0)
-
-    function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.files && e.target.files.length > 0) {
-            setCrop(undefined) // Makes crop preview update between images.
-            const reader = new FileReader()
-            reader.addEventListener('load', () =>
-                setImgSrc(reader.result?.toString() || ''),
-            )
-            reader.readAsDataURL(e.target.files[0])
-        }
+    const handleCroppedImage = (croppedFile: File) => {
+        setForm5(prev => ({ ...prev, profilePicture: croppedFile }))
     }
-
-    function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-        const { width, height } = e.currentTarget
-        const size = Math.min(width, height) * 0.9 // pega 90% do menor lado
-        const newCrop = {
-            unit: 'px' as const,
-            width: size,
-            height: size,
-            x: (width - size) / 2,
-            y: (height - size) / 2,
-        }
-        setCrop(newCrop)
-        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
-    }
-
-    async function onDownloadCropClick() {
-        const image = imgRef.current
-        const previewCanvas = previewCanvasRef.current
-        if (!image || !previewCanvas || !completedCrop) {
-            throw new Error('Crop canvas does not exist')
-        }
-
-        // This will size relative to the uploaded image
-        // size. If you want to size according to what they
-        // are looking at on screen, remove scaleX + scaleY
-        const scaleX = image.naturalWidth / image.width
-        const scaleY = image.naturalHeight / image.height
-
-        const offscreen = new OffscreenCanvas(
-            completedCrop.width * scaleX,
-            completedCrop.height * scaleY,
-        )
-        const ctx = offscreen.getContext('2d')
-        if (!ctx) {
-            throw new Error('No 2d context')
-        }
-
-        ctx.drawImage(
-            previewCanvas,
-            0,
-            0,
-            previewCanvas.width,
-            previewCanvas.height,
-            0,
-            0,
-            offscreen.width,
-            offscreen.height,
-        )
-        // You might want { type: "image/jpeg", quality: <0 to 1> } to
-        // reduce image size
-        const blob = await offscreen.convertToBlob({
-            type: 'image/png',
-        })
-
-        if (blobUrlRef.current) {
-            URL.revokeObjectURL(blobUrlRef.current)
-        }
-        blobUrlRef.current = URL.createObjectURL(blob)
-
-        if (hiddenAnchorRef.current) {
-            hiddenAnchorRef.current.href = blobUrlRef.current
-            hiddenAnchorRef.current.click()
-        }
-    }
-
-    useDebounceEffect(
-        async () => {
-            if (
-                completedCrop?.width &&
-                completedCrop?.height &&
-                imgRef.current &&
-                previewCanvasRef.current
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef.current,
-                    completedCrop,
-                    scale,
-                    rotate,
-                )
-            }
-        },
-        100,
-        [completedCrop, scale, rotate],
-    )
 
 
 
@@ -174,63 +62,14 @@ export default function CandidateForm5({ formFunc, formId, initialData }: { form
                 <p className="text-gray-700 leading-relaxed">Para finalizar seu cadastro, precisamos de uma senha segura para proteger sua conta e uma foto de perfil para que os recrutadores possam conhecê-lo melhor.</p>
             </div>
 
-            <input type="file" accept="image/*" onChange={onSelectFile} />
-            
-            {
-                !!imgSrc && (
-                    <ReactCrop
-                        crop={crop}
-                        onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                        aspect={1}
-                        locked
-                    // circularCrop
-                    >
-                        <img
-                            ref={imgRef}
-                            alt="Crop me"
-                            src={imgSrc}
-                            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
-                            onLoad={onImageLoad}
-                        />
-                    </ReactCrop>
-                )
-            }
-            {
-                !!completedCrop && (
-                    <div>
-                        <div>
-                            <canvas
-                                ref={previewCanvasRef}
-                                style={{
-                                    border: '1px solid black',
-                                    objectFit: 'contain',
-                                    width: completedCrop.width,
-                                    height: completedCrop.height,
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <button onClick={onDownloadCropClick}>Download Crop</button>
-                            <div style={{ fontSize: 12, color: '#666' }}>
-                                If you get a security error when downloading try opening the
-                                Preview in a new tab (icon near top right).
-                            </div>
-                            <a
-                                href="#hidden"
-                                ref={hiddenAnchorRef}
-                                download
-                                style={{
-                                    position: 'absolute',
-                                    top: '-200vh',
-                                    visibility: 'hidden',
-                                }}
-                            >
-                                Hidden download
-                            </a>
-                        </div>
-                    </div>
+            <div className="max-w-[28rem]">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil</label>
+                <ImageCropper onCropComplete={handleCroppedImage} initialFile={form5.profilePicture || null} />
+                <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
+                {form5.profilePicture && (
+                    <p className="text-sm text-green-600 mt-1">✓ Foto selecionada: {form5.profilePicture.name}</p>
                 )}
+            </div>
             <div className="space-y-6">
                 <div className="space-y-4 max-w-[28rem]">
                     <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required onChange={(e) => handlePasswordChange(e)} value={form5.password || ""}>Senha</GenericFormField>
