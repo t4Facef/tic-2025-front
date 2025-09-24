@@ -17,8 +17,8 @@ export default function CompanieForm4() {
                 </div>
                 
                 <div className="space-y-4 max-w-[28rem]">
-                    <GenericFormField id="company_password_register" type="password" autoComplete="new-password">Senha</GenericFormField>
-                    <GenericFormField id="company_password_confirm_register" type="password" autoComplete="new-password">Confirme sua Senha</GenericFormField>
+                    <GenericFormField id="company_password_register" type="password" autoComplete="new-password" required>Senha</GenericFormField>
+                    <GenericFormField id="company_password_confirm_register" type="password" autoComplete="new-password" required>Confirme sua Senha</GenericFormField>
                 </div>
             </div>
             <div className="bg-white border border-gray-400 rounded-xl p-4">

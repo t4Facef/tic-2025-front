@@ -1,6 +1,4 @@
 // [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
-// [TODO] - Geral para todos os formulários separados, verificar quais serão obrigatórios ou não, colocar verificação no front e adicinar erro caso não tenho todos os necessários
-// [TODO] - Fazer com que os dado persistam entre os steps do formulário
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -102,7 +100,9 @@ export default function Register() {
                 formDataToSend.append('profilePicture', allData.profilePicture)
             }
             
-            fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'}/api/auth/candidato/register`, {
+            const API_BASE_URL = 'http://localhost:3001';
+            
+            fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
                 method: 'POST',
                 body: formDataToSend
             })
