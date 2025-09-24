@@ -50,7 +50,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "select") {
         return (
             <div className="flex flex-col w-full">
-                <label htmlFor={id} className={textAlign}>{children}</label>
+                <label htmlFor={id} className={textAlign}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </label>
                 <select name={id} id={id} className={`${baseClass} ${textAlign} cursor-pointer`} onChange={onChange} value={value} required={required}>
                     {placeholder && <option value="">{placeholder}</option>}
                     {options?.map((opt, i) => (
@@ -67,7 +70,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "radio") {
         return (
             <div className="flex flex-col w-full">
-                <span className={`mb-2 ${textAlign} font-semibold`}>{children}</span>
+                <span className={`mb-2 ${textAlign} font-semibold`}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </span>
                 <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
                         const value = typeof opt === 'string' ? opt : opt.value;
@@ -88,7 +94,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "checkbox") {
         return (
             <div className="flex flex-col w-full">
-                <span className={`mb-2 ${textAlign} font-semibold`}>{children}</span>
+                <span className={`mb-2 ${textAlign} font-semibold`}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </span>
                 <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
                         const value = typeof opt === 'string' ? opt : opt.value;
@@ -109,7 +118,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "textarea") {
         return (
             <div className="flex flex-col w-full">
-                <label htmlFor={id} className={textAlign}>{children}</label>
+                <label htmlFor={id} className={textAlign}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </label>
                 <textarea name={id} id={id} placeholder={placeholder} className={`${baseClass} min-h-[100px] ${textAlign}`} onChange={onChange} value={value} required={required} />
             </div>
         );
@@ -119,7 +131,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     if (type === "file") {
         return (
             <div className="flex flex-col w-full">
-                <label htmlFor={id} className={textAlign}>{children}</label>
+                <label htmlFor={id} className={textAlign}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </label>
                 <input type="file" name={id} id={id} className={`${baseClass} bg-white cursor-pointer`} onChange={onChange} required={required} />
             </div>
         );
@@ -132,7 +147,10 @@ export default function GenericFormField({children, id, placeholder, options, au
 
         return (
             <div className="flex flex-col w-full">
-                <label htmlFor={id} className={textAlign}>{children}</label>
+                <label htmlFor={id} className={textAlign}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </label>
                 <div className="relative">
                     <input type={passwordType} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} pr-10 w-full`} onChange={onChange} value={value} required={required} />
                     <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={toggleView}>
@@ -181,7 +199,10 @@ export default function GenericFormField({children, id, placeholder, options, au
 
         return (
             <div className="flex flex-col w-full">
-                <label htmlFor={id} className={textAlign}>{children}</label>
+                <label htmlFor={id} className={textAlign}>
+                    {children}
+                    {required && <span className="text-black ml-1">*</span>}
+                </label>
                 <input 
                     type="text" 
                     name={id} 
@@ -199,7 +220,10 @@ export default function GenericFormField({children, id, placeholder, options, au
     // INPUT PADRÃO (text, email, password, date, etc.)
     return (
         <div className="flex flex-col w-full">
-            <label htmlFor={id} className={textAlign}>{children}</label>
+            <label htmlFor={id} className={textAlign}>
+                {children}
+                {required && <span className="text-black ml-1">*</span>}
+            </label>
             <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} ${textAlign} ${type === 'date' ? 'cursor-pointer' : ''} ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}`} onChange={onChange} value={value} disabled={disabled} required={required} />
         </div>
     );
