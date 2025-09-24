@@ -137,8 +137,8 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
                 )}
             </div>
             <div className="flex space-x-24">
-                <GenericFormField id="companie_telefone_register" placeholder="Digite aqui o telefone comercial" autoComplete="tel" required onChange={(e) => setForm2((prev) => ({...prev, businessPhone: e.target.value}))} value={form2.businessPhone || ""}>Telefone Comercial</GenericFormField>
-                <GenericFormField id="companie_website_register" placeholder="Digite aqui o site da empresa" onChange={(e) => setForm2((prev) => ({...prev, website: e.target.value}))} value={form2.website || ""}>Site da Empresa</GenericFormField>
+                <GenericFormField id="companie_telefone_register" type="tel" placeholder="Digite aqui o telefone comercial" autoComplete="tel" required onChange={(e) => setForm2((prev) => ({...prev, businessPhone: e.target.value}))} value={form2.businessPhone || ""}>Telefone Comercial</GenericFormField>
+                <GenericFormField id="companie_website_register" type="url" placeholder="Digite aqui o site da empresa" autoComplete="url" onChange={(e) => setForm2((prev) => ({...prev, website: e.target.value}))} value={form2.website || ""}>Site da Empresa</GenericFormField>
             </div>
             <div>
                 <p>Endereço da Empresa</p>

@@ -52,8 +52,8 @@ export default function CompanieForm1({ formFunc, formId, initialData }: { formF
             }
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações da Empresa</h2>
-            <GenericFormField id="companie_name1_register" placeholder="Digite aqui a razão social" required onChange={(e) => setForm1((prev) => ({ ...prev, companyName: e.target.value }))} value={form1.companyName || ""}>Razão social</GenericFormField>
-            <GenericFormField id="companie_name2_register" placeholder="Digite aqui o nome fantasia" onChange={(e) => setForm1((prev) => ({ ...prev, tradeName: e.target.value }))} value={form1.tradeName || ""}>Nome fantasia</GenericFormField>
+            <GenericFormField id="companie_name1_register" placeholder="Digite aqui a razão social" autoComplete="organization" required onChange={(e) => setForm1((prev) => ({ ...prev, companyName: e.target.value }))} value={form1.companyName || ""}>Razão social</GenericFormField>
+            <GenericFormField id="companie_name2_register" placeholder="Digite aqui o nome fantasia" autoComplete="organization" onChange={(e) => setForm1((prev) => ({ ...prev, tradeName: e.target.value }))} value={form1.tradeName || ""}>Nome fantasia</GenericFormField>
             <div className="flex gap-32">
                 <div>
                     <GenericFormField id="companie_cnpj_register" placeholder="Digite aqui o CNPJ" required onChange={(e) => handleCnpjChange(e)} value={form1.cnpj || ""}>CNPJ</GenericFormField>
@@ -64,7 +64,7 @@ export default function CompanieForm1({ formFunc, formId, initialData }: { formF
                         <p className="text-blue-600 text-sm mt-1">🔄 Verificando CNPJ...</p>
                     )}
                 </div>
-                <GenericFormField id="companie_employes_num_register" placeholder="Digite aqui o número de funcinários" onChange={(e) => setForm1((prev) => ({ ...prev, employeeCount: e.target.value }))} value={form1.employeeCount || ""}>Número de funcionários</GenericFormField>
+                <GenericFormField id="companie_employes_num_register" type="number" placeholder="Digite aqui o número de funcionários" onChange={(e) => setForm1((prev) => ({ ...prev, employeeCount: parseInt(e.target.value) || 0 }))} value={form1.employeeCount?.toString() || ""}>Número de funcionários</GenericFormField>
             </div>
             <GenericFormField id="companie_area_register" type="select" options={['Selecione', 'Tecnologia', 'Saúde', 'Educação', 'Financeiro', 'Varejo', 'Indústria', 'Logística', 'Construção', 'Alimentação', 'Consultoria', 'Marketing', 'Recursos Humanos', 'Jurídico', 'Telecomunicações', 'Energia', 'Agronegócio', 'Turismo', 'Outros']} required onChange={(e) => setForm1((prev) => ({ ...prev, businessSector: e.target.value }))} value={form1.businessSector || ""}>Area de atuação</GenericFormField>
         </form>
