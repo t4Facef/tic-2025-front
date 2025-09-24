@@ -68,10 +68,9 @@ export default function Register() {
             
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
             
-            // Usar FormData para enviar arquivo
-            const formDataToSend = new FormData()
+            console.log('🔍 Dados combinados (allData):', allData)
             
-            // Dados do candidato
+            // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
             const candidateData = {
                 nome: allData.name,
                 email: allData.email,
@@ -92,20 +91,31 @@ export default function Register() {
                 }
             }
             
-            // Adicionar dados como JSON
-            formDataToSend.append('candidateData', JSON.stringify(candidateData))
+            console.log('📤 JSON sendo enviado (candidateData):', candidateData)
             
-            // Adicionar foto se existir
+            const API_BASE_URL = 'http://localhost:3001';
+            
+            // TEMPORÁRIO: Enviando JSON até backend configurar multer
+            fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(candidateData)
+            })
+            
+            /* VERSÃO FINAL: Usar quando backend suportar FormData + multer
+            const formDataToSend = new FormData()
+            formDataToSend.append('candidateData', JSON.stringify(candidateData))
             if (allData.profilePicture) {
                 formDataToSend.append('profilePicture', allData.profilePicture)
             }
-            
-            const API_BASE_URL = 'http://localhost:3001';
             
             fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
                 method: 'POST',
                 body: formDataToSend
             })
+            */
             .then(async response => {
                 if (!response.ok) {
                     const errorData = await response.json()

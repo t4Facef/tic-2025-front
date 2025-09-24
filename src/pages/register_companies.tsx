@@ -56,28 +56,42 @@ export default function RegisterCompanies() {
 
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
 
-            // Usar FormData para enviar arquivo
-            const formDataToSend = new FormData()
+            console.log('🔍 Dados combinados (allData):', allData)
 
-            /* Dados da compania formatado pra api
+            // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
             const companieData = {
+                // TODO: Mapear campos da empresa quando formulários estiverem prontos
+                nome: allData.companyName,
+                email: allData.email,
+                cnpj: allData.cnpj,
+                // Adicionar outros campos conforme necessário
             }
-            */
 
-            // Adicionar dados como JSON Quando configurar a api
-            // formDataToSend.append('candidateData', JSON.stringify(candidateData))
+            console.log('📤 JSON sendo enviado (companieData):', companieData)
 
-            // Adicionar foto se existir
+            const API_BASE_URL = 'http://localhost:3001';
+
+            // TEMPORÁRIO: Enviando JSON até backend configurar multer
+            fetch(`${API_BASE_URL}/api/auth/companie/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(companieData)
+            })
+            
+            /* VERSÃO FINAL: Usar quando backend suportar FormData + multer
+            const formDataToSend = new FormData()
+            formDataToSend.append('companieData', JSON.stringify(companieData))
             if (allData.profilePicture) {
                 formDataToSend.append('profilePicture', allData.profilePicture)
             }
-
-            const API_BASE_URL = 'http://localhost:3001'; // Passar pra um env depois com o caminho certo
-
+            
             fetch(`${API_BASE_URL}/api/auth/companie/register`, {
                 method: 'POST',
                 body: formDataToSend
             })
+            */
                 .then(async response => {
                     if (!response.ok) {
                         const errorData = await response.json()
@@ -89,7 +103,7 @@ export default function RegisterCompanies() {
                 })
                 .then(() => {
                     // Limpar dados do formulário
-                    localStorage.removeItem('candidateFormData')
+                    localStorage.removeItem('companieFormData')
                     // Navegar para página de sucesso
                     navigate('/auth/register/success')
                 })
