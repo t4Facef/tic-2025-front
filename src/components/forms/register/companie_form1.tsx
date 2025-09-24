@@ -33,7 +33,7 @@ export default function CompanieForm1({ formFunc, formId, initialData }: { formF
                     const data = await responseCpf.json();
 
                     if (data.exists) {
-                        setCnpjError('Este CPF já está cadastrado. Tente fazer login.')
+                        setCnpjError('Este CNPJ já está cadastrado. Tente fazer login.')
                         return
                     }
                     formFunc(cleanedData)
@@ -48,7 +48,7 @@ export default function CompanieForm1({ formFunc, formId, initialData }: { formF
             }
             else {
                 setIsCheckingCnpj(false)
-                setCnpjError("CPF invalido, tente novamente")
+                setCnpjError("CNPJ invalido, tente novamente")
             }
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações da Empresa</h2>
