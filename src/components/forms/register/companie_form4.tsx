@@ -2,7 +2,7 @@
 
 import GenericFormField from "../generic_form_field";
 
-export default function CompanieForm4() {
+export default function CompanieForm4({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
     return (
         <form className="flex-col text-start space-y-8">
             <div className="space-y-4">

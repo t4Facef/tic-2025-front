@@ -3,7 +3,7 @@
 
 import GenericFormField from "../generic_form_field";
 
-export default function CompanieForm1() {
+export default function CompanieForm1({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
     return (
         <form className="flex-col text-start space-y-6">
             <h2 className="font-semibold text-[1.3rem]">Informações da Empresa</h2>
