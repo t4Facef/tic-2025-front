@@ -1,8 +1,10 @@
 // [TODO] - Fazer com que a recomendações de senha mude de forma dinâmica
 
+import { CandidateForm4Data } from "../../../types/forms/candidate";
+import { CompanieForm4Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 
-export default function CompanieForm4({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
+export default function CompanieForm4({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm4Data) => void, formId: string, initialData?: CandidateForm4Data }) {
     return (
         <form className="flex-col text-start space-y-8">
             <div className="space-y-4">

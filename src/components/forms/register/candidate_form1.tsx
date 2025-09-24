@@ -22,7 +22,7 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
 
             const cleanedData = {
                 ...form1,
-                zipCode: form1.cpf?.replace(/\D/g, '') || ""
+                cpf: form1.cpf?.replace(/\D/g, '') || ""
             };
 
             if(validateCPF(cleanedData.cpf)){

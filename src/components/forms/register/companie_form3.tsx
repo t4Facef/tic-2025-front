@@ -1,6 +1,7 @@
+import { CompanieForm3Data } from "../../../types/forms/companie";
 import TagContainer from "../../content/tag_container";
 
-export default function CompanieForm3({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
+export default function CompanieForm3({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm3Data) => void, formId: string, initialData?: CompanieForm3Data }) {
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Informações de Inclusão</h2>

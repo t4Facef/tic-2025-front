@@ -1,9 +1,10 @@
 // [TODO] - Adicionar a busca de CEP automática (aqui uma api https://viacep.com.br/ws/01001000/json/ ai só mudar os numeros no meio pelo cep)
 // [TODO] - Procurar uma api com os estados e cidades automaticamente, talvez no mesmo lugar da cep automatica
 
+import { CompanieForm2Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 
-export default function CompanieForm2({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
+export default function CompanieForm2({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm2Data) => void, formId: string, initialData?: CompanieForm2Data }) {
     return (
         <form className="flex-col text-start space-y-8">
             <h2 className="font-semibold text-[1.3rem]">Endereço e Contato</h2>

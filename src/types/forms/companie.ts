@@ -2,7 +2,7 @@ export interface CompanieForm1Data {
     companyName: string;
     tradeName?: string;
     cnpj: string;
-    employeeCount?: number;
+    employeeCount?: string;
     businessSector: string;
 }
 
