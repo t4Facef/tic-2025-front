@@ -1,9 +1,11 @@
 // [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
-import ImageCropper from "../../image/image_cropper";
+
+// Importação dinâmica para evitar problemas no Vercel
+const ImageCropper = lazy(() => import("../../image/image_cropper"));
 
 
 export default function CandidateForm5({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data }) {
@@ -64,7 +66,9 @@ export default function CandidateForm5({ formFunc, formId, initialData }: { form
 
             <div className="max-w-[28rem]">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil</label>
-                <ImageCropper onCropComplete={handleCroppedImage} initialFile={form5.profilePicture || null} />
+                <Suspense fallback={<div className="p-4 text-center text-gray-500">🔄 Carregando editor de imagem...</div>}>
+                    <ImageCropper onCropComplete={handleCroppedImage} initialFile={form5.profilePicture || null} />
+                </Suspense>
                 <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
                 {form5.profilePicture && (
                     <p className="text-sm text-green-600 mt-1">✓ Foto selecionada: {form5.profilePicture.name}</p>

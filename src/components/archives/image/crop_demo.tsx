@@ -7,8 +7,8 @@ import ReactCrop, {
   PixelCrop,
   convertToPixelCrop,
 } from 'react-image-crop'
-import { canvasPreview } from './canvasPreview'
-import { useDebounceEffect } from './useDebounceEffect'
+import { canvasPreview } from '../../../utils/canvasPreview'
+import { useDebounceEffect } from '../../../utils/useDebounceEffect'
 
 import 'react-image-crop/dist/ReactCrop.css'
 
