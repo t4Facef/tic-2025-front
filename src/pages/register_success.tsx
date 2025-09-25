@@ -23,7 +23,7 @@ export default function RegisterSuccess() {
                 </div>
 
                 <div className="space-y-3 flex flex-col items-center">
-                    <GenericBlueButton color={3} size="lg" link="/login">
+                    <GenericBlueButton color={3} size="lg" link="/auth/entry">
                         Fazer Login
                     </GenericBlueButton>
                 </div>
