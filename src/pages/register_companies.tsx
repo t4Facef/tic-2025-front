@@ -1,7 +1,4 @@
-// [TODO] - Verificar se os dados obrigatorios foram preenchidos
 // [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
-// [TODO] - Geral para todos os formulários separados, verificar quais serão obrigatórios ou não, colocar verificação no front e adicinar erro caso não tenho todos os necessários
-// [TODO] - Fazer com que os dado persistam entre os steps do formulário
 
 import { useState } from 'react'
 import GenericBlueButton from '../components/buttons/generic_blue_button'
@@ -50,21 +47,25 @@ export default function RegisterCompanies() {
             setStep(4)
         },
         4: (data: CompanieForm4Data) => {
-            setFormData(prev => ({ ...prev, formdata4: data }))
             setIsLoading(true)
             setApiMessage('🔄 Enviando dados...')
 
-            const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
+            const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...data }
 
             console.log('🔍 Dados combinados (allData):', allData)
 
             // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
             const companieData = {
-                // TODO: Mapear campos da empresa quando formulários estiverem prontos
-                nome: allData.companyName,
+                razaoSocial: allData.companyName,
+                nomeFantasia: allData.tradeName,
                 email: allData.email,
+                senha: allData.password,
+                site: allData.website,
                 cnpj: allData.cnpj,
-                // Adicionar outros campos conforme necessário
+                telefoneComercial: allData.businessPhone,
+                numFunc: parseInt(allData.employeeCount || '0') || 0,
+                numFuncPcd: 0, // TODO: Adicionar campo no formulário
+                area: allData.businessSector
             }
 
             console.log('📤 JSON sendo enviado (companieData):', companieData)
@@ -72,7 +73,7 @@ export default function RegisterCompanies() {
             const API_BASE_URL = 'http://localhost:3001';
 
             // TEMPORÁRIO: Enviando JSON até backend configurar multer
-            fetch(`${API_BASE_URL}/api/auth/companie/register`, {
+            fetch(`${API_BASE_URL}/api/auth/empresa/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -93,10 +94,33 @@ export default function RegisterCompanies() {
             })
             */
                 .then(async response => {
+                    console.log('📡 Response status:', response.status)
+                    console.log('📡 Response headers:', response.headers.get('content-type'))
+                    
                     if (!response.ok) {
-                        const errorData = await response.json()
-                        const errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
-                        throw new Error(errorMessage)
+                        const responseText = await response.text()
+                        console.log('❌ Response text:', responseText)
+                        
+                        // Tentar parsear como JSON, se falhar usar texto
+                        try {
+                            const errorData = JSON.parse(responseText)
+                            let errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
+                            
+                            // Encurtar mensagens de erro do Prisma
+                            if (errorMessage.includes('prisma.')) {
+                                if (errorMessage.includes('Unique constraint failed')) {
+                                    errorMessage = 'Dados já cadastrados no sistema'
+                                } else if (errorMessage.includes('Invalid')) {
+                                    errorMessage = 'Dados inválidos ou campos obrigatórios faltando'
+                                } else {
+                                    errorMessage = 'Erro no banco de dados'
+                                }
+                            }
+                            
+                            throw new Error(errorMessage)
+                        } catch {
+                            throw new Error(`Erro ${response.status}: Falha na comunicação`)
+                        }
                     }
 
                     return response.json()
@@ -132,11 +156,11 @@ export default function RegisterCompanies() {
                     {step == 3 && <CompanieForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} />}
                     {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} />}
                     {apiMessage && (
-                        <div className={`border-2 p-4 text-center rounded-lg ${apiMessage.includes('❌')
+                        <div className={`border-2 p-2 text-center rounded-lg ${apiMessage.includes('❌')
                                 ? 'bg-red-100 border-red-300 text-red-700'
                                 : 'bg-blue-100 border-blue-300 text-blue-700'
                             }`}>
-                            <p className="text-lg font-medium">{apiMessage}</p>
+                            <p className="text-sm font-medium">{apiMessage}</p>
                         </div>
                     )}
                     <div className='flex justify-between'>

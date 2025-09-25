@@ -157,12 +157,12 @@ export default function Register() {
                     {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4}/>}
                     {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5}/>}
                     {apiMessage && (
-                        <div className={`border-2 p-4 text-center rounded-lg ${
+                        <div className={`border-2 p-2 text-center rounded-lg ${
                             apiMessage.includes('❌') 
                                 ? 'bg-red-100 border-red-300 text-red-700' 
                                 : 'bg-blue-100 border-blue-300 text-blue-700'
                         }`}>
-                            <p className="text-lg font-medium">{apiMessage}</p>
+                            <p className="text-sm font-medium">{apiMessage}</p>
                         </div>
                     )}
                     <div className='flex justify-between'>
