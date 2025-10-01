@@ -103,14 +103,14 @@ export default function Register() {
                 
                 experiencia: {
                     titulo: allData.jobTitle,
-                    instituicao: allData.companyName,
+                    empresa: allData.companyName,
                     dataInicio: allData.jobStartDate,
                     dataFim: allData.jobEndDate,
                     descricao: allData.jobDescription,
                     tipo: allData.jobType,
                 },
 
-                subtiposDeficiencia: [allData.necessitySubtype],
+                subtiposDeficiencia: [Number(allData.necessitySubtype)],
             }
             
             console.log('📤 JSON sendo enviado (candidateData):', candidateData)
@@ -208,14 +208,6 @@ export default function Register() {
                             )}
                         >
                             {isLoading ? '⏳ Enviando...' : buttonTexts.next[step as keyof typeof buttonTexts.next]}
-                        </GenericBlueButton>
-                    </div>
-                </div>
-            </div>
-        </div>rm` }  // Outros: submit do formulário
-                            )}
-                        >
-                            {isLoading ? '🔄 Enviando...' : buttonTexts.next[step as keyof typeof buttonTexts.next]}
                         </GenericBlueButton>
                     </div>
                 </div>
