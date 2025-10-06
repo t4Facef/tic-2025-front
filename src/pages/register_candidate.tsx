@@ -70,8 +70,19 @@ export default function Register() {
             
             console.log('🔍 Dados combinados (allData):', allData)
             
+            // Função para limpar campos vazios/undefined
+            const cleanObject = (obj: Record<string, unknown>) => {
+                const cleaned: Record<string, unknown> = {}
+                for (const [key, value] of Object.entries(obj)) {
+                    if (value !== undefined && value !== null && value !== '') {
+                        cleaned[key] = value
+                    }
+                }
+                return Object.keys(cleaned).length > 0 ? cleaned : undefined
+            }
+
             // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
-            const candidateData = {
+            const candidateData: Record<string, unknown> = {
                 nome: allData.name,
                 email: allData.email,
                 senha: allData.password,
@@ -80,7 +91,6 @@ export default function Register() {
                 sexo: allData.sexuality,
                 genero: allData.gender,
                 telefones: [allData.phoneNumber1, allData.phoneNumber2].filter(Boolean),
-                areaInteresse: allData.workArea,
                 endereco: {
                     cep: allData.zipCode,
                     estado: allData.state,
@@ -90,27 +100,39 @@ export default function Register() {
                     numero: allData.number,
                     complemento: allData.complement
                 },
-
-                formacao: {
-                    nomeCurso: allData.courseName,
-                    tipo: allData.educationType,
-                    instituicao: allData.educationInstitution,
-                    situacao: allData.educationStatus,
-                    dataInicio: allData.educationStartDate,
-                    dataFim: allData.educationEndDate,
-                    descricao: allData.educationDescription,
-                },
-                
-                experiencia: {
-                    titulo: allData.jobTitle,
-                    empresa: allData.companyName,
-                    dataInicio: allData.jobStartDate,
-                    dataFim: allData.jobEndDate,
-                    descricao: allData.jobDescription,
-                    tipo: allData.jobType,
-                },
-
                 subtiposDeficiencia: [Number(allData.necessitySubtype)],
+            }
+
+            // Adicionar campos opcionais apenas se preenchidos
+            if (allData.workArea) {
+                candidateData.areaInteresse = allData.workArea
+            }
+
+            // Formação - só adicionar se pelo menos um campo estiver preenchido
+            const formacao = cleanObject({
+                nomeCurso: allData.courseName,
+                tipo: allData.educationType,
+                instituicao: allData.educationInstitution,
+                situacao: allData.educationStatus,
+                dataInicio: allData.educationStartDate,
+                dataFim: allData.educationEndDate,
+                descricao: allData.educationDescription,
+            })
+            if (formacao) {
+                candidateData.formacao = formacao
+            }
+                
+            // Experiência - só adicionar se pelo menos um campo estiver preenchido
+            const experiencia = cleanObject({
+                titulo: allData.jobTitle,
+                empresa: allData.companyName,
+                dataInicio: allData.jobStartDate,
+                dataFim: allData.jobEndDate,
+                descricao: allData.jobDescription,
+                tipo: allData.jobType,
+            })
+            if (experiencia) {
+                candidateData.experiencia = experiencia
             }
             
             console.log('📤 JSON sendo enviado (candidateData):', candidateData)
