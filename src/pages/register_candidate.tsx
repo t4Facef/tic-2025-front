@@ -80,6 +80,7 @@ export default function Register() {
                 sexo: allData.sexuality,
                 genero: allData.gender,
                 telefones: [allData.phoneNumber1, allData.phoneNumber2].filter(Boolean),
+                areaInteresse: allData.workArea,
                 endereco: {
                     cep: allData.zipCode,
                     estado: allData.state,
@@ -88,7 +89,28 @@ export default function Register() {
                     rua: allData.street,
                     numero: allData.number,
                     complemento: allData.complement
-                }
+                },
+
+                formacao: {
+                    nomeCurso: allData.courseName,
+                    tipo: allData.educationType,
+                    instituicao: allData.educationInstitution,
+                    situacao: allData.educationStatus,
+                    dataInicio: allData.educationStartDate,
+                    dataFim: allData.educationEndDate,
+                    descricao: allData.educationDescription,
+                },
+                
+                experiencia: {
+                    titulo: allData.jobTitle,
+                    empresa: allData.companyName,
+                    dataInicio: allData.jobStartDate,
+                    dataFim: allData.jobEndDate,
+                    descricao: allData.jobDescription,
+                    tipo: allData.jobType,
+                },
+
+                subtiposDeficiencia: [Number(allData.necessitySubtype)],
             }
             
             console.log('📤 JSON sendo enviado (candidateData):', candidateData)
@@ -181,11 +203,11 @@ export default function Register() {
                             color={3}
                             size='md'
                             {...(step === 5
-                                ? { submit: true, form: `step${step}Form` }  // Step 5: submit do formulário
+                                ? { submit: true, form: `step${step}Form`, disabled: isLoading }  // Step 5: submit do formulário
                                 : { submit: true, form: `step${step}Form` }  // Outros: submit do formulário
                             )}
                         >
-                            {isLoading ? '🔄 Enviando...' : buttonTexts.next[step as keyof typeof buttonTexts.next]}
+                            {isLoading ? '⏳ Enviando...' : buttonTexts.next[step as keyof typeof buttonTexts.next]}
                         </GenericBlueButton>
                     </div>
                 </div>
