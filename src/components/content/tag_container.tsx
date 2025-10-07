@@ -1,7 +1,6 @@
-// [TODO] - Fazer a parte de possibilidade de edição
-
 import { ReactNode, useState } from "react";
 import Tag from "./tag";
+import SearchableSelect from "../forms/searchable_select ";
 
 interface TagContainerProps {
     children: ReactNode;
@@ -12,7 +11,8 @@ interface TagContainerProps {
 
 export default function TagContainer({ children, edit = false, tags = [], onChange }: TagContainerProps) {
     const [currentTags, setCurrentTags] = useState(tags);
-    const [newTagText, setNewTagText] = useState("");
+    const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6', 'Option 7', 'Option 8', 'Option 9', 'Option 10'];
+    const [selected, setSelected] = useState("")
 
     const handleRemoveTag = (indexToRemove: number) => {
         const newTags = currentTags.filter((_, index) => index !== indexToRemove);
@@ -20,19 +20,13 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
         onChange?.(newTags);
     };
 
-    const handleAddTag = () => {
-        if (newTagText.trim()) {
-            const newTags = [...currentTags, newTagText.trim()];
+    const handleAddTag = (value?: string) => {
+        const tagToAdd = value || selected;
+        if (tagToAdd.trim() && !currentTags.includes(tagToAdd.trim())) {
+            const newTags = [...currentTags, tagToAdd.trim()];
             setCurrentTags(newTags);
-            setNewTagText("");
             onChange?.(newTags);
-        }
-    };
-
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleAddTag();
+            setSelected("");
         }
     };
 
@@ -56,33 +50,15 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
                         </button>
                     )}
                     {currentTags.map((tag, index) => (
-                        <Tag 
-                            key={index} 
-                            removable={edit} 
+                        <Tag
+                            key={index}
+                            removable={edit}
                             onRemove={() => handleRemoveTag(index)}
                         >
                             {tag}
                         </Tag>
                     ))}
-                    {edit && (
-                        <div className="inline-flex items-center bg-blue1 px-3 m-2 rounded-2xl font-medium">
-                            <input
-                                type="text"
-                                value={newTagText}
-                                onChange={(e) => setNewTagText(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                placeholder="Nova capacidade..."
-                                className="bg-transparent border-none outline-none placeholder-gray-500 text-sm min-w-[120px]"
-                            />
-                            <button 
-                                type="button"
-                                onClick={handleAddTag}
-                                className="ml-2 text-blue3 hover:text-blue3H hover:bg-blue1 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
-                            >
-                                +
-                            </button>
-                        </div>
-                    )}
+                    {edit && <SearchableSelect options={options} addTag={handleAddTag} currentTags={currentTags}/>}
                 </div>
             </div>
         </div>

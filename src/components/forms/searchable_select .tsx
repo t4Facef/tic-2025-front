@@ -2,10 +2,11 @@ import { useState, useRef, useEffect } from "react";
 
 interface SearchableSelectProps {
   options: string[];
-  setSelected: (option: string) => void;
+  addTag: (value?: string) => void;
+  currentTags: string[];
 }
 
-export default function SearchableSelect({options, setSelected}: SearchableSelectProps) {
+export default function SearchableSelect({options, addTag, currentTags}: SearchableSelectProps) {
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
   const [isOpen, setIsOpen] = useState(false)
@@ -13,14 +14,19 @@ export default function SearchableSelect({options, setSelected}: SearchableSelec
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
-    setFilteredOptions(options.filter(option => option.toLowerCase().includes(e.target.value.toLowerCase())))
   }
 
   const handleSelected = (option: string) => () => {
-    setSelected(option)
+    addTag(option)
     setSearch('')
     setIsOpen(false)
   }
+
+  useEffect(() => {
+    setFilteredOptions(options.filter(option => 
+      option.toLowerCase().includes(search.toLowerCase()) && !currentTags.includes(option)
+    ))
+  }, [currentTags, search, options])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,12 +40,14 @@ export default function SearchableSelect({options, setSelected}: SearchableSelec
   }, [])
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative inline-flex items-center bg-blue1 px-3 m-2 rounded-2xl font-medium" ref={dropdownRef}>
       <input
         type="text"
         value={search}
         onChange={(e) => handleSearch(e)}
         onFocus={() => setIsOpen(true)}
+        className="bg-transparent border-none outline-none placeholder-gray-500 text-sm min-w-[120px]"
+        placeholder="Nova capacidade..."
       />
       {
         isOpen && (
