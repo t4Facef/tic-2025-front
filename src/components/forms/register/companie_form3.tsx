@@ -16,7 +16,20 @@ export default function CompanieForm3({ formFunc, formId, initialData }: { formF
                 Essas informações ajudam os candidatos a entender como sua empresa promove a inclusão 
                 e quais recursos estão disponíveis para garantir um ambiente de trabalho acessível e acolhedor.
             </p>
-            <TagContainer edit={true} tags={form3.supportCapabilities || []} onChange={(tags) => setForm3(prev => ({...prev, supportCapabilities: tags}))}> Capacidades de Apoio</TagContainer>
+            <TagContainer 
+                edit={true} 
+                tags={form3.supportCapabilities || []} 
+                onChange={(tags) => setForm3(prev => ({...prev, supportCapabilities: tags}))}
+                options={[
+                    "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
+                    "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
+                    "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
+                    "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
+                    "Tecnologia assistiva", "Acompanhamento especializado"
+                ]}
+            >
+                Capacidades de Apoio
+            </TagContainer>
         </form>
     )
 }

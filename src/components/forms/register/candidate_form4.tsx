@@ -96,7 +96,20 @@ export default function CandidateForm4({ formFunc, formId, initialData }: { form
                 <GenericFormField id="candidate_sub_type_register" type="select" options={subTipos.map(subTipo => subTipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleSubTypeChange(e)} value={form4.necessitySubtype || ""}>Subtipo de Necessidade</GenericFormField>
             </div>
             <GenericFormField id="candidate_medical_report_register" type="file" required onChange={(e) => setForm4((prev) => ({ ...prev, medicalReport: (e.target as HTMLInputElement).files?.[0] || null }))} value={form4.medicalReport?.name || ""}>Laudo Médico</GenericFormField>
-            <TagContainer edit={true} tags={form4.supportNeeds || []} onChange={(tags) => setForm4(prev => ({ ...prev, supportNeeds: tags }))}>Necessidades de Apoio</TagContainer>
+            <TagContainer 
+                edit={true} 
+                tags={form4.supportNeeds || []} 
+                onChange={(tags) => setForm4(prev => ({ ...prev, supportNeeds: tags }))}
+                options={[
+                    "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
+                    "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
+                    "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
+                    "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
+                    "Tecnologia assistiva", "Acompanhamento especializado"
+                ]}
+            >
+                Necessidades de Apoio
+            </TagContainer>
         </form>
     )
 }

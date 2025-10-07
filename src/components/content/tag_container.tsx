@@ -7,12 +7,12 @@ interface TagContainerProps {
     edit?: boolean;
     tags?: string[];
     onChange?: (tags: string[]) => void;
+    options?: string[];
 }
 
-export default function TagContainer({ children, edit = false, tags = [], onChange }: TagContainerProps) {
+export default function TagContainer({ children, edit = false, tags = [], onChange, options }: TagContainerProps) {
     const [currentTags, setCurrentTags] = useState(tags);
-    const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6', 'Option 7', 'Option 8', 'Option 9', 'Option 10'];
-    const [selected, setSelected] = useState("")
+    const [newTagText, setNewTagText] = useState("");
 
     const handleRemoveTag = (indexToRemove: number) => {
         const newTags = currentTags.filter((_, index) => index !== indexToRemove);
@@ -21,12 +21,19 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
     };
 
     const handleAddTag = (value?: string) => {
-        const tagToAdd = value || selected;
+        const tagToAdd = value || newTagText;
         if (tagToAdd.trim() && !currentTags.includes(tagToAdd.trim())) {
             const newTags = [...currentTags, tagToAdd.trim()];
             setCurrentTags(newTags);
             onChange?.(newTags);
-            setSelected("");
+            setNewTagText("");
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddTag();
         }
     };
 
@@ -58,7 +65,28 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
                             {tag}
                         </Tag>
                     ))}
-                    {edit && <SearchableSelect options={options} addTag={handleAddTag} currentTags={currentTags}/>}
+                    {edit && options && (
+                        <SearchableSelect options={options} addTag={handleAddTag} currentTags={currentTags}/>
+                    )}
+                    {edit && !options && (
+                        <div className="inline-flex items-center bg-blue1 px-3 m-2 rounded-2xl font-medium">
+                            <input
+                                type="text"
+                                value={newTagText}
+                                onChange={(e) => setNewTagText(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Nova capacidade..."
+                                className="bg-transparent border-none outline-none placeholder-gray-500 text-sm min-w-[120px]"
+                            />
+                            <button 
+                                type="button"
+                                onClick={() => handleAddTag()}
+                                className="ml-2 text-blue3 hover:text-blue3H hover:bg-blue1 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
+                            >
+                                +
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

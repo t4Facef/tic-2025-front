@@ -129,6 +129,13 @@ export default function JobForm() {
               tags={dataForm.skillsTags}
               edit={true}
               onChange={(tags) => setDataForm(prev => ({ ...prev, skillsTags: tags }))}
+              options={[
+                "JavaScript", "Python", "Java", "React", "Node.js", "TypeScript", 
+                "HTML/CSS", "SQL", "Git", "Docker", "AWS", "MongoDB", "Express",
+                "Angular", "Vue.js", "PHP", "C#", "Ruby", "Go", "Kotlin",
+                "Comunicação", "Trabalho em equipe", "Liderança", "Criatividade",
+                "Resolução de problemas", "Gestão de tempo", "Adaptabilidade"
+              ]}
             >
               Habilidades
             </TagContainer>
@@ -137,6 +144,13 @@ export default function JobForm() {
               tags={dataForm.supportTags}
               edit={true}
               onChange={(tags) => setDataForm(prev => ({ ...prev, supportTags: tags }))}
+              options={[
+                "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
+                "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
+                "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
+                "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
+                "Tecnologia assistiva", "Acompanhamento especializado"
+              ]}
             >
               Apoio da Empresa
             </TagContainer>
