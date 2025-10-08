@@ -1,9 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CompanieForm3Data } from "../../../types/forms/companie";
 import TagContainer from "../../content/tag_container";
 
 export default function CompanieForm3({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm3Data) => void, formId: string, initialData?: CompanieForm3Data }) {
     const [form3, setForm3] = useState<CompanieForm3Data>(initialData || {} as CompanieForm3Data)
+    const [acessibilidades, setAcessibilidades] = useState<{nome: string, id: number}[]>([])
+    const [options, setOptions] = useState<string[]>([]) 
+    const API_BASE_URL = "http://localhost:3001"
+
+    useEffect(() => {
+        const fetchAcessibilidades = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/acessibilidades/nomes`)
+                const data = await res.json()
+                setAcessibilidades(data)
+
+                const opt = data.map((acessibilidade: { nome: string }) => acessibilidade.nome).sort()
+                setOptions(opt)
+            } catch (error){
+                console.log("Erro ao buscar as acessibilidades: " + error)
+            }
+        }
+
+        fetchAcessibilidades()
+    }, [])
     
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
@@ -20,13 +40,7 @@ export default function CompanieForm3({ formFunc, formId, initialData }: { formF
                 edit={true} 
                 tags={form3.supportCapabilities || []} 
                 onChange={(tags) => setForm3(prev => ({...prev, supportCapabilities: tags}))}
-                options={[
-                    "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
-                    "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
-                    "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
-                    "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
-                    "Tecnologia assistiva", "Acompanhamento especializado"
-                ]}
+                options={options}
             >
                 Capacidades de Apoio
             </TagContainer>

@@ -3,7 +3,7 @@ import CompanieForm3 from "../components/forms/register/companie_form3";
 import { CompanieForm3Data } from "../types/forms/companie";
 
 export default function TestPage() {
-    const [formData, setFormData] = useState<CompanieForm3Data>({})
+    const [formData, setFormData] = useState<CompanieForm3Data>({ supportCapabilities: [] })
     
     const handleFormSubmit = (data: CompanieForm3Data) => {
         console.log('Form submitted:', data)
