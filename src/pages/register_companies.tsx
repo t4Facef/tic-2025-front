@@ -65,7 +65,17 @@ export default function RegisterCompanies() {
                 telefoneComercial: allData.businessPhone,
                 numFunc: parseInt(allData.employeeCount || '0') || 0,
                 numFuncPcd: 0, // TODO: Adicionar campo no formulário
-                area: allData.businessSector
+                area: allData.businessSector,
+                acessibilidades: allData.supportCapabilities.map(id => parseInt(id)),
+                endereco: {
+                    cep: allData.postalCode,
+                    estado: allData.state,
+                    cidade: allData.city,
+                    rua: allData.street,
+                    numero: allData.streetNumber,
+                    complemento: allData.adressComplement,
+                    bairro: allData.neighborhood
+                }
             }
 
             console.log('📤 JSON sendo enviado (companieData):', companieData)
