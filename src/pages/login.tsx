@@ -8,6 +8,40 @@ export default function Login() {
     const [email, setEmail] = useState(searchParams.get("email") || "");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
+    const [message, setMessage] = useState("")
+
+    const API_BASE_URL = "http://localhost:3001"
+    
+    const fetchLogin = async (email: string, senha: string) => {
+        try{
+            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, senha })
+            })
+            
+            const data = await res.json()
+
+            if(data.error){
+                setMessage(data.error)
+            }
+            else{
+                setMessage("Sucesso")
+            }
+
+            return data
+        }
+        catch(error: unknown){
+            setMessage(error instanceof Error ? error.message : 'Erro desconhecido')
+        }
+    }
+
+    const handleSubmit = async (email: string, senha: string) => {
+        fetchLogin(email, senha)
+        
+    }
 
     return (
         <div className="flex justify-center text-blue3 px-4">
@@ -34,8 +68,10 @@ export default function Login() {
                                     <span>É sua primeira vez?</span>
                                     <Link to="/auth/register/main" className="underline pt-1 font-semibold">CADASTRAR</Link>
                                 </div>
-                                <GenericBlueButton color={3} link="/candidates/1/dashboard">Entrar</GenericBlueButton>
+                                <GenericBlueButton color={3} onClick={() => handleSubmit(email, password)}>Entrar</GenericBlueButton>
                             </div>
+
+                            {message && <div className="text-red-800 text-sm w-full text-center bg-red-400 p-2 rounded-md mt-5"> {message}</div>}
                         </form>
                     </div>
                 </div>
