@@ -13,6 +13,7 @@ export default function Login() {
     const API_BASE_URL = "http://localhost:3001"
     
     const fetchLogin = async (email: string, senha: string) => {
+        setMessage("🔄️ Processando...")
         try{
             const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
@@ -25,10 +26,10 @@ export default function Login() {
             const data = await res.json()
 
             if(data.error){
-                setMessage(data.error)
+                setMessage("❌ " + data.error)
             }
             else{
-                setMessage("Sucesso")
+                setMessage("✅ Sucesso")
             }
 
             return data
@@ -46,11 +47,11 @@ export default function Login() {
     return (
         <div className="flex justify-center text-blue3 px-4">
             <div className="w-full max-w-md my-12">
-                <div className="bg-blue3 text-white text-xl font-semibold py-3 text-center rounded-t-lg border border-black">
+                <div className="bg-blue3 text-white text-xl font-semibold py-3 text-center rounded-t-lg border">
                     Login
                 </div>
-                <div className="bg-blue1 border-x border-b border-black rounded-b-lg">
-                    <div className="flex justify-center py-6 px-16">
+                <div className="bg-blue1 rounded-b-lg">
+                    <div className="flex flex-col gap-8 justify-center py-6 px-16">
                         <form className="flex flex-col w-full space-y-4">
                             <GenericFormField id="user" type="text" placeholder="E-mail, CPF ou CNPJ" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)}>Usuário</GenericFormField>
                             <GenericFormField id="senha" type="password" placeholder="Digite sua senha" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}>Senha</GenericFormField>
@@ -70,9 +71,18 @@ export default function Login() {
                                 </div>
                                 <GenericBlueButton color={3} onClick={() => handleSubmit(email, password)}>Entrar</GenericBlueButton>
                             </div>
-
-                            {message && <div className="text-red-800 text-sm w-full text-center bg-red-400 p-2 rounded-md mt-5"> {message}</div>}
                         </form>
+                        {message && (
+                            <div className={`border-2 p-2 text-center rounded-lg ${
+                                message.includes('❌') 
+                                    ? 'bg-red-100 border-red-300 text-red-700'
+                                    : message.includes('✅')
+                                    ? 'bg-green-100 border-green-300 text-green-700'
+                                    : 'bg-blue-100 border-blue-300 text-blue-700'
+                            }`}>
+                                <p className="text-sm font-medium">{message}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
