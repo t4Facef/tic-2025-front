@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthProvider';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
 import About from './pages/about';
@@ -25,7 +26,8 @@ import TestPage from './pages/test';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
@@ -53,6 +55,7 @@ export default function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

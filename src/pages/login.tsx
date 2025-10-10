@@ -1,7 +1,8 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
     const [searchParams] = useSearchParams();
@@ -9,6 +10,8 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [message, setMessage] = useState("")
+    const { login } = useAuth()
+    const navigate = useNavigate()
 
     const API_BASE_URL = "http://localhost:3001"
     
@@ -24,12 +27,20 @@ export default function Login() {
             })
             
             const data = await res.json()
-
+ 
             if(data.error){
                 setMessage("❌ " + data.error)
             }
             else{
                 setMessage("✅ Sucesso")
+                // Salvar no contexto
+                login(data.token, data.user, data.role, rememberMe)
+                // Redirecionar baseado no role
+                if(data.role === 'EMPRESA') {
+                    navigate(`/companies/${data.user.id}/dashboard`)
+                } else {
+                    navigate(`/candidates/${data.user.id}/dashboard`)
+                }
             }
 
             return data
