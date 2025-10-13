@@ -3,12 +3,16 @@ import { useAuth } from "../hooks/useAuth";
 import TagContainer from "../components/content/tag_container";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { CandidateProfileType } from "../types/candidate";
 
 export default function CandidateProfile(){
     const { user, isAuthenticated, token } = useAuth()
+    const { id } = useParams<{ id: string }>()
     const [candidateData, setCandidateData] = useState<CandidateProfileType | null>(null)
     const [barreiras, setBarreiras] = useState<string[]>([])
+    
+    const isOwnProfile = !id // Se não tem ID na URL, é o próprio perfil
     
     const formatDate = (dateString: string) => {
         const date = new Date(dateString)
@@ -21,12 +25,20 @@ export default function CandidateProfile(){
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/candidato/profile`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                })
+                const url = isOwnProfile 
+                    ? `http://localhost:3001/api/candidato/profile`
+                    : `http://localhost:3001/api/candidato/${id}/profile`
+                
+                const headers: Record<string, string> = {
+                    'Content-Type': 'application/json'
+                }
+                
+                // Só adiciona token se for próprio perfil
+                if (isOwnProfile && token) {
+                    headers['Authorization'] = `Bearer ${token}`
+                }
+                
+                const response = await fetch(url, { headers })
                 const data = await response.json()
                 setCandidateData(data)
                 console.log('Profile data:', data)
@@ -41,10 +53,10 @@ export default function CandidateProfile(){
             }
         }
         
-        if (user?.id && token) {
+        if (isOwnProfile ? (user?.id && token) : true) {
             fetchProfile()
         }
-    }, [user?.id, token])
+    }, [user?.id, token, id, isOwnProfile])
     
     const fetchBarreiras = async (subtipoId: number) => {
         try {
@@ -61,7 +73,7 @@ export default function CandidateProfile(){
         }
     }
     
-    if (!isAuthenticated) {
+    if (isOwnProfile && !isAuthenticated) {
         return (
             <NotFoundScreen 
                 title="Acesso negado"
