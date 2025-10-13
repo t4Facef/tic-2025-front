@@ -58,7 +58,9 @@ export default function AuthEntry() {
                 }
             }
             catch (error) {
-                console.error(error)
+                console.error('Erro ao verificar email:', error)
+                // Fallback: redirecionar para registro em caso de erro
+                navigate("/auth/register/main")
             }
         }
     }

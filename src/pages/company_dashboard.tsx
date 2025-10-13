@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
+import { useAuth } from "../hooks/useAuth";
+import NotFoundScreen from "../components/content/not_found_screen";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 import mockJobs from "../data/mockdata/jobs";
@@ -7,8 +8,19 @@ import { mockCompanies } from "../data/mockdata/companies";
 import { mockCompanyStats } from "../data/mockdata/company_stats";
 
 export default function CompanyDashboard() {
-    const { id } = useParams()
-    const companyId = Number(id)
+    const { user, isAuthenticated } = useAuth()
+    
+    if (!isAuthenticated) {
+        return (
+            <NotFoundScreen 
+                title="Acesso negado"
+                message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
+    
+    const companyId = user?.id
     const companyExists = mockCompanies.some(comp => comp.id === companyId)
 
     if (companyExists) {
@@ -44,6 +56,14 @@ export default function CompanyDashboard() {
                 </div>
             </div>
 
+        )
+    } else {
+        return (
+            <NotFoundScreen 
+                title="Empresa não encontrada"
+                message="O painel que você está procurando não existe ou foi removido."
+                icon="🏢"
+            />
         )
     }
 }

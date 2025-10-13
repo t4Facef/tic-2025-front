@@ -1,14 +1,23 @@
-import { useParams } from "react-router-dom";
 import PerfilContentSection from "../components/content/perfil_content_section";
+import { useAuth } from "../hooks/useAuth";
 import TagContainer from "../components/content/tag_container";
 import NotFoundScreen from "../components/content/not_found_screen";
 import candidateDataAll from "../data/mockdata/candidate";
 
 export default function CandidateProfile(){
-    // Parte especifica para mockdata, atualizar para equivalente do banco posteriormente
-    const { id } = useParams()
+    const { user, isAuthenticated } = useAuth()
+    
+    if (!isAuthenticated) {
+        return (
+            <NotFoundScreen 
+                title="Acesso negado"
+                message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
 
-    const candidateData = candidateDataAll.find(candidato => candidato.id === Number(id))
+    const candidateData = candidateDataAll.find(candidato => candidato.id === user?.id)
 
     if(candidateData){
         return(

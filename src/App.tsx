@@ -44,10 +44,10 @@ export default function App() {
           <Route path='/auth/password/forgot' element={<ResetPassword/>}></Route>
           <Route path='/auth/password/reset' element={<ResetPasswordNew/>}></Route>
           <Route path='/jobs' element={<Jobs/>}></Route>
-          <Route path='/candidates/:id/dashboard' element={<CandidateDashboard/>}></Route>
-          <Route path='/candidates/:id/profile' element={<CandidateProfile/>}></Route>
-          <Route path='/companies/:id/dashboard' element={<CompanyDashboard/>}></Route>
-          <Route path='/companies/:id/profile' element={<CompanyProfile/>}></Route>
+          <Route path='/candidates/dashboard' element={<CandidateDashboard/>}></Route>
+          <Route path='/candidates/profile' element={<CandidateProfile/>}></Route>
+          <Route path='/companies/dashboard' element={<CompanyDashboard/>}></Route>
+          <Route path='/companies/profile' element={<CompanyProfile/>}></Route>
           <Route path='/jobs/new' element={<JobNew/>}></Route>
           <Route path='/jobs/:id/edit' element={<JobNew/>}></Route>
           <Route path='/notifications' element={<Notification/>}></Route>

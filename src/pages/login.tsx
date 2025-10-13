@@ -37,9 +37,9 @@ export default function Login() {
                 login(data.token, data.user, data.role, rememberMe)
                 // Redirecionar baseado no role
                 if(data.role === 'EMPRESA') {
-                    navigate(`/companies/${data.user.id}/dashboard`)
+                    navigate(`/companies/dashboard`)
                 } else {
-                    navigate(`/candidates/${data.user.id}/dashboard`)
+                    navigate(`/candidates/dashboard`)
                 }
             }
 

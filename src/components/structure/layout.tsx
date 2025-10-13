@@ -15,7 +15,7 @@ export default function Layout() {
   const showProfile = profileRoutes.some(route => location.pathname.startsWith(route));
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       <Header showProfile={showProfile} />
       <Nav />
       <main className="flex-1">

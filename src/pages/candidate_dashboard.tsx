@@ -1,29 +1,89 @@
 // [TODO] - Fazer com que quando direicionar pelo botão para a listagem de vagas colocar os filtros apropriados (descobrir como fazer algo assim)
 // [TODO] - Ajeitar tamanho das vagas + caixa de estatistica
 
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
+import { useAuth } from "../hooks/useAuth";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
-import candidateStatistics from "../data/mockdata/candidate_statistics";
-
-import mockJobs from "../data/mockdata/jobs";
 import NotFoundScreen from "../components/content/not_found_screen";
+import { JobData } from "../data/mockdata/jobs";
+
+interface Statistics {
+    applicationsThisMonth: number
+    totalApplications: number
+    openApplications: number
+}
+
+
 
 export default function CandidateDashboard(){
-    const { id } = useParams()
-    const candidateStatistic = candidateStatistics.find(candidato => candidato.candidateId === Number(id))
+    const { user, isAuthenticated, token } = useAuth()
+    const [statistics, setStatistics] = useState<Statistics | null>(null)
+    const [recommendedJobs, setRecommendedJobs] = useState<JobData[]>([])
+    const [loading, setLoading] = useState(true)
+    
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                // Buscar estatísticas do candidato
+                const statsResponse = await fetch(`http://localhost:3001/api/candidates/${user?.id}/statistics`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const statsData = await statsResponse.json()
+                setStatistics(statsData)
+                
+                // Buscar vagas recomendadas
+                const jobsResponse = await fetch(`http://localhost:3001/api/candidates/${user?.id}/recommended-jobs`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const jobsData = await jobsResponse.json()
+                setRecommendedJobs(jobsData)
+                
+            } catch (error) {
+                console.error('Erro ao buscar dados do dashboard:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        
+        if (user?.id && token) {
+            fetchDashboardData()
+        } else {
+            setLoading(false)
+        }
+    }, [user?.id, token])
+    
+    if (!isAuthenticated) {
+        return (
+            <NotFoundScreen 
+                title="Acesso negado"
+                message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
+    
+    if (loading) {
+        return <div className="flex justify-center items-center h-64">Carregando...</div>
+    }
 
-    if( candidateStatistic ){
+    if( statistics ){
         return (
             <div className="flex flex-col items-center">
                 <div className="flex flex-col justify-center items-center">
                     <div className="flex flex-col w-[72rem]">
                         <div className="bg-blue2 p-2 mt-5 rounded-lg">
                             <div className="flex justify-between">
-                                <StatisticBox title="Candidaturas neste mês" animation={true} finalValue={candidateStatistic.applicationsThisMonth}>{candidateStatistic.applicationsThisMonth}</StatisticBox>
-                                <StatisticBox title="Candidatura totais" animation={true} finalValue={candidateStatistic.totalApplications}>{candidateStatistic.totalApplications}</StatisticBox>
-                                <StatisticBox title="Candidatura abertas" animation={true} finalValue={candidateStatistic.openApplications}>{candidateStatistic.openApplications}</StatisticBox>            
+                                <StatisticBox title="Candidaturas neste mês" animation={true} finalValue={statistics.applicationsThisMonth}>{statistics.applicationsThisMonth}</StatisticBox>
+                                <StatisticBox title="Candidatura totais" animation={true} finalValue={statistics.totalApplications}>{statistics.totalApplications}</StatisticBox>
+                                <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.openApplications}>{statistics.openApplications}</StatisticBox>            
                             </div>
                             <div className="flex justify-end mt-2 pr-2">
                                 <GenericBlueButton color={3} link="/jobs">Acessar minhas vagas</GenericBlueButton>
@@ -32,9 +92,9 @@ export default function CandidateDashboard(){
                         <p className="pt-12">Recomendações de vaga para você</p>
                         <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
                             <div className="flex flex-col items-end px-3 space-y-6">
-                                <JobPosition jobData={mockJobs[9]}/>
-                                <JobPosition jobData={mockJobs[8]}/>
-                                <JobPosition jobData={mockJobs[7]}/>
+                                {recommendedJobs.slice(0, 3).map(job => (
+                                    <JobPosition key={job.id} jobData={job}/>
+                                ))}
                                 <div>
                                     <GenericBlueButton color={3} link="/jobs">Ver mais</GenericBlueButton>
                                 </div>

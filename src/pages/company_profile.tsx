@@ -5,14 +5,24 @@
 
 import TagContainer from "../components/content/tag_container";
 import InfoList from "../components/content/info_list";
-import { useParams } from "react-router-dom";
 import { mockCompanies } from "../data/mockdata/companies";
+import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
 
 export default function CompanyProfile() {
-    const { id } = useParams()
+    const { user, isAuthenticated } = useAuth()
+    
+    if (!isAuthenticated) {
+        return (
+            <NotFoundScreen 
+                title="Acesso negado"
+                message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
 
-    const companie = mockCompanies.find(comp => comp.id === Number(id))
+    const companie = mockCompanies.find(comp => comp.id === user?.id)
 
     if (companie) {
         return (
