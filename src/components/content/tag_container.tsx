@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import Tag from "./tag";
 import SearchableSelect from "../forms/searchable_select ";
 
@@ -12,6 +12,11 @@ interface TagContainerProps {
 
 export default function TagContainer({ children, edit = false, tags = [], onChange, options }: TagContainerProps) {
     const [currentTags, setCurrentTags] = useState(tags);
+    
+    // Sincronizar estado interno com props quando tags mudarem
+    useEffect(() => {
+        setCurrentTags(tags);
+    }, [tags]);
     const [newTagText, setNewTagText] = useState("");
 
     const handleRemoveTag = (indexToRemove: number) => {

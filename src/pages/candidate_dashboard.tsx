@@ -33,6 +33,15 @@ export default function CandidateDashboard(){
                         'Content-Type': 'application/json'
                     }
                 })
+                
+                console.log('Stats Response Status:', statsResponse.status)
+                
+                if (!statsResponse.ok) {
+                    const errorText = await statsResponse.text()
+                    console.log('Stats Error Response:', errorText)
+                    throw new Error(`Erro ${statsResponse.status}: ${errorText}`)
+                }
+                
                 const statsData = await statsResponse.json()
                 setStatistics(statsData)
                 
@@ -43,6 +52,15 @@ export default function CandidateDashboard(){
                         'Content-Type': 'application/json'
                     }
                 })
+                
+                console.log('Jobs Response Status:', jobsResponse.status)
+                
+                if (!jobsResponse.ok) {
+                    const errorText = await jobsResponse.text()
+                    console.log('Jobs Error Response:', errorText)
+                    throw new Error(`Erro ${jobsResponse.status}: ${errorText}`)
+                }
+                
                 const jobsData = await jobsResponse.json()
                 setRecommendedJobs(jobsData)
                 
