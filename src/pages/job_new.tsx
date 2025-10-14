@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import JobPosition from "../components/content/job_position";
 import { JobData } from "../data/mockdata/jobs";
+import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES } from "../data/constants/filter_options";
 
 export default function JobForm() {
   const { id } = useParams();
@@ -120,7 +121,7 @@ export default function JobForm() {
             <GenericFormField
               id="job_level"
               type="select"
-              options={["Estágio", "Júnior", "Pleno", "Sênior"]}
+              options={[...WORK_LEVELS]}
               onChange={e => setDataForm(prev => ({ ...prev, workLevel: e.target.value }))}
             >
               Nível da vaga
@@ -134,7 +135,7 @@ export default function JobForm() {
                 <GenericFormField
                   id="job_type_work"
                   type="radio"
-                  options={["Remoto", "Presencial", "Híbrido"]}
+                  options={[...WORK_TYPES]}
                   onChange={(e) => setDataForm(prev => ({ ...prev, typeWork: e.target.value }))}
                 >
                   <strong>Tipo de Trabalho</strong>
@@ -142,7 +143,7 @@ export default function JobForm() {
                 <GenericFormField
                   id="job_type_contract"
                   type="radio"
-                  options={["CLT", "PJ", "Estágio", "Freelancer", "Temporário"]}
+                  options={[...CONTRACT_TYPES]}
                   onChange={(e) => setDataForm(prev => ({ ...prev, typeContract: e.target.value }))}
                 >
                   <strong>Tipo de Contrato</strong>

@@ -2,9 +2,10 @@
 // [TODO] - Organizar as options dos selects
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GenericFormField from "../generic_form_field";
 import FilterCamp from "./filter_camp";
+import { WORK_TYPES, CONTRACT_TYPES, WORK_LEVELS, SECTORS } from "../../../data/constants/filter_options";
 
 interface VagasSearchFilters {
     titulo?: string;
@@ -29,6 +30,32 @@ interface jobFiltersProps {
 export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
     const [selectedWorkTypes, setSelectedWorkTypes] = useState<string[]>([])
     const [selectedContractTypes, setSelectedContractTypes] = useState<string[]>([])
+    const [estados, setEstados] = useState<{ nome: string, sigla: string }[]>([])
+    
+    useEffect(() => {
+        const fetchEstados = async () => {
+            try {
+                const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
+                const data = await response.json()
+                const estadosData = data.map((estado: { nome: string, sigla: string }) => ({
+                    nome: estado.nome,
+                    sigla: estado.sigla
+                })).sort((a: { nome: string }, b: { nome: string }) => a.nome.localeCompare(b.nome))
+                setEstados(estadosData)
+            } catch (error) {
+                console.log('Erro ao buscar estados:', error)
+            }
+        }
+        
+        fetchEstados()
+    }, [])
+    
+    const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        const nomeEstado = e.target.value
+        const estadoSelecionado = estados.find(estado => estado.nome === nomeEstado)
+        const sigla = estadoSelecionado?.sigla
+        onFiltersChange({ localizacao: sigla })
+    }
     
     const handleCheckboxChange = (value: string, currentArray: string[], setter: (arr: string[]) => void, filterKey: keyof VagasSearchFilters) => {
         let newArray: string[]
@@ -47,7 +74,7 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                 <GenericFormField 
                     type="checkbox" 
                     id="work_type_filter" 
-                    options={["Presencial", "Hibrido", "Remoto"]}
+                    options={[...WORK_TYPES]}
                     onChange={(e) => handleCheckboxChange(e.target.value, selectedWorkTypes, setSelectedWorkTypes, 'tipoTrabalho')}
                 >
                     Tipo de Trabalho
@@ -57,7 +84,7 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                 <GenericFormField 
                     type="checkbox" 
                     id="contract_type_filter" 
-                    options={["CLT", "PJ", "Estágio", "Freelancer", "Temporário"]} 
+                    options={[...CONTRACT_TYPES]} 
                     itemsOrientation={2}
                     onChange={(e) => handleCheckboxChange(e.target.value, selectedContractTypes, setSelectedContractTypes, 'tipoContrato')}
                 >
@@ -68,19 +95,19 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                 <GenericFormField 
                     type="select" 
                     id="location_filter" 
-                    options={["São Paulo", "Rio de Janeiro", "Belo Horizonte"]} 
+                    options={estados.map(estado => estado.nome)} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
-                    onChange={(e) => onFiltersChange({ localizacao: e.target.value })}
+                    onChange={handleEstadoChange}
                 >
-                    Localização
+                    Estado
                 </GenericFormField>
             </FilterCamp>
             <FilterCamp>
                 <GenericFormField 
                     type="select" 
                     id="work_level_filter" 
-                    options={["Estágio", "Júnior", "Pleno", "Sênior"]} 
+                    options={[...WORK_LEVELS]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
                     onChange={(e) => onFiltersChange({ nivelTrabalho: e.target.value })}
@@ -92,7 +119,7 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                 <GenericFormField 
                     type="select" 
                     id="sector_filter" 
-                    options={["Tecnologia", "Saúde", "Educação"]} 
+                    options={[...SECTORS]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
                 >
