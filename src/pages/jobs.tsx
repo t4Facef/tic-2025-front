@@ -4,10 +4,54 @@
 import JobPosition from "../components/content/job_position";
 import SearchBox from "../components/content/search_box";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import mockJobs from "../data/mockdata/jobs";
+import { JobData } from "../data/mockdata/jobs";
 import JobFilters from "../components/forms/filters/job_filters";
+import { useEffect, useState } from "react";
+import { Vaga } from "../types/vagas/vaga";
+
+interface VagasSearchFilters {
+    titulo?: string;
+    localizacao?: string;
+    tipoContrato?: string | string[];
+    tipoTrabalho?: string | string[];
+    nivelTrabalho?: string;
+    turno?: string;
+    empresaId?: string;
+    habilidadesList?: string[];
+    apoiosList?: string[];
+    salarioMin?: number;
+    salarioMax?: number;
+    dataInicioMin?: string; // formato: "2024-01-15"
+    dataInicioMax?: string; // formato: "2024-12-31"
+}
 
 export default function Jobs() {
+    const [filtros, setFiltros] = useState<VagasSearchFilters>({} as VagasSearchFilters)
+    const [vagas, setVagas] = useState<Vaga[]>([])
+
+    const API_BASE_URL = "http://localhost:3001"
+
+    useEffect(() => {
+        const fetchVagas = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(filtros)
+                })
+
+                const data = await res.json()
+                setVagas(data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        fetchVagas()
+    }, [filtros])
+
     return (
         <div className="flex flex-1">
             <div className="min-w-36 sm:min-w-40 md:min-w-44">
@@ -19,16 +63,32 @@ export default function Jobs() {
                 </div>
             </div>
             <div className="flex-1 flex flex-col items-center my-7 px-36">
-                <div className="space-y-8">
+                <div className="space-y-8 w-full">
                     <SearchBox />
                     <div>
                         <div className="space-y-8">
-                            <JobPosition jobData={mockJobs[1]} />
-                            <JobPosition jobData={mockJobs[2]} />
-                            <JobPosition jobData={mockJobs[3]} />
-                            <JobPosition jobData={mockJobs[4]} />
-                            <JobPosition jobData={mockJobs[5]} />
-
+                            {vagas.map(vaga => {
+                                const jobDataProps: JobData = {
+                                    id: vaga.id,
+                                    idEmpresa: vaga.empresaId,
+                                    title: vaga.titulo,
+                                    company: vaga.empresa.razaoSocial,
+                                    companyLogo: vaga.empresa.foto || "",
+                                    location: vaga.localizacao,
+                                    description: vaga.descricao,
+                                    skillsTags: vaga.habilidades,
+                                    supportTags: vaga.apoios,
+                                    compatibility: vaga.compatibilidade || 0,
+                                    startDate: new Date(vaga.dataInicio),
+                                    endDate: new Date(vaga.dataFim),
+                                    typeContract: vaga.tipoContrato,
+                                    typeWork: vaga.tipoTrabalho,
+                                    payment: vaga.pagamento,
+                                    workLevel: vaga.nivelTrabalho,
+                                    timeShift: vaga.turno
+                                }
+                                return <JobPosition jobData={jobDataProps} />
+                            })}
                         </div>
                         <div className="flex font-semibold my-4">
                             <ChevronLeft />
