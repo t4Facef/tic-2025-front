@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import JobPosition from "../components/content/job_position";
 import { JobData } from "../data/mockdata/jobs";
 import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES } from "../data/constants/filter_options";
+import { API_BASE_URL } from "../config/api";
 
 export default function JobForm() {
   const { id } = useParams();
@@ -39,7 +40,7 @@ export default function JobForm() {
     timeShift: ''
   })
 
-  const API_BASE_URL = "http://localhost:3001"
+
   useEffect(() => {
 
     const fetchAcessibilidades = async () => {

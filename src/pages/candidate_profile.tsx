@@ -5,6 +5,7 @@ import NotFoundScreen from "../components/content/not_found_screen";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CandidateProfileType } from "../types/candidate";
+import { API_BASE_URL } from "../config/api";
 
 export default function CandidateProfile(){
     const { user, isAuthenticated, token } = useAuth()
@@ -26,8 +27,8 @@ export default function CandidateProfile(){
         const fetchProfile = async () => {
             try {
                 const url = isOwnProfile 
-                    ? `http://localhost:3001/api/candidato/profile`
-                    : `http://localhost:3001/api/candidato/${id}/profile`
+                    ? `${API_BASE_URL}/api/candidato/profile`
+                    : `${API_BASE_URL}/api/candidato/${id}/profile`
                 
                 const headers: Record<string, string> = {
                     'Content-Type': 'application/json'
@@ -60,7 +61,7 @@ export default function CandidateProfile(){
     
     const fetchBarreiras = async (subtipoId: number) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/barreiras/subtipo/${subtipoId}`)
+            const response = await fetch(`${API_BASE_URL}/api/barreiras/subtipo/${subtipoId}`)
             const data = await response.json()
             
             // Extrair descrições das barreiras

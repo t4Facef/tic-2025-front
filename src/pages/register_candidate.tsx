@@ -17,6 +17,7 @@ import {
     CandidateForm4Data,
     CandidateForm5Data
 } from '../types/forms/candidate'
+import { API_BASE_URL } from '../config/api'
 
 
 
@@ -137,7 +138,7 @@ export default function Register() {
             
             console.log('📤 JSON sendo enviado (candidateData):', candidateData)
             
-            const API_BASE_URL = 'http://localhost:3001';
+
             
             // TEMPORÁRIO: Enviando JSON até backend configurar multer
             fetch(`${API_BASE_URL}/api/auth/candidato/register`, {

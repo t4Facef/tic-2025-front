@@ -8,6 +8,7 @@ import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { JobData } from "../data/mockdata/jobs";
+import { API_BASE_URL } from "../config/api";
 
 interface Statistics {
     applicationsThisMonth: number
@@ -27,7 +28,7 @@ export default function CandidateDashboard(){
         const fetchDashboardData = async () => {
             try {
                 // Buscar estatísticas do candidato
-                const statsResponse = await fetch(`http://localhost:3001/api/candidates/${user?.id}/statistics`, {
+                const statsResponse = await fetch(`${API_BASE_URL}/api/candidates/${user?.id}/statistics`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -46,7 +47,7 @@ export default function CandidateDashboard(){
                 setStatistics(statsData)
                 
                 // Buscar vagas recomendadas
-                const jobsResponse = await fetch(`http://localhost:3001/api/candidates/${user?.id}/recommended-jobs`, {
+                const jobsResponse = await fetch(`${API_BASE_URL}/api/candidates/${user?.id}/recommended-jobs`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'

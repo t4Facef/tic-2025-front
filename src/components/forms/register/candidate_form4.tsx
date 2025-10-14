@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CandidateForm4Data } from "../../../types/forms/candidate";
 import TagContainer from "../../content/tag_container";
 import GenericFormField from "../generic_form_field";
+import { API_BASE_URL } from "../../../config/api";
 
 
 export default function CandidateForm4({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data }) {
@@ -14,7 +15,7 @@ export default function CandidateForm4({ formFunc, formId, initialData }: { form
     const [tipoId, setTipoId] = useState<number>()
     const [subTipoId, setSubTipoId] = useState<number>()
 
-    const API_BASE_URL = "http://localhost:3001"
+
 
     useEffect(() => {
         const fetchTipos = async () => {

@@ -9,6 +9,7 @@ import { JobData } from "../data/mockdata/jobs";
 import JobFilters from "../components/forms/filters/job_filters";
 import { useEffect, useState } from "react";
 import { Vaga } from "../types/vagas/vaga";
+import { API_BASE_URL } from "../config/api";
 
 interface VagasSearchFilters {
     titulo?: string;
@@ -31,7 +32,7 @@ export default function Jobs() {
     const [vagas, setVagas] = useState<Vaga[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
-    const API_BASE_URL = "http://localhost:3001"
+
 
     useEffect(() => {
         const fetchVagas = async () => {

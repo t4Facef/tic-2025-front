@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { CompanieForm3Data } from "../../../types/forms/companie";
 import TagContainer from "../../content/tag_container";
+import { API_BASE_URL } from "../../../config/api";
 
 export default function CompanieForm3({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm3Data) => void, formId: string, initialData?: CompanieForm3Data }) {
     const [acessibilityTags, setAcessibilityTags] = useState<string[]>([])
     const [acessibilidades, setAcessibilidades] = useState<{ nome: string, id: number }[]>([])
     const [options, setOptions] = useState<string[]>([])
-    const API_BASE_URL = "http://localhost:3001"
+
 
     useEffect(() => {
         const fetchAcessibilidades = async () => {
