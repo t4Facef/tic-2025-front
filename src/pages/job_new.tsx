@@ -4,7 +4,7 @@ import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
 import MarkdownEditor from "../components/forms/markdown_editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import JobPosition from "../components/content/job_position";
 import { JobData } from "../data/mockdata/jobs";
@@ -14,17 +14,20 @@ export default function JobForm() {
   const isEditing = Boolean(id);
   const [salario, setSalario] = useState("R$ ");
   const [description, setDescription] = useState("");
+  const [acessibilityTags, setAcessibilityTags] = useState<string[]>([])
+  const [acessibilidades, setAcessibilidades] = useState<{ nome: string, id: number }[]>([])
+  const [options, setOptions] = useState<string[]>([])
 
   const [dataForm, setDataForm] = useState<JobData>({
     id: 0,
-    idEmpresa: 1,
+    idEmpresa: 0,
     title: '',
     company: 'TechCorp Solutions',
     companyLogo: '/img/logosTeste/teste1.jpeg',
     location: '',
     description: '',
     skillsTags: [],
-    supportTags: ["Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", "Software leitor de tela", "Mesa ajustável"],
+    supportTags: [],
     compatibility: 0,
     startDate: new Date(),
     endDate: new Date(),
@@ -34,6 +37,25 @@ export default function JobForm() {
     workLevel: '',
     timeShift: ''
   })
+
+  const API_BASE_URL = "http://localhost:3001"
+  useEffect(() => {
+
+    const fetchAcessibilidades = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/acessibilidades/nomes`)
+        const data = await res.json()
+        setAcessibilidades(data)
+
+        const opt = data.map((acessibilidade: { nome: string }) => acessibilidade.nome).sort()
+        setOptions(opt)
+      } catch (error) {
+        console.log("Erro ao buscar as acessibilidades: " + error)
+      }
+    }
+
+    fetchAcessibilidades()
+  }, [])
 
   const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setSalario(e.target.value);
@@ -46,7 +68,17 @@ export default function JobForm() {
   };
 
   const handleSubmit = () => {
-    console.log("Dados do formulário:", dataForm);
+    // Converter nomes das acessibilidades para IDs
+    const acessibilidadeIds = acessibilityTags.map((acessNome: string) => 
+      acessibilidades.find((acessObj: { nome: string, id: number }) => acessObj.nome === acessNome)?.id || 0
+    ).filter(id => id > 0)
+    
+    const jobDataToSubmit = {
+      ...dataForm,
+      acessibilidadeIds // Enviar IDs ao invés de nomes
+    }
+    
+    console.log("Dados do formulário:", jobDataToSubmit);
   };
 
   return (
@@ -119,7 +151,7 @@ export default function JobForm() {
             </div>
             {["Presencial", "Híbrido"].includes(dataForm.typeWork) &&
               <div>
-                <GenericFormField id="job_location" type="text" placeholder="Digite o a cidade onde será a vaga presencial" onChange={e => setDataForm(prev => ({...prev, location: e.target.value}))}>
+                <GenericFormField id="job_location" type="text" placeholder="Digite o a cidade onde será a vaga presencial" onChange={e => setDataForm(prev => ({ ...prev, location: e.target.value }))}>
                   Local de Trabalho
                 </GenericFormField>
               </div>
@@ -129,28 +161,15 @@ export default function JobForm() {
               tags={dataForm.skillsTags}
               edit={true}
               onChange={(tags) => setDataForm(prev => ({ ...prev, skillsTags: tags }))}
-              options={[
-                "JavaScript", "Python", "Java", "React", "Node.js", "TypeScript", 
-                "HTML/CSS", "SQL", "Git", "Docker", "AWS", "MongoDB", "Express",
-                "Angular", "Vue.js", "PHP", "C#", "Ruby", "Go", "Kotlin",
-                "Comunicação", "Trabalho em equipe", "Liderança", "Criatividade",
-                "Resolução de problemas", "Gestão de tempo", "Adaptabilidade"
-              ]}
             >
               Habilidades
             </TagContainer>
-            
+
             <TagContainer
-              tags={dataForm.supportTags}
+              tags={acessibilityTags}
               edit={true}
-              onChange={(tags) => setDataForm(prev => ({ ...prev, supportTags: tags }))}
-              options={[
-                "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
-                "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
-                "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
-                "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
-                "Tecnologia assistiva", "Acompanhamento especializado"
-              ]}
+              onChange={(tags) => setAcessibilityTags(tags)}
+              options={options}
             >
               Apoio da Empresa
             </TagContainer>
