@@ -1,7 +1,8 @@
 // [TODO] - Tornar a pagina dinamica para cada usuario quando fazer uma context api
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../buttons/generic_blue_button";
+import { useAuth } from "../../hooks/useAuth";
 
 interface ProfilePictureProps {
   isOpen: boolean;
@@ -9,6 +10,14 @@ interface ProfilePictureProps {
 }
 
 export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    logout();
+    navigate('/');
+  }
+
   return (
     <div className="relative">
       <div className="bg-white rounded-full w-max h-max">
@@ -38,9 +47,9 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
             <GenericBlueButton color={3}>Visitar minha pagina</GenericBlueButton>
           </div>
           <hr className="border-gray-300" />
-          <div className="space-y-2">
+          <div className="space-y-2 flex flex-col ">
             <Link to={"/"} className="text-gray-400 text-md flex justify-center">Configurações</Link> 
-            <Link to={"/"} className="text-gray-400 text-md flex justify-center">Sair</Link>
+            <button type="button" className="text-gray-400 text-md flex justify-center" onClick={() => handleLogOut()}>Sair</button>
           </div>
         </div>
       )}

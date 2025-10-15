@@ -135,8 +135,8 @@ export default function CandidateProfile(){
 
 
             
-            <TagContainer tags={candidateData.habilidades || []}>Habilidades</TagContainer>
-            <TagContainer tags={barreiras}>Limitações</TagContainer>
+            <TagContainer tags={candidateData.habilidades || []} edit={!!isViewingOwnProfile}>Habilidades</TagContainer>
+            <TagContainer tags={barreiras} edit={!!isViewingOwnProfile}>Limitações</TagContainer>
 
         </div>
         )
