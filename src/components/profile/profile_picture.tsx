@@ -10,7 +10,7 @@ interface ProfilePictureProps {
 }
 
 export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps) {
-  const { logout } = useAuth();
+  const { logout, user, role } = useAuth();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
@@ -39,16 +39,18 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               />
             </div>
             <div className="flex-[6] px-3">
-              <p className="font-semibold">Nome do Usuario</p>
-              <p className="text-sm text-justify">Desc curta? ou coisa semelhante  Delectus ipsa dolorem consequatur culpa persp Aperiam cum facilis accusantium vitae labore.</p>
+              <p className="font-semibold">{user?.nome || 'Usuário'}</p>
+              <p className="text-sm text-justify">{user?.email}</p>
+              <p className="text-xs text-gray-500 capitalize">{role === 'CANDIDATO' ? 'Candidato' : 'Empresa'}</p>
             </div>
           </div>
           <div className="flex w-full justify-center">
-            <GenericBlueButton color={3}>Visitar minha pagina</GenericBlueButton>
+            <Link to={role === 'CANDIDATO' ? '/candidates/profile' : '/companies/profile'}>
+              <GenericBlueButton color={3}>Visitar minha página</GenericBlueButton>
+            </Link>
           </div>
           <hr className="border-gray-300" />
           <div className="space-y-2 flex flex-col ">
-            <Link to={"/"} className="text-gray-400 text-md flex justify-center">Configurações</Link> 
             <button type="button" className="text-gray-400 text-md flex justify-center" onClick={() => handleLogOut()}>Sair</button>
           </div>
         </div>

@@ -14,6 +14,7 @@ export default function CandidateProfile() {
     const [candidateData, setCandidateData] = useState<CandidateProfileType | null>(null)
     const [barreiras, setBarreiras] = useState<string[]>([])
     const [isEditing, setIsEditing] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const isViewingOwnProfile = !id || (id && isOwnProfile(id))
 
@@ -37,6 +38,7 @@ export default function CandidateProfile() {
 
     useEffect(() => {
         const fetchProfile = async () => {
+            setIsLoading(true)
             try {
                 const url = isViewingOwnProfile
                     ? `${API_BASE_URL}/api/candidato/profile`
@@ -63,6 +65,8 @@ export default function CandidateProfile() {
                 }
             } catch (err) {
                 console.log('Erro ao buscar perfil:', err)
+            } finally {
+                setIsLoading(false)
             }
         }
 
@@ -157,6 +161,16 @@ export default function CandidateProfile() {
                 <TagContainer tags={candidateData.habilidades || []} edit={!!isEditing}>Habilidades</TagContainer>
                 <TagContainer tags={barreiras} edit={isEditing}>Limitações</TagContainer>
 
+            </div>
+        )
+    }
+    else if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-[400px]">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue3 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Carregando perfil...</p>
+                </div>
             </div>
         )
     }
