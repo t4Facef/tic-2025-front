@@ -8,12 +8,12 @@ import { CandidateProfileType } from "../types/candidate";
 import { API_BASE_URL } from "../config/api";
 
 export default function CandidateProfile(){
-    const { user, isAuthenticated, token } = useAuth()
+    const { user, isAuthenticated, token, isOwnProfile } = useAuth()
     const { id } = useParams<{ id: string }>()
     const [candidateData, setCandidateData] = useState<CandidateProfileType | null>(null)
     const [barreiras, setBarreiras] = useState<string[]>([])
     
-    const isOwnProfile = !id // Se não tem ID na URL, é o próprio perfil
+    const isViewingOwnProfile = !id || (id && isOwnProfile(id))
     
     const formatDate = (dateString: string) => {
         const date = new Date(dateString)
@@ -26,7 +26,7 @@ export default function CandidateProfile(){
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const url = isOwnProfile 
+                const url = isViewingOwnProfile 
                     ? `${API_BASE_URL}/api/candidato/profile`
                     : `${API_BASE_URL}/api/candidato/${id}/profile`
                 
@@ -35,7 +35,7 @@ export default function CandidateProfile(){
                 }
                 
                 // Só adiciona token se for próprio perfil
-                if (isOwnProfile && token) {
+                if (isViewingOwnProfile && token) {
                     headers['Authorization'] = `Bearer ${token}`
                 }
                 
@@ -54,10 +54,10 @@ export default function CandidateProfile(){
             }
         }
         
-        if (isOwnProfile ? (user?.id && token) : true) {
+        if (isViewingOwnProfile ? (user?.id && token) : true) {
             fetchProfile()
         }
-    }, [user?.id, token, id, isOwnProfile])
+    }, [user?.id, token, id, isViewingOwnProfile])
     
     const fetchBarreiras = async (subtipoId: number) => {
         try {
@@ -74,7 +74,7 @@ export default function CandidateProfile(){
         }
     }
     
-    if (isOwnProfile && !isAuthenticated) {
+    if (isViewingOwnProfile && !isAuthenticated) {
         return (
             <NotFoundScreen 
                 title="Acesso negado"

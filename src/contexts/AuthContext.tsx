@@ -13,6 +13,7 @@ interface AuthContextType {
     isAuthenticated: boolean
     login: (token: string, user: User, role: string, rememberMe?: boolean) => void
     logout: () => void
+    isOwnProfile: (profileId: number | string) => boolean
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

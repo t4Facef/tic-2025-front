@@ -59,6 +59,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const isAuthenticated = !!token
 
+    const isOwnProfile = (profileId: number | string): boolean => {
+        if (!user) return false
+        return user.id === Number(profileId)
+    }
+
     return (
         <AuthContext.Provider value={{
             token,
@@ -66,7 +71,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             role,
             isAuthenticated,
             login,
-            logout
+            logout,
+            isOwnProfile
         }}>
             {children}
         </AuthContext.Provider>
