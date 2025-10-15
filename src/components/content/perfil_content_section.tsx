@@ -19,11 +19,12 @@ interface PerfilContentSectionProps {
     title: string;
     info: InfoType[];
     description?: string;
+    edit?: boolean;
 }
 
-export default function PerfilContentSection({title, info, description}: PerfilContentSectionProps){
+export default function PerfilContentSection({title, info, description, edit = false}: PerfilContentSectionProps){
     return (
-        <div className="bg-blue4 px-6 rounded-xl">
+        <div className="bg-blue1 px-6 py-2 rounded-xl">
             <div className="py-2">
                 <div className="font-semibold text-[22px] py-1 mb-4">
                     {title}
@@ -35,7 +36,7 @@ export default function PerfilContentSection({title, info, description}: PerfilC
                 <hr className="border-black mb-6"/>
                 <div className="space-y-4 mt-4">
                     {info.map((item, index) => (
-                        <div key={index} className="p-4 bg-blue1 rounded-lg">
+                        <div key={index} className="p-4 bg-slate-100 rounded-lg">
                             <div className="py-3">
                                 <p className="text-[13px]">{item.formationType}</p>
                                 <p className="text-[22px] font-medium">{item.course} - {item.institut}</p>
@@ -48,10 +49,12 @@ export default function PerfilContentSection({title, info, description}: PerfilC
                         </div>
                     ))}
                 </div>
-                <div className="flex justify-end gap-5 m-3">
-                    <GenericBlueButton color={3} size="md">Remover</GenericBlueButton>
-                    <GenericBlueButton color={3} size="md">Adicionar</GenericBlueButton>
-                </div>
+                {edit && (
+                    <div className="flex justify-end gap-5 m-3">
+                        <GenericBlueButton color={3} size="md">Remover</GenericBlueButton>
+                        <GenericBlueButton color={3} size="md">Adicionar</GenericBlueButton>
+                    </div>
+                )}
             </div>
         </div>
     )
