@@ -123,7 +123,7 @@ export default function CandidateProfile() {
                     </div>
                     }
                 </div>
-                {candidateData.formacoes && candidateData.formacoes.length > 0 || isEditing && (
+                {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Formação Acadêmica"
                         info={candidateData.formacoes.map(f => ({
@@ -140,7 +140,7 @@ export default function CandidateProfile() {
                     />
                 )}
 
-                {candidateData.experiencia && candidateData.experiencia.length > 0 || isEditing && (
+                {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Experiência Profissional"
                         info={candidateData.experiencia.map(e => ({
@@ -159,7 +159,7 @@ export default function CandidateProfile() {
 
 
                 <TagContainer tags={candidateData.habilidades || []} edit={!!isEditing}>Habilidades</TagContainer>
-                <TagContainer tags={barreiras} edit={isEditing}>Limitações</TagContainer>
+                <TagContainer tags={barreiras} edit={false}>Limitações</TagContainer>
 
             </div>
         )

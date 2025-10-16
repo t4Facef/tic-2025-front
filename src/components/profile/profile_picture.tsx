@@ -46,7 +46,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
           </div>
           <div className="flex w-full justify-center">
             <Link to={role === 'CANDIDATO' ? '/candidates/profile' : '/companies/profile'}>
-              <GenericBlueButton color={3}>Visitar minha página</GenericBlueButton>
+              <GenericBlueButton color={3}>Visitar meu perfil</GenericBlueButton>
             </Link>
           </div>
           <hr className="border-gray-300" />
