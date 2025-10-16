@@ -8,6 +8,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
     const [cidades, setCidades] = useState<string[]>(['Selecione'])
     const [emailError, setEmailError] = useState<string>('')
     const [isCheckingEmail, setIsCheckingEmail] = useState(false)
+    const [cepError, setCepError] = useState<string>('')
     
     useEffect(() => {
         const fetchEstados = async () => {
@@ -58,6 +59,8 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
             maskedValue = cleanValue.slice(0, 5) + '-' + cleanValue.slice(5, 8);
         }
 
+        setCepError(''); // Limpa erro anterior
+        
         if(cleanValue.length === 8){
             buscarCep(cleanValue);
         }
@@ -68,11 +71,21 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
 
     const buscarCep = async (value: string) => {
         try {
-            const response = await fetch(`https://viacep.com.br/ws/${value}/json/`);
+            const response = await fetch(`https://viacep.com.br/ws/${value}/json/`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                mode: 'cors'
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
 
             if (!data.erro) {
-                // Salva direto no form2
                 setForm2((prev) => ({
                     ...prev,
                     state: data.uf || "",
@@ -87,6 +100,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
         }
         catch (error) {
             console.error("Erro ao buscar CEP:", error);
+            setCepError('Erro ao buscar CEP. Preencha os campos manualmente.');
         }
     };
 
@@ -141,7 +155,12 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                 <p>Endereço</p>
                 <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
                     <div className="w-[30rem] space-y-5">
-                        <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required value={form2.zipCode || ""}>CEP</GenericFormField>
+                        <div>
+                            <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required value={form2.zipCode || ""}>CEP</GenericFormField>
+                            {cepError && (
+                                <p className="text-red-600 text-sm mt-1">❌ {cepError}</p>
+                            )}
+                        </div>
                         <div className="flex flex-1 space-x-5">
                             <div className="flex-[3] w-full">
                                 <GenericFormField 

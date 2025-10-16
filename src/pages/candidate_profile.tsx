@@ -5,6 +5,7 @@ import NotFoundScreen from "../components/content/not_found_screen";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CandidateProfileType } from "../types/candidate";
+import { EditProfileCandidate } from "../types/perfis/candidate";
 import { API_BASE_URL } from "../config/api";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 
@@ -16,6 +17,12 @@ export default function CandidateProfile() {
     const [isEditing, setIsEditing] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
+    const [editForm, setEditForm] = useState<EditProfileCandidate>({
+        formacao: [],
+        experiencia: [],
+        habilidades: []
+    })
+
     const isViewingOwnProfile = !id || (id && isOwnProfile(id))
 
     const formatDate = (dateString: string) => {
@@ -26,13 +33,95 @@ export default function CandidateProfile() {
         })
     }
 
-    const handleEditing = (isEditing: boolean) => {
+    const handleEditing = async (isEditing: boolean) => {
         if(!isEditing){
             setIsEditing(true)
+            // Inicializar editForm com dados atuais
+            setEditForm({
+                formacao: candidateData?.formacoes?.map(f => ({
+                    candidatoId: f.candidatoId,
+                    nomeCurso: f.nomeCurso,
+                    tipoFormacao: f.tipoFormacao,
+                    instituicao: f.instituicao,
+                    situacao: f.situacao,
+                    dataInicio: f.dataInicio,
+                    dataFim: f.dataFim,
+                    descricao: f.descricao
+                })) || [],
+                experiencia: candidateData?.experiencia?.map(e => ({
+                    candidatoId: user?.id || 0,
+                    empresa: e.empresa,
+                    cargo: e.cargo,
+                    dataInicio: e.dataInicio,
+                    dataFim: e.dataFim,
+                    descricao: e.descricao
+                })) || [],
+                habilidades: candidateData?.habilidades || []
+            })
         }
         else{
+            await saveChanges()
             setIsEditing(false)
-            //Salvar Alterações
+        }
+    }
+
+    const saveChanges = async () => {
+        try {
+            // 1. Salvar formações
+            const formacaoResponse = await fetch(`${API_BASE_URL}/api/candidato/formacoes`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ formacoes: editForm.formacao })
+            })
+
+            // 2. Salvar experiências
+            const experienciaResponse = await fetch(`${API_BASE_URL}/api/candidato/experiencias`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ experiencias: editForm.experiencia })
+            })
+
+            // 3. Salvar habilidades
+            const habilidadesResponse = await fetch(`${API_BASE_URL}/api/candidato/habilidades`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ habilidades: editForm.habilidades })
+            })
+
+            // Verificar se todos foram salvos com sucesso
+            if (formacaoResponse.ok && experienciaResponse.ok && habilidadesResponse.ok) {
+                // Atualizar dados localmente
+                setCandidateData(prev => prev ? {
+                    ...prev,
+                    formacoes: candidateData?.formacoes?.map((f, index) => 
+                        editForm.formacao[index] ? {
+                            ...f,
+                            ...editForm.formacao[index]
+                        } : f
+                    ) || [],
+                    experiencia: candidateData?.experiencia?.map((e, index) => 
+                        editForm.experiencia[index] ? {
+                            ...e,
+                            ...editForm.experiencia[index]
+                        } : e
+                    ) || [],
+                    habilidades: editForm.habilidades
+                } : null)
+                console.log('Todas as alterações salvas com sucesso')
+            } else {
+                console.error('Erro ao salvar algumas alterações')
+            }
+        } catch (error) {
+            console.error('Erro ao salvar alterações:', error)
         }
     }
 
@@ -126,7 +215,7 @@ export default function CandidateProfile() {
                 {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Formação Acadêmica"
-                        info={candidateData.formacoes.map(f => ({
+                        info={candidateData.formacoes?.map(f => ({
                             formationType: f.tipoFormacao,
                             institut: f.instituicao,
                             course: f.nomeCurso,
@@ -134,7 +223,7 @@ export default function CandidateProfile() {
                             endDate: formatDate(f.dataFim),
                             status: f.situacao,
                             desc: f.descricao
-                        }))}
+                        })) || []}
                         description="Histórico educacional e qualificações acadêmicas obtidas"
                         edit={isEditing}
                     />
@@ -143,22 +232,25 @@ export default function CandidateProfile() {
                 {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Experiência Profissional"
-                        info={candidateData.experiencia.map(e => ({
+                        info={candidateData.experiencia?.map(e => ({
                             institut: e.empresa,
                             course: e.cargo,
                             startDate: formatDate(e.dataInicio),
                             endDate: formatDate(e.dataFim),
                             status: "Concluído",
                             desc: e.descricao
-                        }))}
+                        })) || []}
                         description="Trajetória profissional e principais conquistas no mercado de trabalho"
                         edit={isEditing}
                     />
                 )}
-
-
-
-                <TagContainer tags={candidateData.habilidades || []} edit={!!isEditing}>Habilidades</TagContainer>
+                <TagContainer 
+                    tags={isEditing ? editForm.habilidades : candidateData.habilidades || []} 
+                    edit={!!isEditing}
+                    onChange={(newHabilidades) => setEditForm((prev) => ({...prev, habilidades: newHabilidades}))}
+                >
+                    Habilidades
+                </TagContainer>
                 <TagContainer tags={barreiras} edit={false}>Limitações</TagContainer>
 
             </div>
