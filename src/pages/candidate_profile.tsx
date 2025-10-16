@@ -97,29 +97,49 @@ export default function CandidateProfile() {
                 body: JSON.stringify({ habilidades: editForm.habilidades })
             })
 
-            // Verificar se todos foram salvos com sucesso
-            if (formacaoResponse.ok && experienciaResponse.ok && habilidadesResponse.ok) {
-                // Atualizar dados localmente
-                setCandidateData(prev => prev ? {
-                    ...prev,
-                    formacoes: candidateData?.formacoes?.map((f, index) => 
+            // Atualizar localmente apenas os que foram salvos com sucesso
+            setCandidateData(prev => {
+                if (!prev) return null
+                
+                const updatedData = { ...prev }
+                
+                // Atualizar formações se salvou com sucesso
+                if (formacaoResponse.ok) {
+                    updatedData.formacoes = candidateData?.formacoes?.map((f, index) => 
                         editForm.formacao[index] ? {
                             ...f,
                             ...editForm.formacao[index]
                         } : f
-                    ) || [],
-                    experiencia: candidateData?.experiencia?.map((e, index) => 
+                    ) || []
+                    console.log('✅ Formações salvas')
+                } else {
+                    console.error('❌ Erro ao salvar formações')
+                }
+                
+                // Atualizar experiências se salvou com sucesso
+                if (experienciaResponse.ok) {
+                    updatedData.experiencia = candidateData?.experiencia?.map((e, index) => 
                         editForm.experiencia[index] ? {
                             ...e,
                             ...editForm.experiencia[index]
                         } : e
-                    ) || [],
-                    habilidades: editForm.habilidades
-                } : null)
-                console.log('Todas as alterações salvas com sucesso')
-            } else {
-                console.error('Erro ao salvar algumas alterações')
-            }
+                    ) || []
+                    console.log('✅ Experiências salvas')
+                } else {
+                    console.error('❌ Erro ao salvar experiências')
+                }
+                
+                // Atualizar habilidades se salvou com sucesso
+                if (habilidadesResponse.ok) {
+                    updatedData.habilidades = editForm.habilidades
+                    console.log('✅ Habilidades salvas')
+                } else {
+                    console.error('❌ Erro ao salvar habilidades')
+                }
+                
+                return updatedData
+            })
+            
         } catch (error) {
             console.error('Erro ao salvar alterações:', error)
         }
