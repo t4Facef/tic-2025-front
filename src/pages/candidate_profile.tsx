@@ -123,7 +123,7 @@ export default function CandidateProfile() {
                     </div>
                     }
                 </div>
-                {candidateData.formacoes && candidateData.formacoes.length > 0 && (
+                {candidateData.formacoes && candidateData.formacoes.length > 0 || isEditing && (
                     <PerfilContentSection
                         title="Formação Acadêmica"
                         info={candidateData.formacoes.map(f => ({
@@ -140,7 +140,7 @@ export default function CandidateProfile() {
                     />
                 )}
 
-                {candidateData.experiencia && candidateData.experiencia.length > 0 && (
+                {candidateData.experiencia && candidateData.experiencia.length > 0 || isEditing && (
                     <PerfilContentSection
                         title="Experiência Profissional"
                         info={candidateData.experiencia.map(e => ({
