@@ -14,7 +14,7 @@ interface InfoType {
     course: string;
     startDate: string;
     endDate: string;
-    status: string;
+    status?: string;
     desc: string;
 }
 
@@ -23,10 +23,11 @@ interface PerfilContentSectionProps {
     info: InfoType[];
     description?: string;
     edit?: boolean;
-    type: "formacao" | "experiencia"
+    type: "formacao" | "experiencia";
+    onAdd?: (newItem: InfoType) => Promise<void> | void;
 }
 
-export default function PerfilContentSection({ title, info, description, type , edit = false }: PerfilContentSectionProps) {
+export default function PerfilContentSection({ title, info, description, type, edit = false, onAdd }: PerfilContentSectionProps) {
     const [isAdding, setIsAdding] = useState(false)
     const [newInfoType, setNewInfoType] = useState<InfoType>({} as InfoType)
     const isFormation = type === "formacao"
@@ -58,24 +59,30 @@ export default function PerfilContentSection({ title, info, description, type , 
                     {isAdding && <div className="p-4 bg-blue4 rounded-lg">
                         <div className="py-3 space-y-1">
                             <p className="font-semibold">Adicionando {isFormation ? 'Nova Formação' : 'Nova Experiência'}</p>
-                            <GenericFormField id="tipo" type="select" placeholder="Selecione" options={isFormation ? EDUCATION_TYPES : CONTRACT_TYPES}>{isFormation ? "Tipo de Formação" : "Tipo de Contrato"}</GenericFormField>
+                            <GenericFormField id="tipo" type="select" placeholder="Selecione" options={isFormation ? EDUCATION_TYPES : CONTRACT_TYPES} onChange={(e) => setNewInfoType((prev) => ({...prev, formationType: e.target.value}))}>{isFormation ? "Tipo de Formação" : "Tipo de Contrato"}</GenericFormField>
                             <div className="flex gap-8">
-                                <GenericFormField id="curso">{isFormation ? "Curso" : "Título/Cargo"}</GenericFormField>
-                                <GenericFormField id="local">{isFormation ? "Instituição" : "Empresa"}</GenericFormField>
+                                <GenericFormField id="curso" onChange={(e) => setNewInfoType((prev) => ({...prev, course: e.target.value}))}>{isFormation ? "Curso" : "Título/Cargo"}</GenericFormField>
+                                <GenericFormField id="local" onChange={(e) => setNewInfoType((prev) => ({...prev, institut: e.target.value}))}>{isFormation ? "Instituição" : "Empresa"}</GenericFormField>
                             </div>
                             <div className="flex gap-8">
-                                <GenericFormField id="startDate" type="date">Data de Início</GenericFormField>
-                                <GenericFormField id="endDate" type="date">Data de Finalização</GenericFormField>
-                                {isFormation && <GenericFormField id="status" type="select" options={EDUCATION_STATUS}>Status</GenericFormField>}
+                                <GenericFormField id="startDate" type="date" onChange={(e) => setNewInfoType((prev) => ({...prev, startDate: e.target.value}))}>Data de Início</GenericFormField>
+                                <GenericFormField id="endDate" type="date" onChange={(e) => setNewInfoType((prev) => ({...prev, endDate: e.target.value}))}>Data de Finalização</GenericFormField>
+                                {isFormation && <GenericFormField id="status" type="select" options={EDUCATION_STATUS} onChange={(e) => setNewInfoType((prev) => ({...prev, status: e.target.value}))}>Status</GenericFormField>}
                             </div>
                         </div>
-                        <GenericFormField id="descricao" type="textarea">Descrição</GenericFormField>
+                        <GenericFormField id="descricao" type="textarea" onChange={(e) => setNewInfoType((prev) => ({...prev, desc: e.target.value}))}>Descrição</GenericFormField>
                     </div>
                     }
                 </div>
                 {edit && (
                     <div className="flex justify-end gap-5 m-3">
-                        <GenericBlueButton color={3} size="md" onClick={() => setIsAdding(!isAdding)}>{isAdding ? "Concluir" : "Adicionar"}</GenericBlueButton>
+                        <GenericBlueButton color={3} size="md" onClick={async () => {
+                            if (isAdding) {
+                                await onAdd?.(newInfoType)
+                                setNewInfoType({} as InfoType)
+                            }
+                            setIsAdding(!isAdding)
+                        }}>{isAdding ? "Concluir" : "Adicionar"}</GenericBlueButton>
                     </div>
                 )}
             </div>

@@ -1,4 +1,5 @@
 export interface FormacaoCandidate {
+    id?: number;
     candidatoId: number;
     nomeCurso: string;
     tipoFormacao: string;
@@ -10,6 +11,7 @@ export interface FormacaoCandidate {
 }
 
 export interface ExperienciaCandidate {
+    id?: number;
     candidatoId: number;
     titulo: string;
     instituicao: string;

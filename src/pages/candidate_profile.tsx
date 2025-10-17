@@ -39,6 +39,7 @@ export default function CandidateProfile() {
             // Inicializar editForm com dados atuais
             setEditForm({
                 formacao: candidateData?.formacoes?.map(f => ({
+                    id: f.id,
                     candidatoId: f.candidatoId,
                     nomeCurso: f.nomeCurso,
                     tipoFormacao: f.tipoFormacao,
@@ -49,6 +50,7 @@ export default function CandidateProfile() {
                     descricao: f.descricao
                 })) || [],
                 experiencia: candidateData?.experiencia?.map(e => ({
+                    id: e.id,
                     candidatoId: e.candidatoId,
                     titulo: e.titulo,
                     instituicao: e.instituicao,
@@ -68,22 +70,40 @@ export default function CandidateProfile() {
 
     const saveChanges = async () => {
         try {
-            // 1. Salvar formações
+            // Separar itens novos (sem id) dos existentes
+            const novasFormacoes = editForm.formacao.filter(f => !f.id)
+            const novasExperiencias = editForm.experiencia.filter(e => !e.id)
+            
+            // 1. Criar novas formações
+            for (const formacao of novasFormacoes) {
+                await fetch(`${API_BASE_URL}/api/formacao`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formacao)
+                })
+            }
+            
+            // 2. Criar novas experiências
+            for (const experiencia of novasExperiencias) {
+                await fetch(`${API_BASE_URL}/api/experiencias`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(experiencia)
+                })
+            }
+
+            // 3. Atualizar formações existentes (se houver)
             const formacaoResponse = await fetch(`${API_BASE_URL}/api/candidato/formacoes`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ formacoes: editForm.formacao })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ formacoes: editForm.formacao.filter(f => f.id) })
             })
 
-            // 2. Salvar experiências
+            // 4. Atualizar experiências existentes (se houver)
             const experienciaResponse = await fetch(`${API_BASE_URL}/api/candidato/experiencias`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ experiencias: editForm.experiencia })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ experiencias: editForm.experiencia.filter(e => e.id) })
             })
 
             // 3. Salvar habilidades
@@ -245,6 +265,36 @@ export default function CandidateProfile() {
                         })) || []}
                         description="Histórico educacional e qualificações acadêmicas obtidas"
                         edit={isEditing}
+                        onAdd={async (newFormacao) => {
+                            const formacaoToAdd = {
+                                candidatoId: user?.id || 0,
+                                nomeCurso: newFormacao.course,
+                                tipoFormacao: newFormacao.formationType || '',
+                                instituicao: newFormacao.institut,
+                                situacao: newFormacao.status || '',
+                                dataInicio: new Date(newFormacao.startDate).toISOString(),
+                                dataFim: new Date(newFormacao.endDate).toISOString(),
+                                descricao: newFormacao.desc
+                            }
+                            
+                            try {
+                                const response = await fetch(`${API_BASE_URL}/api/formacao`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(formacaoToAdd)
+                                })
+                                
+                                if (response.ok) {
+                                    const savedFormacao = await response.json()
+                                    setCandidateData(prev => prev ? {
+                                        ...prev,
+                                        formacoes: [...(prev.formacoes || []), savedFormacao]
+                                    } : null)
+                                }
+                            } catch (error) {
+                                console.error('Erro ao salvar formação:', error)
+                            }
+                        }}
                     />
                 )}
 
@@ -263,6 +313,35 @@ export default function CandidateProfile() {
                         })) || []}
                         description="Trajetória profissional e principais conquistas no mercado de trabalho"
                         edit={isEditing}
+                        onAdd={async (newExperiencia) => {
+                            const experienciaToAdd = {
+                                candidatoId: user?.id || 0,
+                                titulo: newExperiencia.course,
+                                instituicao: newExperiencia.institut,
+                                dataInicio: new Date(newExperiencia.startDate).toISOString(),
+                                dataFim: new Date(newExperiencia.endDate).toISOString(),
+                                descricao: newExperiencia.desc,
+                                tipoContrato: newExperiencia.formationType || ''
+                            }
+                            
+                            try {
+                                const response = await fetch(`${API_BASE_URL}/api/experiencias`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(experienciaToAdd)
+                                })
+                                
+                                if (response.ok) {
+                                    const savedExperiencia = await response.json()
+                                    setCandidateData(prev => prev ? {
+                                        ...prev,
+                                        experiencia: [...(prev.experiencia || []), savedExperiencia]
+                                    } : null)
+                                }
+                            } catch (error) {
+                                console.error('Erro ao salvar experiência:', error)
+                            }
+                        }}
                     />
                 )}
                 <TagContainer 
