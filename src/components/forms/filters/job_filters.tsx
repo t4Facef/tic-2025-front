@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import GenericFormField from "../generic_form_field";
 import FilterCamp from "./filter_camp";
-import { WORK_TYPES, CONTRACT_TYPES, WORK_LEVELS, SECTORS } from "../../../data/constants/filter_options";
+import { WORK_TYPES, CONTRACT_TYPES, WORK_LEVELS, SECTORS } from "../../../data/constants/select_options";
 
 interface VagasSearchFilters {
     titulo?: string;

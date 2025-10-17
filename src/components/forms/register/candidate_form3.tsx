@@ -4,6 +4,7 @@
 // [TODO] - Adicionar "nome do curso" dependendo da resposta do tipo de formação
 // [TODO] - Adicionar verificação para os campos de curso, formação e experiencia para preencher os dados principais (tipo um required) caso começe a ser preenchido
 
+import { EDUCATION_STATUS, EDUCATION_TYPES } from "../../../data/constants/select_options";
 import { CandidateForm3Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 import { useState } from "react";
@@ -36,10 +37,10 @@ export default function CandidateForm3({ formFunc, formId, initialData } : {form
                 <div className="bg-blue4 rounded-lg p-4 space-y-6">
                     <div className="flex flex-1 gap-24">
                         <div className="flex-[6]">
-                            <GenericFormField id="candidate_education_type_register" type="select" options={['Selecione', 'Sem escolaridade formal', 'Ensino Fundamental', 'Ensino Médio', 'Ensino Técnico', 'Ensino Superior', 'Pós-graduação', 'Mestrado', 'Doutorado', 'Educação de Jovens e Adultos (EJA)', 'Educação Especial', 'Curso Profissionalizante']} onChange={(e) => setForm3((prev) => ({...prev, educationType: e.target.value}))} value={form3.educationType || ""}>Tipo de Formação</GenericFormField>
+                            <GenericFormField id="candidate_education_type_register" type="select" options={EDUCATION_TYPES} placeholder="Selecione" onChange={(e) => setForm3((prev) => ({...prev, educationType: e.target.value}))} value={form3.educationType || ""}>Tipo de Formação</GenericFormField>
                         </div>
                         <div className="flex-[4]">
-                            <GenericFormField id="candidate_education_status_register" type="select" options={['Selecione', 'Completo', 'Cursando', 'Incompleto', 'Interrompido']} onChange={(e) => setForm3((prev) => ({...prev, educationStatus: e.target.value}))} value={form3.educationStatus || ""}>Situação</GenericFormField>
+                            <GenericFormField id="candidate_education_status_register" type="select" options={EDUCATION_STATUS} placeholder="Selecione" onChange={(e) => setForm3((prev) => ({...prev, educationStatus: e.target.value}))} value={form3.educationStatus || ""}>Situação</GenericFormField>
                         </div>
                     </div>
                     <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso" onChange={(e) => setForm3((prev) => ({...prev, courseName: e.target.value}))} value={form3.courseName || ""}>Nome do Curso</GenericFormField>

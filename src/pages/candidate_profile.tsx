@@ -49,12 +49,13 @@ export default function CandidateProfile() {
                     descricao: f.descricao
                 })) || [],
                 experiencia: candidateData?.experiencia?.map(e => ({
-                    candidatoId: user?.id || 0,
-                    empresa: e.empresa,
-                    cargo: e.cargo,
+                    candidatoId: e.candidatoId,
+                    titulo: e.titulo,
+                    instituicao: e.instituicao,
                     dataInicio: e.dataInicio,
                     dataFim: e.dataFim,
-                    descricao: e.descricao
+                    descricao: e.descricao,
+                    tipoContrato: e.tipoContrato
                 })) || [],
                 habilidades: candidateData?.habilidades || []
             })
@@ -72,7 +73,6 @@ export default function CandidateProfile() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ formacoes: editForm.formacao })
             })
@@ -82,7 +82,6 @@ export default function CandidateProfile() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ experiencias: editForm.experiencia })
             })
@@ -234,6 +233,7 @@ export default function CandidateProfile() {
                 {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Formação Acadêmica"
+                        type="formacao"
                         info={candidateData.formacoes?.map(f => ({
                             formationType: f.tipoFormacao,
                             institut: f.instituicao,
@@ -251,9 +251,11 @@ export default function CandidateProfile() {
                 {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
                     <PerfilContentSection
                         title="Experiência Profissional"
+                        type="experiencia"
                         info={candidateData.experiencia?.map(e => ({
-                            institut: e.empresa,
-                            course: e.cargo,
+                            formationType: e.tipoContrato,
+                            institut: e.instituicao,
+                            course: e.titulo,
                             startDate: formatDate(e.dataInicio),
                             endDate: formatDate(e.dataFim),
                             status: "Concluído",

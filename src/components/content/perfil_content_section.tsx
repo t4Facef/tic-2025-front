@@ -3,7 +3,10 @@
 // [TODO] - Adicionar um componente proprio para alteração na própria pagina, ao invés de usar um botão genérico de link
 // [TODO] - Procurar um icone de setinha e implementar abrir e fechar
 
+import { useState } from "react";
 import GenericBlueButton from "../buttons/generic_blue_button"
+import GenericFormField from "../forms/generic_form_field";
+import { EDUCATION_TYPES, CONTRACT_TYPES, EDUCATION_STATUS } from "../../data/constants/select_options";
 
 interface InfoType {
     formationType?: string;
@@ -20,9 +23,13 @@ interface PerfilContentSectionProps {
     info: InfoType[];
     description?: string;
     edit?: boolean;
+    type: "formacao" | "experiencia"
 }
 
-export default function PerfilContentSection({title, info, description, edit = false}: PerfilContentSectionProps){
+export default function PerfilContentSection({ title, info, description, type , edit = false }: PerfilContentSectionProps) {
+    const [isAdding, setIsAdding] = useState(false)
+    const [newInfoType, setNewInfoType] = useState<InfoType>({} as InfoType)
+    const isFormation = type === "formacao"
     return (
         <div className="bg-blue1 px-6 py-2 rounded-xl">
             <div className="py-2">
@@ -33,10 +40,10 @@ export default function PerfilContentSection({title, info, description, edit = f
                 {description && (
                     <p className="text-gray-600 text-sm mb-4 italic">{description}</p>
                 )}
-                <hr className="border-black mb-6"/>
+                <hr className="border-black mb-6" />
                 <div className="space-y-4 mt-4">
                     {info.map((item, index) => (
-                        <div key={index} className="p-4 bg-slate-100 rounded-lg">
+                        <div key={index} className="p-4 bg-blue4 rounded-lg">
                             <div className="py-3">
                                 <p className="text-[13px]">{item.formationType}</p>
                                 <p className="text-[22px] font-medium">{item.course} - {item.institut}</p>
@@ -48,14 +55,31 @@ export default function PerfilContentSection({title, info, description, edit = f
                             </p>
                         </div>
                     ))}
+                    {isAdding && <div className="p-4 bg-blue4 rounded-lg">
+                        <div className="py-3 space-y-1">
+                            <p className="font-semibold">Adicionando {isFormation ? 'Nova Formação' : 'Nova Experiência'}</p>
+                            <GenericFormField id="tipo" type="select" placeholder="Selecione" options={isFormation ? EDUCATION_TYPES : CONTRACT_TYPES}>{isFormation ? "Tipo de Formação" : "Tipo de Contrato"}</GenericFormField>
+                            <div className="flex gap-8">
+                                <GenericFormField id="curso">{isFormation ? "Curso" : "Título/Cargo"}</GenericFormField>
+                                <GenericFormField id="local">{isFormation ? "Instituição" : "Empresa"}</GenericFormField>
+                            </div>
+                            <div className="flex gap-8">
+                                <GenericFormField id="startDate" type="date">Data de Início</GenericFormField>
+                                <GenericFormField id="endDate" type="date">Data de Finalização</GenericFormField>
+                                {isFormation && <GenericFormField id="status" type="select" options={EDUCATION_STATUS}>Status</GenericFormField>}
+                            </div>
+                        </div>
+                        <GenericFormField id="descricao" type="textarea">Descrição</GenericFormField>
+                    </div>
+                    }
                 </div>
                 {edit && (
                     <div className="flex justify-end gap-5 m-3">
-                        <GenericBlueButton color={3} size="md">Remover</GenericBlueButton>
-                        <GenericBlueButton color={3} size="md">Adicionar</GenericBlueButton>
+                        <GenericBlueButton color={3} size="md" onClick={() => setIsAdding(!isAdding)}>{isAdding ? "Concluir" : "Adicionar"}</GenericBlueButton>
                     </div>
                 )}
             </div>
         </div>
     )
 }
+

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import JobPosition from "../components/content/job_position";
 import { JobData } from "../data/mockdata/jobs";
-import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES } from "../data/constants/filter_options";
+import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES } from "../data/constants/select_options";
 import { API_BASE_URL } from "../config/api";
 
 export default function JobForm() {

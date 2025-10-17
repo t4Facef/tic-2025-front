@@ -50,11 +50,13 @@ export interface Formacao {
 
 export interface Experiencia {
     id: number;
-    empresa: string;
-    cargo: string;
+    candidatoId: number;
+    titulo: string;
+    instituicao: string;
     dataInicio: string;
     dataFim: string;
     descricao: string;
+    tipoContrato: string;
 }
 
 export interface CandidateProfileType {
