@@ -88,11 +88,10 @@ export default function CandidateProfile() {
             })
 
             // 3. Salvar habilidades
-            const habilidadesResponse = await fetch(`${API_BASE_URL}/api/candidato/habilidades`, {
+            const habilidadesResponse = await fetch(`${API_BASE_URL}/api/candidato/${user?.id}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ habilidades: editForm.habilidades })
             })
