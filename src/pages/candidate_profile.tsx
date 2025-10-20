@@ -2,10 +2,22 @@ import PerfilContentSection from "../components/content/perfil_content_section";
 import { useAuth } from "../hooks/useAuth";
 import TagContainer from "../components/content/tag_container";
 import NotFoundScreen from "../components/content/not_found_screen";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { CandidateProfileType } from "../types/candidate";
-import { EditProfileCandidate } from "../types/perfis/candidate";
+import { EditProfileCandidate, FormacaoCandidate, ExperienciaCandidate } from "../types/perfis/candidate";
+
+// Interface para dados vindos do PerfilContentSection
+interface InfoType {
+    id?: number;
+    formationType?: string;
+    institut: string;
+    course: string;
+    startDate: string;
+    endDate: string;
+    status?: string;
+    desc: string;
+}
 import { API_BASE_URL } from "../config/api";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 
@@ -22,6 +34,83 @@ export default function CandidateProfile() {
         experiencia: [],
         habilidades: []
     })
+
+    // Conversão de InfoType para FormacaoCandidate
+    const convertInfoToFormacao = (info: InfoType): FormacaoCandidate => ({
+        id: info.id,
+        candidatoId: user?.id || 0,
+        nomeCurso: info.course,
+        tipoFormacao: info.formationType || '',
+        instituicao: info.institut,
+        situacao: info.status || '',
+        dataInicio: info.startDate.includes('/') ? new Date(info.startDate.split('/').reverse().join('-')).toISOString() : new Date(info.startDate).toISOString(),
+        dataFim: info.endDate.includes('/') ? new Date(info.endDate.split('/').reverse().join('-')).toISOString() : new Date(info.endDate).toISOString(),
+        descricao: info.desc
+    })
+
+    // Conversão de InfoType para ExperienciaCandidate
+    const convertInfoToExperiencia = (info: InfoType): ExperienciaCandidate => ({
+        id: info.id,
+        candidatoId: user?.id || 0,
+        titulo: info.course,
+        instituicao: info.institut,
+        dataInicio: info.startDate.includes('/') ? new Date(info.startDate.split('/').reverse().join('-')).toISOString() : new Date(info.startDate).toISOString(),
+        dataFim: info.endDate.includes('/') ? new Date(info.endDate.split('/').reverse().join('-')).toISOString() : new Date(info.endDate).toISOString(),
+        descricao: info.desc,
+        tipoContrato: info.formationType || ''
+    })
+
+    // Callbacks para atualizar dados do PerfilContentSection
+    const handleFormacaoUpdate = (items: InfoType[]) => {
+        const formacoes = items.map(convertInfoToFormacao)
+        setEditForm(prev => ({ ...prev, formacao: formacoes }))
+        
+        // Atualizar candidateData localmente para mostrar mudanças imediatamente
+        setCandidateData(prev => {
+            if (!prev) return null
+            return {
+                ...prev,
+                formacoes: formacoes.map(f => ({
+                    id: f.id || 0,
+                    candidatoId: f.candidatoId,
+                    nomeCurso: f.nomeCurso,
+                    tipoFormacao: f.tipoFormacao,
+                    instituicao: f.instituicao,
+                    situacao: f.situacao,
+                    dataInicio: f.dataInicio,
+                    dataFim: f.dataFim,
+                    descricao: f.descricao,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                }))
+            }
+        })
+    }
+
+    const handleExperienciaUpdate = (items: InfoType[]) => {
+        const experiencias = items.map(convertInfoToExperiencia)
+        setEditForm(prev => ({ ...prev, experiencia: experiencias }))
+        
+        // Atualizar candidateData localmente para mostrar mudanças imediatamente
+        setCandidateData(prev => {
+            if (!prev) return null
+            return {
+                ...prev,
+                experiencia: experiencias.map(e => ({
+                    id: e.id || 0,
+                    candidatoId: e.candidatoId,
+                    titulo: e.titulo,
+                    instituicao: e.instituicao,
+                    dataInicio: e.dataInicio,
+                    dataFim: e.dataFim,
+                    descricao: e.descricao,
+                    tipoContrato: e.tipoContrato,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                }))
+            }
+        })
+    }
 
     const isViewingOwnProfile = !id || (id && isOwnProfile(id))
 
@@ -70,128 +159,92 @@ export default function CandidateProfile() {
 
     const saveChanges = async () => {
         try {
-            // Separar itens novos (sem id) dos existentes
-            const novasFormacoes = editForm.formacao.filter(f => !f.id)
-            const novasExperiencias = editForm.experiencia.filter(e => !e.id)
-            
-            // 1. Criar novas formações
-            for (const formacao of novasFormacoes) {
-                await fetch(`${API_BASE_URL}/api/formacao`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formacao)
-                })
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
             
-            // 2. Criar novas experiências
-            for (const experiencia of novasExperiencias) {
-                await fetch(`${API_BASE_URL}/api/experiencias`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(experiencia)
+            // Enviar todas as formações em lote
+            if (editForm.formacao.length > 0) {
+                const response = await fetch(`${API_BASE_URL}/api/candidato/formacoes/batch`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ formacoes: editForm.formacao })
                 })
+                const result = await response.json()
+                
+                if (!response.ok) {
+                    throw new Error(`Erro ao salvar formações: ${result.message || response.statusText}`)
+                }
+            }
+            
+            // Enviar todas as experiências em lote
+            if (editForm.experiencia.length > 0) {
+                const response = await fetch(`${API_BASE_URL}/api/candidato/experiencias/batch`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ experiencias: editForm.experiencia })
+                })
+                const result = await response.json()
+                
+                if (!response.ok) {
+                    throw new Error(`Erro ao salvar experiências: ${result.message || response.statusText}`)
+                }
             }
 
-            // 3. Atualizar formações existentes (se houver)
-            const formacaoResponse = await fetch(`${API_BASE_URL}/api/candidato/formacoes`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ formacoes: editForm.formacao.filter(f => f.id) })
-            })
-
-            // 4. Atualizar experiências existentes (se houver)
-            const experienciaResponse = await fetch(`${API_BASE_URL}/api/candidato/experiencias`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ experiencias: editForm.experiencia.filter(e => e.id) })
-            })
-
-            // 3. Salvar habilidades
-            const habilidadesResponse = await fetch(`${API_BASE_URL}/api/candidato/${user?.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ habilidades: editForm.habilidades })
-            })
-
-            // Atualizar localmente apenas os que foram salvos com sucesso
-            setCandidateData(prev => {
-                if (!prev) return null
+            // Salvar habilidades
+            if (editForm.habilidades.length > 0) {
+                const response = await fetch(`${API_BASE_URL}/api/candidato/${user?.id}`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ habilidades: editForm.habilidades })
+                })
+                const result = await response.json()
                 
-                const updatedData = { ...prev }
-                
-                // Atualizar formações se salvou com sucesso
-                if (formacaoResponse.ok) {
-                    updatedData.formacoes = candidateData?.formacoes?.map((f, index) => 
-                        editForm.formacao[index] ? {
-                            ...f,
-                            ...editForm.formacao[index]
-                        } : f
-                    ) || []
-                    console.log('✅ Formações salvas')
-                } else {
-                    console.error('❌ Erro ao salvar formações')
+                if (!response.ok) {
+                    throw new Error(`Erro ao salvar habilidades: ${result.message || response.statusText}`)
                 }
-                
-                // Atualizar experiências se salvou com sucesso
-                if (experienciaResponse.ok) {
-                    updatedData.experiencia = candidateData?.experiencia?.map((e, index) => 
-                        editForm.experiencia[index] ? {
-                            ...e,
-                            ...editForm.experiencia[index]
-                        } : e
-                    ) || []
-                    console.log('✅ Experiências salvas')
-                } else {
-                    console.error('❌ Erro ao salvar experiências')
-                }
-                
-                // Atualizar habilidades se salvou com sucesso
-                if (habilidadesResponse.ok) {
-                    updatedData.habilidades = editForm.habilidades
-                    console.log('✅ Habilidades salvas')
-                } else {
-                    console.error('❌ Erro ao salvar habilidades')
-                }
-                
-                return updatedData
-            })
+            }
+            
+            // Recarregar dados do perfil após salvar
+            await refreshProfile()
             
         } catch (error) {
             console.error('Erro ao salvar alterações:', error)
+            const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido'
+            alert(`Erro ao salvar: ${errorMessage}`)
         }
     }
+
+    const refreshProfile = useCallback(async () => {
+        try {
+            const url = isViewingOwnProfile
+                ? `${API_BASE_URL}/api/candidato/profile`
+                : `${API_BASE_URL}/api/candidato/${id}/profile`
+
+            const headers: Record<string, string> = {
+                'Content-Type': 'application/json'
+            }
+
+            if (isViewingOwnProfile && token) {
+                headers['Authorization'] = `Bearer ${token}`
+            }
+
+            const response = await fetch(url, { headers })
+            const data = await response.json()
+            setCandidateData(data)
+        } catch (error) {
+            console.error('Erro ao recarregar perfil:', error)
+        }
+    }, [isViewingOwnProfile, token, id])
 
     useEffect(() => {
         const fetchProfile = async () => {
             setIsLoading(true)
             try {
-                const url = isViewingOwnProfile
-                    ? `${API_BASE_URL}/api/candidato/profile`
-                    : `${API_BASE_URL}/api/candidato/${id}/profile`
-
-                const headers: Record<string, string> = {
-                    'Content-Type': 'application/json'
-                }
-
-                // Só adiciona token se for próprio perfil
-                if (isViewingOwnProfile && token) {
-                    headers['Authorization'] = `Bearer ${token}`
-                }
-
-                const response = await fetch(url, { headers })
-                const data = await response.json()
-                setCandidateData(data)
-                console.log('Profile data:', data)
-
-                // Buscar barreiras se houver subtipos
-                if (data.subtipos && data.subtipos.length > 0) {
-                    const subtipoId = data.subtipos[0].subtipoId
-                    await fetchBarreiras(subtipoId)
-                }
+                await refreshProfile()
             } catch (err) {
-                console.log('Erro ao buscar perfil:', err)
+                console.error('Erro ao buscar perfil:', err)
             } finally {
                 setIsLoading(false)
             }
@@ -200,7 +253,15 @@ export default function CandidateProfile() {
         if (isViewingOwnProfile ? (user?.id && token) : true) {
             fetchProfile()
         }
-    }, [user?.id, token, id, isViewingOwnProfile])
+    }, [user?.id, token, id, isViewingOwnProfile, refreshProfile])
+
+    // Buscar barreiras quando candidateData for carregado
+    useEffect(() => {
+        if (candidateData?.subtipos && candidateData.subtipos.length > 0) {
+            const subtipoId = candidateData.subtipos[0].subtipoId
+            fetchBarreiras(subtipoId)
+        }
+    }, [candidateData])
 
     const fetchBarreiras = async (subtipoId: number) => {
         try {
@@ -212,7 +273,7 @@ export default function CandidateProfile() {
             setBarreiras(barreiraDescricoes)
 
         } catch (error) {
-            console.log('Erro ao buscar barreiras:', error)
+            console.error('Erro ao buscar barreiras:', error)
             setBarreiras([])
         }
     }
@@ -255,6 +316,7 @@ export default function CandidateProfile() {
                         title="Formação Acadêmica"
                         type="formacao"
                         info={candidateData.formacoes?.map(f => ({
+                            id: f.id,
                             formationType: f.tipoFormacao,
                             institut: f.instituicao,
                             course: f.nomeCurso,
@@ -265,36 +327,7 @@ export default function CandidateProfile() {
                         })) || []}
                         description="Histórico educacional e qualificações acadêmicas obtidas"
                         edit={isEditing}
-                        onAdd={async (newFormacao) => {
-                            const formacaoToAdd = {
-                                candidatoId: user?.id || 0,
-                                nomeCurso: newFormacao.course,
-                                tipoFormacao: newFormacao.formationType || '',
-                                instituicao: newFormacao.institut,
-                                situacao: newFormacao.status || '',
-                                dataInicio: new Date(newFormacao.startDate).toISOString(),
-                                dataFim: new Date(newFormacao.endDate).toISOString(),
-                                descricao: newFormacao.desc
-                            }
-                            
-                            try {
-                                const response = await fetch(`${API_BASE_URL}/api/formacao`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(formacaoToAdd)
-                                })
-                                
-                                if (response.ok) {
-                                    const savedFormacao = await response.json()
-                                    setCandidateData(prev => prev ? {
-                                        ...prev,
-                                        formacoes: [...(prev.formacoes || []), savedFormacao]
-                                    } : null)
-                                }
-                            } catch (error) {
-                                console.error('Erro ao salvar formação:', error)
-                            }
-                        }}
+                        onUpdate={handleFormacaoUpdate}
                     />
                 )}
 
@@ -303,6 +336,7 @@ export default function CandidateProfile() {
                         title="Experiência Profissional"
                         type="experiencia"
                         info={candidateData.experiencia?.map(e => ({
+                            id: e.id,
                             formationType: e.tipoContrato,
                             institut: e.instituicao,
                             course: e.titulo,
@@ -313,35 +347,7 @@ export default function CandidateProfile() {
                         })) || []}
                         description="Trajetória profissional e principais conquistas no mercado de trabalho"
                         edit={isEditing}
-                        onAdd={async (newExperiencia) => {
-                            const experienciaToAdd = {
-                                candidatoId: user?.id || 0,
-                                titulo: newExperiencia.course,
-                                instituicao: newExperiencia.institut,
-                                dataInicio: new Date(newExperiencia.startDate).toISOString(),
-                                dataFim: new Date(newExperiencia.endDate).toISOString(),
-                                descricao: newExperiencia.desc,
-                                tipoContrato: newExperiencia.formationType || ''
-                            }
-                            
-                            try {
-                                const response = await fetch(`${API_BASE_URL}/api/experiencias`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(experienciaToAdd)
-                                })
-                                
-                                if (response.ok) {
-                                    const savedExperiencia = await response.json()
-                                    setCandidateData(prev => prev ? {
-                                        ...prev,
-                                        experiencia: [...(prev.experiencia || []), savedExperiencia]
-                                    } : null)
-                                }
-                            } catch (error) {
-                                console.error('Erro ao salvar experiência:', error)
-                            }
-                        }}
+                        onUpdate={handleExperienciaUpdate}
                     />
                 )}
                 <TagContainer 
