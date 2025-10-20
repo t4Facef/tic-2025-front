@@ -44,9 +44,12 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               <p className="text-xs text-gray-500 capitalize">{role === 'CANDIDATO' ? 'Candidato' : 'Empresa'}</p>
             </div>
           </div>
-          <div className="flex w-full justify-center">
+          <div className="flex flex-col items-center w-full gap-4 justify-center">
             <Link to={role === 'CANDIDATO' ? '/candidates/profile' : '/companies/profile'}>
               <GenericBlueButton color={3}>Visitar meu perfil</GenericBlueButton>
+            </Link>
+            <Link to={role === 'CANDIDATO' ? '/candidates/dashboard' : '/companies/dashboard'}>
+              <GenericBlueButton color={4}>Visitar meu Dashboard</GenericBlueButton>
             </Link>
           </div>
           <hr className="border-gray-300" />

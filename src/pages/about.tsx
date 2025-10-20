@@ -2,7 +2,7 @@ import TextSection from "../components/content/text_section";
 
 export default function About() {
     return (
-        <div className="p-8 flex flex-col font-georgia bg-blue1 m-16 rounded-2xl">
+        <div className="p-8 flex flex-col bg-blue1 m-16 rounded-2xl">
             <h1 className="text-5xl font-bold py-4">Sobre</h1>
             <TextSection title="O Projeto Apojobs" id="1">
                 O Apojobs é uma plataforma web inclusiva desenvolvida para conectar profissionais PCDs (Pessoas com Deficiência)

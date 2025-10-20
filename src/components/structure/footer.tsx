@@ -8,7 +8,7 @@ export default function Footer(){
                 <div className="md:col-span-1">
                     <div className="flex items-center mb-4">
                         <img src="/img/logo-apojobs.jpg" alt="Apojobs" className="w-12 h-12 rounded-lg mr-3" />
-                        <span className="text-xl font-georgia font-bold">Apojobs</span>
+                        <span className="text-xl font-bold">Apojobs</span>
                     </div>
                     <p className="text-sm text-blue1">
                         Conectando talentos PCDs às melhores oportunidades inclusivas do mercado.

@@ -4,7 +4,7 @@ import TextSection from "../components/content/text_section";
 export default function Usage(){
     return(
         <div className="flex flex-1">
-            <nav className="w-52 shrink-0 bg-blue2 p-4 pb-16 flex flex-col font-georgia text-white h-fit">
+            <nav className="w-52 shrink-0 bg-blue2 p-4 pb-16 flex flex-col text-white h-fit">
                 <h1 className="text-[2rem] whitespace-nowrap">Tópicos</h1>
                 <ul className="list-disc list-inside space-y-3">
                     <AnchorListItem id="1">Tópico 1</AnchorListItem>

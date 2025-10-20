@@ -24,11 +24,11 @@ export default function JobPosition({ jobData }: JobPositionProps) {
         
         <div className="flex flex-col flex-1 max-h-28">
           <div className="bg-blue2 border-blue3 border-2 flex-[1] flex justify-between items-center px-2 rounded-tr-md">
-            <span className="font-georgia">{jobData.title}</span>
+            <span>{jobData.title}</span>
           </div>
 
           <div className="bg-blue1 border-blue3 border-2 flex-[3] overflow-auto p-2 break-words rounded-br-md">
-            <p className="font-georgia">
+            <p>
               {jobData.description.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1').substring(0, 360)}
               {jobData.description.length > 360 ? '...' : ''}
             </p>

@@ -54,9 +54,9 @@ export default function CompaniesRow({ companyIds, basePath, extensions }: Compa
     <div className="flex items-center justify-between w-full overflow-hidden bg-blue2 p-3 py-4">
       <button
         onClick={handleLeft}
-        className="transition-all duration-300 hover:scale-110 hover:opacity-80"
+        className="transition-all duration-300 hover:scale-110"
       >
-        <ChevronLeft size={120} />
+        <ChevronLeft size={120} color="white" className="brightness-90"/>
       </button>
 
       <div className="overflow-hidden flex-1 mx-2 py-4">
@@ -81,9 +81,9 @@ export default function CompaniesRow({ companyIds, basePath, extensions }: Compa
 
       <button
         onClick={handleRight}
-        className="transition-all duration-300 hover:scale-110 hover:opacity-80"
+        className="transition-all duration-300 hover:scale-110"
       >
-        <ChevronRight size={120} />
+        <ChevronRight size={120} color="white" className="brightness-90"/>
       </button>
     </div>
   );

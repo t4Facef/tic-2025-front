@@ -28,9 +28,8 @@ export default function CandidateDashboard(){
         const fetchDashboardData = async () => {
             try {
                 // Buscar estatísticas do candidato
-                const statsResponse = await fetch(`${API_BASE_URL}/api/candidates/${user?.id}/statistics`, {
+                const statsResponse = await fetch(`${API_BASE_URL}/api/estatisticas/candidato/${user?.id}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 })

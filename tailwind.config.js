@@ -15,7 +15,8 @@ module.exports = {
         'red2': '#CA0000'
       },
       fontFamily: {
-        'georgia': 'Georgia, serif'
+        'georgia': 'Georgia, serif',
+        'nunito': ['"Nunito"', 'sans-serif']
       }
     },
   },
