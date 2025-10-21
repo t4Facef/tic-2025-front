@@ -9,6 +9,7 @@ import StatisticBox from "../components/content/statistic_box";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { JobData } from "../data/mockdata/jobs";
 import { API_BASE_URL } from "../config/api";
+import { Vaga } from "../types/vagas/vaga";
 
 interface Statistics {
     candidaturasNesteMes: number
@@ -21,7 +22,7 @@ interface Statistics {
 export default function CandidateDashboard() {
     const { user, isAuthenticated, token } = useAuth()
     const [statistics, setStatistics] = useState<Statistics | null>(null)
-    const [recommendedJobs, setRecommendedJobs] = useState<JobData[]>([])
+    const [recommendedJobs, setRecommendedJobs] = useState<Vaga[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -111,10 +112,31 @@ export default function CandidateDashboard() {
                             <div>
                                 <p className="pt-12">Recomendações de vaga para você</p>
                                 <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
-                                    <div className="flex flex-col items-end px-3 space-y-6">
-                                        {recommendedJobs.map(job => (
-                                            <JobPosition key={job.id} jobData={job} />
-                                        ))}
+                                    <div className="flex flex-col items-end px-3 space-y-6 w-full">
+                                        <div className="space-y-8 w-full">
+                                            {recommendedJobs.map(vaga => {
+                                                const jobDataProps: JobData = {
+                                                    id: vaga.id,
+                                                    idEmpresa: vaga.empresaId,
+                                                    title: vaga.titulo,
+                                                    company: vaga.empresa.razaoSocial,
+                                                    companyLogo: vaga.empresa.foto || "",
+                                                    location: vaga.localizacao,
+                                                    description: vaga.descricao,
+                                                    skillsTags: vaga.habilidades,
+                                                    supportTags: vaga.apoios,
+                                                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                                    startDate: new Date(vaga.dataInicio),
+                                                    endDate: new Date(vaga.dataFim),
+                                                    typeContract: vaga.tipoContrato,
+                                                    typeWork: vaga.tipoTrabalho,
+                                                    payment: vaga.pagamento,
+                                                    workLevel: vaga.nivelTrabalho,
+                                                    timeShift: vaga.turno
+                                                }
+                                                return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                            })}
+                                        </div>
                                         <div>
                                             <GenericBlueButton color={3} link="/jobs">Ver mais</GenericBlueButton>
                                         </div>
@@ -129,7 +151,7 @@ export default function CandidateDashboard() {
                                         <div className="text-6xl mb-4">🔍</div>
                                         <h3 className="text-xl font-medium text-gray-700">Ainda não temos vagas recomendadas para você</h3>
                                         <p className="text-gray-600 max-w-md mx-auto">
-                                            Estamos analisando seu perfil para encontrar as melhores oportunidades. 
+                                            Estamos analisando seu perfil para encontrar as melhores oportunidades.
                                             Enquanto isso, explore nossas outras vagas disponíveis!
                                         </p>
                                         <div className="pt-4 w-full flex justify-center">
