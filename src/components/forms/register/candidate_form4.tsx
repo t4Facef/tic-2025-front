@@ -7,13 +7,22 @@ import GenericFormField from "../generic_form_field";
 import { API_BASE_URL } from "../../../config/api";
 
 
-export default function CandidateForm4({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data }) {
+export default function CandidateForm4({ formFunc, formId, initialData, archives }: { formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data, archives: FormData }) {
     const [form4, setForm4] = useState<CandidateForm4Data>(initialData || {} as CandidateForm4Data)
     const [tipos, setTipos] = useState<{ nome: string, id: number }[]>([])
     const [subTipos, setSubTipos] = useState<{ nome: string, id: number }[]>([])
     const [barreiras, setBarreiras] = useState<string[]>([])
     const [tipoId, setTipoId] = useState<number>()
     const [subTipoId, setSubTipoId] = useState<number>()
+
+    const handleFileUpload = (file: File, tipo: string) => {
+        // Limpar arquivo anterior do mesmo tipo se existir
+        if (archives.has(tipo)) {
+            archives.delete(tipo)
+        }
+        // Adicionar novo arquivo
+        archives.append(tipo, file)
+    }
 
 
 
@@ -128,7 +137,22 @@ export default function CandidateForm4({ formFunc, formId, initialData }: { form
                 <GenericFormField id="candidate_type_register" type="select" options={tipos.map(tipo => tipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleTypeChange(e)} value={form4.necessityType || ""}>Tipo de Necessidade</GenericFormField>
                 <GenericFormField id="candidate_sub_type_register" type="select" options={subTipos.map(subTipo => subTipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleSubTypeChange(e)} value={form4.necessitySubtype || ""}>Subtipo de Necessidade</GenericFormField>
             </div>
-            <GenericFormField id="candidate_medical_report_register" type="file" required onChange={(e) => setForm4((prev) => ({ ...prev, medicalReport: (e.target as HTMLInputElement).files?.[0] || null }))} value={form4.medicalReport?.name || ""}>Laudo Médico</GenericFormField>
+            <GenericFormField 
+                id="candidate_medical_report_register" 
+                type="file" 
+                accept=".pdf,.jpg,.jpeg,.png"
+                required 
+                onChange={(e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0]
+                    if (file) {
+                        setForm4((prev) => ({ ...prev, medicalReport: file }))
+                        handleFileUpload(file, 'laudo')
+                    }
+                }}
+                value={form4.medicalReport?.name || ""}
+            >
+                Laudo Médico
+            </GenericFormField>
             <TagContainer 
                 edit={false} 
                 tags={barreiras}

@@ -8,7 +8,7 @@ import GenericFormField from "../generic_form_field";
 const ImageCropper = lazy(() => import("../../image/image_cropper"));
 
 
-export default function CandidateForm5({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data }) {
+export default function CandidateForm5({ formFunc, formId, initialData, archives }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data, archives: FormData }) {
     const [form5, setForm5] = useState<CandidateForm5Data>(initialData || {} as CandidateForm5Data)
     const [passwordError, setPasswordError] = useState<string>('')
     const [passwordRequirements, setPasswordRequirements] = useState([
@@ -43,6 +43,16 @@ export default function CandidateForm5({ formFunc, formId, initialData }: { form
 
     const handleCroppedImage = (croppedFile: File) => {
         setForm5(prev => ({ ...prev, profilePicture: croppedFile }))
+        handleFileUpload(croppedFile, 'foto')
+    }
+
+    const handleFileUpload = (file: File, tipo: string) => {
+        // Limpar arquivo anterior do mesmo tipo se existir
+        if (archives.has(tipo)) {
+            archives.delete(tipo)
+        }
+        // Adicionar novo arquivo
+        archives.append(tipo, file)
     }
 
 

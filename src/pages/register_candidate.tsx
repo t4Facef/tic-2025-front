@@ -28,6 +28,8 @@ export default function Register() {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
+    const archivesData = new FormData()
+
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
         back: {
@@ -63,14 +65,13 @@ export default function Register() {
             setFormData(prev => ({ ...prev, formdata4: data }))
             setStep(5)
         },
-        5: (data: CandidateForm5Data) => {
+        5: async (data: CandidateForm5Data) => {
             setIsLoading(true)
             setApiMessage('🔄 Enviando dados...')
             
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
             
-            console.log('🔍 Dados combinados (allData):', allData)
-            
+
             // Função para limpar campos vazios/undefined
             const cleanObject = (obj: Record<string, unknown>) => {
                 const cleaned: Record<string, unknown> = {}
@@ -82,7 +83,6 @@ export default function Register() {
                 return Object.keys(cleaned).length > 0 ? cleaned : undefined
             }
 
-            // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
             const candidateData: Record<string, unknown> = {
                 nome: allData.name,
                 email: allData.email,
@@ -136,52 +136,64 @@ export default function Register() {
                 candidateData.experiencia = experiencia
             }
             
-            console.log('📤 JSON sendo enviado (candidateData):', candidateData)
-            
 
-            
-            // TEMPORÁRIO: Enviando JSON até backend configurar multer
-            fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(candidateData)
-            })
-            
-            /* VERSÃO FINAL: Usar quando backend suportar FormData + multer
-            const formDataToSend = new FormData()
-            formDataToSend.append('candidateData', JSON.stringify(candidateData))
-            if (allData.profilePicture) {
-                formDataToSend.append('profilePicture', allData.profilePicture)
-            }
-            
-            fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
-                method: 'POST',
-                body: formDataToSend
-            })
-            */
-            .then(async response => {
-                if (!response.ok) {
-                    const errorData = await response.json()
+            try {
+                // 1. Primeiro, registrar o candidato
+                const registerResponse = await fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(candidateData)
+                })
+                
+                if (!registerResponse.ok) {
+                    const errorData = await registerResponse.json()
                     const errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
                     throw new Error(errorMessage)
                 }
                 
-                return response.json()
-            })
-            .then(() => {
-                // Limpar dados do formulário
+                const registerResult = await registerResponse.json()
+                const candidatoId = registerResult.candidato?.id || registerResult.id
+                
+
+                
+                // 2. Se há arquivos, enviar cada um
+                if (archivesData.has('curriculo') || archivesData.has('laudo') || archivesData.has('foto')) {
+                    setApiMessage('📤 Enviando arquivos...')
+                    
+                    const arquivos = ['curriculo', 'laudo', 'foto']
+                    
+                    for (const tipo of arquivos) {
+                        if (archivesData.has(tipo)) {
+                            const file = archivesData.get(tipo) as File
+                            
+                            const fileFormData = new FormData()
+                            fileFormData.append('file', file)
+                            fileFormData.append('tipo', tipo.toUpperCase())
+                            fileFormData.append('candidatoId', candidatoId.toString())
+                            
+                            const fileResponse = await fetch(`${API_BASE_URL}/api/arquivos/upload`, {
+                                method: 'POST',
+                                body: fileFormData
+                            })
+                            
+                            if (!fileResponse.ok) {
+                                console.warn(`Erro ao enviar ${tipo}:`, await fileResponse.text())
+                            }
+                        }
+                    }
+                }
+                
+                // 3. Sucesso - limpar e navegar
                 localStorage.removeItem('candidateFormData')
-                // Navegar para página de sucesso
                 navigate('/auth/register/success')
-            })
-            .catch(error => {
-                setApiMessage(`❌ ${error.message}`)
-            })
-            .finally(() => {
+                
+            } catch (error) {
+                setApiMessage(`❌ ${error instanceof Error ? error.message : 'Erro desconhecido'}`)
+            } finally {
                 setIsLoading(false)
-            })
+            }
         }
     }
 
@@ -198,9 +210,9 @@ export default function Register() {
                 <div className="bg-blue1 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
                     {step == 1 && <CandidateForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1}/>}
                     {step == 2 && <CandidateForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2}/>}
-                    {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3}/>}
-                    {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4}/>}
-                    {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5}/>}
+                    {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} archives={archivesData}/>}
+                    {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} archives={archivesData}/>}
+                    {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} archives={archivesData}/>}
                     {apiMessage && (
                         <div className={`border-2 p-2 text-center rounded-lg ${
                             apiMessage.includes('❌') 
