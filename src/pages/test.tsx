@@ -1,107 +1,298 @@
-import React, { useState, useEffect } from "react";
-import CompanieForm3 from "../components/forms/register/companie_form3";
-import { CompanieForm3Data } from "../types/forms/companie";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { API_BASE_URL } from "../config/api";
+import GenericBlueButton from "../components/buttons/generic_blue_button";
 
-interface Estatisticas {
-  candidaturasHoje: number;
-  candidatosAtivos: number;
-  vagasAbertas: number;
+type TipoArquivo = 'CURRICULO' | 'LAUDO' | 'FOTO';
+
+interface Documentos {
+  curriculo: string | null;
+  laudo: string | null;
+  foto: string | null;
 }
 
 export default function TestPage() {
-  const [formData, setFormData] = useState<CompanieForm3Data>({ supportCapabilities: [] });
-  const [estatisticas, setEstatisticas] = useState<Estatisticas | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, token } = useAuth();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [tipoArquivo, setTipoArquivo] = useState<TipoArquivo>('CURRICULO');
+  const [uploading, setUploading] = useState(false);
+  const [result, setResult] = useState<string>('');
+  const [documentos, setDocumentos] = useState<Documentos | null>(null);
+  const [loadingDocs, setLoadingDocs] = useState(false);
 
-  const handleFormSubmit = (data: CompanieForm3Data) => {
-    console.log("Form submitted:", data);
-    setFormData(data);
+  const uploadDocumento = async (file: File, tipo: TipoArquivo, candidatoId: number) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('tipo', tipo);
+    formData.append('candidatoId', candidatoId.toString());
+
+    const response = await fetch(`${API_BASE_URL}/api/arquivos/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    return await response.json();
   };
 
-  useEffect(() => {
-    const fetchEstatisticas = async () => {
-      try {
-        const response = await fetch("/api/estatisticas");
-        const data = await response.json();
-        setEstatisticas(data);
-      } catch (error) {
-        console.error("Erro ao buscar estatísticas:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleUpload = async () => {
+    if (!selectedFile || !user?.id) {
+      setResult('Selecione um arquivo e faça login');
+      return;
+    }
 
-    fetchEstatisticas();
-  }, []);
+    setUploading(true);
+    try {
+      const response = await uploadDocumento(selectedFile, tipoArquivo, user.id);
+      setResult(`Sucesso: ${JSON.stringify(response, null, 2)}`);
+    } catch (error) {
+      setResult(`Erro: ${error}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const fetchDocumentos = async () => {
+    if (!user?.id) {
+      setResult('Faça login para buscar documentos');
+      return;
+    }
+
+    setLoadingDocs(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/documentos`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Erro ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      setDocumentos(data);
+      setResult('Documentos carregados com sucesso!');
+    } catch (error) {
+      setResult(`Erro ao buscar documentos: ${error}`);
+      setDocumentos(null);
+    } finally {
+      setLoadingDocs(false);
+    }
+  };
+
+  const downloadDocumento = (tipo: TipoArquivo) => {
+    if (!user?.id) return;
+    window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/download`, '_blank');
+  };
+
+  const viewDocumento = (tipo: TipoArquivo) => {
+    if (!user?.id) return;
+    window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/view`, '_blank');
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 m-16 bg-blue-200 space-y-12">
-      {/* --- Header e Formulário --- */}
-      <div className="flex flex-col items-center space-y-4 w-full max-w-2xl">
-        <h1 className="text-2xl font-bold">Teste CompanieForm3</h1>
-
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full">
-          <CompanieForm3
-            formFunc={handleFormSubmit}
-            formId="testForm3"
-            initialData={formData}
-          />
-
-          <button
-            type="submit"
-            form="testForm3"
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+    <div className="p-8 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Teste de Upload de Arquivos</h1>
+      
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-2">Tipo de Arquivo:</label>
+          <select 
+            value={tipoArquivo} 
+            onChange={(e) => setTipoArquivo(e.target.value as TipoArquivo)}
+            className="w-full p-2 border rounded"
           >
-            Testar Submit
-          </button>
+            <option value="CURRICULO">Currículo</option>
+            <option value="LAUDO">Laudo</option>
+            <option value="FOTO">Foto</option>
+          </select>
         </div>
 
-        <div className="bg-gray-100 p-4 rounded-lg w-full">
-          <h3 className="font-semibold mb-2">Dados do Form:</h3>
-          <pre className="text-sm">{JSON.stringify(formData, null, 2)}</pre>
+        <div>
+          <label className="block text-sm font-medium mb-2">Arquivo:</label>
+          <input 
+            type="file" 
+            onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+            className="w-full p-2 border rounded"
+          />
         </div>
+
+        {!uploading && selectedFile ? (
+          <GenericBlueButton 
+            color={3} 
+            size="md" 
+            onClick={handleUpload}
+          >
+            Enviar Arquivo
+          </GenericBlueButton>
+        ) : (
+          <div className="p-2 bg-gray-300 text-gray-500 rounded text-center">
+            {uploading ? 'Enviando...' : 'Selecione um arquivo'}
+          </div>
+        )}
+
+        {!loadingDocs ? (
+          <GenericBlueButton 
+            color={2} 
+            size="md" 
+            onClick={fetchDocumentos}
+          >
+            Buscar Meus Documentos
+          </GenericBlueButton>
+        ) : (
+          <div className="p-2 bg-gray-300 text-gray-500 rounded text-center">
+            Buscando...
+          </div>
+        )}
+
+        {documentos && (
+          <div className="mt-4 p-4 bg-blue-50 rounded">
+            <h3 className="font-medium mb-4">Meus Documentos:</h3>
+            
+            <div className="space-y-4">
+              <div className="border-b pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium">Currículo: {documentos.curriculo ? '✅' : '❌'}</span>
+                </div>
+                {documentos.curriculo && (
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => viewDocumento('CURRICULO')}
+                      className="text-green-600 hover:text-green-800 text-sm underline"
+                    >
+                      Visualizar
+                    </button>
+                    <button 
+                      onClick={() => downloadDocumento('CURRICULO')}
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      Baixar
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              <div className="border-b pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium">Laudo: {documentos.laudo ? '✅' : '❌'}</span>
+                </div>
+                {documentos.laudo && (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => viewDocumento('LAUDO')}
+                        className="text-green-600 hover:text-green-800 text-sm underline"
+                      >
+                        Visualizar
+                      </button>
+                      <button 
+                        onClick={() => downloadDocumento('LAUDO')}
+                        className="text-blue-600 hover:text-blue-800 text-sm underline"
+                      >
+                        Baixar
+                      </button>
+                    </div>
+                    <iframe 
+                      src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/laudo/view`}
+                      className="w-full h-40 border rounded"
+                      title="Visualização do Laudo"
+                    />
+                  </div>
+                )}
+              </div>
+              
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium">Foto: {documentos.foto ? '✅' : '❌'}</span>
+                </div>
+                {documentos.foto && (
+                  <div className="flex gap-2 mb-3">
+                    <button 
+                      onClick={() => viewDocumento('FOTO')}
+                      className="text-green-600 hover:text-green-800 text-sm underline"
+                    >
+                      Visualizar
+                    </button>
+                    <button 
+                      onClick={() => downloadDocumento('FOTO')}
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      Baixar
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {documentos.foto && (
+              <div className="mt-4">
+                <h4 className="font-medium mb-2">Foto de Perfil:</h4>
+                <img 
+                  src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`}
+                  alt="Foto de perfil"
+                  className="w-32 h-32 object-cover rounded-lg border"
+                  onError={(e) => {
+                    console.log('Erro ao carregar imagem');
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {result && (
+          <div className="mt-4 p-4 bg-gray-100 rounded">
+            <h3 className="font-medium mb-2">Resultado:</h3>
+            <p className="text-sm">{result}</p>
+          </div>
+        )}
+
+        {user?.id && (
+          <div className="mt-6 p-4 bg-green-50 rounded">
+            <h3 className="font-medium mb-4">Teste de Visualização Direta:</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-medium mb-2">Foto (tag img):</h4>
+                <img 
+                  src={`${API_BASE_URL}/api/arquivos/candidato/${user.id}/foto/view`}
+                  alt="Foto teste"
+                  className="w-24 h-24 object-cover rounded border"
+                  onLoad={() => console.log('Imagem carregada com sucesso!')}
+                  onError={(e) => {
+                    console.log('Erro ao carregar imagem teste');
+                    e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjEyIiB5PSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzY2NzI4NSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==';
+                  }}
+                />
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium mb-2">Currículo (iframe):</h4>
+                <iframe 
+                  src={`${API_BASE_URL}/api/arquivos/candidato/${user.id}/curriculo/view`}
+                  className="w-full h-32 border rounded bg-white"
+                  title="Teste Currículo"
+                />
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium mb-2">Laudo (iframe):</h4>
+                <iframe 
+                  src={`${API_BASE_URL}/api/arquivos/candidato/${user.id}/laudo/view`}
+                  className="w-full h-32 border rounded bg-white"
+                  title="Teste Laudo"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* --- Estatísticas (antigo componente StatisticsSection) --- */}
-      {loading ? (
-        <section className="bg-white py-12 w-full">
-          <div className="container mx-auto px-4">
-            <div className="text-center text-gray-600">Carregando estatísticas...</div>
-          </div>
-        </section>
-      ) : (
-        <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-12 text-white w-full">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Estatísticas da Plataforma</h2>
-              <p className="text-blue-100">Acompanhe os números em tempo real</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-bold mb-2">
-                  {estatisticas?.candidaturasHoje || 0}
-                </div>
-                <div className="text-blue-100">Candidaturas Hoje</div>
-              </div>
-
-              <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-bold mb-2">
-                  {estatisticas?.candidatosAtivos || 0}
-                </div>
-                <div className="text-blue-100">Candidatos Ativos</div>
-              </div>
-
-              <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                <div className="text-4xl font-bold mb-2">
-                  {estatisticas?.vagasAbertas || 0}
-                </div>
-                <div className="text-blue-100">Vagas Abertas</div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
-  );
+  )
 }
+

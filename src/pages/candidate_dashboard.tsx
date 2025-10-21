@@ -11,9 +11,9 @@ import { JobData } from "../data/mockdata/jobs";
 import { API_BASE_URL } from "../config/api";
 
 interface Statistics {
-    applicationsThisMonth: number
-    totalApplications: number
-    openApplications: number
+    candidaturasNesteMes: number
+    candidaturasTotal: number
+    candidaturasAbertas: number
 }
 
 
@@ -99,9 +99,9 @@ export default function CandidateDashboard(){
                     <div className="flex flex-col w-[72rem]">
                         <div className="bg-blue2 p-2 mt-5 rounded-lg">
                             <div className="flex justify-between">
-                                <StatisticBox title="Candidaturas neste mês" animation={true} finalValue={statistics.applicationsThisMonth}>{statistics.applicationsThisMonth}</StatisticBox>
-                                <StatisticBox title="Candidatura totais" animation={true} finalValue={statistics.totalApplications}>{statistics.totalApplications}</StatisticBox>
-                                <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.openApplications}>{statistics.openApplications}</StatisticBox>            
+                                <StatisticBox title="Candidaturas neste mês" animation={true} finalValue={statistics.candidaturasNesteMes}>{statistics.candidaturasNesteMes}</StatisticBox>
+                                <StatisticBox title="Candidatura totais" animation={true} finalValue={statistics.candidaturasTotal}>{statistics.candidaturasTotal}</StatisticBox>
+                                <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.candidaturasAbertas}>{statistics.candidaturasAbertas}</StatisticBox>            
                             </div>
                             <div className="flex justify-end mt-2 pr-2">
                                 <GenericBlueButton color={3} link="/jobs">Acessar minhas vagas</GenericBlueButton>
