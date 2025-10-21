@@ -14,7 +14,7 @@ export default function StatisticBox({title, children, animation = false, finalV
         if (animation && finalValue > 0) {
             // Pequeno delay para garantir que execute após carregamento
             const startDelay = setTimeout(() => {
-                const duration = 1200; // 1.2 segundos fixos
+                const duration = 800; // 0.8 segundos fixos
                 const interval = duration / finalValue; // Calcula intervalo baseado no valor
                 let count = 0;
                 
@@ -25,7 +25,7 @@ export default function StatisticBox({title, children, animation = false, finalV
                         clearInterval(timer);
                     }
                 }, interval);
-            }, 500); // Espera 500ms após carregar
+            }, 200); // Espera 200ms após carregar
 
             return () => clearTimeout(startDelay);
         }

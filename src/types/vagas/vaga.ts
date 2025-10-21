@@ -6,6 +6,8 @@ export interface Vaga {
   habilidades: string[];
   apoios: string[];
   compatibilidade: number | null;
+  compatibilidadeCalculada?: number;
+  compatibilidadeFormatada?: string;
   dataInicio: string; // ISO date string
   dataFim: string; // ISO date string
   tipoContrato: string;

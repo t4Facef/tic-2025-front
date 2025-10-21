@@ -21,6 +21,8 @@ interface VagasSearchFilters {
     salarioMax?: number; // não usado
     dataInicioMin?: string; // não usado
     dataInicioMax?: string; // não usado
+    setor?: string;
+    recomendadas?: boolean;
 }
 
 interface jobFiltersProps {
@@ -122,6 +124,7 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                     options={[...SECTORS]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
+                    onChange={(e) => onFiltersChange({ setor: e.target.value })}
                 >
                     Setor
                 </GenericFormField>
@@ -133,6 +136,7 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                     options={["Sim", "Não"]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
+                    onChange={(e) => onFiltersChange({ recomendadas: e.target.value === "Sim" })}
                 >
                     Somente Recomendadas Para Mim?
                 </GenericFormField>

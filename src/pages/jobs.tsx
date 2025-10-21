@@ -10,6 +10,7 @@ import JobFilters from "../components/forms/filters/job_filters";
 import { useEffect, useState } from "react";
 import { Vaga } from "../types/vagas/vaga";
 import { API_BASE_URL } from "../config/api";
+import { useAuth } from "../hooks/useAuth";
 
 interface VagasSearchFilters {
     titulo?: string;
@@ -25,9 +26,12 @@ interface VagasSearchFilters {
     salarioMax?: number;
     dataInicioMin?: string; // formato: "2024-01-15"
     dataInicioMax?: string; // formato: "2024-12-31"
+    setor?: string;
+    recomendadas?: boolean;
 }
 
 export default function Jobs() {
+    const { user } = useAuth()
     const [filtros, setFiltros] = useState<VagasSearchFilters>({} as VagasSearchFilters)
     const [vagas, setVagas] = useState<Vaga[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -38,15 +42,31 @@ export default function Jobs() {
         const fetchVagas = async () => {
             setIsLoading(true)
             try {
+                // Debug dos filtros
+                console.log('🔧 Estado atual dos filtros:', filtros)
+                console.log('👤 Usuário logado:', { id: user?.id, nome: user?.nome })
+                
+                // Adicionar candidatoId aos filtros se usuário estiver logado
+                const filtrosComCandidato = user?.id ? { ...filtros, candidatoId: user.id } : filtros
+                
+                console.log('📤 JSON final enviado para backend:', JSON.stringify(filtrosComCandidato, null, 2))
+                
                 const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(filtros)
+                    body: JSON.stringify(filtrosComCandidato)
                 })
 
                 const data = await res.json()
+                console.log('🔍 Vagas recebidas:', data.map((v: Vaga) => ({ 
+                    id: v.id, 
+                    titulo: v.titulo, 
+                    compatibilidade: v.compatibilidade,
+                    compatibilidadeCalculada: v.compatibilidadeCalculada,
+                    compatibilidadeFormatada: v.compatibilidadeFormatada
+                })))
                 setVagas(data)
             } catch (err) {
                 console.log(err)
@@ -56,7 +76,7 @@ export default function Jobs() {
         }
 
         fetchVagas()
-    }, [filtros])
+    }, [filtros, user?.id, user?.nome])
 
     return (
         <div className="flex flex-1">
@@ -91,7 +111,7 @@ export default function Jobs() {
                                         description: vaga.descricao,
                                         skillsTags: vaga.habilidades,
                                         supportTags: vaga.apoios,
-                                        compatibility: vaga.compatibilidade || 0,
+                                        compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
                                         startDate: new Date(vaga.dataInicio),
                                         endDate: new Date(vaga.dataFim),
                                         typeContract: vaga.tipoContrato,
