@@ -108,9 +108,9 @@ export default function CandidateDashboard() {
                                 <GenericBlueButton color={3} link="/jobs">Acessar minhas vagas</GenericBlueButton>
                             </div>
                         </div>
-                        {(recommendedJobs && recommendedJobs.length > 0) ? (
-                            <div>
-                                <p className="pt-12">Recomendações de vaga para você</p>
+                        <div>
+                            <p className="pt-12">Recomendações de vaga para você</p>
+                            {(recommendedJobs && recommendedJobs.length > 0) ? (
                                 <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
                                     <div className="flex flex-col items-end px-3 space-y-6 w-full">
                                         <div className="space-y-8 w-full">
@@ -142,10 +142,7 @@ export default function CandidateDashboard() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <div>
-                                <p className="pt-12">Vagas para você</p>
+                            ) : (
                                 <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
                                     <div className="text-center space-y-4">
                                         <div className="text-6xl mb-4">🔍</div>
@@ -159,8 +156,9 @@ export default function CandidateDashboard() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
