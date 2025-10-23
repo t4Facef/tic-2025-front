@@ -16,7 +16,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
 
   useEffect(() => {
     if (role === 'EMPRESA' && user?.id) {
-      fetch(`${API_BASE_URL}/api/empresa/${user.id}`, {
+      fetch(`${API_BASE_URL}/api/empresas/${user.id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())
