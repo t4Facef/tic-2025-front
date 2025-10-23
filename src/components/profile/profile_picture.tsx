@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import GenericBlueButton from "../buttons/generic_blue_button";
 import { useAuth } from "../../hooks/useAuth";
 import { API_BASE_URL } from "../../config/api";
@@ -9,8 +10,22 @@ interface ProfilePictureProps {
 }
 
 export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps) {
-  const { logout, user, role } = useAuth();
+  const { logout, user, role, token } = useAuth();
   const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState<string>('');
+
+  useEffect(() => {
+    if (role === 'EMPRESA' && user?.id) {
+      fetch(`${API_BASE_URL}/api/empresa/${user.id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => setDisplayName(data.razaoSocial || user.nome || 'Empresa'))
+      .catch(() => setDisplayName(user.nome || 'Empresa'))
+    } else {
+      setDisplayName(user?.nome || 'Usuário')
+    }
+  }, [role, user, token])
 
   const handleLogOut = () => {
     logout();
@@ -44,7 +59,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               />
             </div>
             <div className="flex-[6] px-3">
-              <p className="font-semibold">{user?.nome || 'Usuário'}</p>
+              <p className="font-semibold">{displayName}</p>
               <p className="text-sm text-justify">{user?.email}</p>
               <p className="text-xs text-gray-500 capitalize">{role === 'CANDIDATO' ? 'Candidato' : 'Empresa'}</p>
             </div>
