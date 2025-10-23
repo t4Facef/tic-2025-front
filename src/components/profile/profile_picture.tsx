@@ -1,5 +1,3 @@
-// [TODO] - Tornar a pagina dinamica para cada usuario quando fazer uma context api
-
 import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../buttons/generic_blue_button";
 import { useAuth } from "../../hooks/useAuth";
@@ -23,7 +21,10 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
     <div className="relative">
       <div className="w-24 h-24 rounded-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200">
         <img
-          src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`}
+          src={role === 'CANDIDATO' 
+            ? `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`
+            : `${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`
+          }
           alt="Foto de perfil"
           className={`w-full h-full cursor-pointer hover:opacity-90 transition-opacity object-cover`}
           onClick={onToggle}
@@ -34,7 +35,10 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
           <div className="flex-1 flex flex-row">
             <div className="flex-[2] h-max">
               <img
-                src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`}
+                src={role === 'CANDIDATO' 
+                  ? `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view` 
+                  : `${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`
+                }
                 alt="Foto de perfil"
                 className={`w-full h-full rounded-full object-cover shadow-md`}
               />

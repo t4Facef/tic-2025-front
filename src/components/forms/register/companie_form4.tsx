@@ -3,7 +3,7 @@ import { CompanieForm4Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 import ImageCropper from "../../image/image_cropper";
 
-export default function CompanieForm4({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm4Data) => void, formId: string, initialData?: CompanieForm4Data }) {
+export default function CompanieForm4({ formFunc, formId, initialData, archives }: { formFunc: (data: CompanieForm4Data) => void, formId: string, initialData?: CompanieForm4Data, archives: FormData }) {
     const [form4, setForm4] = useState<CompanieForm4Data>(initialData || {} as CompanieForm4Data)
     const [passwordError, setPasswordError] = useState<string>('')
     const [passwordRequirements, setPasswordRequirements] = useState([
@@ -38,14 +38,43 @@ export default function CompanieForm4({ formFunc, formId, initialData }: { formF
 
     const handleCroppedImage = (croppedFile: File) => {
         setForm4(prev => ({ ...prev, profilePicture: croppedFile }))
+        handleFileUpload(croppedFile, 'foto')
     }
 
+    const handleFileUpload = (file: File, tipo: string) => {
+        // Limpar arquivo anterior do mesmo tipo se existir
+        if (archives.has(tipo)) {
+            archives.delete(tipo)
+        }
+        // Adicionar novo arquivo
+        archives.append(tipo, file)
+    }
+
+    const loadDefaultCompanyLogo = async () => {
+        try {
+            const response = await fetch('/img/profile-default.jpg')
+            const blob = await response.blob()
+            const defaultFile = new File([blob], 'profile-default.jpg', { type: 'image/jpeg' })
+            handleFileUpload(defaultFile, 'foto')
+        } catch (error) {
+            console.warn('Erro ao carregar logo padrão:', error)
+        }
+    }
+
+
     return (
-        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
             setPasswordError('')
 
             if (passwordRequirements.every(req => req.valid)) {
+                if (!form4.profilePicture && !archives.has('foto')) {
+                    try {
+                        await loadDefaultCompanyLogo()
+                    } catch (error) {
+                        console.warn('Continuando sem logo padrão:', error)
+                    }
+                }
                 formFunc(form4)
             } else {
                 setPasswordError('Por favor, atenda a todos os requisitos de senha antes de continuar.')

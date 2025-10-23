@@ -12,21 +12,29 @@ interface Documentos {
 }
 
 export default function TestPage() {
-  const { user, token } = useAuth();
+  const { user, token, role } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [tipoArquivo, setTipoArquivo] = useState<TipoArquivo>('CURRICULO');
+  const [tipoArquivo, setTipoArquivo] = useState<TipoArquivo>('FOTO');
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<string>('');
   const [documentos, setDocumentos] = useState<Documentos | null>(null);
   const [loadingDocs, setLoadingDocs] = useState(false);
+  
+  const isCompany = role === 'EMPRESA';
 
-  const uploadDocumento = async (file: File, tipo: TipoArquivo, candidatoId: number) => {
+  const uploadDocumento = async (file: File, tipo: TipoArquivo, userId: number) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('tipo', tipo);
-    formData.append('candidatoId', candidatoId.toString());
+    
+    if (isCompany) {
+      formData.append('empresaId', userId.toString());
+    } else {
+      formData.append('candidatoId', userId.toString());
+    }
 
-    const response = await fetch(`${API_BASE_URL}/api/arquivos/upload`, {
+    const endpoint = isCompany ? '/api/arquivos/upload' : '/api/arquivos/upload';
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -62,7 +70,11 @@ export default function TestPage() {
 
     setLoadingDocs(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/documentos`, {
+      const endpoint = isCompany 
+        ? `/api/arquivos/empresa/${user.id}/documentos`
+        : `/api/arquivos/candidato/${user.id}/documentos`;
+        
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -86,17 +98,25 @@ export default function TestPage() {
 
   const downloadDocumento = (tipo: TipoArquivo) => {
     if (!user?.id) return;
-    window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/download`, '_blank');
+    if (isCompany) {
+      window.open(`${API_BASE_URL}/api/arquivo/empresa/${user.id}/${tipo.toLowerCase()}/download`, '_blank');
+    } else {
+      window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/download`, '_blank');
+    }
   };
 
   const viewDocumento = (tipo: TipoArquivo) => {
     if (!user?.id) return;
-    window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/view`, '_blank');
+    if (isCompany) {
+      window.open(`${API_BASE_URL}/api/arquivo/empresa/${user.id}/${tipo.toLowerCase()}/view`, '_blank');
+    } else {
+      window.open(`${API_BASE_URL}/api/arquivos/candidato/${user.id}/${tipo.toLowerCase()}/view`, '_blank');
+    }
   };
 
   return (
     <div className="p-8 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Teste de Upload de Arquivos</h1>
+      <h1 className="text-2xl font-bold mb-6">Teste de Upload - {isCompany ? 'Empresa' : 'Candidato'}</h1>
       
       <div className="space-y-4">
         <div>
@@ -106,9 +126,9 @@ export default function TestPage() {
             onChange={(e) => setTipoArquivo(e.target.value as TipoArquivo)}
             className="w-full p-2 border rounded"
           >
-            <option value="CURRICULO">Currículo</option>
-            <option value="LAUDO">Laudo</option>
-            <option value="FOTO">Foto</option>
+            {!isCompany && <option value="CURRICULO">Currículo</option>}
+            {!isCompany && <option value="LAUDO">Laudo</option>}
+            <option value="FOTO">{isCompany ? 'Logo da Empresa' : 'Foto'}</option>
           </select>
         </div>
 
@@ -154,60 +174,64 @@ export default function TestPage() {
             <h3 className="font-medium mb-4">Meus Documentos:</h3>
             
             <div className="space-y-4">
-              <div className="border-b pb-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium">Currículo: {documentos.curriculo ? '✅' : '❌'}</span>
-                </div>
-                {documentos.curriculo && (
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => viewDocumento('CURRICULO')}
-                      className="text-green-600 hover:text-green-800 text-sm underline"
-                    >
-                      Visualizar
-                    </button>
-                    <button 
-                      onClick={() => downloadDocumento('CURRICULO')}
-                      className="text-blue-600 hover:text-blue-800 text-sm underline"
-                    >
-                      Baixar
-                    </button>
-                  </div>
-                )}
-              </div>
-              
-              <div className="border-b pb-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium">Laudo: {documentos.laudo ? '✅' : '❌'}</span>
-                </div>
-                {documentos.laudo && (
-                  <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => viewDocumento('LAUDO')}
-                        className="text-green-600 hover:text-green-800 text-sm underline"
-                      >
-                        Visualizar
-                      </button>
-                      <button 
-                        onClick={() => downloadDocumento('LAUDO')}
-                        className="text-blue-600 hover:text-blue-800 text-sm underline"
-                      >
-                        Baixar
-                      </button>
+              {!isCompany && (
+                <>
+                  <div className="border-b pb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">Currículo: {documentos.curriculo ? '✅' : '❌'}</span>
                     </div>
-                    <iframe 
-                      src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/laudo/view`}
-                      className="w-full h-40 border rounded"
-                      title="Visualização do Laudo"
-                    />
+                    {documentos.curriculo && (
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => viewDocumento('CURRICULO')}
+                          className="text-green-600 hover:text-green-800 text-sm underline"
+                        >
+                          Visualizar
+                        </button>
+                        <button 
+                          onClick={() => downloadDocumento('CURRICULO')}
+                          className="text-blue-600 hover:text-blue-800 text-sm underline"
+                        >
+                          Baixar
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                  
+                  <div className="border-b pb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">Laudo: {documentos.laudo ? '✅' : '❌'}</span>
+                    </div>
+                    {documentos.laudo && (
+                      <div className="space-y-2">
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={() => viewDocumento('LAUDO')}
+                            className="text-green-600 hover:text-green-800 text-sm underline"
+                          >
+                            Visualizar
+                          </button>
+                          <button 
+                            onClick={() => downloadDocumento('LAUDO')}
+                            className="text-blue-600 hover:text-blue-800 text-sm underline"
+                          >
+                            Baixar
+                          </button>
+                        </div>
+                        <iframe 
+                          src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/laudo/view`}
+                          className="w-full h-40 border rounded"
+                          title="Visualização do Laudo"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
               
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium">Foto: {documentos.foto ? '✅' : '❌'}</span>
+                  <span className="font-medium">{isCompany ? 'Logo' : 'Foto'}: {documentos.foto ? '✅' : '❌'}</span>
                 </div>
                 {documentos.foto && (
                   <div className="flex gap-2 mb-3">
@@ -230,10 +254,13 @@ export default function TestPage() {
             
             {documentos.foto && (
               <div className="mt-4">
-                <h4 className="font-medium mb-2">Foto de Perfil:</h4>
+                <h4 className="font-medium mb-2">{isCompany ? 'Logo da Empresa:' : 'Foto de Perfil:'}</h4>
                 <img 
-                  src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`}
-                  alt="Foto de perfil"
+                  src={isCompany 
+                    ? `${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`
+                    : `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`
+                  }
+                  alt={isCompany ? 'Logo da empresa' : 'Foto de perfil'}
                   className="w-32 h-32 object-cover rounded-lg border"
                   onError={(e) => {
                     console.log('Erro ao carregar imagem');

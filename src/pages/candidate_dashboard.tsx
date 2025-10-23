@@ -109,6 +109,10 @@ export default function CandidateDashboard() {
                             </div>
                         </div>
                         <div>
+                            <p className="pt-12">Suas Inscrições</p>
+                            {/* Preencher quando terminar de ajeitar a lógica de candidaturas */}
+                        </div>
+                        <div>
                             <p className="pt-12">Recomendações de vaga para você</p>
                             {(recommendedJobs && recommendedJobs.length > 0) ? (
                                 <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">

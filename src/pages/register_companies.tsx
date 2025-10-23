@@ -9,6 +9,7 @@ import CompanieForm3 from '../components/forms/register/companie_form3'
 import CompanieForm4 from '../components/forms/register/companie_form4'
 import { CompanieForm1Data, CompanieForm2Data, CompanieForm3Data, CompanieForm4Data, CompanieRegisterData } from '../types/forms/companie'
 import { useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../config/api'
 
 export default function RegisterCompanies() {
     const [step, setStep] = useState(1)
@@ -16,6 +17,8 @@ export default function RegisterCompanies() {
     const [apiMessage, setApiMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+
+    const archivesData = new FormData()
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -46,15 +49,12 @@ export default function RegisterCompanies() {
             setFormData(prev => ({ ...prev, formdata3: data }))
             setStep(4)
         },
-        4: (data: CompanieForm4Data) => {
+        4: async (data: CompanieForm4Data) => {
             setIsLoading(true)
             setApiMessage('🔄 Enviando dados...')
 
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...data }
 
-            console.log('🔍 Dados combinados (allData):', allData)
-
-            // TEMPORÁRIO: Enviando JSON puro até backend suportar FormData com multer
             const companieData = {
                 razaoSocial: allData.companyName,
                 nomeFantasia: allData.tradeName,
@@ -64,7 +64,7 @@ export default function RegisterCompanies() {
                 cnpj: allData.cnpj,
                 telefoneComercial: allData.businessPhone,
                 numFunc: parseInt(allData.employeeCount || '0') || 0,
-                numFuncPcd: 0, // TODO: Adicionar campo no formulário
+                numFuncPcd: 0,
                 area: allData.businessSector,
                 acessibilidades: allData.supportCapabilities.map(id => parseInt(id)),
                 endereco: {
@@ -78,75 +78,72 @@ export default function RegisterCompanies() {
                 }
             }
 
-            console.log('📤 JSON sendo enviado (companieData):', companieData)
-
-            const API_BASE_URL = 'http://localhost:3001';
-
-            // TEMPORÁRIO: Enviando JSON até backend configurar multer
-            fetch(`${API_BASE_URL}/api/auth/empresa/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(companieData)
-            })
-            
-            /* VERSÃO FINAL: Usar quando backend suportar FormData + multer
-            const formDataToSend = new FormData()
-            formDataToSend.append('companieData', JSON.stringify(companieData))
-            if (allData.profilePicture) {
-                formDataToSend.append('profilePicture', allData.profilePicture)
-            }
-            
-            fetch(`${API_BASE_URL}/api/auth/companie/register`, {
-                method: 'POST',
-                body: formDataToSend
-            })
-            */
-                .then(async response => {
-                    console.log('📡 Response status:', response.status)
-                    console.log('📡 Response headers:', response.headers.get('content-type'))
+            try {
+                // 1. Primeiro, registrar a empresa
+                const registerResponse = await fetch(`${API_BASE_URL}/api/auth/empresa/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(companieData)
+                })
+                
+                if (!registerResponse.ok) {
+                    const responseText = await registerResponse.text()
                     
-                    if (!response.ok) {
-                        const responseText = await response.text()
-                        console.log('❌ Response text:', responseText)
+                    try {
+                        const errorData = JSON.parse(responseText)
+                        let errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
                         
-                        // Tentar parsear como JSON, se falhar usar texto
-                        try {
-                            const errorData = JSON.parse(responseText)
-                            let errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
-                            
-                            // Encurtar mensagens de erro do Prisma
-                            if (errorMessage.includes('prisma.')) {
-                                if (errorMessage.includes('Unique constraint failed')) {
-                                    errorMessage = 'Dados já cadastrados no sistema'
-                                } else if (errorMessage.includes('Invalid')) {
-                                    errorMessage = 'Dados inválidos ou campos obrigatórios faltando'
-                                } else {
-                                    errorMessage = 'Erro no banco de dados'
-                                }
+                        if (errorMessage.includes('prisma.')) {
+                            if (errorMessage.includes('Unique constraint failed')) {
+                                errorMessage = 'Dados já cadastrados no sistema'
+                            } else if (errorMessage.includes('Invalid')) {
+                                errorMessage = 'Dados inválidos ou campos obrigatórios faltando'
+                            } else {
+                                errorMessage = 'Erro no banco de dados'
                             }
-                            
-                            throw new Error(errorMessage)
-                        } catch {
-                            throw new Error(`Erro ${response.status}: Falha na comunicação`)
                         }
+                        
+                        throw new Error(errorMessage)
+                    } catch {
+                        throw new Error(`Erro ${registerResponse.status}: Falha na comunicação`)
                     }
-
-                    return response.json()
-                })
-                .then(() => {
-                    // Limpar dados do formulário
-                    localStorage.removeItem('companieFormData')
-                    // Navegar para página de sucesso
-                    navigate('/auth/register/success')
-                })
-                .catch(error => {
-                    setApiMessage(`❌ ${error.message}`)
-                })
-                .finally(() => {
-                    setIsLoading(false)
-                })
+                }
+                
+                const registerResult = await registerResponse.json()
+                const empresaId = registerResult.empresa?.id || registerResult.id
+                
+                // 2. Se há foto, enviar
+                if (archivesData.has('foto')) {
+                    setApiMessage('📤 Enviando logo da empresa...')
+                    
+                    const file = archivesData.get('foto') as File
+                    
+                    const fileFormData = new FormData()
+                    fileFormData.append('file', file)
+                    fileFormData.append('tipo', 'FOTO')
+                    fileFormData.append('empresaId', empresaId.toString())
+                    
+                    const fileResponse = await fetch(`${API_BASE_URL}/api/arquivo/upload`, {
+                        method: 'POST',
+                        body: fileFormData
+                    })
+                    
+                    if (!fileResponse.ok) {
+                        console.warn('Erro ao enviar logo:', await fileResponse.text())
+                    }
+                }
+                
+                // 3. Sucesso - limpar e navegar
+                localStorage.removeItem('companieFormData')
+                navigate('/auth/register/success')
+                
+            } catch (error) {
+                setApiMessage(`❌ ${error instanceof Error ? error.message : 'Erro desconhecido'}`)
+            } finally {
+                setIsLoading(false)
+            }
         }
     }
 
@@ -164,7 +161,7 @@ export default function RegisterCompanies() {
                     {step == 1 && <CompanieForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1} />}
                     {step == 2 && <CompanieForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2} />}
                     {step == 3 && <CompanieForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} />}
-                    {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} />}
+                    {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} archives={archivesData} />}
                     {apiMessage && (
                         <div className={`border-2 p-2 text-center rounded-lg ${apiMessage.includes('❌')
                                 ? 'bg-red-100 border-red-300 text-red-700'

@@ -55,15 +55,26 @@ export default function CandidateForm5({ formFunc, formId, initialData, archives
         archives.append(tipo, file)
     }
 
-
-
+    const loadDefaultProfileImage = async () => {
+        try {
+            const response = await fetch('/img/profile-default.jpg')
+            const blob = await response.blob()
+            const defaultFile = new File([blob], 'profile-default.jpg', { type: 'image/jpeg' })
+            handleFileUpload(defaultFile, 'foto')
+        } catch (error) {
+            console.warn('Erro ao carregar imagem padrão:', error)
+        }
+    }
 
     return (
-        <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
+        <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
             setPasswordError('')
 
             if (passwordRequirements.every(req => req.valid)) {
+                if (!form5.profilePicture && !archives.has('foto')) {
+                    await loadDefaultProfileImage()
+                }
                 formFunc(form5)
             } else {
                 setPasswordError('Por favor, atenda a todos os requisitos de senha antes de continuar.')
