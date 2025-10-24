@@ -36,6 +36,7 @@ export default interface EmpresaProfile {
   certificacoes: string[];
   createdAt: string;
   updatedAt: string;
+  anoFundacao: number;
   
   // Relacionamentos
   endereco?: Endereco;

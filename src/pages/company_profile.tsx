@@ -51,6 +51,7 @@ export default function CompanyProfile() {
     }
     const companie = {
         name: companieInformation.razaoSocial,
+        tradingName: companieInformation.nomeFantasia,
         description: companieInformation.descricao,
         history: companieInformation.historia,
         img1: "todo",
@@ -72,6 +73,7 @@ export default function CompanyProfile() {
                     <img src={`${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`} alt="Profile-pic" className="rounded-full w-52 h-52 mr-7 shadow-xl border-[0.5px]" />
                     <div className="mt-4">
                         <h1 className="font-bold text-4xl">{companie.name}</h1>
+                        <h2 className="font-medium text-lg text-gray-400">{companie.tradingName}</h2>
                         <p className="mt-3 text-justify">{companie.description}</p>
                     </div>
                 </div>

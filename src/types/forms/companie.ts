@@ -2,7 +2,6 @@ export interface CompanieForm1Data {
     companyName: string;
     tradeName?: string;
     cnpj: string;
-    employeeCount?: string;
     businessSector: string;
 }
 
@@ -20,10 +19,20 @@ export interface CompanieForm2Data {
 }
 
 export interface CompanieForm3Data {
-    supportCapabilities: string[];
+    employeeCount: string;
+    employeePcdCount: string;
+    foundedYear: string;
+    description: string;
+    history: string;
+    mission: string;
 }
 
 export interface CompanieForm4Data {
+    supportCapabilities: string[];
+    acessibilidades?: { id: number; nome: string }[];
+}
+
+export interface CompanieForm5Data {
     password: string;
     confirmPassword: string;
     profilePicture: File | null;
@@ -34,4 +43,5 @@ export interface CompanieRegisterData {
     formdata2: CompanieForm2Data
     formdata3: CompanieForm3Data
     formdata4: CompanieForm4Data
+    formdata5: CompanieForm5Data
 }

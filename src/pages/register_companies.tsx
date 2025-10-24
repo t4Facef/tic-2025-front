@@ -7,7 +7,8 @@ import CompanieForm1 from '../components/forms/register/companie_form1'
 import CompanieForm2 from '../components/forms/register/companie_form2'
 import CompanieForm3 from '../components/forms/register/companie_form3'
 import CompanieForm4 from '../components/forms/register/companie_form4'
-import { CompanieForm1Data, CompanieForm2Data, CompanieForm3Data, CompanieForm4Data, CompanieRegisterData } from '../types/forms/companie'
+import CompanieForm5 from '../components/forms/register/companie_form5'
+import { CompanieForm1Data, CompanieForm2Data, CompanieForm3Data, CompanieForm4Data, CompanieForm5Data, CompanieRegisterData } from '../types/forms/companie'
 import { useNavigate } from 'react-router-dom'
 import { API_BASE_URL } from '../config/api'
 
@@ -26,13 +27,15 @@ export default function RegisterCompanies() {
             1: "Cancelar",
             2: "Voltar",
             3: "Voltar",
-            4: "Voltar"
+            4: "Voltar",
+            5: "Voltar"
         },
         next: {
             1: "Continuar",
             2: "Próximo",
             3: "Próximo",
-            4: "Finalizar"
+            4: "Próximo",
+            5: "Finalizar"
         }
     }
 
@@ -49,11 +52,15 @@ export default function RegisterCompanies() {
             setFormData(prev => ({ ...prev, formdata3: data }))
             setStep(4)
         },
-        4: async (data: CompanieForm4Data) => {
+        4: (data: CompanieForm4Data) => {
+            setFormData(prev => ({ ...prev, formdata4: data }))
+            setStep(5)
+        },
+        5: async (data: CompanieForm5Data) => {
             setIsLoading(true)
             setApiMessage('🔄 Enviando dados...')
 
-            const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...data }
+            const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
 
             const companieData = {
                 razaoSocial: allData.companyName,
@@ -64,9 +71,11 @@ export default function RegisterCompanies() {
                 cnpj: allData.cnpj,
                 telefoneComercial: allData.businessPhone,
                 numFunc: parseInt(allData.employeeCount || '0') || 0,
-                numFuncPcd: 0,
+                numFuncPcd: parseInt(allData.employeePcdCount || '0') || 0,
                 area: allData.businessSector,
-                acessibilidades: allData.supportCapabilities.map(id => parseInt(id)),
+                acessibilidades: (allData.acessibilidades || []).filter(acc => 
+                    allData.supportCapabilities?.includes(acc.nome)
+                ).map(acc => acc.id),
                 endereco: {
                     cep: allData.postalCode,
                     estado: allData.state,
@@ -76,6 +85,20 @@ export default function RegisterCompanies() {
                     complemento: allData.adressComplement,
                     bairro: allData.neighborhood
                 }
+            }
+            
+            // Adicionar campos opcionais do perfil se preenchidos
+            if (allData.foundedYear) {
+                companieData.anoFundacao = parseInt(allData.foundedYear)
+            }
+            if (allData.description) {
+                companieData.descricao = allData.description
+            }
+            if (allData.history) {
+                companieData.historia = allData.history
+            }
+            if (allData.mission) {
+                companieData.missao = allData.mission
             }
 
             try {
@@ -89,26 +112,9 @@ export default function RegisterCompanies() {
                 })
                 
                 if (!registerResponse.ok) {
-                    const responseText = await registerResponse.text()
-                    
-                    try {
-                        const errorData = JSON.parse(responseText)
-                        let errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
-                        
-                        if (errorMessage.includes('prisma.')) {
-                            if (errorMessage.includes('Unique constraint failed')) {
-                                errorMessage = 'Dados já cadastrados no sistema'
-                            } else if (errorMessage.includes('Invalid')) {
-                                errorMessage = 'Dados inválidos ou campos obrigatórios faltando'
-                            } else {
-                                errorMessage = 'Erro no banco de dados'
-                            }
-                        }
-                        
-                        throw new Error(errorMessage)
-                    } catch {
-                        throw new Error(`Erro ${registerResponse.status}: Falha na comunicação`)
-                    }
+                    const errorData = await registerResponse.json()
+                    const errorMessage = errorData.error || errorData.message || 'Erro desconhecido'
+                    throw new Error(errorMessage)
                 }
                 
                 const registerResult = await registerResponse.json()
@@ -155,13 +161,14 @@ export default function RegisterCompanies() {
             </div>
             <div>
                 <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
-                    <StepIndicator step={step} stepsTitles={{ 1: "Dados da Empresa", 2: "Endereço e Contato", 3: "Informações de Inclusão", 4: "Acesso e Segurança" }}></StepIndicator>
+                    <StepIndicator step={step} stepsTitles={{ 1: "Dados da Empresa", 2: "Endereço e Contato", 3: "Perfil da Empresa", 4: "Capacidades de Apoio", 5: "Acesso e Segurança" }}></StepIndicator>
                 </div>
                 <div className="bg-blue1 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
                     {step == 1 && <CompanieForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1} />}
                     {step == 2 && <CompanieForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2} />}
                     {step == 3 && <CompanieForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} />}
-                    {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} archives={archivesData} />}
+                    {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} />}
+                    {step == 5 && <CompanieForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} archives={archivesData} />}
                     {apiMessage && (
                         <div className={`border-2 p-2 text-center rounded-lg ${apiMessage.includes('❌')
                                 ? 'bg-red-100 border-red-300 text-red-700'
@@ -185,8 +192,8 @@ export default function RegisterCompanies() {
                         <GenericBlueButton
                             color={3}
                             size='md'
-                            {...(step === 4
-                                ? { submit: true, form: `step${step}Form` }  // Step 4: vai pro dashboard
+                            {...(step === 5
+                                ? { submit: true, form: `step${step}Form` }  // Step 5: vai pro dashboard
                                 : { submit: true, form: `step${step}Form` }  // Outros: avança step
                             )}
                         >
