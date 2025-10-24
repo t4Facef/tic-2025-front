@@ -57,12 +57,12 @@ export default function CompanyProfile() {
         img1: "todo",
         img2: "todo",
         mission: companieInformation.missao,
-        location: companieInformation.endereco?.rua,
-        foundedYear: "", //Implementar depois 
+        location: `${companieInformation.endereco?.cidade}, ${companieInformation.endereco?.estado}`,
+        foundedYear: companieInformation.anoFundacao,
         sector: companieInformation.area,
         employeeCount: String(companieInformation.numFunc || 0),
         website: companieInformation.site || "",
-        acessibilityLevel: "", //Implementar depois
+        pcdEmployeeCount: String(companieInformation.numFuncPcd),
         supportTags: companieInformation.empresaAcessibilidade?.map(acessibilidade => acessibilidade.acessibilidade.nome) || []
     }
 
@@ -101,7 +101,7 @@ export default function CompanyProfile() {
                     ]} />
                     <InfoList items={[
                         { label: "Funcionários", value: companie.employeeCount },
-                        { label: "Nivel de Acessibilidade", value: companie.acessibilityLevel },
+                        { label: "Funcionários PCDs", value: companie.pcdEmployeeCount },
                         { label: "Site", value: companie.website }
                     ]} />
                 </div>
