@@ -62,7 +62,7 @@ export default function RegisterCompanies() {
 
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
 
-            const companieData = {
+            const companieData: any = {
                 razaoSocial: allData.companyName,
                 nomeFantasia: allData.tradeName,
                 email: allData.email,
