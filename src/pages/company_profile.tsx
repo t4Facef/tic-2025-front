@@ -1,34 +1,75 @@
-// [TODO] - Inicialmente implementar logica simples de react, depois usar fetch/useEffect
-// [TODO] - Verificar viabilidade de alterar cor das caixas de conteudo para cinza
-// [TODO] - Fazer as imagens serem opcionais
-// [TODO] - Adicionar redes sociais e suas apis se tiver
-
 import TagContainer from "../components/content/tag_container";
 import InfoList from "../components/content/info_list";
-import { mockCompanies } from "../data/mockdata/companies";
 import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
+import EmpresaProfile from "../types/perfis/companie";
 
 export default function CompanyProfile() {
-    const { user, isAuthenticated } = useAuth()
-    
+    const [companieInformation, setCompanyInformation] = useState<EmpresaProfile>({} as EmpresaProfile)
+    const { isAuthenticated, token, user } = useAuth()
+
+    useEffect(() => {
+        const getProfileInformation = async () => {
+            if (!token) return
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/empresa/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!res.ok) {
+                    console.error('Erro na requisição:', res.status, res.statusText)
+                    return
+                }
+                
+                const data = await res.json()
+                setCompanyInformation(data)
+            } catch (error) {
+                console.error('Erro ao buscar perfil:', error)
+            }
+        }
+
+        if (isAuthenticated && token) {
+            getProfileInformation()
+        }
+    }, [token, isAuthenticated])
+
     if (!isAuthenticated) {
         return (
-            <NotFoundScreen 
+            <NotFoundScreen
                 title="Acesso negado"
                 message="Você precisa estar logado para acessar esta página."
                 icon="🔒"
             />
         )
     }
-
-    const companie = mockCompanies.find(comp => comp.id === user?.id)
+    const companie = {
+        name: companieInformation.razaoSocial,
+        description: companieInformation.descricao,
+        history: companieInformation.historia,
+        img1: "todo",
+        img2: "todo",
+        mission: companieInformation.missao,
+        location: companieInformation.endereco?.rua,
+        foundedYear: "", //Implementar depois 
+        sector: companieInformation.area,
+        employeeCount: String(companieInformation.numFunc || 0),
+        website: companieInformation.site || "",
+        acessibilityLevel: "", //Implementar depois
+        supportTags: companieInformation.empresaAcessibilidade?.map(acessibilidade => acessibilidade.acessibilidade.nome) || []
+    }
 
     if (companie) {
         return (
             <div className="p-12 px-60">
                 <div className="flex items-center">
-                    <img src={companie.logo} alt="Profile-pic" className="rounded-full w-52 h-52 mr-7 shadow-xl border-[0.5px]" />
+                    <img src={`${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`} alt="Profile-pic" className="rounded-full w-52 h-52 mr-7 shadow-xl border-[0.5px]" />
                     <div className="mt-4">
                         <h1 className="font-bold text-4xl">{companie.name}</h1>
                         <p className="mt-3 text-justify">{companie.description}</p>
@@ -52,7 +93,7 @@ export default function CompanyProfile() {
                 </div>
                 <div className="bg-blue1 flex justify-between p-6 my-6">
                     <InfoList items={[
-                        { label: "Localização", value: companie.location },
+                        { label: "Localização", value: companie.location || "" },
                         { label: "Ano de Fundação", value: String(companie.foundedYear) },
                         { label: "Área de Atuação", value: companie.sector }
                     ]} />
