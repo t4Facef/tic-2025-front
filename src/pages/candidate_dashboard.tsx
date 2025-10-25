@@ -23,7 +23,9 @@ export default function CandidateDashboard() {
     const { user, isAuthenticated, token } = useAuth()
     const [statistics, setStatistics] = useState<Statistics | null>(null)
     const [recommendedJobs, setRecommendedJobs] = useState<Vaga[]>([])
+    const [appliedJobs, setAppliedJobs] = useState<Vaga[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -65,8 +67,26 @@ export default function CandidateDashboard() {
                 console.log(jobsData)
                 setRecommendedJobs(jobsData)
 
+                // Buscar vagas que o candidato se inscreveu
+                const appliedJobsResponse = await fetch(`${API_BASE_URL}/api/vagas/candidato/${user?.id}/inscritas`, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                console.log('Applied Jobs Response Status:', appliedJobsResponse.status)
+
+                if (appliedJobsResponse.ok) {
+                    const appliedJobsData = await appliedJobsResponse.json()
+                    console.log('Applied Jobs Data:', appliedJobsData)
+                    setAppliedJobs(appliedJobsData)
+                } else {
+                    console.log('Erro ao buscar vagas inscritas')
+                }
+
             } catch (error) {
                 console.error('Erro ao buscar dados do dashboard:', error)
+                setError(true)
             } finally {
                 setLoading(false)
             }
@@ -79,6 +99,10 @@ export default function CandidateDashboard() {
         }
     }, [user?.id, token])
 
+    if (loading) {
+        return <div className="flex justify-center items-center h-64">Carregando...</div>
+    }
+
     if (!isAuthenticated) {
         return (
             <NotFoundScreen
@@ -89,8 +113,14 @@ export default function CandidateDashboard() {
         )
     }
 
-    if (loading) {
-        return <div className="flex justify-center items-center h-64">Carregando...</div>
+    if (error || !statistics) {
+        return (
+            <NotFoundScreen
+                title="Candidato não encontrado"
+                message="O painel que você está procurando não existe ou foi removido."
+                icon="👤"
+            />
+        )
     }
 
     if (statistics) {
@@ -110,7 +140,49 @@ export default function CandidateDashboard() {
                         </div>
                         <div>
                             <p className="pt-12">Suas Inscrições</p>
-                            {/* Preencher quando terminar de ajeitar a lógica de candidaturas */}
+                            {(appliedJobs && appliedJobs.length > 0) ? (
+                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
+                                    <div className="flex flex-col items-end px-3 space-y-6 w-full">
+                                        <div className="space-y-8 w-full">
+                                            {appliedJobs.map(vaga => {
+                                                const jobDataProps: JobData = {
+                                                    id: vaga.id,
+                                                    idEmpresa: vaga.empresaId,
+                                                    title: vaga.titulo,
+                                                    company: vaga.empresa.razaoSocial,
+                                                    companyLogo: vaga.empresa.foto || "",
+                                                    location: vaga.localizacao,
+                                                    description: vaga.descricao,
+                                                    skillsTags: vaga.habilidades,
+                                                    supportTags: vaga.apoios,
+                                                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                                    startDate: new Date(vaga.dataInicio),
+                                                    endDate: new Date(vaga.dataFim),
+                                                    typeContract: vaga.tipoContrato,
+                                                    typeWork: vaga.tipoTrabalho,
+                                                    payment: vaga.pagamento,
+                                                    workLevel: vaga.nivelTrabalho,
+                                                    timeShift: vaga.turno
+                                                }
+                                                return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
+                                    <div className="text-center space-y-4">
+                                        <div className="text-6xl mb-4">📝</div>
+                                        <h3 className="text-xl font-medium text-gray-700">Você ainda não se candidatou a nenhuma vaga</h3>
+                                        <p className="text-gray-600 max-w-md mx-auto">
+                                            Explore nossas vagas disponíveis e encontre a oportunidade perfeita para você!
+                                        </p>
+                                        <div className="pt-4 w-full flex justify-center">
+                                            <GenericBlueButton color={3} link="/jobs">Explorar vagas</GenericBlueButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         <div>
                             <p className="pt-12">Recomendações de vaga para você</p>
@@ -168,13 +240,12 @@ export default function CandidateDashboard() {
             </div>
         )
     }
-    else {
-        return (
-            <NotFoundScreen
-                title="Candidato não encontrado"
-                message="O painel que você está procurando não existe ou foi removido."
-                icon="👤"
-            />
-        )
-    }
+
+    return (
+        <NotFoundScreen
+            title="Candidato não encontrado"
+            message="O painel que você está procurando não existe ou foi removido."
+            icon="👤"
+        />
+    )
 }

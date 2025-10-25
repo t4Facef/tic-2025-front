@@ -49,7 +49,7 @@ export default function JobModal({
         setIsCompleted(true)
       } catch (error) {
         console.error('Erro ao se inscrever na vaga:', error)
-        const errorMessage = error.message || ''
+        const errorMessage = (error as Error).message || ''
         if (errorMessage.includes('Você já se candidatou para esta vaga')) {
           setAlreadyApplied(true)
         } else {
