@@ -7,6 +7,8 @@ import TagContainer from "./tag_container";
 import ProfileLink from "../profile/profile_link";
 import MarkdownRenderer from "./markdown_renderer";
 import { JobData } from "../../data/mockdata/jobs";
+import { useAuth } from "../../hooks/useAuth";
+
 
 interface JobModalProps {
   open: boolean;
@@ -19,6 +21,7 @@ export default function JobModal({
   onClose,
   jobData
 }: JobModalProps) {
+  const { isAuthenticated, token, user, role } = useAuth();
 
   useEffect(() => {
     if (open) {
@@ -50,8 +53,8 @@ export default function JobModal({
             </div>
           </div>
 
-          <MarkdownRenderer 
-            content={jobData.description} 
+          <MarkdownRenderer
+            content={jobData.description}
             className="text-gray-700 leading-relaxed text-justify"
           />
 
@@ -78,15 +81,35 @@ export default function JobModal({
             <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
           </div>
         </div>
+        {role === "CANDIDATO" && (
+          <div className="bg-white border border-y-black flex justify-center">
+            <span className="m-2">Você é {jobData.compatibility}% compatível com essa vaga</span>
+          </div>
+        )}
 
-        <div className="bg-white border border-y-black flex justify-center">
-          <span className="m-2">Você é {jobData.compatibility}% compatível com essa vaga</span>
-        </div>
-
-        <div className="flex w-full">
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>
-          <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2 " onClick={onClose}>Inscrever</button>
-        </div>
+        {(() => {
+          if (role === "CANDIDATO") {
+            return (
+              <div className="flex w-full">
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={onClose}>Inscrever</button>
+              </div>
+            );
+          } else if (role === "EMPRESA" && user?.id === jobData.idEmpresa) {
+            return (
+              <div className="flex w-full">
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={onClose}>Fechar</button>
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={onClose}>Editar</button>
+              </div>
+            );
+          } else {
+            return (
+              <div className="flex w-full">
+                <button className="bg-blue3 text-white w-full border-black border-2 text-4xl rounded-b-3xl py-2" onClick={onClose}>Fechar</button>
+              </div>
+            );
+          }
+        })()}
       </div>
     </div>,
     document.body
