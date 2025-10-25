@@ -25,6 +25,8 @@ export default function JobModal({
   const [isApplying, setIsApplying] = useState(false)
   const [applicationMessage, setApplicationMessage] = useState('')
   const [isCompleted, setIsCompleted] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const [alreadyApplied, setAlreadyApplied] = useState(false)
 
   useEffect(() => {
     if (open) {
@@ -40,9 +42,20 @@ export default function JobModal({
 
   if (!open) return null;
 
-  const handleApplying = () => {
+  const handleApplying = async () => {
     if (isApplying) {
-      setIsCompleted(true)
+      try {
+        await inscreverEmVaga()
+        setIsCompleted(true)
+      } catch (error) {
+        console.error('Erro ao se inscrever na vaga:', error)
+        const errorMessage = error.message || ''
+        if (errorMessage.includes('Você já se candidatou para esta vaga')) {
+          setAlreadyApplied(true)
+        } else {
+          setHasError(true)
+        }
+      }
     } else {
       setIsApplying(true)
     }
@@ -52,8 +65,36 @@ export default function JobModal({
     setIsApplying(false)
     setApplicationMessage('')
     setIsCompleted(false)
+    setHasError(false)
+    setAlreadyApplied(false)
     onClose()
   }
+
+  const inscreverEmVaga = async () => {
+    const requestData = {
+      candidatoId: user?.id,
+      vagaId: jobData.id,
+      mensagem: applicationMessage || ''
+    };
+
+    console.log('Enviando candidatura:', requestData);
+
+    const response = await fetch('http://localhost:3001/api/candidaturas', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Erro da API:', errorData);
+      throw new Error(`Falha ao enviar candidatura: ${response.status} - ${errorData}`);
+    }
+    
+    return response.json();
+  };
 
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4" style={{ zIndex: 9999 }} onClick={handleClose}>
@@ -67,6 +108,24 @@ export default function JobModal({
                 <h2 className="text-3xl font-bold text-green-600">Candidatura enviada!</h2>
                 <p className="text-lg text-gray-700">Sua candidatura foi enviada com sucesso para <strong>{jobData.title}</strong> na empresa <strong>{jobData.company}</strong></p>
                 <p className="text-sm text-gray-600">A empresa entrará em contato em breve.</p>
+              </div>
+            </div>
+          ) : alreadyApplied ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center space-y-4">
+                <div className="text-6xl">⚠️</div>
+                <h2 className="text-3xl font-bold text-orange1">Você já se candidatou!</h2>
+                <p className="text-lg text-gray-700">Você já enviou uma candidatura para <strong>{jobData.title}</strong></p>
+                <p className="text-sm text-gray-600">Aguarde o retorno da empresa ou verifique suas candidaturas no seu perfil.</p>
+              </div>
+            </div>
+          ) : hasError ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center space-y-4">
+                <div className="text-6xl">❌</div>
+                <h2 className="text-3xl font-bold text-red-600">Erro ao enviar candidatura!</h2>
+                <p className="text-lg text-gray-700">Não foi possível enviar sua candidatura para <strong>{jobData.title}</strong></p>
+                <p className="text-sm text-gray-600">Tente novamente mais tarde ou entre em contato com o suporte.</p>
               </div>
             </div>
           ) : !isApplying ?
@@ -116,13 +175,13 @@ export default function JobModal({
                   <h2 className="text-3xl font-bold text-blue3">🎉 Que ótimo!</h2>
                   <p className="text-lg text-gray-700">Você está se candidatando para <strong>{jobData.title}</strong></p>
                 </div>
-                
+
                 <div className="bg-blue4 rounded-lg p-6 text-left space-y-4">
                   <div className="space-y-2">
                     <label className="block text-xl font-medium text-gray-700">Mensagem para o recrutador (opcional)</label>
                     <p className="text-base text-gray-600">💡 Dica: Uma mensagem personalizada pode destacar sua candidatura! Conte brevemente por que você se interessa pela vaga ou mencione algo específico sobre a empresa.</p>
                   </div>
-                  <textarea 
+                  <textarea
                     className="w-full p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue3 focus:border-transparent text-base"
                     rows={6}
                     placeholder="Ex: Olá! Tenho grande interesse nesta vaga pois..."
@@ -144,7 +203,7 @@ export default function JobModal({
         )}
 
         {(() => {
-          if (role === "CANDIDATO" && !isCompleted) {
+          if (role === "CANDIDATO" && !isCompleted && !hasError && !alreadyApplied) {
             return (
               <div className="flex w-full">
                 <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
