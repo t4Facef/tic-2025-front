@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GenericFormField from "../generic_form_field";
 import { CandidateForm2Data } from "../../../types/forms/candidate";
+import { useFormValidation } from '../../../hooks/useFormValidation';
 
 export default function CandidateForm2 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm2Data) => void, formId: string, initialData?: CandidateForm2Data}){
     const [form2, setForm2] = useState<CandidateForm2Data>(initialData || {} as CandidateForm2Data)
@@ -9,6 +10,17 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
     const [emailError, setEmailError] = useState<string>('')
     const [isCheckingEmail, setIsCheckingEmail] = useState(false)
     const [cepError, setCepError] = useState<string>('')
+    
+    const { errors, validateForm } = useFormValidation({
+        email: { required: true, message: 'Email é obrigatório' },
+        phoneNumber1: { required: true, message: 'Telefone 1 é obrigatório' },
+        zipCode: { required: true, message: 'CEP é obrigatório' },
+        state: { required: true, message: 'Estado é obrigatório' },
+        city: { required: true, message: 'Cidade é obrigatória' },
+        street: { required: true, message: 'Rua é obrigatória' },
+        neighborhood: { required: true, message: 'Bairro é obrigatório' },
+        number: { required: true, message: 'Número é obrigatório' }
+    })
     
     useEffect(() => {
         const fetchEstados = async () => {
@@ -107,6 +119,23 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
+            
+            // Validar campos obrigatórios primeiro
+            const formDataForValidation = {
+                email: form2.email || '',
+                phoneNumber1: form2.phoneNumber1 || '',
+                zipCode: form2.zipCode || '',
+                state: form2.state || '',
+                city: form2.city || '',
+                street: form2.street || '',
+                neighborhood: form2.neighborhood || '',
+                number: form2.number || ''
+            };
+            
+            if (!validateForm(formDataForValidation)) {
+                return; // Para aqui se houver erros de validação
+            }
+            
             // Limpa CEP antes de enviar para API
             const cleanedData = {
                 ...form2,
@@ -139,7 +168,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações de Contato</h2>
             <div>
-                <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""}>Endereço de Email</GenericFormField>
+                <GenericFormField id="candidate_email_register" type="email" placeholder="Digite aqui o seu endereço de e-mail" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""} error={errors.email}>Endereço de Email</GenericFormField>
                 {emailError && (
                     <p className="text-red-600 text-sm mt-1">❌ {emailError}</p>
                 )}
@@ -148,7 +177,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                 )}
             </div>
             <div className="flex space-x-24">
-                <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel" required  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber1: e.target.value}))} value={form2.phoneNumber1 || ""}>Telefone 1</GenericFormField>
+                <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel" required  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber1: e.target.value}))} value={form2.phoneNumber1 || ""} error={errors.phoneNumber1}>Telefone 1</GenericFormField>
                 <GenericFormField id="candidate_telefone2_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel"  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber2: e.target.value}))} value={form2.phoneNumber2 || ""}>Telefone 2</GenericFormField>
             </div>
             <div>
@@ -156,7 +185,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                 <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
                     <div className="w-[30rem] space-y-5">
                         <div>
-                            <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required value={form2.zipCode || ""}>CEP</GenericFormField>
+                            <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required value={form2.zipCode || ""} error={errors.zipCode}>CEP</GenericFormField>
                             {cepError && (
                                 <p className="text-red-600 text-sm mt-1">❌ {cepError}</p>
                             )}
@@ -170,6 +199,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                     onChange={(e) => setForm2((prev) => ({...prev, state: e.target.value}))} 
                                     value={form2.state || ""}
                                     required
+                                    error={errors.state}
                                 >
                                     Estado
                                 </GenericFormField>
@@ -182,6 +212,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                     value={form2.city || ""}
                                     onChange={(e) => setForm2((prev) => ({...prev, city: e.target.value}))}
                                     required
+                                    error={errors.city}
                                 >
                                     Cidade
                                 </GenericFormField>
@@ -197,6 +228,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                 value={form2.street || ""}
                                 onChange={(e) => setForm2((prev) => ({...prev, street: e.target.value}))}
                                 required
+                                error={errors.street}
                             >
                                 Rua
                             </GenericFormField>
@@ -210,10 +242,11 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                 value={form2.neighborhood || ""}
                                 onChange={(e) => setForm2((prev) => ({...prev, neighborhood: e.target.value}))}
                                 required
+                                error={errors.neighborhood}
                             >
                                 Bairro
                             </GenericFormField>
-                            <GenericFormField id="candidate_numero_register" placeholder="Digite aqui o número" onChange={(e) => setForm2((prev) => ({...prev, number: e.target.value}))} value={form2.number || ""} required>Número</GenericFormField>
+                            <GenericFormField id="candidate_numero_register" placeholder="Digite aqui o número" onChange={(e) => setForm2((prev) => ({...prev, number: e.target.value}))} value={form2.number || ""} required error={errors.number}>Número</GenericFormField>
                         </div>
                     </div>
                 </div>

@@ -27,9 +27,10 @@ interface GenericFormFieldProps {
     required?: boolean;
     accept?: string;
     rows?: number;
+    error?: string;
 }
 
-export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept, rows}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept, rows, error}: GenericFormFieldProps){
     const [viewPassword, setViewPassword] = useState(true)
 
     // Mapeamento de orientação de texto
@@ -46,7 +47,7 @@ export default function GenericFormField({children, id, placeholder, options, au
 
     
     const textAlign = textAlignClasses[textOrientation];
-    const baseClass = "border border-gray-400 rounded-md p-2";
+    const baseClass = `border ${error ? 'border-red-500' : 'border-gray-400'} rounded-md p-2`;
     
     // SELECT
     if (type === "select") {
@@ -64,6 +65,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                         </option>
                     ))}
                 </select>
+                {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
         );
     }
@@ -125,6 +127,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                     {required && <span className="text-black ml-1">*</span>}
                 </label>
                 <textarea name={id} id={id} placeholder={placeholder} className={`${baseClass} min-h-[100px] ${textAlign}`} onChange={onChange} value={value} required={required} rows={rows} />
+                {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
         );
     }
@@ -137,7 +140,21 @@ export default function GenericFormField({children, id, placeholder, options, au
                     {children}
                     {required && <span className="text-black ml-1">*</span>}
                 </label>
-                <input type="file" name={id} id={id} accept={accept} className={`${baseClass} bg-white cursor-pointer`} onChange={onChange} required={required} />
+                <div className="relative">
+                    <input 
+                        type="file" 
+                        name={id} 
+                        id={id} 
+                        accept={accept} 
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                        onChange={onChange} 
+                        required={required} 
+                    />
+                    <div className={`${baseClass} bg-white cursor-pointer flex items-center justify-center py-6 text-gray-700 text-lg font-medium hover:bg-gray-50 transition-colors`}>
+                        📁 Clique para selecionar arquivo
+                    </div>
+                </div>
+                {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
         );
     }
@@ -159,6 +176,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                         {viewPassword ? <EyeClosed size={20}/> : <Eye size={20}/>}
                     </button>
                 </div>
+                {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
         )
     }
@@ -215,6 +233,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                     value={value || "R$ "}
                     required={required}
                 />
+                {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
         );
     }
@@ -227,6 +246,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                 {required && <span className="text-black ml-1">*</span>}
             </label>
             <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} ${textAlign} ${type === 'date' ? 'cursor-pointer' : ''} ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}`} onChange={onChange} value={value} disabled={disabled} required={required} />
+            {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
         </div>
     );
 }

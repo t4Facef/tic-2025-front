@@ -3,7 +3,7 @@ import { CandidateForm3Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 import { useState } from "react";
 
-export default function CandidateForm3({ formFunc, formId, initialData, archives }: { formFunc: (data: CandidateForm3Data) => void, formId: string, initialData?: CandidateForm3Data, archives: FormData }) {
+export default function CandidateForm3({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CandidateForm3Data) => void, formId: string, initialData?: CandidateForm3Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form3, setForm3] = useState<CandidateForm3Data>(initialData || {} as CandidateForm3Data)
     const [stillWorking, setStillWorking] = useState(false)
 
@@ -18,12 +18,7 @@ export default function CandidateForm3({ formFunc, formId, initialData, archives
     }
 
     const handleFileUpload = (file: File, tipo: string) => {
-        // Limpar arquivo anterior do mesmo tipo se existir
-        if (archives.has(tipo)) {
-            archives.delete(tipo)
-        }
-        // Adicionar novo arquivo
-        archives.append(tipo, file)
+        fileStorage.saveFile(tipo, file)
     }
 
     return (
@@ -102,21 +97,25 @@ export default function CandidateForm3({ formFunc, formId, initialData, archives
 
                 </div>
             </div>
-            <GenericFormField 
-                id="candidate_curriculum_register" 
-                type="file" 
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => {
-                    const file = (e.target as HTMLInputElement).files?.[0]
-                    if (file) {
-                        setForm3((prev) => ({ ...prev, curriculum: file }))
-                        handleFileUpload(file, 'curriculo')
-                    }
-                }}
-                value={form3.curriculum?.name || ""}
-            >
-                Anexar Currículo
-            </GenericFormField>
+            <div>
+                <GenericFormField 
+                    id="candidate_curriculum_register" 
+                    type="file" 
+                    accept=".pdf,.doc,.docx"
+                    onChange={(e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0]
+                        if (file) {
+                            setForm3((prev) => ({ ...prev, curriculum: file }))
+                            handleFileUpload(file, 'curriculo')
+                        }
+                    }}
+                >
+                    Anexar Currículo (Opcional)
+                </GenericFormField>
+                {fileStorage.hasFile('curriculo') && (
+                    <p className="text-green-600 text-sm mt-1">✅ Arquivo salvo: {fileStorage.getFile('curriculo')?.name}</p>
+                )}
+            </div>
         </form>
     )
 }

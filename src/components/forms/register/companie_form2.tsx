@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { CompanieForm2Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
+import { useFormValidation } from '../../../hooks/useFormValidation';
 
 export default function CompanieForm2({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm2Data) => void, formId: string, initialData?: CompanieForm2Data }) {
     const [form2, setForm2] = useState<CompanieForm2Data>(initialData || {} as CompanieForm2Data)
@@ -11,6 +12,17 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
     const [cidades, setCidades] = useState<string[]>(['Selecione'])
     const [emailError, setEmailError] = useState<string>('')
     const [isCheckingEmail, setIsCheckingEmail] = useState(false)
+    
+    const { errors, validateForm } = useFormValidation({
+        email: { required: true, message: 'Email corporativo é obrigatório' },
+        businessPhone: { required: true, message: 'Telefone comercial é obrigatório' },
+        postalCode: { required: true, message: 'CEP é obrigatório' },
+        state: { required: true, message: 'Estado é obrigatório' },
+        city: { required: true, message: 'Cidade é obrigatória' },
+        street: { required: true, message: 'Rua é obrigatória' },
+        neighborhood: { required: true, message: 'Bairro é obrigatório' },
+        streetNumber: { required: true, message: 'Número é obrigatório' }
+    })
 
     useEffect(() => {
         const fetchEstados = async () => {
@@ -96,6 +108,23 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={async (e) => {
             e.preventDefault();
+            
+            // Validar campos obrigatórios primeiro
+            const formDataForValidation = {
+                email: form2.email || '',
+                businessPhone: form2.businessPhone || '',
+                postalCode: form2.postalCode || '',
+                state: form2.state || '',
+                city: form2.city || '',
+                street: form2.street || '',
+                neighborhood: form2.neighborhood || '',
+                streetNumber: form2.streetNumber || ''
+            };
+            
+            if (!validateForm(formDataForValidation)) {
+                return; // Para aqui se houver erros de validação
+            }
+            
             // Limpa CEP antes de enviar para API
             const cleanedData = {
                 ...form2,
@@ -128,7 +157,7 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
         }}>
             <h2 className="font-semibold text-[1.3rem]">Endereço e Contato</h2>
             <div>
-                <GenericFormField id="companie_email_register" type="email" placeholder="Digite aqui o e-mail corporativo" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""}>E-mail Corporativo</GenericFormField>
+                <GenericFormField id="companie_email_register" type="email" placeholder="Digite aqui o e-mail corporativo" autoComplete="email" required onChange={(e) => setForm2((prev) => ({...prev, email: e.target.value}))} value={form2.email || ""} error={errors.email}>E-mail Corporativo</GenericFormField>
                 {emailError && (
                     <p className="text-red-600 text-sm mt-1">❌ {emailError}</p>
                 )}
@@ -137,31 +166,31 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
                 )}
             </div>
             <div className="flex space-x-24">
-                <GenericFormField id="companie_telefone_register" type="tel" placeholder="Digite aqui o telefone comercial" autoComplete="tel" required onChange={(e) => setForm2((prev) => ({...prev, businessPhone: e.target.value}))} value={form2.businessPhone || ""}>Telefone Comercial</GenericFormField>
+                <GenericFormField id="companie_telefone_register" type="tel" placeholder="Digite aqui o telefone comercial" autoComplete="tel" required onChange={(e) => setForm2((prev) => ({...prev, businessPhone: e.target.value}))} value={form2.businessPhone || ""} error={errors.businessPhone}>Telefone Comercial</GenericFormField>
                 <GenericFormField id="companie_website_register" type="text" placeholder="Digite aqui o site da empresa" autoComplete="url" onChange={(e) => setForm2((prev) => ({...prev, website: e.target.value}))} value={form2.website || ""}>Site da Empresa</GenericFormField>
             </div>
             <div>
                 <p>Endereço da Empresa</p>
                 <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5">
                     <div className="w-[30rem] space-y-5">
-                        <GenericFormField id="companie_cep_register" placeholder="Digite aqui o CEP da empresa" autoComplete="postal-code" required onChange={(e) => handleCepChange(e)} value={form2.postalCode || ""}>CEP</GenericFormField>
+                        <GenericFormField id="companie_cep_register" placeholder="Digite aqui o CEP da empresa" autoComplete="postal-code" required onChange={(e) => handleCepChange(e)} value={form2.postalCode || ""} error={errors.postalCode}>CEP</GenericFormField>
                         <div className="flex flex-1 space-x-5">
                             <div className="flex-[3] w-full">
-                                <GenericFormField id="companie_estado_register" type="select" options={estados} required onChange={(e) => setForm2((prev) => ({...prev, state: e.target.value}))} value={form2.state || ""}>Estado</GenericFormField>
+                                <GenericFormField id="companie_estado_register" type="select" options={estados} required onChange={(e) => setForm2((prev) => ({...prev, state: e.target.value}))} value={form2.state || ""} error={errors.state}>Estado</GenericFormField>
                             </div>
                             <div className="flex-[7] w-full">
-                                <GenericFormField id="companie_cidade_register" type="select" options={cidades} required onChange={(e) => setForm2((prev) => ({...prev, city: e.target.value}))} value={form2.city || ""}>Cidade</GenericFormField>
+                                <GenericFormField id="companie_cidade_register" type="select" options={cidades} required onChange={(e) => setForm2((prev) => ({...prev, city: e.target.value}))} value={form2.city || ""} error={errors.city}>Cidade</GenericFormField>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-1 justify-between space-x-16">
                         <div className="flex flex-col w-full flex-[7] space-y-5">
-                            <GenericFormField id="companie_rua_register" placeholder="Digite aqui a rua" autoComplete="address-line1" required onChange={(e) => setForm2((prev) => ({...prev, street: e.target.value}))} value={form2.street || ""}>Rua</GenericFormField>
+                            <GenericFormField id="companie_rua_register" placeholder="Digite aqui a rua" autoComplete="address-line1" required onChange={(e) => setForm2((prev) => ({...prev, street: e.target.value}))} value={form2.street || ""} error={errors.street}>Rua</GenericFormField>
                             <GenericFormField id="companie_complemento_register" placeholder="Digite aqui o complemento" autoComplete="address-line2" onChange={(e) => setForm2((prev) => ({...prev, adressComplement: e.target.value}))} value={form2.adressComplement || ""}>Complemento</GenericFormField>
                         </div>
                         <div className="flex flex-col w-full flex-[2] space-y-5">
-                            <GenericFormField id="companie_bairro_register" placeholder="Digite aqui o bairro" autoComplete="address-level2" required onChange={(e) => setForm2((prev) => ({...prev, neighborhood: e.target.value}))} value={form2.neighborhood || ""}>Bairro</GenericFormField>
-                            <GenericFormField id="companie_numero_register" placeholder="Digite aqui o número" required onChange={(e) => setForm2((prev) => ({...prev, streetNumber: e.target.value}))} value={form2.streetNumber || ""}>Número</GenericFormField>
+                            <GenericFormField id="companie_bairro_register" placeholder="Digite aqui o bairro" autoComplete="address-level2" required onChange={(e) => setForm2((prev) => ({...prev, neighborhood: e.target.value}))} value={form2.neighborhood || ""} error={errors.neighborhood}>Bairro</GenericFormField>
+                            <GenericFormField id="companie_numero_register" placeholder="Digite aqui o número" required onChange={(e) => setForm2((prev) => ({...prev, streetNumber: e.target.value}))} value={form2.streetNumber || ""} error={errors.streetNumber}>Número</GenericFormField>
                         </div>
                     </div>
                 </div>

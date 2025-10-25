@@ -3,7 +3,7 @@ import { CompanieForm5Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 import ImageCropper from "../../image/image_cropper";
 
-export default function CompanieForm5({ formFunc, formId, initialData, archives }: { formFunc: (data: CompanieForm5Data) => void, formId: string, initialData?: CompanieForm5Data, archives: FormData }) {
+export default function CompanieForm5({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CompanieForm5Data) => void, formId: string, initialData?: CompanieForm5Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form5, setForm5] = useState<CompanieForm5Data>(initialData || {} as CompanieForm5Data)
     const [passwordError, setPasswordError] = useState<string>('')
     const [passwordRequirements, setPasswordRequirements] = useState([
@@ -42,12 +42,7 @@ export default function CompanieForm5({ formFunc, formId, initialData, archives 
     }
 
     const handleFileUpload = (file: File, tipo: string) => {
-        // Limpar arquivo anterior do mesmo tipo se existir
-        if (archives.has(tipo)) {
-            archives.delete(tipo)
-        }
-        // Adicionar novo arquivo
-        archives.append(tipo, file)
+        fileStorage.saveFile(tipo, file)
     }
 
     const loadDefaultCompanyLogo = async () => {
@@ -68,7 +63,7 @@ export default function CompanieForm5({ formFunc, formId, initialData, archives 
             setPasswordError('')
 
             if (passwordRequirements.every(req => req.valid)) {
-                if (!form5.profilePicture && !archives.has('foto')) {
+                if (!form5.profilePicture && !fileStorage.hasFile('foto')) {
                     try {
                         await loadDefaultCompanyLogo()
                     } catch (error) {
@@ -87,11 +82,14 @@ export default function CompanieForm5({ formFunc, formId, initialData, archives 
 
             <div className="space-y-6">
                 <div className="max-w-[28rem]">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Logo da Empresa (Opcional)</label>
                     <ImageCropper onCropComplete={handleCroppedImage} initialFile={form5.profilePicture || null} />
                     <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
-                    {form5.profilePicture && (
-                        <p className="text-sm text-green-600 mt-1">✓ Foto selecionada: {form5.profilePicture.name}</p>
+                    {fileStorage.hasFile('foto') && (
+                        <p className="text-sm text-green-600 mt-1">✅ Logo salvo: {fileStorage.getFile('foto')?.name}</p>
+                    )}
+                    {form5.profilePicture && !fileStorage.hasFile('foto') && (
+                        <p className="text-sm text-blue-600 mt-1">🔄 Processando logo...</p>
                     )}
                 </div>
                 <div className="space-y-6">

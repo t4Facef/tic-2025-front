@@ -18,6 +18,7 @@ import {
     CandidateForm5Data
 } from '../types/forms/candidate'
 import { API_BASE_URL } from '../config/api'
+import { useFileStorage } from '../hooks/useFileStorage'
 
 
 
@@ -27,8 +28,7 @@ export default function Register() {
     const [apiMessage, setApiMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-
-    const archivesData = new FormData()
+    const { files, saveFile, clearAll, hasFile, getFile } = useFileStorage('candidateFiles')
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -104,10 +104,8 @@ export default function Register() {
                 subtiposDeficiencia: [Number(allData.necessitySubtype)],
             }
 
-            // Adicionar campos opcionais apenas se preenchidos
-            if (allData.workArea) {
-                candidateData.areaInteresse = allData.workArea
-            }
+            // Adicionar campos obrigatórios
+            candidateData.areaInteresse = allData.workArea || 'Não informado'
 
             // Formação - só adicionar se pelo menos um campo estiver preenchido
             const formacao = cleanObject({
@@ -158,35 +156,54 @@ export default function Register() {
                 
 
                 
-                // 2. Se há arquivos, enviar cada um
-                if (archivesData.has('curriculo') || archivesData.has('laudo') || archivesData.has('foto')) {
-                    setApiMessage('📤 Enviando arquivos...')
-                    
-                    const arquivos = ['curriculo', 'laudo', 'foto']
-                    
-                    for (const tipo of arquivos) {
-                        if (archivesData.has(tipo)) {
-                            const file = archivesData.get(tipo) as File
-                            
-                            const fileFormData = new FormData()
-                            fileFormData.append('file', file)
-                            fileFormData.append('tipo', tipo.toUpperCase())
-                            fileFormData.append('candidatoId', candidatoId.toString())
-                            
+                // 2. Enviar arquivos obrigatórios e opcionais
+                setApiMessage('📤 Enviando arquivos...')
+                
+                const arquivos = [
+                    { key: 'laudo', tipo: 'LAUDO', obrigatorio: true },
+                    { key: 'curriculo', tipo: 'CURRICULO', obrigatorio: false },
+                    { key: 'foto', tipo: 'FOTO', obrigatorio: false }
+                ]
+                
+                for (const arquivo of arquivos) {
+                    const file = getFile(arquivo.key)
+                    if (file) {
+                        const fileFormData = new FormData()
+                        fileFormData.append('file', file)
+                        fileFormData.append('tipo', arquivo.tipo)
+                        fileFormData.append('candidatoId', candidatoId.toString())
+                        
+                        try {
                             const fileResponse = await fetch(`${API_BASE_URL}/api/arquivos/upload`, {
                                 method: 'POST',
                                 body: fileFormData
                             })
                             
                             if (!fileResponse.ok) {
-                                console.warn(`Erro ao enviar ${tipo}:`, await fileResponse.text())
+                                const errorText = await fileResponse.text()
+                                if (arquivo.obrigatorio) {
+                                    throw new Error(`Erro ao enviar ${arquivo.key}: ${errorText}`)
+                                } else {
+                                    console.warn(`Erro ao enviar ${arquivo.key}:`, errorText)
+                                }
+                            } else {
+                                console.log(`✅ ${arquivo.key} enviado com sucesso`)
+                            }
+                        } catch (error) {
+                            if (arquivo.obrigatorio) {
+                                throw error
+                            } else {
+                                console.warn(`Erro ao enviar ${arquivo.key}:`, error)
                             }
                         }
+                    } else if (arquivo.obrigatorio) {
+                        throw new Error(`${arquivo.key} é obrigatório`)
                     }
                 }
                 
                 // 3. Sucesso - limpar e navegar
                 localStorage.removeItem('candidateFormData')
+                clearAll() // Limpar arquivos temporários
                 navigate('/auth/register/success')
                 
             } catch (error) {
@@ -210,9 +227,9 @@ export default function Register() {
                 <div className="bg-blue1 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
                     {step == 1 && <CandidateForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1}/>}
                     {step == 2 && <CandidateForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2}/>}
-                    {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} archives={archivesData}/>}
-                    {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} archives={archivesData}/>}
-                    {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} archives={archivesData}/>}
+                    {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} fileStorage={{ saveFile, hasFile, getFile }}/>}
+                    {step == 4 && <CandidateForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} fileStorage={{ saveFile, hasFile, getFile }}/>}
+                    {step == 5 && <CandidateForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} fileStorage={{ saveFile, hasFile, getFile }}/>}
                     {apiMessage && (
                         <div className={`border-2 p-2 text-center rounded-lg ${
                             apiMessage.includes('❌') 
@@ -227,7 +244,12 @@ export default function Register() {
                             color={3}
                             size='md'
                             {...(step === 1
-                                ? { link: "/" }  // Step 1: vai pra home
+                                ? { 
+                                    onClick: () => {
+                                        clearAll(); // Limpar arquivos temporários
+                                        navigate('/');
+                                    }
+                                }  // Step 1: limpa e vai pra home
                                 : { onClick: () => setStep(step - 1) }  // Outros: volta step
                             )}
                         >

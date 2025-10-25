@@ -11,6 +11,7 @@ import CompanieForm5 from '../components/forms/register/companie_form5'
 import { CompanieForm1Data, CompanieForm2Data, CompanieForm3Data, CompanieForm4Data, CompanieForm5Data, CompanieRegisterData } from '../types/forms/companie'
 import { useNavigate } from 'react-router-dom'
 import { API_BASE_URL } from '../config/api'
+import { useFileStorage } from '../hooks/useFileStorage'
 
 export default function RegisterCompanies() {
     const [step, setStep] = useState(1)
@@ -18,8 +19,7 @@ export default function RegisterCompanies() {
     const [apiMessage, setApiMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-
-    const archivesData = new FormData()
+    const { files, saveFile, clearAll, hasFile, getFile } = useFileStorage('companieFiles')
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -121,17 +121,16 @@ export default function RegisterCompanies() {
                 const empresaId = registerResult.empresa?.id || registerResult.id
                 
                 // 2. Se há foto, enviar
-                if (archivesData.has('foto')) {
+                const logoFile = getFile('foto')
+                if (logoFile) {
                     setApiMessage('📤 Enviando logo da empresa...')
                     
-                    const file = archivesData.get('foto') as File
-                    
                     const fileFormData = new FormData()
-                    fileFormData.append('file', file)
+                    fileFormData.append('file', logoFile)
                     fileFormData.append('tipo', 'FOTO')
                     fileFormData.append('empresaId', empresaId.toString())
                     
-                    const fileResponse = await fetch(`${API_BASE_URL}/api/arquivo/upload`, {
+                    const fileResponse = await fetch(`${API_BASE_URL}/api/arquivos/upload`, {
                         method: 'POST',
                         body: fileFormData
                     })
@@ -143,6 +142,7 @@ export default function RegisterCompanies() {
                 
                 // 3. Sucesso - limpar e navegar
                 localStorage.removeItem('companieFormData')
+                clearAll() // Limpar arquivos temporários
                 navigate('/auth/register/success')
                 
             } catch (error) {
@@ -168,7 +168,7 @@ export default function RegisterCompanies() {
                     {step == 2 && <CompanieForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2} />}
                     {step == 3 && <CompanieForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} />}
                     {step == 4 && <CompanieForm4 formFunc={handlesForm[4]} formId="step4Form" initialData={formData.formdata4} />}
-                    {step == 5 && <CompanieForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} archives={archivesData} />}
+                    {step == 5 && <CompanieForm5 formFunc={handlesForm[5]} formId="step5Form" initialData={formData.formdata5} fileStorage={{ saveFile, hasFile, getFile }} />}
                     {apiMessage && (
                         <div className={`border-2 p-2 text-center rounded-lg ${apiMessage.includes('❌')
                                 ? 'bg-red-100 border-red-300 text-red-700'
@@ -182,7 +182,12 @@ export default function RegisterCompanies() {
                             color={3}
                             size='md'
                             {...(step === 1
-                                ? { link: "/" }  // Step 1: vai pra home
+                                ? { 
+                                    onClick: () => {
+                                        clearAll(); // Limpar arquivos temporários
+                                        navigate('/');
+                                    }
+                                }  // Step 1: limpa e vai pra home
                                 : { onClick: () => setStep(step - 1) }  // Outros: volta step
                             )}
                         >

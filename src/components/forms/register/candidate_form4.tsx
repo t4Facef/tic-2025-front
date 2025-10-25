@@ -5,23 +5,29 @@ import { CandidateForm4Data } from "../../../types/forms/candidate";
 import TagContainer from "../../content/tag_container";
 import GenericFormField from "../generic_form_field";
 import { API_BASE_URL } from "../../../config/api";
+import { useFormValidation } from '../../../hooks/useFormValidation';
 
 
-export default function CandidateForm4({ formFunc, formId, initialData, archives }: { formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data, archives: FormData }) {
+export default function CandidateForm4({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CandidateForm4Data) => void, formId: string, initialData?: CandidateForm4Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form4, setForm4] = useState<CandidateForm4Data>(initialData || {} as CandidateForm4Data)
     const [tipos, setTipos] = useState<{ nome: string, id: number }[]>([])
     const [subTipos, setSubTipos] = useState<{ nome: string, id: number }[]>([])
     const [barreiras, setBarreiras] = useState<string[]>([])
     const [tipoId, setTipoId] = useState<number>()
     const [subTipoId, setSubTipoId] = useState<number>()
+    
+    const { errors, validateForm } = useFormValidation({
+        necessityType: { required: true, message: 'Tipo de necessidade é obrigatório' },
+        necessitySubtype: { required: true, message: 'Subtipo de necessidade é obrigatório' },
+        medicalReport: { 
+            required: true, 
+            message: 'Laudo médico é obrigatório',
+            validator: () => fileStorage.hasFile('laudo')
+        }
+    })
 
     const handleFileUpload = (file: File, tipo: string) => {
-        // Limpar arquivo anterior do mesmo tipo se existir
-        if (archives.has(tipo)) {
-            archives.delete(tipo)
-        }
-        // Adicionar novo arquivo
-        archives.append(tipo, file)
+        fileStorage.saveFile(tipo, file)
     }
 
 
@@ -128,31 +134,48 @@ export default function CandidateForm4({ formFunc, formId, initialData, archives
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
             e.preventDefault();
+            
+            // Validar campos obrigatórios primeiro
+            const formDataForValidation = {
+                necessityType: form4.necessityType || '',
+                necessitySubtype: form4.necessitySubtype || '',
+                medicalReport: fileStorage.hasFile('laudo') ? 'valid' : ''
+            };
+            
+            if (!validateForm(formDataForValidation)) {
+                return; // Para aqui se houver erros de validação
+            }
+            
             // Salvar o ID do subtipo, não do tipo
             const cleanedData = { ...form4, necessitySubtype: String(subTipoId) || '0'}
             formFunc(cleanedData)
         }}>
             <h2 className="font-semibold text-[1.3rem]">Informações sobre acessibilidade</h2>
             <div className="flex flex-row gap-24">
-                <GenericFormField id="candidate_type_register" type="select" options={tipos.map(tipo => tipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleTypeChange(e)} value={form4.necessityType || ""}>Tipo de Necessidade</GenericFormField>
-                <GenericFormField id="candidate_sub_type_register" type="select" options={subTipos.map(subTipo => subTipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleSubTypeChange(e)} value={form4.necessitySubtype || ""}>Subtipo de Necessidade</GenericFormField>
+                <GenericFormField id="candidate_type_register" type="select" options={tipos.map(tipo => tipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleTypeChange(e)} value={form4.necessityType || ""} error={errors.necessityType}>Tipo de Necessidade</GenericFormField>
+                <GenericFormField id="candidate_sub_type_register" type="select" options={subTipos.map(subTipo => subTipo.nome) || []} placeholder="Selecione" required onChange={(e) => handleSubTypeChange(e)} value={form4.necessitySubtype || ""} error={errors.necessitySubtype}>Subtipo de Necessidade</GenericFormField>
             </div>
-            <GenericFormField 
-                id="candidate_medical_report_register" 
-                type="file" 
-                accept=".pdf,.jpg,.jpeg,.png"
-                required 
-                onChange={(e) => {
-                    const file = (e.target as HTMLInputElement).files?.[0]
-                    if (file) {
-                        setForm4((prev) => ({ ...prev, medicalReport: file }))
-                        handleFileUpload(file, 'laudo')
-                    }
-                }}
-                value={form4.medicalReport?.name || ""}
-            >
-                Laudo Médico
-            </GenericFormField>
+            <div>
+                <GenericFormField 
+                    id="candidate_medical_report_register" 
+                    type="file" 
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    required 
+                    onChange={(e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0]
+                        if (file) {
+                            setForm4((prev) => ({ ...prev, medicalReport: file }))
+                            handleFileUpload(file, 'laudo')
+                        }
+                    }}
+                    error={errors.medicalReport}
+                >
+                    Laudo Médico
+                </GenericFormField>
+                {fileStorage.hasFile('laudo') && (
+                    <p className="text-green-600 text-sm mt-1">✅ Arquivo salvo: {fileStorage.getFile('laudo')?.name}</p>
+                )}
+            </div>
             <TagContainer 
                 edit={false} 
                 tags={barreiras}
