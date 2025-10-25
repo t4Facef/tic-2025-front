@@ -26,9 +26,10 @@ interface GenericFormFieldProps {
     itemsOrientation?: 1 | 2;
     required?: boolean;
     accept?: string;
+    rows?: number;
 }
 
-export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept, rows}: GenericFormFieldProps){
     const [viewPassword, setViewPassword] = useState(true)
 
     // Mapeamento de orientação de texto
@@ -123,7 +124,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                     {children}
                     {required && <span className="text-black ml-1">*</span>}
                 </label>
-                <textarea name={id} id={id} placeholder={placeholder} className={`${baseClass} min-h-[100px] ${textAlign}`} onChange={onChange} value={value} required={required} />
+                <textarea name={id} id={id} placeholder={placeholder} className={`${baseClass} min-h-[100px] ${textAlign}`} onChange={onChange} value={value} required={required} rows={rows} />
             </div>
         );
     }
