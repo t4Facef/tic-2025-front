@@ -38,7 +38,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
         <img
           src={role === 'CANDIDATO' 
             ? `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`
-            : `${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`
+            : `${API_BASE_URL}/api/arquivos/empresa/${user?.id}/foto/view`
           }
           alt="Foto de perfil"
           className={`w-full h-full cursor-pointer hover:opacity-90 transition-opacity object-cover`}
@@ -52,7 +52,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               <img
                 src={role === 'CANDIDATO' 
                   ? `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view` 
-                  : `${API_BASE_URL}/api/arquivo/empresa/${user?.id}/foto/view`
+                  : `${API_BASE_URL}/api/arquivos/empresa/${user?.id}/foto/view`
                 }
                 alt="Foto de perfil"
                 className={`w-full h-full rounded-full object-cover shadow-md`}

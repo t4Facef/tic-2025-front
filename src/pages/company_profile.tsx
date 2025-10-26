@@ -276,7 +276,7 @@ export default function CompanyProfile() {
         return (
             <div className="p-12 px-60">
                 <div className="flex items-center">
-                    <img src={`${API_BASE_URL}/api/arquivo/empresa/${id || user?.id}/foto/view`} alt="Profile-pic" className="rounded-full w-52 h-52 mr-7 shadow-xl border-[0.5px]" />
+                    <img src={`${API_BASE_URL}/api/arquivos/empresa/${id || user?.id}/foto/view`} alt="Profile-pic" className="rounded-full w-52 h-52 mr-7 shadow-xl border-[0.5px]" />
                     <div className="w-full space-y-4">
                         <div className="flex justify-between">
                             <div>
