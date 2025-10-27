@@ -19,6 +19,7 @@ interface VagasSearchFilters {
     nivelTrabalho?: string;
     turno?: string;
     empresaId?: string;
+    candidatoId?: number;
     habilidadesList?: string[];
     apoiosList?: string[];
     salarioMin?: number;
@@ -27,10 +28,12 @@ interface VagasSearchFilters {
     dataInicioMax?: string; // formato: "2024-12-31"
     setor?: string;
     recomendadas?: boolean;
+    minhasVagas?: boolean;
+    inscrito?: boolean;
 }
 
 export default function Jobs() {
-    const { user } = useAuth()
+    const { user, role } = useAuth()
     const [filtros, setFiltros] = useState<VagasSearchFilters>({} as VagasSearchFilters)
     const [vagas, setVagas] = useState<Vaga[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -41,31 +44,31 @@ export default function Jobs() {
         const fetchVagas = async () => {
             setIsLoading(true)
             try {
-                // Debug dos filtros
-                console.log('🔧 Estado atual dos filtros:', filtros)
-                console.log('👤 Usuário logado:', { id: user?.id, nome: user?.nome })
+                let filtrosProcessados = { ...filtros }
                 
-                // Adicionar candidatoId aos filtros se usuário estiver logado
-                const filtrosComCandidato = user?.id ? { ...filtros, candidatoId: user.id } : filtros
+                if (user?.id && role?.toLowerCase() === 'candidato') {
+                    filtrosProcessados = { ...filtrosProcessados, candidatoId: user.id }
+                }
                 
-                console.log('📤 JSON final enviado para backend:', JSON.stringify(filtrosComCandidato, null, 2))
+                if (filtros.minhasVagas && user) {
+                    if (role?.toLowerCase() === 'empresa') {
+                        filtrosProcessados = { ...filtrosProcessados, empresaId: user.id.toString() }
+                    } else if (role?.toLowerCase() === 'candidato') {
+                        filtrosProcessados = { ...filtrosProcessados, inscrito: true }
+                    }
+                }
+                
+                delete filtrosProcessados.minhasVagas
                 
                 const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(filtrosComCandidato)
+                    body: JSON.stringify(filtrosProcessados)
                 })
 
                 const data = await res.json()
-                console.log('🔍 Vagas recebidas:', data.map((v: Vaga) => ({ 
-                    id: v.id, 
-                    titulo: v.titulo, 
-                    compatibilidade: v.compatibilidade,
-                    compatibilidadeCalculada: v.compatibilidadeCalculada,
-                    compatibilidadeFormatada: v.compatibilidadeFormatada
-                })))
                 setVagas(data)
             } catch (err) {
                 console.log(err)
@@ -75,7 +78,7 @@ export default function Jobs() {
         }
 
         fetchVagas()
-    }, [filtros, user?.id, user?.nome])
+    }, [filtros, role, user, user?.id, user?.nome])
 
     return (
         <div className="flex flex-1">

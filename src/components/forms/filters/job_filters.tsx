@@ -13,16 +13,10 @@ interface VagasSearchFilters {
     tipoContrato?: string | string[];
     tipoTrabalho?: string | string[];
     nivelTrabalho?: string;
-    turno?: string; // não usado
-    empresaId?: string; // não usado
-    habilidadesList?: string[]; // não usado
-    apoiosList?: string[]; // não usado
-    salarioMin?: number; // não usado
-    salarioMax?: number; // não usado
-    dataInicioMin?: string; // não usado
-    dataInicioMax?: string; // não usado
     setor?: string;
     recomendadas?: boolean;
+    minhasVagas?: boolean;
+    inscrito?: boolean;
 }
 
 interface jobFiltersProps {
@@ -139,6 +133,17 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                     onChange={(e) => onFiltersChange({ recomendadas: e.target.value === "Sim" })}
                 >
                     Somente Recomendadas Para Mim?
+                </GenericFormField>
+            </FilterCamp>
+            <FilterCamp>
+                <GenericFormField 
+                    type="radio" 
+                    id="my_jobs_filter" 
+                    options={["Sim", "Não"]} 
+                    itemsOrientation={2} 
+                    onChange={(e) => onFiltersChange({ minhasVagas: e.target.value === "Sim" })}
+                >
+                    Somente Minhas Vagas?
                 </GenericFormField>
             </FilterCamp>
         </div>
