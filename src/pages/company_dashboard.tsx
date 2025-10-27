@@ -120,7 +120,8 @@ export default function CompanyDashboard() {
                                             payment: vaga.pagamento,
                                             workLevel: vaga.nivelTrabalho,
                                             timeShift: vaga.turno,
-                                            sector: vaga.setor
+                                            sector: vaga.setor,
+                                            status: vaga.status
                                         }
                                         return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                     })}
@@ -166,7 +167,8 @@ export default function CompanyDashboard() {
                                             payment: vaga.pagamento,
                                             workLevel: vaga.nivelTrabalho,
                                             timeShift: vaga.turno,
-                                            sector: vaga.setor
+                                            sector: vaga.setor,
+                                            status: vaga.status
                                         }
                                         return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                     })}

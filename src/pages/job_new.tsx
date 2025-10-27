@@ -57,7 +57,8 @@ export default function JobForm() {
     payment: '',
     workLevel: '',
     timeShift: '',
-    sector: ''
+    sector: '',
+    status: '',
   })
 
 

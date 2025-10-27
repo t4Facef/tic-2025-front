@@ -82,18 +82,18 @@ export default function JobModal({
 
     const response = await fetch('http://localhost:3001/api/candidaturas', {
       method: 'POST',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData)
     });
-    
+
     if (!response.ok) {
       const errorData = await response.text();
       console.error('Erro da API:', errorData);
       throw new Error(`Falha ao enviar candidatura: ${response.status} - ${errorData}`);
     }
-    
+
     return response.json();
   };
 
@@ -149,10 +149,13 @@ export default function JobModal({
                 className="text-gray-700 leading-relaxed text-justify"
               />
 
-              <div className="space-y-2">
+              <div className="space-y-2 mt-6">
                 <p className="font-medium">Características da vaga</p>
                 <div className="bg-blue4 rounded-lg p-2">
-                  <span>Area: <strong>{jobData.sector}</strong></span>
+                  <div className="flex justify-between">
+                    <span>Area: <strong>{jobData.sector}</strong></span>
+                    <span>Status: <strong>{jobData.status}</strong></span>
+                  </div>
                   <div className="flex justify-between">
                     <span>Modalidade: <strong>{jobData.typeWork}</strong></span>
                     <span>Localização: <strong>{jobData.location}</strong></span>

@@ -118,7 +118,8 @@ export default function Jobs() {
                                         payment: vaga.pagamento,
                                         workLevel: vaga.nivelTrabalho,
                                         timeShift: vaga.turno,
-                                        sector: vaga.setor
+                                        sector: vaga.setor,
+                                        status: vaga.status
                                     }
                                     return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                 })}

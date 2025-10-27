@@ -62,5 +62,6 @@ export interface JobData {
   payment: string;
   workLevel: string;
   timeShift: string;
+  status: string;
   sector: string;
 }
