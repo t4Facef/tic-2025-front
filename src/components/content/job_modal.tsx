@@ -135,6 +135,7 @@ export default function JobModal({
                 <div className="flex-[7] text-center">
                   <div className="space-y-1">
                     <h2 className="font-bold text-4xl">{jobData.title}</h2>
+                    <h3 className="font-normal text-md">{jobData.company}</h3>
                     <p className="text-xs">Período de Inscrição: {jobData.startDate.toLocaleDateString('pt-BR')} até {jobData.endDate.toLocaleDateString('pt-BR')}</p>
                   </div>
                 </div>
@@ -216,7 +217,7 @@ export default function JobModal({
             return (
               <div className="flex w-full">
                 <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={handleClose}>Editar</button>
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={handleClose}>Visualizar</button>
               </div>
             );
           } else {
