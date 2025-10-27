@@ -19,7 +19,7 @@ interface sendJobData {
   location: string,
   description: string,
   skillsTags: string[],
-  supportTags: number[],
+  supportTags: string[],
   startDate: string,
   endDate: string,
   typeContract: string,
@@ -37,7 +37,6 @@ export default function JobForm() {
   const [salario, setSalario] = useState("R$ ");
   const [description, setDescription] = useState("");
   const [acessibilityTags, setAcessibilityTags] = useState<string[]>([])
-  const [acessibilidades, setAcessibilidades] = useState<{ nome: string, id: number }[]>([])
   const [options, setOptions] = useState<string[]>([])
 
   const [dataForm, setDataForm] = useState<JobData>({
@@ -67,7 +66,6 @@ export default function JobForm() {
       try {
         const res = await fetch(`${API_BASE_URL}/api/acessibilidades/nomes`)
         const data = await res.json()
-        setAcessibilidades(data)
 
         const opt = data.map((acessibilidade: { nome: string }) => acessibilidade.nome).sort()
         setOptions(opt)
@@ -88,6 +86,11 @@ export default function JobForm() {
     setDescription(value);
     setDataForm(prev => ({ ...prev, description: value }));
   };
+
+  const handleAcessibilitysChange = (tags: string[]) => {
+    setAcessibilityTags(tags)
+    setDataForm(prev => ({ ...prev, supportTags: tags }))
+  }
 
   const handleSubmit = async () => {
     // Validação dos campos obrigatórios
@@ -124,18 +127,13 @@ export default function JobForm() {
       return;
     }
 
-    // Converter nomes das acessibilidades para IDs
-    const acessibilidadeIds = acessibilityTags.map((acessNome: string) =>
-      acessibilidades.find((acessObj: { nome: string, id: number }) => acessObj.nome === acessNome)?.id || 0
-    ).filter(id => id > 0)
-
     const formatedData: sendJobData = {
       idEmpresa: user?.id || 0,
       title: dataForm.title,
       location: dataForm.location || "",
       description: dataForm.description,
       skillsTags: dataForm.skillsTags,
-      supportTags: acessibilidadeIds,
+      supportTags: acessibilityTags,
       startDate: dataForm.startDate.toISOString().split('T')[0],
       endDate: dataForm.endDate.toISOString().split('T')[0],
       typeContract: dataForm.typeContract,
@@ -267,7 +265,7 @@ export default function JobForm() {
               <TagContainer
                 tags={acessibilityTags}
                 edit={true}
-                onChange={(tags) => setAcessibilityTags(tags)}
+                onChange={(tags) => {handleAcessibilitysChange(tags)}}
                 options={options}
               >
                 Apoio da Empresa

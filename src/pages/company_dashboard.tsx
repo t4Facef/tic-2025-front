@@ -22,6 +22,8 @@ export default function CompanyDashboard() {
     const companyId = user?.id
 
     useEffect(() => {
+        if (!companyId) return
+        
         const getStatistics = async () => {
             setLoading(true)
             try {
@@ -40,6 +42,8 @@ export default function CompanyDashboard() {
     }, [companyId])
 
     useEffect(() => {
+        if (!companyId) return
+        
         const getOpenJobs = async () => {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/vagas/empresa/${companyId}?status=DISPONIVEL`)
@@ -62,7 +66,7 @@ export default function CompanyDashboard() {
 
         getOpenJobs()
         getClosedJobs()
-    }, [openJobs, closedJobs, companyId])
+    }, [companyId])
 
     if (!isAuthenticated) {
         return (
@@ -96,7 +100,7 @@ export default function CompanyDashboard() {
                         <div>
                             <h2 className="pt-12 text-2xl font-semibold text-blue3 mb-4">Vagas Recentes</h2>
                             <div className="flex flex-col justify-center items-center bg-blue1 mb-6">
-                                <div className="flex flex-col items-end p-6 space-y-6">
+                                <div className="flex flex-col items-end p-6 space-y-6 w-full">
                                     {openJobs.map(vaga => {
                                         const jobDataProps: JobData = {
                                             id: vaga.id,
