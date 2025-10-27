@@ -19,6 +19,7 @@ export interface Vaga {
   empresaId: number;
   createdAt: string;
   updatedAt: string;
+  setor: string;
   empresa: {
     id: number;
     razaoSocial: string;
@@ -41,4 +42,25 @@ export interface Vaga {
     updatedAt: string;
   };
   candidaturas: Array<{ id: number }>;
+}
+
+export interface JobData {
+  id: number;
+  idEmpresa: number;
+  title: string;
+  company: string;
+  companyLogo: string;
+  location: string | undefined;
+  description: string;
+  skillsTags: string[];
+  supportTags: string[];
+  compatibility: number;
+  startDate: Date;
+  endDate: Date;
+  typeContract: string;
+  typeWork: string;
+  payment: string;
+  workLevel: string;
+  timeShift: string;
+  sector: string;
 }

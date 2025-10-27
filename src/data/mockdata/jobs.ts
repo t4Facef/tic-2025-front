@@ -1,22 +1,4 @@
-export interface JobData {
-    id: number;
-    idEmpresa: number;
-    title: string;
-    company: string;
-    companyLogo: string;
-    location: string;
-    description: string;
-    skillsTags: string[];
-    supportTags: string[];
-    compatibility: number;
-    startDate: Date;
-    endDate: Date;
-    typeContract: string;
-    typeWork: string;
-    payment: string;
-    workLevel: string;
-    timeShift: string;
-}
+import { JobData } from "../../types/vagas/vaga";
 
 export const mockJobs: JobData[] = [
     {

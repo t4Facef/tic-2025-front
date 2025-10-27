@@ -5,10 +5,9 @@ import JobPosition from "../components/content/job_position";
 import SearchBox from "../components/content/search_box";
 import LoadingSpinner from "../components/content/loading_spinner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { JobData } from "../data/mockdata/jobs";
 import JobFilters from "../components/forms/filters/job_filters";
 import { useEffect, useState } from "react";
-import { Vaga } from "../types/vagas/vaga";
+import { JobData, Vaga } from "../types/vagas/vaga";
 import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../hooks/useAuth";
 

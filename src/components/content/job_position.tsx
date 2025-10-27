@@ -1,8 +1,8 @@
 import { useState } from "react";
 import JobModal from "./job_modal";
-
-import { JobData } from "../../data/mockdata/jobs";
 import ProfileLink from "../profile/profile_link";
+import { API_BASE_URL } from "../../config/api";
+import { JobData } from "../../types/vagas/vaga";
 
 interface JobPositionProps {
   jobData: JobData;
@@ -19,7 +19,7 @@ export default function JobPosition({ jobData }: JobPositionProps) {
     <>
       <div className={`w-full flex cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02] ${!open ? 'hover:opacity-75' : ''}`} onClick={() => setOpen(true)} >
         <div className="w-28 h-28 bg-blue2 border-blue3 border-2 rounded-l-md"> 
-          <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
+          <ProfileLink id={jobData.idEmpresa} imgPath={`${API_BASE_URL}/api/arquivos/empresa/${jobData.idEmpresa}/foto/view`}></ProfileLink>
         </div>
         
         <div className="flex flex-col flex-1 max-h-28">

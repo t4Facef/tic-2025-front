@@ -5,8 +5,7 @@ import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/api";
-import { Vaga } from "../types/vagas/vaga";
-import { JobData } from "../data/mockdata/jobs";
+import { JobData, Vaga } from "../types/vagas/vaga";
 
 interface CompanyStatistics {
     candidaturasHoje: number,
@@ -80,104 +79,111 @@ export default function CompanyDashboard() {
     }
 
     return (
-            <div className="flex flex-col items-center">
-                <div className="flex flex-col">
-                    <div className="flex flex-col w-[72rem] ">
-                        <div className="flex justify-between bg-blue2 p-2 mt-5 rounded-lg">
+        <div className="flex flex-col items-center">
+            <div className="flex flex-col">
+                <div className="flex flex-col w-[72rem] ">
+                    <div className="bg-blue2 p-2 mt-5 rounded-lg">
+                        <div className="flex justify-between">
                             <StatisticBox title="Candidaturas Hoje" animation={true} finalValue={companyStatistics?.candidaturasHoje || 0}>{companyStatistics?.candidaturasHoje || 0}</StatisticBox>
                             <StatisticBox title="Vagas Abertas" animation={true} finalValue={companyStatistics?.vagasAbertas || 0}>{companyStatistics?.vagasAbertas || 0}</StatisticBox>
                             <StatisticBox title="Meta de Contratação" animation={true} finalValue={companyStatistics?.metaContratacao || 0}>{companyStatistics?.metaContratacao || 0}</StatisticBox>
                         </div>
-                        {openJobs.length > 0 ?
-                            <div>
-                                <h2 className="pt-12 text-2xl font-semibold text-blue3 mb-4">Vagas Recentes</h2>
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-6">
-                                    <div className="flex flex-col items-end p-6 space-y-6">
-                                        {openJobs.map(vaga => {
-                                            const jobDataProps: JobData = {
-                                                id: vaga.id,
-                                                idEmpresa: vaga.empresaId,
-                                                title: vaga.titulo,
-                                                company: vaga.empresa.razaoSocial,
-                                                companyLogo: vaga.empresa.foto || "",
-                                                location: vaga.localizacao,
-                                                description: vaga.descricao,
-                                                skillsTags: vaga.habilidades,
-                                                supportTags: vaga.apoios,
-                                                compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
-                                                startDate: new Date(vaga.dataInicio),
-                                                endDate: new Date(vaga.dataFim),
-                                                typeContract: vaga.tipoContrato,
-                                                typeWork: vaga.tipoTrabalho,
-                                                payment: vaga.pagamento,
-                                                workLevel: vaga.nivelTrabalho,
-                                                timeShift: vaga.turno
-                                            }
-                                            return <JobPosition key={vaga.id} jobData={jobDataProps} />
-                                        })}
-                                        <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
-                                    </div>
-                                </div>
-                            </div> :
-                            <div>
-                                <h2 className="pt-12 text-2xl font-semibold text-blue3 mb-4">Vagas Recentes</h2>
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-6 p-12 rounded-lg">
-                                    <div className="text-center">
-                                        <div className="text-6xl mb-4">💼</div>
-                                        <h3 className="text-xl font-medium text-gray-700 mb-2">Nenhuma vaga aberta no momento</h3>
-                                        <p className="text-gray-600 mb-6">Crie sua primeira vaga para começar a atrair talentos incríveis!</p>
-                                        <div className="flex justify-center">
-                                            <GenericBlueButton color={3} link="/jobs/create">Criar Primeira Vaga</GenericBlueButton>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        {closedJobs.length > 0 ?
-                            <div>
-                                <h2 className="pt-6 text-2xl font-semibold text-blue3 mb-4">Vagas Encerradas</h2>
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12">
-                                    <div className="flex flex-col items-end p-6 space-y-6">
-                                        {closedJobs.map(vaga => {
-                                            const jobDataProps: JobData = {
-                                                id: vaga.id,
-                                                idEmpresa: vaga.empresaId,
-                                                title: vaga.titulo,
-                                                company: vaga.empresa.razaoSocial,
-                                                companyLogo: vaga.empresa.foto || "",
-                                                location: vaga.localizacao,
-                                                description: vaga.descricao,
-                                                skillsTags: vaga.habilidades,
-                                                supportTags: vaga.apoios,
-                                                compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
-                                                startDate: new Date(vaga.dataInicio),
-                                                endDate: new Date(vaga.dataFim),
-                                                typeContract: vaga.tipoContrato,
-                                                typeWork: vaga.tipoTrabalho,
-                                                payment: vaga.pagamento,
-                                                workLevel: vaga.nivelTrabalho,
-                                                timeShift: vaga.turno
-                                            }
-                                            return <JobPosition key={vaga.id} jobData={jobDataProps} />
-                                        })}
-                                        <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
-                                    </div>
-                                </div>
-                            </div> :
-                            <div>
-                                <h2 className="pt-6 text-2xl font-semibold text-blue3 mb-4">Vagas Encerradas</h2>
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-12 rounded-lg">
-                                    <div className="text-center">
-                                        <div className="text-6xl mb-4">📋</div>
-                                        <h3 className="text-xl font-medium text-gray-700 mb-2">Nenhuma vaga encerrada</h3>
-                                        <p className="text-gray-600">Suas vagas finalizadas aparecerão aqui para consulta</p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
+                        <div className="flex justify-end mt-2 pr-2">
+                            <GenericBlueButton color={3} link="/jobs/new">Criar nova vaga</GenericBlueButton>
+                        </div>
                     </div>
+                    {openJobs.length > 0 ?
+                        <div>
+                            <h2 className="pt-12 text-2xl font-semibold text-blue3 mb-4">Vagas Recentes</h2>
+                            <div className="flex flex-col justify-center items-center bg-blue1 mb-6">
+                                <div className="flex flex-col items-end p-6 space-y-6">
+                                    {openJobs.map(vaga => {
+                                        const jobDataProps: JobData = {
+                                            id: vaga.id,
+                                            idEmpresa: vaga.empresaId,
+                                            title: vaga.titulo,
+                                            company: vaga.empresa.razaoSocial,
+                                            companyLogo: vaga.empresa.foto || "",
+                                            location: vaga.localizacao,
+                                            description: vaga.descricao,
+                                            skillsTags: vaga.habilidades,
+                                            supportTags: vaga.apoios,
+                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            startDate: new Date(vaga.dataInicio),
+                                            endDate: new Date(vaga.dataFim),
+                                            typeContract: vaga.tipoContrato,
+                                            typeWork: vaga.tipoTrabalho,
+                                            payment: vaga.pagamento,
+                                            workLevel: vaga.nivelTrabalho,
+                                            timeShift: vaga.turno,
+                                            sector: vaga.setor
+                                        }
+                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    })}
+                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
+                                </div>
+                            </div>
+                        </div> :
+                        <div>
+                            <h2 className="pt-12 text-2xl font-semibold text-blue3 mb-4">Vagas Recentes</h2>
+                            <div className="flex flex-col justify-center items-center bg-blue1 mb-6 p-12 rounded-lg">
+                                <div className="text-center">
+                                    <div className="text-6xl mb-4">💼</div>
+                                    <h3 className="text-xl font-medium text-gray-700 mb-2">Nenhuma vaga aberta no momento</h3>
+                                    <p className="text-gray-600 mb-6">Crie sua primeira vaga para começar a atrair talentos incríveis!</p>
+                                    <div className="flex justify-center">
+                                        <GenericBlueButton color={3} link="/jobs/create">Criar Primeira Vaga</GenericBlueButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    {closedJobs.length > 0 ?
+                        <div>
+                            <h2 className="pt-6 text-2xl font-semibold text-blue3 mb-4">Vagas Encerradas</h2>
+                            <div className="flex flex-col justify-center items-center bg-blue1 mb-12">
+                                <div className="flex flex-col items-end p-6 space-y-6">
+                                    {closedJobs.map(vaga => {
+                                        const jobDataProps: JobData = {
+                                            id: vaga.id,
+                                            idEmpresa: vaga.empresaId,
+                                            title: vaga.titulo,
+                                            company: vaga.empresa.razaoSocial,
+                                            companyLogo: vaga.empresa.foto || "",
+                                            location: vaga.localizacao,
+                                            description: vaga.descricao,
+                                            skillsTags: vaga.habilidades,
+                                            supportTags: vaga.apoios,
+                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            startDate: new Date(vaga.dataInicio),
+                                            endDate: new Date(vaga.dataFim),
+                                            typeContract: vaga.tipoContrato,
+                                            typeWork: vaga.tipoTrabalho,
+                                            payment: vaga.pagamento,
+                                            workLevel: vaga.nivelTrabalho,
+                                            timeShift: vaga.turno,
+                                            sector: vaga.setor
+                                        }
+                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    })}
+                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
+                                </div>
+                            </div>
+                        </div> :
+                        <div>
+                            <h2 className="pt-6 text-2xl font-semibold text-blue3 mb-4">Vagas Encerradas</h2>
+                            <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-12 rounded-lg">
+                                <div className="text-center">
+                                    <div className="text-6xl mb-4">📋</div>
+                                    <h3 className="text-xl font-medium text-gray-700 mb-2">Nenhuma vaga encerrada</h3>
+                                    <p className="text-gray-600">Suas vagas finalizadas aparecerão aqui para consulta</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
+        </div>
 
-        )
+    )
 }

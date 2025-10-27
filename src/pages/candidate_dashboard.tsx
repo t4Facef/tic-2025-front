@@ -7,9 +7,8 @@ import { useAuth } from "../hooks/useAuth";
 import JobPosition from "../components/content/job_position";
 import StatisticBox from "../components/content/statistic_box";
 import NotFoundScreen from "../components/content/not_found_screen";
-import { JobData } from "../data/mockdata/jobs";
 import { API_BASE_URL } from "../config/api";
-import { Vaga } from "../types/vagas/vaga";
+import { JobData, Vaga } from "../types/vagas/vaga";
 
 interface Statistics {
     candidaturasNesteMes: number
@@ -135,7 +134,7 @@ export default function CandidateDashboard() {
                                 <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.candidaturasAbertas}>{statistics.candidaturasAbertas}</StatisticBox>
                             </div>
                             <div className="flex justify-end mt-2 pr-2">
-                                <GenericBlueButton color={3} link="/jobs">Acessar minhas vagas</GenericBlueButton>
+                                <GenericBlueButton color={3} link="/jobs">Acessar minhas candidaturas</GenericBlueButton>
                             </div>
                         </div>
                         <div>

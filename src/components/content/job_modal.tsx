@@ -6,8 +6,9 @@ import { createPortal } from "react-dom";
 import TagContainer from "./tag_container";
 import ProfileLink from "../profile/profile_link";
 import MarkdownRenderer from "./markdown_renderer";
-import { JobData } from "../../data/mockdata/jobs";
 import { useAuth } from "../../hooks/useAuth";
+import { API_BASE_URL } from "../../config/api";
+import { JobData } from "../../types/vagas/vaga";
 
 
 interface JobModalProps {
@@ -138,7 +139,7 @@ export default function JobModal({
                   </div>
                 </div>
                 <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black overflow-hidden">
-                  <ProfileLink id={jobData.idEmpresa} imgPath={jobData.companyLogo}></ProfileLink>
+                  <ProfileLink id={jobData.idEmpresa} imgPath={`${API_BASE_URL}/api/arquivos/empresa/${jobData.idEmpresa}/foto/view`}></ProfileLink>
                 </div>
               </div>
 
@@ -150,6 +151,7 @@ export default function JobModal({
               <div className="space-y-2">
                 <p className="font-medium">Características da vaga</p>
                 <div className="bg-blue4 rounded-lg p-2">
+                  <span>Area: <strong>{jobData.sector}</strong></span>
                   <div className="flex justify-between">
                     <span>Modalidade: <strong>{jobData.typeWork}</strong></span>
                     <span>Localização: <strong>{jobData.location}</strong></span>
@@ -165,7 +167,7 @@ export default function JobModal({
                 </div>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-6 mt-6">
                 <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
                 <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
               </div>
