@@ -21,12 +21,19 @@ interface VagasSearchFilters {
 
 interface jobFiltersProps {
     onFiltersChange: (filtros: Partial<VagasSearchFilters>) => void
+    initialValues?: Partial<VagasSearchFilters>
 }
 
-export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
+export default function JobFilters({ onFiltersChange, initialValues }: jobFiltersProps) {
     const [selectedWorkTypes, setSelectedWorkTypes] = useState<string[]>([])
     const [selectedContractTypes, setSelectedContractTypes] = useState<string[]>([])
     const [estados, setEstados] = useState<{ nome: string, sigla: string }[]>([])
+    const [minhasVagasValue, setMinhasVagasValue] = useState<string>("")
+    
+    useEffect(() => {
+        const newValue = initialValues?.minhasVagas === true ? "Sim" : ""
+        setMinhasVagasValue(newValue)
+    }, [initialValues])
     
     useEffect(() => {
         const fetchEstados = async () => {
@@ -140,8 +147,12 @@ export default function JobFilters({ onFiltersChange }: jobFiltersProps) {
                     type="radio" 
                     id="my_jobs_filter" 
                     options={["Sim", "Não"]} 
-                    itemsOrientation={2} 
-                    onChange={(e) => onFiltersChange({ minhasVagas: e.target.value === "Sim" })}
+                    itemsOrientation={2}
+                    value={minhasVagasValue}
+                    onChange={(e) => {
+                        setMinhasVagasValue(e.target.value)
+                        onFiltersChange({ minhasVagas: e.target.value === "Sim" })
+                    }}
                 >
                     Somente Minhas Vagas?
                 </GenericFormField>

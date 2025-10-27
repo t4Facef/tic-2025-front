@@ -2,7 +2,7 @@
 
 export const WORK_TYPES = ["Remoto", "Presencial", "Híbrido"]
 
-export const CONTRACT_TYPES = ["CLT", "PJ", "Estágio", "Freelancer", "Temporário"]
+export const CONTRACT_TYPES = ["CLT", "PJ", "Freelancer", "Temporário"]
 
 export const WORK_LEVELS = ["Estágio", "Júnior", "Pleno", "Sênior"]
 

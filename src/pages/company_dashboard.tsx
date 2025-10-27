@@ -1,3 +1,5 @@
+// Mostrar em cada vaga quantas candidaturas teve hoje
+
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
@@ -125,7 +127,7 @@ export default function CompanyDashboard() {
                                         }
                                         return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                     })}
-                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
+                                    <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Ver minhas vagas</GenericBlueButton>
                                 </div>
                             </div>
                         </div> :
@@ -172,7 +174,7 @@ export default function CompanyDashboard() {
                                         }
                                         return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                     })}
-                                    <GenericBlueButton color={3} link="/jobs">Ver todas</GenericBlueButton>
+                                    <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Ver minhas vagas</GenericBlueButton>
                                 </div>
                             </div>
                         </div> :
