@@ -6,9 +6,10 @@ import { JobData } from "../../types/vagas/vaga";
 
 interface JobPositionProps {
   jobData: JobData;
+  isEditing: boolean;
 }
 
-export default function JobPosition({ jobData }: JobPositionProps) {
+export default function JobPosition({ jobData, isEditing=false }: JobPositionProps) {
   const [open, setOpen] = useState(false);
 
   if (!jobData) {
@@ -38,7 +39,8 @@ export default function JobPosition({ jobData }: JobPositionProps) {
       
       <JobModal 
         jobData={jobData}
-        open={open} 
+        open={open}
+        isEditing={isEditing}
         onClose={() => setOpen(false)}
       />
     </>

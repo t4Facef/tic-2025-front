@@ -16,12 +16,14 @@ interface JobModalProps {
   open: boolean;
   onClose: () => void;
   jobData: JobData;
+  isEditing: boolean
 }
 
 export default function JobModal({
   open,
   onClose,
-  jobData
+  jobData,
+  isEditing
 }: JobModalProps) {
   const { user, role } = useAuth();
   const navigate = useNavigate();
@@ -223,7 +225,7 @@ export default function JobModal({
             return (
               <div className="flex w-full">
                 <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={() => navigate(`/jobs/${jobData.id}/view`)}>Visualizar</button>
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={() => navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`)}>{isEditing ? "Editar" : "Vizualizar"}</button>
               </div>
             );
           } else {

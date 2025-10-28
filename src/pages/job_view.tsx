@@ -5,6 +5,7 @@ import { API_BASE_URL } from "../config/api";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { VagaComCandidaturas } from "../types/vagas/vagaCandidaturas";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
+import JobPosition from "../components/content/job_position";
 
 interface errorFields {
     title: string,
@@ -20,7 +21,6 @@ export default function JobView() {
     const [error, setError] = useState<errorFields | null>(null)
     const [jobData, setJobData] = useState<VagaComCandidaturas>()
     const [selectedCandidatura, setSelectedCandidatura] = useState<VagaComCandidaturas['candidaturas'][0] | null>(null)
-
 
     useEffect(() => {
         const verifyInscritions = async () => {
@@ -128,11 +128,36 @@ export default function JobView() {
     return (
         <div className="flex flex-col items-center p-8 max-w-6xl mx-auto">
             <div className="space-y-6 w-full">
-                <div className="text-center space-y-4">
-                    <h1 className="text-4xl text-blue3">Visualização <strong>{jobData?.titulo}</strong></h1>
-                    <GenericBlueButton color={3} size="mdxMax" link={`/jobs/${id}/edit`}>Editar Vaga</GenericBlueButton>
+                <div className="text-center space-y-6">
+                    <h1 className="text-4xl text-blue3 mb-16">Visualização <strong>{jobData?.titulo}</strong></h1>
+                    <div className="text-start">
+                        <p>Clique na vaga para vizualizar e editar </p>
+                        {jobData && (
+                            <JobPosition jobData={{
+                                id: jobData.id,
+                                idEmpresa: jobData.empresaId,
+                                title: jobData.titulo,
+                                company: jobData.empresa.razaoSocial,
+                                companyLogo: jobData.empresa.nomeFantasia || "",
+                                location: jobData.localizacao,
+                                description: jobData.descricao,
+                                skillsTags: jobData.habilidades,
+                                supportTags: jobData.apoios,
+                                compatibility: Math.round((jobData.compatibilidade || 0) * 100),
+                                startDate: new Date(jobData.dataInicio),
+                                endDate: new Date(jobData.dataFim),
+                                typeContract: jobData.tipoContrato,
+                                typeWork: jobData.tipoTrabalho,
+                                payment: jobData.pagamento,
+                                workLevel: jobData.nivelTrabalho,
+                                timeShift: jobData.turno,
+                                sector: jobData.setor || "",
+                                status: jobData.status
+                            }} isEditing={true}/>
+                        )}
+                    </div>
                 </div>
-                
+
                 {jobData?.candidaturas && jobData.candidaturas.length > 0 ? (
                     <div className="space-y-4">
                         <div className="bg-blue3 text-white p-4 rounded-t-lg">
@@ -142,22 +167,22 @@ export default function JobView() {
                             {jobData.candidaturas.map((candidatura) => {
                                 console.log('Candidatura completa:', candidatura)
                                 if (!candidatura.candidatoId) return null
-                                
+
                                 return (
-                                    <div 
+                                    <div
                                         key={candidatura.id}
-                                        className="bg-slate-100 hover:bg-slate-200 transition-colors rounded-lg p-4 cursor-pointer"
+                                        className="bg-blue1 hover:bg-blue5H transition-colors rounded-lg p-4 cursor-pointer"
                                         onClick={() => setSelectedCandidatura(candidatura)}
                                     >
                                         <div className="flex items-start gap-4">
-                                            <div 
+                                            <div
                                                 className="w-16 h-16 rounded-full overflow-hidden bg-blue1 flex items-center justify-center flex-shrink-0"
                                                 onClick={(e) => {
                                                     e.stopPropagation()
                                                     navigate(`/candidate/profile/${candidatura.candidatoId}`)
                                                 }}
                                             >
-                                                <img 
+                                                <img
                                                     src={`${API_BASE_URL}/api/arquivos/candidato/${candidatura.candidatoId}/foto/view`}
                                                     alt="Candidato"
                                                     className="w-full h-full object-cover hover:opacity-80 transition-opacity"
@@ -167,7 +192,7 @@ export default function JobView() {
                                                         if (nextElement) nextElement.style.display = 'flex'
                                                     }}
                                                 />
-                                                <span className="text-blue3 text-lg font-semibold" style={{display: 'none'}}>
+                                                <span className="text-blue3 text-lg font-semibold" style={{ display: 'none' }}>
                                                     C
                                                 </span>
                                             </div>
@@ -197,7 +222,7 @@ export default function JobView() {
                         </div>
                     </div>
                 )}
-                
+
                 {/* Modal */}
                 {selectedCandidatura && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -205,7 +230,7 @@ export default function JobView() {
                             <div className="bg-blue3 text-white p-4 rounded-t-lg">
                                 <div className="flex justify-between items-start">
                                     <h2 className="text-2xl font-bold">Detalhes da Candidatura</h2>
-                                    <button 
+                                    <button
                                         onClick={() => setSelectedCandidatura(null)}
                                         className="text-white hover:text-blue1 text-2xl transition-colors"
                                     >
@@ -214,11 +239,11 @@ export default function JobView() {
                                 </div>
                             </div>
                             <div className="p-6">
-                                
+
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-4">
                                         <div className="w-20 h-20 rounded-full overflow-hidden bg-blue1 flex items-center justify-center">
-                                            <img 
+                                            <img
                                                 src={`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/foto/view`}
                                                 alt="Candidato"
                                                 className="w-full h-full object-cover"
@@ -228,7 +253,7 @@ export default function JobView() {
                                                     if (nextElement) nextElement.style.display = 'flex'
                                                 }}
                                             />
-                                            <span className="text-blue3 text-xl font-semibold" style={{display: 'none'}}>
+                                            <span className="text-blue3 text-xl font-semibold" style={{ display: 'none' }}>
                                                 C
                                             </span>
                                         </div>
@@ -237,15 +262,14 @@ export default function JobView() {
                                             <p className="text-gray-600">ID: {selectedCandidatura.candidatoId}</p>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <h4 className="font-semibold text-blue3 mb-2">Status</h4>
-                                            <span className={`px-3 py-1 rounded-full text-sm ${
-                                                selectedCandidatura.status === 'APROVADO' ? 'bg-green-100 text-green-800' :
+                                            <span className={`px-3 py-1 rounded-full text-sm ${selectedCandidatura.status === 'APROVADO' ? 'bg-green-100 text-green-800' :
                                                 selectedCandidatura.status === 'RECUSADO' ? 'bg-red-100 text-red-800' :
-                                                'bg-yellow-100 text-yellow-800'
-                                            }`}>
+                                                    'bg-yellow-100 text-yellow-800'
+                                                }`}>
                                                 {selectedCandidatura.status}
                                             </span>
                                         </div>
@@ -254,30 +278,30 @@ export default function JobView() {
                                             <p>{new Date(selectedCandidatura.dataCandidatura).toLocaleDateString('pt-BR')}</p>
                                         </div>
                                     </div>
-                                    
+
                                     <div>
                                         <h4 className="font-semibold text-blue3 mb-2">Mensagem</h4>
                                         <p className="bg-white p-3 rounded border border-blue2">
                                             {selectedCandidatura.mensagem || 'Nenhuma mensagem enviada'}
                                         </p>
                                     </div>
-                                    
+
                                     <div className="bg-white p-4 rounded border border-blue2">
                                         <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
                                     </div>
-                                    
+
                                     <div className="flex gap-3 pt-4">
-                                        <GenericBlueButton 
-                                            color={3} 
-                                            size="md" 
+                                        <GenericBlueButton
+                                            color={3}
+                                            size="md"
                                             onClick={() => navigate(`/candidate/profile/${selectedCandidatura.candidatoId}`)}
                                         >
                                             Ver Perfil Completo
                                         </GenericBlueButton>
-                                        <GenericBlueButton 
-                                            color={2} 
-                                            size="md" 
+                                        <GenericBlueButton
+                                            color={2}
+                                            size="md"
                                             onClick={() => setSelectedCandidatura(null)}
                                         >
                                             Fechar
