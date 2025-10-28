@@ -161,7 +161,9 @@ export default function CandidateDashboard() {
                                                     typeWork: vaga.tipoTrabalho,
                                                     payment: vaga.pagamento,
                                                     workLevel: vaga.nivelTrabalho,
-                                                    timeShift: vaga.turno
+                                                    timeShift: vaga.turno,
+                                                    status: vaga.status,
+                                                    sector: vaga.setor
                                                 }
                                                 return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                             })}
@@ -207,7 +209,9 @@ export default function CandidateDashboard() {
                                                     typeWork: vaga.tipoTrabalho,
                                                     payment: vaga.pagamento,
                                                     workLevel: vaga.nivelTrabalho,
-                                                    timeShift: vaga.turno
+                                                    timeShift: vaga.turno,
+                                                    status: vaga.status,
+                                                    sector: vaga.setor
                                                 }
                                                 return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                             })}

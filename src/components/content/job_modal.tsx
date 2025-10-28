@@ -9,6 +9,7 @@ import MarkdownRenderer from "./markdown_renderer";
 import { useAuth } from "../../hooks/useAuth";
 import { API_BASE_URL } from "../../config/api";
 import { JobData } from "../../types/vagas/vaga";
+import { useNavigate } from "react-router-dom";
 
 
 interface JobModalProps {
@@ -23,6 +24,7 @@ export default function JobModal({
   jobData
 }: JobModalProps) {
   const { user, role } = useAuth();
+  const navigate = useNavigate();
   const [isApplying, setIsApplying] = useState(false)
   const [applicationMessage, setApplicationMessage] = useState('')
   const [isCompleted, setIsCompleted] = useState(false)
@@ -70,6 +72,7 @@ export default function JobModal({
     setAlreadyApplied(false)
     onClose()
   }
+
 
   const inscreverEmVaga = async () => {
     const requestData = {
@@ -220,7 +223,7 @@ export default function JobModal({
             return (
               <div className="flex w-full">
                 <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={handleClose}>Visualizar</button>
+                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={() => navigate(`/jobs/${jobData.id}/view`)}>Visualizar</button>
               </div>
             );
           } else {
