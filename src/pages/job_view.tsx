@@ -441,11 +441,52 @@ export default function JobView() {
                                     </div>
 
                                     <div className="bg-white p-4 rounded border border-blue2">
+                                        <h4 className="font-semibold text-blue3 mb-3">Documentos</h4>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={async () => {
+                                                    try {
+                                                        const response = await fetch(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/curriculo/download`, {
+                                                            headers: { 'Authorization': 'Bearer ' + token }
+                                                        })
+                                                        if (response.ok) {
+                                                            window.open(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/curriculo/download`, '_blank')
+                                                        } else {
+                                                            alert('Currículo não encontrado para este candidato.')
+                                                        }
+                                                    } catch {
+                                                        alert('Erro ao tentar baixar o currículo.')
+                                                    }
+                                                }}
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm"
+                                            >
+                                                📄 Baixar Currículo
+                                            </button>
+                                            <button
+                                                onClick={async () => {
+                                                    try {
+                                                        const response = await fetch(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/laudo/download`, {
+                                                            headers: { 'Authorization': 'Bearer ' + token }
+                                                        })
+                                                        if (response.ok) {
+                                                            window.open(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/laudo/download`, '_blank')
+                                                        } else {
+                                                            alert('Laudo não encontrado para este candidato.')
+                                                        }
+                                                    } catch {
+                                                        alert('Erro ao tentar baixar o laudo.')
+                                                    }
+                                                }}
+                                                className="flex items-center gap-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm"
+                                            >
+                                                🏥 Baixar Laudo
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="bg-white p-4 rounded border border-blue2">
                                         <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
-                                    </div>
-                                    <div className="flex justify-between">
-
                                     </div>
 
                                     <div className="flex gap-3 pt-4">
