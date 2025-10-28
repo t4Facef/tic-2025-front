@@ -412,7 +412,7 @@ export default function JobView() {
                                             </span>
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-semibold text-blue3">Candidato {selectedCandidatura.candidatoId}</h3>
+                                            <h3 className="text-xl font-semibold text-blue3">{selectedCandidatura.candidato.nome}</h3>
                                             <p className="text-gray-600">ID: {selectedCandidatura.candidatoId}</p>
                                         </div>
                                     </div>
@@ -458,9 +458,9 @@ export default function JobView() {
                                                         alert('Erro ao tentar baixar o currículo.')
                                                     }
                                                 }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue3 hover:bg-blue3H text-white rounded-lg transition-colors text-sm"
                                             >
-                                                📄 Baixar Currículo
+                                                Baixar Currículo
                                             </button>
                                             <button
                                                 onClick={async () => {
@@ -477,9 +477,9 @@ export default function JobView() {
                                                         alert('Erro ao tentar baixar o laudo.')
                                                     }
                                                 }}
-                                                className="flex items-center gap-2 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue3 hover:bg-blue3H text-white rounded-lg transition-colors text-sm"
                                             >
-                                                🏥 Baixar Laudo
+                                                Baixar Laudo
                                             </button>
                                         </div>
                                     </div>
