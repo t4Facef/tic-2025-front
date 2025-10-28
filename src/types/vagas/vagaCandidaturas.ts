@@ -56,6 +56,9 @@ export interface VagaComCandidaturas {
           nome: string;
         };
       }[];
+      candidato: {
+        nome: "João Silva"
+      }
     };
   }[];
 }

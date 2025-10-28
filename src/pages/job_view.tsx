@@ -21,6 +21,81 @@ export default function JobView() {
     const [error, setError] = useState<errorFields | null>(null)
     const [jobData, setJobData] = useState<VagaComCandidaturas>()
     const [selectedCandidatura, setSelectedCandidatura] = useState<VagaComCandidaturas['candidaturas'][0] | null>(null)
+    const [expandedSections, setExpandedSections] = useState({
+        PENDENTE: true,
+        APROVADO: false,
+        RECUSADO: false
+    })
+
+    const handleStatusChange = async (candidaturaId: number, newStatus: 'APROVADO' | 'RECUSADO' | 'PENDENTE') => {
+        const originalJobData = jobData
+
+        // Atualização otimista do estado local
+        setJobData(prev => {
+            if (!prev) return prev
+            return {
+                ...prev,
+                candidaturas: prev.candidaturas.map(c =>
+                    c.id === candidaturaId ? { ...c, status: newStatus } : c
+                )
+            }
+        })
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/candidaturas/${candidaturaId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+
+            if (!response.ok) {
+                throw new Error('Falha ao atualizar status')
+            }
+        } catch (error) {
+            // Reverte o estado em caso de erro
+            setJobData(originalJobData)
+            console.error('Erro ao atualizar status:', error)
+        }
+    }
+
+    const toggleSection = (status: 'PENDENTE' | 'APROVADO' | 'RECUSADO') => {
+        setExpandedSections(prev => ({
+            ...prev,
+            [status]: !prev[status]
+        }))
+    }
+
+    const getStatusConfig = (status: string) => {
+        switch (status) {
+            case 'APROVADO':
+                return {
+                    bgColor: 'bg-green-100',
+                    headerColor: 'bg-green-600',
+                    cardBg: 'bg-green-50',
+                    cardHover: 'hover:bg-green-100',
+                    title: 'Candidaturas Aprovadas'
+                }
+            case 'RECUSADO':
+                return {
+                    bgColor: 'bg-red-100',
+                    headerColor: 'bg-red-600',
+                    cardBg: 'bg-red-50',
+                    cardHover: 'hover:bg-red-100',
+                    title: 'Candidaturas Encerradas'
+                }
+            default:
+                return {
+                    bgColor: 'bg-blue1',
+                    headerColor: 'bg-blue3',
+                    cardBg: 'bg-blue1',
+                    cardHover: 'hover:bg-blue4',
+                    title: 'Candidaturas Pendentes'
+                }
+        }
+    }
 
     useEffect(() => {
         const verifyInscritions = async () => {
@@ -131,7 +206,7 @@ export default function JobView() {
                 <div className="text-center space-y-6">
                     <h1 className="text-4xl text-blue3 mb-16">Visualização <strong>{jobData?.titulo}</strong></h1>
                     <div className="text-start">
-                        <p>Clique na vaga para vizualizar e editar </p>
+                        <p>Clique na vaga para visualizar e editar </p>
                         {jobData && (
                             <JobPosition jobData={{
                                 id: jobData.id,
@@ -153,65 +228,144 @@ export default function JobView() {
                                 timeShift: jobData.turno,
                                 sector: jobData.setor || "",
                                 status: jobData.status
-                            }} isEditing={true}/>
+                            }} isEditing={true} />
                         )}
                     </div>
                 </div>
 
                 {jobData?.candidaturas && jobData.candidaturas.length > 0 ? (
                     <div className="space-y-4">
-                        <div className="bg-blue3 text-white p-4 rounded-t-lg">
-                            <h2 className="text-xl font-semibold">Candidatos ({jobData.candidaturas.length})</h2>
-                        </div>
-                        <div className="grid gap-4">
-                            {jobData.candidaturas.map((candidatura) => {
-                                console.log('Candidatura completa:', candidatura)
-                                if (!candidatura.candidatoId) return null
+                        {(['PENDENTE', 'APROVADO', 'RECUSADO'] as const).map(status => {
+                            const candidaturasByStatus = jobData.candidaturas.filter(c => c.status === status)
+                            if (candidaturasByStatus.length === 0) return null
 
-                                return (
+                            const config = getStatusConfig(status)
+                            const isExpanded = expandedSections[status]
+
+                            return (
+                                <div key={status} className="rounded-lg overflow-hidden shadow-lg">
                                     <div
-                                        key={candidatura.id}
-                                        className="bg-blue1 hover:bg-blue5H transition-colors rounded-lg p-4 cursor-pointer"
-                                        onClick={() => setSelectedCandidatura(candidatura)}
+                                        className={`${config.headerColor} text-white p-4 cursor-pointer flex justify-between items-center transition-colors hover:opacity-90`}
+                                        onClick={() => toggleSection(status)}
                                     >
-                                        <div className="flex items-start gap-4">
-                                            <div
-                                                className="w-16 h-16 rounded-full overflow-hidden bg-blue1 flex items-center justify-center flex-shrink-0"
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    navigate(`/candidate/profile/${candidatura.candidatoId}`)
-                                                }}
-                                            >
-                                                <img
-                                                    src={`${API_BASE_URL}/api/arquivos/candidato/${candidatura.candidatoId}/foto/view`}
-                                                    alt="Candidato"
-                                                    className="w-full h-full object-cover hover:opacity-80 transition-opacity"
-                                                    onError={(e) => {
-                                                        e.currentTarget.style.display = 'none'
-                                                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement
-                                                        if (nextElement) nextElement.style.display = 'flex'
-                                                    }}
-                                                />
-                                                <span className="text-blue3 text-lg font-semibold" style={{ display: 'none' }}>
-                                                    C
-                                                </span>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="text-lg font-semibold text-blue3 mb-1">
-                                                    Candidato {candidatura.candidatoId}
-                                                </h3>
-                                                <p className="text-gray-600 text-sm line-clamp-2">
-                                                    {candidatura.mensagem || 'Nenhuma mensagem enviada'}
-                                                </p>
-                                            </div>
-                                            <div className="w-8 h-8 border-2 border-gray-300 rounded bg-white flex-shrink-0">
-                                                {/* Espaço para favoritar */}
-                                            </div>
+                                        <h2 className="text-xl font-semibold">
+                                            {config.title} ({candidaturasByStatus.length})
+                                        </h2>
+                                        <span className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                                            ▼
+                                        </span>
+                                    </div>
+                                    <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                                        }`}>
+                                        <div className={config.bgColor}>
+                                            {candidaturasByStatus.map((candidatura, index) => {
+                                                if (!candidatura.candidatoId) return null
+
+                                                const isEven = index % 2 === 0
+                                                const cardBg = isEven ? config.cardBg : 'bg-white'
+
+                                                return (
+                                                    <div
+                                                        key={candidatura.id}
+                                                        className={`${cardBg} ${config.cardHover} transition-all duration-200 p-4 cursor-pointer border-b border-gray-200 last:border-b-0`}
+                                                        onClick={() => setSelectedCandidatura(candidatura)}
+                                                    >
+                                                        <div className="flex items-start gap-4">
+                                                            <div
+                                                                className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    navigate(`/candidates/${candidatura.candidatoId}/profile/`)
+                                                                }}
+                                                            >
+                                                                <img
+                                                                    src={`${API_BASE_URL}/api/arquivos/candidato/${candidatura.candidatoId}/foto/view`}
+                                                                    alt="Candidato"
+                                                                    className="w-full h-full object-cover hover:opacity-80 transition-opacity"
+                                                                    onError={(e) => {
+                                                                        e.currentTarget.style.display = 'none'
+                                                                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement
+                                                                        if (nextElement) nextElement.style.display = 'flex'
+                                                                    }}
+                                                                />
+                                                                <span className="text-gray-600 text-lg font-semibold" style={{ display: 'none' }}>
+                                                                    C
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                                                                    {candidatura.candidato.nome}
+                                                                </h3>
+                                                                <p className="text-gray-600 text-sm line-clamp-2">
+                                                                    {candidatura.mensagem || 'Nenhuma mensagem enviada'}
+                                                                </p>
+                                                                <p className="text-xs text-gray-500 mt-1">
+                                                                    {new Date(candidatura.dataCandidatura).toLocaleDateString('pt-BR')}
+                                                                </p>
+                                                            </div>
+                                                            {status === 'PENDENTE' ? (
+                                                                <div className="flex gap-2 flex-shrink-0">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleStatusChange(candidatura.id, 'APROVADO')
+                                                                        }}
+                                                                        className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                        title="Aprovar candidatura"
+                                                                    >
+                                                                        ✓
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleStatusChange(candidatura.id, 'RECUSADO')
+                                                                        }}
+                                                                        className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                        title="Recusar candidatura"
+                                                                    >
+                                                                        ✕
+                                                                    </button>
+                                                                </div>
+                                                            ) : status === 'APROVADO' ? (
+                                                                <div className="flex gap-2 flex-shrink-0">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleStatusChange(candidatura.id, 'RECUSADO')
+                                                                        }}
+                                                                        className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                        title="Reprovar candidatura"
+                                                                    >
+                                                                        ✕
+                                                                    </button>
+                                                                </div>
+                                                            ) : status === 'RECUSADO' ? (
+                                                                <div className="flex gap-2 flex-shrink-0">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleStatusChange(candidatura.id, 'APROVADO')
+                                                                        }}
+                                                                        className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                        title="Aprovar candidatura"
+                                                                    >
+                                                                        ✓
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="w-8 h-8 border-2 border-gray-300 rounded bg-white flex-shrink-0">
+                                                                    {/* Espaço para favoritar */}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
                                         </div>
                                     </div>
-                                )
-                            })}
-                        </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 ) : (
                     <div className="bg-blue1 rounded-lg shadow-lg p-8 text-center">
@@ -290,12 +444,15 @@ export default function JobView() {
                                         <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
                                     </div>
+                                    <div className="flex justify-between">
+
+                                    </div>
 
                                     <div className="flex gap-3 pt-4">
                                         <GenericBlueButton
                                             color={3}
                                             size="md"
-                                            onClick={() => navigate(`/candidate/profile/${selectedCandidatura.candidatoId}`)}
+                                            onClick={() => navigate(`/candidates/${selectedCandidatura.candidatoId}/profile/`)}
                                         >
                                             Ver Perfil Completo
                                         </GenericBlueButton>

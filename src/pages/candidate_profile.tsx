@@ -293,7 +293,7 @@ export default function CandidateProfile() {
             <div className="px-20 py-10 space-y-8">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                        <img src={`${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`} alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5 shadow-xl border-[0.5px]" />
+                        <img src={`${API_BASE_URL}/api/arquivos/candidato/${isViewingOwnProfile ? user?.id : id}/foto/view`} alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5 shadow-xl border-[0.5px]" />
                         <div>
                             <h1 className="font-bold text-[32px]">{candidateData.nome}</h1>
                             <p>
