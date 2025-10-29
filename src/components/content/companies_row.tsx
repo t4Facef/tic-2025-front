@@ -8,7 +8,7 @@ type CompaniesRowProps = {
   extensions?: string[];
 };
 
-export default function CompaniesRow({ companyIds, basePath, extensions }: CompaniesRowProps) {
+export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
   const [currentIndex, setCurrentIndex] = useState(companyIds.length);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const visibleCount = Math.min(5, companyIds.length);

@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
 import JobPosition from "../components/content/job_position"
-import mockJobs from "../data/mockdata/jobs"
 import { API_BASE_URL } from "../config/api";
+import { JobData, Vaga } from "../types/vagas/vaga";
 
 
 
 export default function Home() {
     const [companyIds, setCompanyIds] = useState([1])
+    const [popularJobs, setPopularJobs] = useState<JobData[]>([])
     
     useEffect(() => {
         const getTopCompanies = async () => {
@@ -22,6 +23,41 @@ export default function Home() {
         }
 
         getTopCompanies()
+        
+        const getPopularJobs = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/vagas/populares`)
+                const data: Vaga[] = await res.json()
+                
+                const jobDataProps: JobData[] = data.map(vaga => ({
+                    id: vaga.id,
+                    idEmpresa: vaga.empresaId,
+                    title: vaga.titulo,
+                    company: vaga.empresa.razaoSocial,
+                    companyLogo: vaga.empresa.foto || "",
+                    location: vaga.localizacao,
+                    description: vaga.descricao,
+                    skillsTags: vaga.habilidades,
+                    supportTags: vaga.apoios,
+                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                    startDate: new Date(vaga.dataInicio),
+                    endDate: new Date(vaga.dataFim),
+                    typeContract: vaga.tipoContrato,
+                    typeWork: vaga.tipoTrabalho,
+                    payment: vaga.pagamento,
+                    workLevel: vaga.nivelTrabalho,
+                    timeShift: vaga.turno,
+                    sector: vaga.setor,
+                    status: vaga.status
+                }))
+                
+                setPopularJobs(jobDataProps)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        
+        getPopularJobs()
     }, [])
     return (
         <div>
@@ -52,10 +88,16 @@ export default function Home() {
                 <CompaniesRow companyIds={companyIds} />
             </div>
             <div className="flex flex-col px-8 items-center my-8">
-                <div className="flex flex-col items-end px-36 space-y-8">
-                    <JobPosition jobData={mockJobs[6]} />
-                    <JobPosition jobData={mockJobs[7]} />
-                    <JobPosition jobData={mockJobs[8]} />
+                <div className="flex flex-col items-end px-36 space-y-8 w-full">
+                    {popularJobs.length > 0 ? (
+                        popularJobs.slice(0, 3).map(job => (
+                            <JobPosition key={job.id} jobData={job} />
+                        ))
+                    ) : (
+                        <div className="text-center py-8">
+                            <p className="text-gray-600">Carregando vagas populares...</p>
+                        </div>
+                    )}
                     <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
                 </div>
             </div>
