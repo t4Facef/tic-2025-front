@@ -205,7 +205,10 @@ export default function JobView() {
         <div className="flex flex-col items-center p-8 max-w-6xl mx-auto">
             <div className="space-y-6 w-full">
                 <div className="text-center space-y-6">
-                    <h1 className="text-4xl text-blue3 mb-16">Visualização <strong>{jobData?.titulo}</strong></h1>
+                    <div className="relative flex items-center mb-16">
+                        <h1 className="text-4xl text-blue3 absolute left-1/2 transform -translate-x-1/2">Visualização <strong>{jobData?.titulo} - <span className={`${jobData?.status === 'DISPONIVEL' ? 'text-green-600' : 'text-red-600'}`}>{jobData?.status}</span></strong></h1>
+                        <button className={`p-3 rounded-lg ml-auto ${jobData?.status === 'DISPONIVEL' ? "bg-red-500" : "bg-green-500"}`}>{jobData?.status === 'DISPONIVEL' ? "Encerrar": "Ativar"}</button>
+                    </div>
                     <div className="text-start">
                         <p>Clique na vaga para visualizar e editar </p>
                         {jobData && (

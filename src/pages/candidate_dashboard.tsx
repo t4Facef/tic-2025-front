@@ -135,7 +135,6 @@ export default function CandidateDashboard() {
                             </div>
                             <div className="flex justify-end mt-2 pr-2 gap-4">
                                 <GenericBlueButton color={3} link="/jobs">Procurar Vagas</GenericBlueButton>
-                                <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Acessar minhas candidaturas</GenericBlueButton>
                             </div>
                         </div>
                         <div>
@@ -168,6 +167,9 @@ export default function CandidateDashboard() {
                                                 }
                                                 return <JobPosition key={vaga.id} jobData={jobDataProps} />
                                             })}
+                                            <div className="flex justify-end">
+                                            <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Acessar minhas candidaturas</GenericBlueButton>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

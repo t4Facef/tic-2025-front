@@ -28,6 +28,7 @@ interface VagasSearchFilters {
     dataInicioMin?: string; // formato: "2024-01-15"
     dataInicioMax?: string; // formato: "2024-12-31"
     setor?: string;
+    status?: boolean;
     recomendadas?: boolean;
     minhasVagas?: boolean;
     inscrito?: boolean;

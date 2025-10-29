@@ -17,6 +17,7 @@ interface VagasSearchFilters {
     recomendadas?: boolean;
     minhasVagas?: boolean;
     inscrito?: boolean;
+    status?: boolean;
 }
 
 interface jobFiltersProps {
@@ -155,6 +156,19 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                     }}
                 >
                     Somente Minhas Vagas?
+                </GenericFormField>
+            </FilterCamp>
+            <FilterCamp>
+                <GenericFormField
+                    type="radio"
+                    id="open_filters"
+                    options={["Sim", "Não"]}
+                    itemsOrientation={2}
+                    onChange={(e) => {
+                        onFiltersChange({ status: e.target.value === "Sim" })
+                    }}
+                >
+                    Somente Vagas Abertas?
                 </GenericFormField>
             </FilterCamp>
         </div>
