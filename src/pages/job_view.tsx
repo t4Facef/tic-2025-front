@@ -6,6 +6,7 @@ import NotFoundScreen from "../components/content/not_found_screen";
 import { VagaComCandidaturas } from "../types/vagas/vagaCandidaturas";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import JobPosition from "../components/content/job_position";
+import { exportApprovedCandidates } from "../utils/excelExport";
 
 interface errorFields {
     title: string,
@@ -243,124 +244,131 @@ export default function JobView() {
                             const isExpanded = expandedSections[status]
 
                             return (
-                                <div key={status} className="rounded-lg overflow-hidden shadow-lg">
-                                    <div
-                                        className={`${config.headerColor} text-white p-4 cursor-pointer flex justify-between items-center transition-colors hover:opacity-90`}
-                                        onClick={() => toggleSection(status)}
-                                    >
-                                        <h2 className="text-xl font-semibold">
-                                            {config.title} ({candidaturasByStatus.length})
-                                        </h2>
-                                        <span className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-                                            ▼
-                                        </span>
-                                    </div>
-                                    <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
-                                        }`}>
-                                        <div className={config.bgColor}>
-                                            {candidaturasByStatus.map((candidatura, index) => {
-                                                if (!candidatura.candidatoId) return null
+                                <div>
+                                    {status == 'APROVADO' &&
+                                        <div className="flex justify-end mb-2">
+                                            <GenericBlueButton color={3} onClick={() => exportApprovedCandidates(candidaturasByStatus, jobData?.titulo || 'vaga')}>Baixar em Planilha</GenericBlueButton>
+                                        </div>
+                                    }
+                                    <div key={status} className="rounded-lg overflow-hidden shadow-lg">
+                                        <div
+                                            className={`${config.headerColor} text-white p-4 cursor-pointer flex justify-between items-center transition-colors hover:opacity-90`}
+                                            onClick={() => toggleSection(status)}
+                                        >
+                                            <h2 className="text-xl font-semibold">
+                                                {config.title} ({candidaturasByStatus.length})
+                                            </h2>
+                                            <span className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                                                ▼
+                                            </span>
+                                        </div>
+                                        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                                            }`}>
+                                            <div className={config.bgColor}>
+                                                {candidaturasByStatus.map((candidatura, index) => {
+                                                    if (!candidatura.candidatoId) return null
 
-                                                const isEven = index % 2 === 0
-                                                const cardBg = isEven ? config.cardBg : 'bg-white'
+                                                    const isEven = index % 2 === 0
+                                                    const cardBg = isEven ? config.cardBg : 'bg-white'
 
-                                                return (
-                                                    <div
-                                                        key={candidatura.id}
-                                                        className={`${cardBg} ${config.cardHover} transition-all duration-200 p-4 cursor-pointer border-b border-gray-200 last:border-b-0`}
-                                                        onClick={() => setSelectedCandidatura(candidatura)}
-                                                    >
-                                                        <div className="flex items-start gap-4">
-                                                            <div
-                                                                className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    navigate(`/candidates/${candidatura.candidatoId}/profile/`)
-                                                                }}
-                                                            >
-                                                                <img
-                                                                    src={`${API_BASE_URL}/api/arquivos/candidato/${candidatura.candidatoId}/foto/view`}
-                                                                    alt="Candidato"
-                                                                    className="w-full h-full object-cover hover:opacity-80 transition-opacity"
-                                                                    onError={(e) => {
-                                                                        e.currentTarget.style.display = 'none'
-                                                                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement
-                                                                        if (nextElement) nextElement.style.display = 'flex'
+                                                    return (
+                                                        <div
+                                                            key={candidatura.id}
+                                                            className={`${cardBg} ${config.cardHover} transition-all duration-200 p-4 cursor-pointer border-b border-gray-200 last:border-b-0`}
+                                                            onClick={() => setSelectedCandidatura(candidatura)}
+                                                        >
+                                                            <div className="flex items-start gap-4">
+                                                                <div
+                                                                    className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation()
+                                                                        navigate(`/candidates/${candidatura.candidatoId}/profile/`)
                                                                     }}
-                                                                />
-                                                                <span className="text-gray-600 text-lg font-semibold" style={{ display: 'none' }}>
-                                                                    C
-                                                                </span>
+                                                                >
+                                                                    <img
+                                                                        src={`${API_BASE_URL}/api/arquivos/candidato/${candidatura.candidatoId}/foto/view`}
+                                                                        alt="Candidato"
+                                                                        className="w-full h-full object-cover hover:opacity-80 transition-opacity"
+                                                                        onError={(e) => {
+                                                                            e.currentTarget.style.display = 'none'
+                                                                            const nextElement = e.currentTarget.nextElementSibling as HTMLElement
+                                                                            if (nextElement) nextElement.style.display = 'flex'
+                                                                        }}
+                                                                    />
+                                                                    <span className="text-gray-600 text-lg font-semibold" style={{ display: 'none' }}>
+                                                                        C
+                                                                    </span>
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                                                                        {candidatura.candidato.nome}
+                                                                    </h3>
+                                                                    <p className="text-gray-600 text-sm line-clamp-2">
+                                                                        {candidatura.mensagem || 'Nenhuma mensagem enviada'}
+                                                                    </p>
+                                                                    <p className="text-xs text-gray-500 mt-1">
+                                                                        {new Date(candidatura.dataCandidatura).toLocaleDateString('pt-BR')}
+                                                                    </p>
+                                                                </div>
+                                                                {status === 'PENDENTE' ? (
+                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation()
+                                                                                handleStatusChange(candidatura.id, 'APROVADO')
+                                                                            }}
+                                                                            className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            title="Aprovar candidatura"
+                                                                        >
+                                                                            ✓
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation()
+                                                                                handleStatusChange(candidatura.id, 'RECUSADO')
+                                                                            }}
+                                                                            className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            title="Recusar candidatura"
+                                                                        >
+                                                                            ✕
+                                                                        </button>
+                                                                    </div>
+                                                                ) : status === 'APROVADO' ? (
+                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation()
+                                                                                handleStatusChange(candidatura.id, 'RECUSADO')
+                                                                            }}
+                                                                            className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            title="Reprovar candidatura"
+                                                                        >
+                                                                            ✕
+                                                                        </button>
+                                                                    </div>
+                                                                ) : status === 'RECUSADO' ? (
+                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation()
+                                                                                handleStatusChange(candidatura.id, 'APROVADO')
+                                                                            }}
+                                                                            className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            title="Aprovar candidatura"
+                                                                        >
+                                                                            ✓
+                                                                        </button>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="w-8 h-8 border-2 border-gray-300 rounded bg-white flex-shrink-0">
+                                                                        {/* Espaço para favoritar */}
+                                                                    </div>
+                                                                )}
                                                             </div>
-                                                            <div className="flex-1 min-w-0">
-                                                                <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                                                                    {candidatura.candidato.nome}
-                                                                </h3>
-                                                                <p className="text-gray-600 text-sm line-clamp-2">
-                                                                    {candidatura.mensagem || 'Nenhuma mensagem enviada'}
-                                                                </p>
-                                                                <p className="text-xs text-gray-500 mt-1">
-                                                                    {new Date(candidatura.dataCandidatura).toLocaleDateString('pt-BR')}
-                                                                </p>
-                                                            </div>
-                                                            {status === 'PENDENTE' ? (
-                                                                <div className="flex gap-2 flex-shrink-0">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleStatusChange(candidatura.id, 'APROVADO')
-                                                                        }}
-                                                                        className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
-                                                                        title="Aprovar candidatura"
-                                                                    >
-                                                                        ✓
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleStatusChange(candidatura.id, 'RECUSADO')
-                                                                        }}
-                                                                        className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
-                                                                        title="Recusar candidatura"
-                                                                    >
-                                                                        ✕
-                                                                    </button>
-                                                                </div>
-                                                            ) : status === 'APROVADO' ? (
-                                                                <div className="flex gap-2 flex-shrink-0">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleStatusChange(candidatura.id, 'RECUSADO')
-                                                                        }}
-                                                                        className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
-                                                                        title="Reprovar candidatura"
-                                                                    >
-                                                                        ✕
-                                                                    </button>
-                                                                </div>
-                                                            ) : status === 'RECUSADO' ? (
-                                                                <div className="flex gap-2 flex-shrink-0">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleStatusChange(candidatura.id, 'APROVADO')
-                                                                        }}
-                                                                        className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
-                                                                        title="Aprovar candidatura"
-                                                                    >
-                                                                        ✓
-                                                                    </button>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="w-8 h-8 border-2 border-gray-300 rounded bg-white flex-shrink-0">
-                                                                    {/* Espaço para favoritar */}
-                                                                </div>
-                                                            )}
                                                         </div>
-                                                    </div>
-                                                )
-                                            })}
+                                                    )
+                                                })}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -450,7 +458,13 @@ export default function JobView() {
                                                             headers: { 'Authorization': 'Bearer ' + token }
                                                         })
                                                         if (response.ok) {
-                                                            window.open(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/curriculo/download`, '_blank')
+                                                            const blob = await response.blob()
+                                                            const url = window.URL.createObjectURL(blob)
+                                                            const link = document.createElement('a')
+                                                            link.href = url
+                                                            link.download = `curriculo${selectedCandidatura.candidato.nome.split(' ')[0]}${selectedCandidatura.candidatoId}.pdf`
+                                                            link.click()
+                                                            window.URL.revokeObjectURL(url)
                                                         } else {
                                                             alert('Currículo não encontrado para este candidato.')
                                                         }
@@ -469,7 +483,13 @@ export default function JobView() {
                                                             headers: { 'Authorization': 'Bearer ' + token }
                                                         })
                                                         if (response.ok) {
-                                                            window.open(`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/laudo/download`, '_blank')
+                                                            const blob = await response.blob()
+                                                            const url = window.URL.createObjectURL(blob)
+                                                            const link = document.createElement('a')
+                                                            link.href = url
+                                                            link.download = `laudo${selectedCandidatura.candidato.nome.split(' ')[0]}${selectedCandidatura.candidatoId}.pdf`
+                                                            link.click()
+                                                            window.URL.revokeObjectURL(url)
                                                         } else {
                                                             alert('Laudo não encontrado para este candidato.')
                                                         }
@@ -483,7 +503,7 @@ export default function JobView() {
                                             </button>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="bg-white p-4 rounded border border-blue2">
                                         <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
