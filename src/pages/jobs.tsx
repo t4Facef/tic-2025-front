@@ -110,7 +110,7 @@ export default function Jobs() {
         }
 
         fetchVagas()
-    }, [filtros, user?.id, role, currentPage])
+    }, [filtros, user?.id, role, currentPage, user])
 
     return (
         <div className="flex flex-1">

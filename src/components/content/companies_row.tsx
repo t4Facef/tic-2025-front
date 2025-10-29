@@ -73,7 +73,7 @@ export default function CompaniesRow({ companyIds, basePath, extensions }: Compa
               style={{ width: itemWidth }}
               className="flex justify-center px-2"
             >
-              <CompanyImage id={id} basePath={basePath} extensions={extensions} />
+              <CompanyImage id={id} />
             </div>
           ))}
         </div>

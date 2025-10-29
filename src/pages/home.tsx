@@ -1,11 +1,28 @@
+import { useEffect, useState } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
 import JobPosition from "../components/content/job_position"
 import mockJobs from "../data/mockdata/jobs"
+import { API_BASE_URL } from "../config/api";
 
-const companyIds = [1, 2, 3, 4, 5, 1, 2]; // IDs das empresas
+
 
 export default function Home() {
+    const [companyIds, setCompanyIds] = useState([1])
+    
+    useEffect(() => {
+        const getTopCompanies = async () => {
+            try{
+                const res = await fetch(`${API_BASE_URL}/api/vagas/top-empresas`)
+                const data = await res.json()
+                setCompanyIds(data)
+            }catch(err){
+                console.log(err)
+            }
+        }
+
+        getTopCompanies()
+    }, [])
     return (
         <div>
             <section className="relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>

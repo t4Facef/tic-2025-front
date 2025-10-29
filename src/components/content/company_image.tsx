@@ -1,25 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
 type CompanyImageProps = {
   id: number;
-  basePath?: string;
-  extensions?: string[];
 };
 
-export default function CompanyImage({
-  id,
-  basePath = "./img/logosTeste",
-  extensions = ["jpeg", "jpg", "png", "webp"]
-}: CompanyImageProps) {
+export default function CompanyImage({ id }: CompanyImageProps) {
   const navigate = useNavigate();
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
-    const currentExt = img.src.split('.').pop() || "";
-    const currentIndex = extensions.indexOf(currentExt);
-    
-    if (currentIndex >= 0 && currentIndex < extensions.length - 1) {
-      img.src = `${basePath}/teste${id}.${extensions[currentIndex + 1]}`;
+    img.style.display = 'none';
+    // Fallback: mostrar inicial da empresa ou ícone padrão
+    const parent = img.parentElement;
+    if (parent) {
+      parent.innerHTML = `<div class="w-32 h-32 bg-blue3 rounded-full flex items-center justify-center text-white text-2xl font-bold">E</div>`;
     }
   };
 
@@ -29,7 +24,7 @@ export default function CompanyImage({
       className="transition-transform duration-200 hover:scale-110 hover:z-10 mx-1 relative"
     >
       <img
-        src={`${basePath}/teste${id}.${extensions[0]}`}
+        src={`${API_BASE_URL}/api/arquivos/empresa/${id}/foto/view`}
         alt={`Company ${id}`}
         onError={handleImageError}
         className="w-32 h-32 object-cover rounded-full shadow-lg"
