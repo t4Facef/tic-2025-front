@@ -31,6 +31,7 @@ interface VagasSearchFilters {
     recomendadas?: boolean;
     minhasVagas?: boolean;
     inscrito?: boolean;
+    page?: number;
 }
 
 export default function Jobs() {
@@ -43,6 +44,8 @@ export default function Jobs() {
     })
     const [vagas, setVagas] = useState<Vaga[]>([])
     const [isLoading, setIsLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pagination, setPagination] = useState({ totalPages: 1, totalItems: 0, itemsPerPage: 8 })
     const hasInitialized = useRef(false)
     
     useEffect(() => {
@@ -62,6 +65,8 @@ export default function Jobs() {
 
     useEffect(() => {
         const fetchVagas = async () => {
+            if (!user?.id) return // Aguarda user carregar
+            
             setIsLoading(true)
             try {
                 let filtrosProcessados = { ...filtros }
@@ -80,6 +85,9 @@ export default function Jobs() {
 
                 delete filtrosProcessados.minhasVagas
 
+                filtrosProcessados = { ...filtrosProcessados, page: currentPage }
+                
+                console.log(filtrosProcessados)
                 const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
                     method: "POST",
                     headers: {
@@ -89,7 +97,11 @@ export default function Jobs() {
                 })
 
                 const data = await res.json()
-                setVagas(data)
+                console.log(data)
+                setVagas(data.vagas || data)
+                if (data.pagination) {
+                    setPagination(data.pagination)
+                }
             } catch (err) {
                 console.log(err)
             } finally {
@@ -98,7 +110,7 @@ export default function Jobs() {
         }
 
         fetchVagas()
-    }, [filtros, role, user, user?.id])
+    }, [filtros, user?.id, role, currentPage])
 
     return (
         <div className="flex flex-1">
@@ -110,6 +122,7 @@ export default function Jobs() {
                             initialValues={filtros}
                             onFiltersChange={(newFilters) => {
                                 setFiltros(prev => ({ ...prev, ...newFilters }))
+                                setCurrentPage(1)
                             }} 
                         />
                     </div>
@@ -119,6 +132,7 @@ export default function Jobs() {
                 <div className="space-y-8 w-full">
                     <SearchBox onFiltersChange={(newFilters) => {
                         setFiltros(prev => ({ ...prev, ...newFilters }))
+                        setCurrentPage(1)
                     }} />
                     <div>
                         {isLoading ? (
@@ -161,18 +175,66 @@ export default function Jobs() {
                                 )}
                             </div>
                         )}
-                        <div className="flex font-semibold my-4">
-                            <ChevronLeft />
-                            <nav className="flex space-x-3">
-                                <a href="/1">1</a>
-                                <a href="/1">2</a>
-                                <a href="/1">3</a>
-                                <a href="/1">4</a>
-                                <a href="/1">5</a>
-                                <a href="/i">...</a>
-                            </nav>
-                            <ChevronRight />
-                        </div>
+                        {pagination.totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-2 my-8">
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                    disabled={currentPage === 1}
+                                    className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <ChevronLeft size={20} />
+                                </button>
+                                
+                                <div className="flex gap-1">
+                                    {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                                        let pageNum;
+                                        if (pagination.totalPages <= 5) {
+                                            pageNum = i + 1;
+                                        } else if (currentPage <= 3) {
+                                            pageNum = i + 1;
+                                        } else if (currentPage >= pagination.totalPages - 2) {
+                                            pageNum = pagination.totalPages - 4 + i;
+                                        } else {
+                                            pageNum = currentPage - 2 + i;
+                                        }
+                                        
+                                        return (
+                                            <button
+                                                key={pageNum}
+                                                onClick={() => setCurrentPage(pageNum)}
+                                                className={`px-3 py-1 rounded ${
+                                                    currentPage === pageNum
+                                                        ? 'bg-blue3 text-white'
+                                                        : 'hover:bg-blue1'
+                                                }`}
+                                            >
+                                                {pageNum}
+                                            </button>
+                                        );
+                                    })}
+                                    
+                                    {pagination.totalPages > 5 && currentPage < pagination.totalPages - 2 && (
+                                        <>
+                                            <span className="px-2">...</span>
+                                            <button
+                                                onClick={() => setCurrentPage(pagination.totalPages)}
+                                                className="px-3 py-1 rounded hover:bg-blue1"
+                                            >
+                                                {pagination.totalPages}
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                                
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.min(pagination.totalPages, prev + 1))}
+                                    disabled={currentPage === pagination.totalPages}
+                                    className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <ChevronRight size={20} />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
