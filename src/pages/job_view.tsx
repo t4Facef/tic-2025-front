@@ -504,8 +504,16 @@ export default function JobView() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white p-4 rounded border border-blue2">
+                                    <div className="bg-white p-4 rounded border border-blue2 space-y-4">
                                         <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
+                                        <div className="flex justify-between">
+                                            <span>Email: <strong>{selectedCandidatura.candidato.email}</strong></span>
+                                            <span>Telefones: <strong>{selectedCandidatura.candidato.telefones.map(tel => tel + " ")}</strong></span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>Cidade: <strong>{selectedCandidatura.candidato.endereco.cidade}, {selectedCandidatura.candidato.endereco.estado}</strong></span>
+                                            <span>Bairro: <strong>{selectedCandidatura.candidato.endereco.bairro}</strong></span>
+                                        </div>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
                                     </div>
 
@@ -513,7 +521,7 @@ export default function JobView() {
                                         <GenericBlueButton
                                             color={3}
                                             size="md"
-                                            onClick={() => navigate(`/candidates/${selectedCandidatura.candidatoId}/profile/`)}
+                                            onClick={() => window.open(`/candidates/${selectedCandidatura.candidatoId}/profile/`, '_blank')}
                                         >
                                             Ver Perfil Completo
                                         </GenericBlueButton>

@@ -1,3 +1,5 @@
+import { Endereco } from "../candidate";
+
 // Interface para a resposta da rota GET /api/vagas/:id
 export interface VagaComCandidaturas {
   id: number;
@@ -48,17 +50,15 @@ export interface VagaComCandidaturas {
     status: 'PENDENTE' | 'APROVADO' | 'RECUSADO';
     dataCandidatura: string;
     candidato: {
-      id: number;
       nome: string;
-      habilidades: string[];
+      email: string;
+      telefones: string[];
+      endereco: Endereco
       subtipos: {
         subtipo: {
           nome: string;
         };
       }[];
-      candidato: {
-        nome: "João Silva"
-      }
     };
   }[];
 }
