@@ -6,7 +6,7 @@ import { JobData } from "../../types/vagas/vaga";
 
 interface JobPositionProps {
   jobData: JobData;
-  isEditing: boolean;
+  isEditing?: boolean;
 }
 
 export default function JobPosition({ jobData, isEditing=false }: JobPositionProps) {

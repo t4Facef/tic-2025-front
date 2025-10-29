@@ -63,7 +63,12 @@ export default function Login() {
                 </div>
                 <div className="bg-blue1 rounded-b-lg">
                     <div className="flex flex-col gap-8 justify-center py-6 px-16">
-                        <form className="flex flex-col w-full space-y-4">
+                        <form className="flex flex-col w-full space-y-4" onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault()
+                                handleSubmit(email, password)
+                            }
+                        }}>
                             <GenericFormField id="user" type="text" placeholder="E-mail, CPF ou CNPJ" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)}>Usuário</GenericFormField>
                             <GenericFormField id="senha" type="password" placeholder="Digite sua senha" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}>Senha</GenericFormField>
 

@@ -133,7 +133,8 @@ export default function CandidateDashboard() {
                                 <StatisticBox title="Candidatura totais" animation={true} finalValue={statistics.candidaturasTotal}>{statistics.candidaturasTotal}</StatisticBox>
                                 <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.candidaturasAbertas}>{statistics.candidaturasAbertas}</StatisticBox>
                             </div>
-                            <div className="flex justify-end mt-2 pr-2">
+                            <div className="flex justify-end mt-2 pr-2 gap-4">
+                                <GenericBlueButton color={3} link="/jobs">Procurar Vagas</GenericBlueButton>
                                 <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Acessar minhas candidaturas</GenericBlueButton>
                             </div>
                         </div>
