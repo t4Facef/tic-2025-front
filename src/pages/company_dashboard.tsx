@@ -9,10 +9,14 @@ import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
 
+interface meta {
+    faltam: number
+}
+
 interface CompanyStatistics {
     candidaturasHoje: number,
     vagasAbertas: number,
-    metaContratacao: number
+    metaContratacao: meta
 }
 
 export default function CompanyDashboard() {
@@ -32,6 +36,7 @@ export default function CompanyDashboard() {
                 const res = await fetch(`${API_BASE_URL}/api/estatisticas/empresa/${companyId}`)
                 const data = await res.json()
                 setCompanyStatistics(data)
+                console.log(data)
 
             } catch (err) {
                 console.log("Error fetching statistics: " + err)
@@ -92,7 +97,7 @@ export default function CompanyDashboard() {
                         <div className="flex justify-between">
                             <StatisticBox title="Candidaturas Hoje" animation={true} finalValue={companyStatistics?.candidaturasHoje || 0}>{companyStatistics?.candidaturasHoje || 0}</StatisticBox>
                             <StatisticBox title="Vagas Abertas" animation={true} finalValue={companyStatistics?.vagasAbertas || 0}>{companyStatistics?.vagasAbertas || 0}</StatisticBox>
-                            <StatisticBox title="Meta de Contratação" animation={true} finalValue={companyStatistics?.metaContratacao || 0}>{companyStatistics?.metaContratacao || 0}</StatisticBox>
+                            <StatisticBox title="Meta de Contratação" animation={true} finalValue={companyStatistics?.metaContratacao?.faltam || 0}>{companyStatistics?.metaContratacao?.faltam || 0}</StatisticBox>
                         </div>
                         <div className="flex justify-end mt-2 pr-2">
                             <GenericBlueButton color={3} link="/jobs/new">Criar nova vaga</GenericBlueButton>
