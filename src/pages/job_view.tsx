@@ -21,6 +21,7 @@ export default function JobView() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<errorFields | null>(null)
     const [jobData, setJobData] = useState<VagaComCandidaturas>()
+    const [jobStatus, setJobStatus] = useState(jobData?.status)
     const [selectedCandidatura, setSelectedCandidatura] = useState<VagaComCandidaturas['candidaturas'][0] | null>(null)
     const [expandedSections, setExpandedSections] = useState({
         PENDENTE: true,
@@ -60,6 +61,52 @@ export default function JobView() {
             setJobData(originalJobData)
             console.error('Erro ao atualizar status:', error)
         }
+    }
+
+    const handleJobStatusChange = () => {
+        const currentStatus = jobStatus || jobData?.status
+        const newStatus = currentStatus === 'DISPONIVEL' ? "ENCERRADA" : "DISPONIVEL"
+        setJobStatus(newStatus)
+        
+        // Atualiza também o jobData para refletir na UI
+        setJobData(prev => prev ? { ...prev, status: newStatus } : prev)
+
+        const updateJobStatus = async () => {
+            try{
+                const res = await fetch(`${API_BASE_URL}/api/vagas/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                })
+                
+                console.log('Status da resposta:', res.status)
+                
+                if (!res.ok) {
+                    console.error('Erro na requisição:', res.status, res.statusText)
+                    // Reverte o estado local em caso de erro
+                    setJobStatus(currentStatus)
+                    setJobData(prev => prev ? { ...prev, status: currentStatus || prev.status } : prev)
+                    return
+                }
+                
+                const data = await res.json()
+                console.log("Alteração de dados do status: ")
+                console.log(data)
+                console.log('Novo status no servidor:', data.status)
+            }catch(err){
+                console.log('Erro na requisição:', err)
+                // Reverte o estado local em caso de erro
+                setJobStatus(currentStatus)
+                setJobData(prev => prev ? { ...prev, status: currentStatus || prev.status } : prev)
+            }
+        }
+
+        updateJobStatus()
     }
 
     const toggleSection = (status: 'PENDENTE' | 'APROVADO' | 'RECUSADO') => {
@@ -155,6 +202,7 @@ export default function JobView() {
                         const data = await res.json()
                         console.log('Job data received:', data)
                         setJobData(data)
+                        setJobStatus(data.status)
                         setLoading(false)
                         break
                     }
@@ -207,7 +255,7 @@ export default function JobView() {
                 <div className="text-center space-y-6">
                     <div className="relative flex items-center mb-16">
                         <h1 className="text-4xl text-blue3 absolute left-1/2 transform -translate-x-1/2">Visualização <strong>{jobData?.titulo} - <span className={`${jobData?.status === 'DISPONIVEL' ? 'text-green-600' : 'text-red-600'}`}>{jobData?.status}</span></strong></h1>
-                        <button className={`p-3 rounded-lg ml-auto ${jobData?.status === 'DISPONIVEL' ? "bg-red-500" : "bg-green-500"}`}>{jobData?.status === 'DISPONIVEL' ? "Encerrar": "Ativar"}</button>
+                        <button className={`p-3 rounded-lg ml-auto ${jobStatus === 'DISPONIVEL' ? "bg-red-500" : "bg-green-500"}`} onClick={() => handleJobStatusChange()}>{jobData?.status === 'DISPONIVEL' ? "Encerrar": "Ativar"}</button>
                     </div>
                     <div className="text-start">
                         <p>Clique na vaga para visualizar e editar </p>

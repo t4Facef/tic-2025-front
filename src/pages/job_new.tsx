@@ -218,6 +218,7 @@ export default function JobForm() {
               <GenericFormField
                 id="job_level"
                 type="select"
+                placeholder="Selecione"
                 options={[...WORK_LEVELS]}
                 onChange={e => setDataForm(prev => ({ ...prev, workLevel: e.target.value }))}
               >
