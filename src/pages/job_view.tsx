@@ -7,6 +7,7 @@ import { VagaComCandidaturas } from "../types/vagas/vagaCandidaturas";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import JobPosition from "../components/content/job_position";
 import { exportApprovedCandidates } from "../utils/excelExport";
+import NotificationModal from "../components/content/notification_modal";
 
 interface errorFields {
     title: string,
@@ -28,6 +29,11 @@ export default function JobView() {
         APROVADO: false,
         RECUSADO: false
     })
+    const [notificationModal, setNotificationModal] = useState<{
+        isOpen: boolean;
+        status: 'APROVADO' | 'RECUSADO';
+        candidates: VagaComCandidaturas['candidaturas'];
+    }>({ isOpen: false, status: 'APROVADO', candidates: [] })
 
     const handleStatusChange = async (candidaturaId: number, newStatus: 'APROVADO' | 'RECUSADO' | 'PENDENTE') => {
         const originalJobData = jobData
@@ -107,6 +113,37 @@ export default function JobView() {
         }
 
         updateJobStatus()
+    }
+
+    const sendNotification = async (title: string, message: string) => {
+        try {
+            const candidateIds = notificationModal.candidates.map(c => c.candidatoId)
+            const url = `${API_BASE_URL}/api/notificacoes`
+            console.log('Sending notification to:', url)
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    titulo: title,
+                    conteudo: message,
+                    candidatoIds: candidateIds,
+                    remetenteEmpresaId: jobData?.empresaId
+                })
+            })
+            
+            if (!response.ok) {
+                throw new Error('Falha ao enviar notificação')
+            }
+            
+            console.log('Notificação enviada com sucesso')
+        } catch (error) {
+            console.error('Erro ao enviar notificação:', error)
+            throw error
+        }
     }
 
     const toggleSection = (status: 'PENDENTE' | 'APROVADO' | 'RECUSADO') => {
@@ -297,8 +334,32 @@ export default function JobView() {
                             return (
                                 <div>
                                     {status == 'APROVADO' &&
-                                        <div className="flex justify-end mb-2">
+                                        <div className="flex justify-end gap-2 mb-2">
+                                            <button
+                                                className="px-4 py-2 bg-green-900 hover:bg-green-950 text-white rounded-lg transition-colors"
+                                                onClick={() => setNotificationModal({ 
+                                                    isOpen: true, 
+                                                    status: 'APROVADO', 
+                                                    candidates: candidaturasByStatus 
+                                                })}
+                                            >
+                                                Notificar Aprovados
+                                            </button>
                                             <GenericBlueButton color={3} onClick={() => exportApprovedCandidates(candidaturasByStatus, jobData?.titulo || 'vaga')}>Baixar em Planilha</GenericBlueButton>
+                                        </div>
+                                    }
+                                    {status == 'RECUSADO' &&
+                                        <div className="flex justify-end mb-2">
+                                            <button
+                                                className="px-4 py-2 bg-red-900 hover:bg-red-950 text-white rounded-lg transition-colors"
+                                                onClick={() => setNotificationModal({ 
+                                                    isOpen: true, 
+                                                    status: 'RECUSADO', 
+                                                    candidates: candidaturasByStatus 
+                                                })}
+                                            >
+                                                Notificar Recusados
+                                            </button>
                                         </div>
                                     }
                                     <div key={status} className="rounded-lg overflow-hidden shadow-lg">
@@ -590,6 +651,14 @@ export default function JobView() {
                     </div>
                 )}
             </div>
+            
+            <NotificationModal
+                isOpen={notificationModal.isOpen}
+                onClose={() => setNotificationModal({ ...notificationModal, isOpen: false })}
+                onSend={sendNotification}
+                candidatesCount={notificationModal.candidates.length}
+                status={notificationModal.status}
+            />
         </div>
     )
 }

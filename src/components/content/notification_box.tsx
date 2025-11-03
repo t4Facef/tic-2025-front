@@ -1,9 +1,11 @@
 // src/components/notification.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bell, BellDot } from "lucide-react";
 import GenericBlueButton from "../buttons/generic_blue_button";
-import { mockNotifications, NotificationData } from "../../data/mockdata/notification";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { API_BASE_URL } from "../../config/api";
+import Notification from "../../types/notification";
 
 interface NotificationBoxProps {
   isOpen: boolean;
@@ -11,13 +13,28 @@ interface NotificationBoxProps {
 }
 
 export default function NotificationBox({ isOpen, onToggle }: NotificationBoxProps) {
-  const [notifications, setNotifications] = useState<NotificationData[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { user, role } = useAuth();
 
-  const hasNotifications = notifications.some((n) => !n.read);
+  useEffect(() => {
+      const fetchNotifications = async () => {
+        try{
+          const res = await fetch(`${API_BASE_URL}/api/notificacoes/${role == "CANDIDATO" ? "candidato" : "empresa"}/${user?.id}`)
+          const data = await res.json()
+          setNotifications(data)
+        }catch(error){
+          console.error("Error fetching notifications:", error);
+        }
+      }
+
+      fetchNotifications()
+    }, [role, user?.id])
+
+  const hasNotifications = notifications.some((n) => !n.lida);
 
   // Marcar todas como lidas
   const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, lida: true })));
   };
 
   // Função para limitar caracteres
@@ -46,17 +63,47 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
             <>
               <ul className="space-y-2">
                 {notifications.slice(0, 3).map((notif) => (
-                  <li key={notif.id}>
+                  <li key={notif.notificacaoId}>
                     <Link
                       to="/notifications"
                       className={`block p-3 rounded-md text-sm transition ${
-                        notif.read
+                        notif.lida
                           ? "bg-gray-200 text-gray-500"
                           : "bg-blue1 text-blue3 hover:bg-blue5H"
                       }`}
                     >
-                      <h4 className="font-semibold">{truncate(notif.title, 40)}</h4>
-                      <p className="text-xs">{truncate(notif.message, 70)}</p>
+                      <div className="flex items-start gap-2">
+                        {notif.notificacao.remetenteEmpresaId && (
+                          <Link
+                            to={`/companies/${notif.notificacao.remetenteEmpresaId}/profile/`}
+                            className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <img
+                              src={`${API_BASE_URL}/api/arquivos/empresa/${notif.notificacao.remetenteEmpresaId}/foto/view`}
+                              alt="Empresa"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                                const nextElement = e.currentTarget.nextElementSibling as HTMLElement
+                                if (nextElement) nextElement.style.display = 'flex'
+                              }}
+                            />
+                            <span className="text-gray-600 text-xs font-semibold" style={{ display: 'none' }}>
+                              E
+                            </span>
+                          </Link>
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-semibold">{truncate(notif.notificacao.titulo, 35)}</h4>
+                          {notif.notificacao.remetenteEmpresa && (
+                            <p className="text-xs opacity-70 mb-1">
+                              De: {truncate(notif.notificacao.remetenteEmpresa.razaoSocial, 25)}
+                            </p>
+                          )}
+                          <p className="text-xs">{truncate(notif.notificacao.conteudo, 60)}</p>
+                        </div>
+                      </div>
                     </Link>
                   </li>
                 ))}

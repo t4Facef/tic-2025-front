@@ -154,7 +154,7 @@ export default function CompanyDashboard() {
                         <div>
                             <h2 className="pt-6 text-2xl font-semibold text-blue3 mb-4">Vagas Encerradas</h2>
                             <div className="flex flex-col justify-center items-center bg-blue1 mb-12">
-                                <div className="flex flex-col items-end p-6 space-y-6">
+                                <div className="flex flex-col items-end p-6 space-y-6 w-full">
                                     {closedJobs.map(vaga => {
                                         const jobDataProps: JobData = {
                                             id: vaga.id,
