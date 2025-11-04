@@ -149,7 +149,6 @@ npm run lint
 ### 🚧 Em Desenvolvimento
 - Integração completa com backend
 - Sistema de notificações em tempo real
-- Matching avançado com IA
 - Recursos de acessibilidade ARIA
 
 ### Arquitetura Técnica
