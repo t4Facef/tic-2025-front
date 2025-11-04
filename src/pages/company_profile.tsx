@@ -31,7 +31,7 @@ interface Acessibilidade {
 export default function CompanyProfile() {
     const [companieInformation, setCompanyInformation] = useState<EmpresaProfile | null>(null)
     const [loading, setLoading] = useState(true)
-    const { isAuthenticated, token, user, isOwnProfile } = useAuth()
+    const { isAuthenticated, token, user, isOwnProfile, role } = useAuth()
     const { id } = useParams<{ id: string }>()
     const [isEditing, setIsEditing] = useState(false)
     const [editFields, setEditFields] = useState({
@@ -236,6 +236,16 @@ export default function CompanyProfile() {
         )
     }
 
+    if (role === 'ADMIN') {
+        return (
+            <NotFoundScreen
+                title="Acesso negado"
+                message="Administradores não podem acessar perfis de empresa."
+                icon="🔒"
+            />
+        )
+    }
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -283,7 +293,7 @@ export default function CompanyProfile() {
                                 <h1 className="font-bold text-4xl">{companie.name}</h1>
                                 <h2 className="font-medium text-lg text-gray-400">{companie.tradingName}</h2>
                             </div>
-                            {companieInformation && isOwnProfile(companieInformation.id) &&
+                            {companieInformation && isOwnProfile(companieInformation.id) && role !== 'ADMIN' &&
                                 <GenericBlueButton color={3} size="lg" onClick={() => handleSaveEdit()}>{isEditing ? "Salvar Alterações" : "Editar Perfil"}</GenericBlueButton>
                             }
                         </div>

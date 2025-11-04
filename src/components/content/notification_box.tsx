@@ -17,6 +17,8 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
   const { user, role } = useAuth();
 
   useEffect(() => {
+      if (role === 'ADMIN') return;
+      
       const fetchNotifications = async () => {
         try{
           const res = await fetch(`${API_BASE_URL}/api/notificacoes/${role == "CANDIDATO" ? "candidato" : "empresa"}/${user?.id}`)

@@ -19,7 +19,7 @@ interface Statistics {
 
 
 export default function CandidateDashboard() {
-    const { user, isAuthenticated, token } = useAuth()
+    const { user, isAuthenticated, token, role } = useAuth()
     const [statistics, setStatistics] = useState<Statistics | null>(null)
     const [recommendedJobs, setRecommendedJobs] = useState<Vaga[]>([])
     const [appliedJobs, setAppliedJobs] = useState<Vaga[]>([])
@@ -107,6 +107,16 @@ export default function CandidateDashboard() {
             <NotFoundScreen
                 title="Acesso negado"
                 message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
+
+    if (role === 'ADMIN') {
+        return (
+            <NotFoundScreen
+                title="Acesso negado"
+                message="Administradores não podem acessar o dashboard de candidato."
                 icon="🔒"
             />
         )

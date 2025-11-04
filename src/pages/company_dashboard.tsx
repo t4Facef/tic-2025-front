@@ -20,7 +20,7 @@ interface CompanyStatistics {
 }
 
 export default function CompanyDashboard() {
-    const { user, isAuthenticated } = useAuth()
+    const { user, isAuthenticated, role } = useAuth()
     const [companyStatistics, setCompanyStatistics] = useState<CompanyStatistics>({} as CompanyStatistics)
     const [openJobs, setOpenJobs] = useState<Vaga[]>([])
     const [closedJobs, setClosedJobs] = useState<Vaga[]>([])
@@ -80,6 +80,16 @@ export default function CompanyDashboard() {
             <NotFoundScreen
                 title="Acesso negado"
                 message="Você precisa estar logado para acessar esta página."
+                icon="🔒"
+            />
+        )
+    }
+
+    if (role === 'ADMIN') {
+        return (
+            <NotFoundScreen
+                title="Acesso negado"
+                message="Administradores não podem acessar o dashboard de empresa."
                 icon="🔒"
             />
         )

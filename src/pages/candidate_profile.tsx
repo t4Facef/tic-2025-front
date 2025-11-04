@@ -22,7 +22,7 @@ import { API_BASE_URL } from "../config/api";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 
 export default function CandidateProfile() {
-    const { user, isAuthenticated, token, isOwnProfile } = useAuth()
+    const { user, isAuthenticated, token, isOwnProfile, role } = useAuth()
     const { id } = useParams<{ id: string }>()
     const [candidateData, setCandidateData] = useState<CandidateProfileType | null>(null)
     const [barreiras, setBarreiras] = useState<string[]>([])
@@ -288,6 +288,16 @@ export default function CandidateProfile() {
         )
     }
 
+    if (role === 'ADMIN') {
+        return (
+            <NotFoundScreen
+                title="Acesso negado"
+                message="Administradores não podem acessar perfis de candidato."
+                icon="🔒"
+            />
+        )
+    }
+
     if (candidateData) {
         return (
             <div className="px-20 py-10 space-y-8">
@@ -306,7 +316,7 @@ export default function CandidateProfile() {
                             )}
                         </div>
                     </div>
-                    {isViewingOwnProfile && <div>
+                    {isViewingOwnProfile && role !== 'ADMIN' && <div>
                         <GenericBlueButton color={3} size="lg" rounded="lg" onClick={() => handleEditing(isEditing)}>{isEditing ? "Salvar alterações" : "Editar Perfil"}</GenericBlueButton>
                     </div>
                     }

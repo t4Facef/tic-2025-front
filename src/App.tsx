@@ -24,6 +24,7 @@ import ResetPasswordNew from './pages/reset_password_new';
 import Notification from './pages/notification';
 import TestPage from './pages/test';
 import JobView from './pages/job_view';
+import AdminDashboard from './pages/admin_dashboard';
 
 export default function App() {
   return (
@@ -55,6 +56,7 @@ export default function App() {
           <Route path='/jobs/:id/view' element={<JobView/>}></Route>
           <Route path='/jobs/:id/edit' element={<JobNew/>}></Route>
           <Route path='/notifications' element={<Notification/>}></Route>
+          <Route path='/admin/dashboard' element={<AdminDashboard/>}></Route>
           <Route path='/test' element={<TestPage/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
