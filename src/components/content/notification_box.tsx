@@ -48,18 +48,21 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
       {/* Ícone do sino */}
       <button
         onClick={onToggle}
-        className="p-2 rounded-full bg-gray-200 transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none"
+        className="relative p-2 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none"
       >
         {hasNotifications ? (
-          <BellDot size={24} className="text-blue3" />
+          <>
+            <BellDot size={20} className="text-white" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+          </>
         ) : (
-          <Bell size={24} className="text-gray-600" />
+          <Bell size={20} className="text-white/80" />
         )}
       </button>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-50">
+        <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-200 rounded-xl shadow-xl p-4 z-50 animate-in slide-in-from-top-2 duration-200">
           <p className="text-blue3 my-2 font-semibold">Veja suas notificações</p>
           {notifications.length > 0 ? (
             <>

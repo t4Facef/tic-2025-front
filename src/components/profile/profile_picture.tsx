@@ -36,7 +36,10 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
 
   return (
     <div className="relative">
-      <div className="w-24 h-24 rounded-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200">
+      <button 
+        onClick={onToggle}
+        className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden ring-2 ring-white/30 hover:ring-white/50 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-white/70"
+      >
         <img
           src={role === 'CANDIDATO' 
             ? `${API_BASE_URL}/api/arquivos/candidato/${user?.id}/foto/view`
@@ -45,15 +48,14 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
             : '/img/profile-default.jpg'
           }
           alt="Foto de perfil"
-          className={`w-full h-full cursor-pointer hover:opacity-90 transition-opacity object-cover`}
-          onClick={onToggle}
+          className="w-full h-full object-cover"
           onError={(e) => {
             e.currentTarget.src = '/img/profile-default.jpg'
           }}
         />
-      </div>
+      </button>
       {isOpen && (
-        <div className="absolute z-50 bg-white right-0 mt-2 w-72 shadow-lg p-4 rounded-lg border border-gray-300 text-black space-y-4">
+        <div className="absolute z-50 bg-white right-0 mt-3 w-72 shadow-xl p-4 rounded-xl border border-gray-200 text-black space-y-4 animate-in slide-in-from-top-2 duration-200">
           <div className="flex-1 flex flex-row">
             <div className="flex-[2] h-max">
               <img

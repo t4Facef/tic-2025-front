@@ -8,17 +8,24 @@ import { JobData, Vaga } from "../types/vagas/vaga";
 
 
 export default function Home() {
-    const [companyIds, setCompanyIds] = useState([1])
+    const [companyIds, setCompanyIds] = useState([1, 2, 3, 4, 5, 6, 7])
     const [popularJobs, setPopularJobs] = useState<JobData[]>([])
     
     useEffect(() => {
         const getTopCompanies = async () => {
             try{
                 const res = await fetch(`${API_BASE_URL}/api/vagas/top-empresas`)
-                const data = await res.json()
-                setCompanyIds(data)
+                if (res.ok) {
+                    const data = await res.json()
+                    if (Array.isArray(data) && data.length > 0) {
+                        setCompanyIds(data)
+                    }
+                } else {
+                    console.error('Erro ao buscar empresas:', res.status)
+                }
             }catch(err){
-                console.log(err)
+                console.error('Erro na requisição de empresas:', err)
+                // Mantém os IDs padrão em caso de erro
             }
         }
 
