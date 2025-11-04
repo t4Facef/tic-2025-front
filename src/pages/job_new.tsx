@@ -5,7 +5,7 @@ import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
 import MarkdownEditor from "../components/forms/markdown_editor";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import JobPosition from "../components/content/job_position";
 import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES, SECTORS } from "../data/constants/select_options";
 import { API_BASE_URL } from "../config/api";
@@ -32,6 +32,7 @@ interface sendJobData {
 
 export default function JobForm() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user, role, token } = useAuth()
   const isEditing = Boolean(id);
   const [salario, setSalario] = useState("R$ ");
@@ -75,8 +76,59 @@ export default function JobForm() {
       }
     }
 
+    const fetchJobData = async () => {
+      if (isEditing && id) {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/vagas/${id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          })
+          
+          if (res.ok) {
+            const jobData = await res.json()
+            
+            setDataForm({
+              id: jobData.id,
+              idEmpresa: jobData.empresaId,
+              title: jobData.titulo,
+              company: jobData.empresa?.razaoSocial || user?.nome || "",
+              companyLogo: '',
+              location: jobData.localizacao || '',
+              description: jobData.descricao,
+              skillsTags: jobData.habilidades || [],
+              supportTags: jobData.apoios || [],
+              compatibility: 0,
+              startDate: new Date(jobData.dataInicio),
+              endDate: new Date(jobData.dataFim),
+              typeContract: jobData.tipoContrato,
+              typeWork: jobData.tipoTrabalho,
+              payment: jobData.pagamento || '',
+              workLevel: jobData.nivelTrabalho,
+              timeShift: jobData.turno || '',
+              sector: jobData.setor || '',
+              status: jobData.status
+            })
+            
+            setDescription(jobData.descricao)
+            setSalario(jobData.pagamento || "R$ ")
+            setAcessibilityTags(jobData.apoios || [])
+          } else {
+            alert('Erro ao carregar dados da vaga')
+            navigate('/companies/dashboard')
+          }
+        } catch (error) {
+          console.error('Erro ao buscar dados da vaga:', error)
+          alert('Erro ao carregar dados da vaga')
+          navigate('/companies/dashboard')
+        }
+      }
+    }
+
     fetchAcessibilidades()
-  }, [])
+    fetchJobData()
+  }, [isEditing, id, token, user, navigate])
 
   const handleSalarioChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setSalario(e.target.value);
@@ -148,8 +200,10 @@ export default function JobForm() {
     try {
       console.log('Dados enviados:', formatedData);
       
+      let res;
+      
       if(!isEditing){
-        const res = await fetch(`${API_BASE_URL}/api/vagas`, {
+        res = await fetch(`${API_BASE_URL}/api/vagas`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -157,17 +211,26 @@ export default function JobForm() {
           },
           body: JSON.stringify(formatedData)
         })
-        
-        if (res.ok) {
-          alert('Vaga cadastrada com sucesso!');
-        } else {
-          const errorText = await res.text();
-          console.error('Erro do servidor:', errorText);
-          alert(`Erro ao cadastrar vaga: ${res.status} - ${errorText}`);
-        }
+      } else {
+        res = await fetch(`${API_BASE_URL}/api/vagas/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(formatedData)
+        })
       }
-      else{
-        //Implementar edição depois
+      
+      if (res.ok) {
+        const responseData = await res.json();
+        const vagaId = isEditing ? id : responseData.id;
+        alert(isEditing ? 'Vaga atualizada com sucesso!' : 'Vaga cadastrada com sucesso!');
+        navigate(`/jobs/${vagaId}/view`);
+      } else {
+        const errorText = await res.text();
+        console.error('Erro do servidor:', errorText);
+        alert(`Erro ao ${isEditing ? 'atualizar' : 'cadastrar'} vaga: ${res.status} - ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -186,17 +249,17 @@ export default function JobForm() {
           </div>
           <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-12">
             <div className="p-3 space-y-5">
-              <GenericFormField id="job_title" type="text" placeholder="Titulo da vaga" onChange={(e) => setDataForm(prev => ({ ...prev, title: e.target.value }))}>
+              <GenericFormField id="job_title" type="text" placeholder="Titulo da vaga" value={dataForm.title} onChange={(e) => setDataForm(prev => ({ ...prev, title: e.target.value }))}>
                 Nome da vaga
               </GenericFormField>
-              <GenericFormField id="job_sector" type="select" placeholder="Selecione" options={SECTORS} onChange={(e) => setDataForm(prev => ({ ...prev, sector: e.target.value }))}>
+              <GenericFormField id="job_sector" type="select" placeholder="Selecione" options={SECTORS} value={dataForm.sector} onChange={(e) => setDataForm(prev => ({ ...prev, sector: e.target.value }))}>
                 Area da Vaga
               </GenericFormField>
               <div className="flex gap-24">
-                <GenericFormField id="start_date" type="date" onChange={(e) => setDataForm(prev => ({ ...prev, startDate: e.target.value ? new Date(e.target.value) : new Date() }))}>
+                <GenericFormField id="start_date" type="date" value={dataForm.startDate.toISOString().split('T')[0]} onChange={(e) => setDataForm(prev => ({ ...prev, startDate: e.target.value ? new Date(e.target.value) : new Date() }))}>
                   Início das inscrições
                 </GenericFormField>
-                <GenericFormField id="end_date" type="date" onChange={(e) => setDataForm(prev => ({ ...prev, endDate: e.target.value ? new Date(e.target.value) : new Date() }))}>
+                <GenericFormField id="end_date" type="date" value={dataForm.endDate.toISOString().split('T')[0]} onChange={(e) => setDataForm(prev => ({ ...prev, endDate: e.target.value ? new Date(e.target.value) : new Date() }))}>
                   Fim das inscrições
                 </GenericFormField>
               </div>
@@ -205,6 +268,7 @@ export default function JobForm() {
                 onChange={handleDescriptionChange}
                 placeholder="Descreva sua vaga aqui..."
                 label="Descrição da vaga"
+                key={isEditing ? `edit-${id}` : 'new'}
               />
               <GenericFormField
                 id="job_salary"
@@ -220,11 +284,12 @@ export default function JobForm() {
                 type="select"
                 placeholder="Selecione"
                 options={[...WORK_LEVELS]}
+                value={dataForm.workLevel}
                 onChange={e => setDataForm(prev => ({ ...prev, workLevel: e.target.value }))}
               >
                 Nível da vaga
               </GenericFormField>
-              <GenericFormField id="job_workload" type="text" placeholder="Digite o horário de trabalho para o candidato" onChange={e => setDataForm(prev => ({ ...prev, timeShift: e.target.value }))}>
+              <GenericFormField id="job_workload" type="text" placeholder="Digite o horário de trabalho para o candidato" value={dataForm.timeShift} onChange={e => setDataForm(prev => ({ ...prev, timeShift: e.target.value }))}>
                 Horário de trabalho
               </GenericFormField>
               <div>
@@ -234,6 +299,7 @@ export default function JobForm() {
                     id="job_type_work"
                     type="radio"
                     options={[...WORK_TYPES]}
+                    value={dataForm.typeWork}
                     onChange={(e) => setDataForm(prev => ({ ...prev, typeWork: e.target.value }))}
                   >
                     <strong>Tipo de Trabalho</strong>
@@ -242,6 +308,7 @@ export default function JobForm() {
                     id="job_type_contract"
                     type="radio"
                     options={[...CONTRACT_TYPES]}
+                    value={dataForm.typeContract}
                     onChange={(e) => setDataForm(prev => ({ ...prev, typeContract: e.target.value }))}
                   >
                     <strong>Tipo de Contrato</strong>
@@ -250,7 +317,7 @@ export default function JobForm() {
               </div>
               {["Presencial", "Híbrido"].includes(dataForm.typeWork) &&
                 <div>
-                  <GenericFormField id="job_location" type="text" placeholder="Digite o a cidade onde será a vaga presencial" onChange={e => setDataForm(prev => ({ ...prev, location: e.target.value }))}>
+                  <GenericFormField id="job_location" type="text" placeholder="Digite o a cidade onde será a vaga presencial" value={dataForm.location} onChange={e => setDataForm(prev => ({ ...prev, location: e.target.value }))}>
                     Local de Trabalho
                   </GenericFormField>
                 </div>

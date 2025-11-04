@@ -80,11 +80,18 @@ export default function GenericFormField({children, id, placeholder, options, au
                 </span>
                 <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
-                        const value = typeof opt === 'string' ? opt : opt.value;
+                        const optValue = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
                         return (
                             <label key={i} className="flex items-center gap-1">
-                                <input type="radio" name={id} value={value} onChange={onChange} required={required} />
+                                <input 
+                                    type="radio" 
+                                    name={id} 
+                                    value={optValue} 
+                                    checked={value === optValue}
+                                    onChange={onChange} 
+                                    required={required} 
+                                />
                                 {label}
                             </label>
                         );

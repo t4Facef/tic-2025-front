@@ -106,7 +106,7 @@ export default function JobModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4" style={{ zIndex: 9999 }} onClick={handleClose}>
       <div className="w-full max-w-4xl max-h-[95vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
 
-        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-6">
+        <div className="bg-blue1 p-6 rounded-t-xl shadow-lg flex-1 overflow-auto space-y-6 border border-blue2">
           {isCompleted ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-4">
@@ -136,49 +136,84 @@ export default function JobModal({
             </div>
           ) : !isApplying ?
             (<div>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mb-6">
                 <div className="flex-[7] text-center">
-                  <div className="space-y-1">
-                    <h2 className="font-bold text-4xl">{jobData.title}</h2>
-                    <h3 className="font-normal text-md">{jobData.company}</h3>
-                    <p className="text-xs">Período de Inscrição: {jobData.startDate.toLocaleDateString('pt-BR')} até {jobData.endDate.toLocaleDateString('pt-BR')}</p>
+                  <div className="space-y-2">
+                    <h2 className="font-bold text-3xl text-blue3">{jobData.title}</h2>
+                    <h3 className="font-medium text-lg text-blue2">{jobData.company}</h3>
+                    <p className="text-sm text-gray-600 bg-white px-3 py-1 rounded-full inline-block border border-blue2">Período de Inscrição: {jobData.startDate.toLocaleDateString('pt-BR')} até {jobData.endDate.toLocaleDateString('pt-BR')}</p>
                   </div>
                 </div>
-                <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border border-black overflow-hidden">
+                <div className="bg-white rounded-full flex justify-center items-center w-40 h-40 m-3 ml-9 border-2 border-blue3 overflow-hidden shadow-lg">
                   <ProfileLink id={jobData.idEmpresa} imgPath={`${API_BASE_URL}/api/arquivos/empresa/${jobData.idEmpresa}/foto/view`}></ProfileLink>
                 </div>
               </div>
 
-              <MarkdownRenderer
-                content={jobData.description}
-                className="text-gray-700 leading-relaxed text-justify"
-              />
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-blue3 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-6 bg-blue3 rounded-full"></div>
+                  Descrição da Vaga
+                </h3>
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-blue2">
+                  <MarkdownRenderer
+                    content={jobData.description}
+                    className="text-gray-700 leading-relaxed text-justify"
+                  />
+                </div>
+              </div>
 
-              <div className="space-y-2 mt-6">
-                <p className="font-medium">Características da vaga</p>
-                <div className="bg-blue4 rounded-lg p-2">
-                  <div className="flex justify-between">
-                    <span>Area: <strong>{jobData.sector}</strong></span>
-                    <span>Status: <strong>{jobData.status}</strong></span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Modalidade: <strong>{jobData.typeWork}</strong></span>
-                    <span>Localização: <strong>{jobData.location}</strong></span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Nivel da Vaga: <strong>{jobData.workLevel}</strong></span>
-                    <span>Horário de Trabalho: <strong>{jobData.timeShift}</strong></span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Pagamento: <strong>{jobData.payment}</strong></span>
-                    <span>Contrato: <strong>{jobData.typeContract}</strong></span>
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-blue3 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-6 bg-blue3 rounded-full"></div>
+                  Características da Vaga
+                </h3>
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-blue2">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Área:</span> <strong className="text-blue3">{jobData.sector}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Status:</span> <strong className="text-blue3">{jobData.status}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Modalidade:</span> <strong className="text-blue3">{jobData.typeWork}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Localização:</span> <strong className="text-blue3">{jobData.location}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Nível:</span> <strong className="text-blue3">{jobData.workLevel}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Horário:</span> <strong className="text-blue3">{jobData.timeShift}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Pagamento:</span> <strong className="text-blue3">{jobData.payment}</strong>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue3 rounded-full"></div>
+                      <span className="text-gray-600">Contrato:</span> <strong className="text-blue3">{jobData.typeContract}</strong>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-6 mt-6">
-                <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
-                <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
+              <div>
+                <h3 className="text-xl font-bold text-blue3 mb-4 flex items-center gap-2">
+                  <div className="w-1 h-6 bg-blue3 rounded-full"></div>
+                  Requisitos e Benefícios
+                </h3>
+                <div className="space-y-4">
+                  <TagContainer tags={jobData.skillsTags}>Habilidades esperadas</TagContainer>
+                  <TagContainer tags={jobData.supportTags}>Apoio da empresa</TagContainer>
+                </div>
               </div>
             </div>) : (
               <div className="text-center space-y-6">
@@ -187,7 +222,7 @@ export default function JobModal({
                   <p className="text-lg text-gray-700">Você está se candidatando para <strong>{jobData.title}</strong></p>
                 </div>
 
-                <div className="bg-blue4 rounded-lg p-6 text-left space-y-4">
+                <div className="bg-white rounded-xl p-6 text-left space-y-4 border border-blue2 shadow-sm">
                   <div className="space-y-2">
                     <label className="block text-xl font-medium text-gray-700">Mensagem para o recrutador (opcional)</label>
                     <p className="text-base text-gray-600">💡 Dica: Uma mensagem personalizada pode destacar sua candidatura! Conte brevemente por que você se interessa pela vaga ou mencione algo específico sobre a empresa.</p>
@@ -208,8 +243,11 @@ export default function JobModal({
 
         </div>
         {role === "CANDIDATO" && (
-          <div className="bg-white border border-y-black flex justify-center">
-            <span className="m-2">Você é {jobData.compatibility}% compatível com essa vaga</span>
+          <div className="bg-gradient-to-r from-blue3 to-blue2 text-white flex justify-center items-center py-3 shadow-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+              <span className="font-medium">Você é {jobData.compatibility}% compatível com essa vaga</span>
+            </div>
           </div>
         )}
 
@@ -217,21 +255,21 @@ export default function JobModal({
           if (role === "CANDIDATO" && !isCompleted && !hasError && !alreadyApplied) {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={handleApplying}>{isApplying ? 'Confirmar' : 'Inscrever'}</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-3xl rounded-bl-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue2 hover:bg-blue3 text-white flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleApplying}>{isApplying ? 'Confirmar' : 'Inscrever'}</button>
               </div>
             );
           } else if (role === "EMPRESA" && user?.id === jobData.idEmpresa) {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-bl-3xl py-2" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue3 text-white flex-1 border-black border-2 text-4xl rounded-br-3xl py-2" onClick={() => navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`)}>{isEditing ? "Editar" : "Vizualizar"}</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-3xl rounded-bl-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue2 hover:bg-blue3 text-white flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold" onClick={() => navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`)}>{isEditing ? "Editar" : "Vizualizar"}</button>
               </div>
             );
           } else {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 text-white w-full border-black border-2 text-4xl rounded-b-3xl py-2" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white w-full text-3xl rounded-b-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
               </div>
             );
           }

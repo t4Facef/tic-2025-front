@@ -33,7 +33,7 @@ export default function Faq() {
         {
             category: "Vagas",
             title: "Como funciona o matching de vagas?",
-            description: `Nosso algoritmo considera:\n\n• Compatibilidade entre habilidades\n• Tipo de deficiência vs. adaptações oferecidas\n• Localização e modalidade de trabalho\n• Experiência e formação\n• Preferências do candidato\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
+            description: `Nosso algoritmo considera:\n\n• **Acessibilidade**: 50% - Compatibilidade entre tipo de deficiência e adaptações oferecidas\n• **Habilidades**: 40% - Correspondência entre suas competências e requisitos da vaga\n• **Apoios da Vaga**: 10% - Recursos de suporte e benefícios oferecidos\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
         },
         {
             category: "Vagas",

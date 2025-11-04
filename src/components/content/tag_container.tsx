@@ -50,8 +50,8 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
     return (
         <div className="w-full space-y-4">
             <div>
-                <p className="inline-flex bg-blue2 text-black p-2 px-3 rounded-t-xl text-center justify-center items-center">{children}</p>
-                <div className="border-[2px] border-black min-h-[10rem] rounded-b-xl p-3 gap-2 bg-white relative">
+                <p className="inline-flex bg-blue3 text-white p-2 px-4 rounded-t-xl text-center justify-center items-center font-medium">{children}</p>
+                <div className="border-2 border-blue3 min-h-[8rem] rounded-b-xl p-4 gap-2 bg-white relative">
                     {edit && currentTags.length > 0 && (
                         <button
                             type="button"

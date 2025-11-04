@@ -235,25 +235,26 @@ export default function Usage(){
                                 <div className="bg-white border rounded-lg p-6">
                                     <h4 className="font-semibold mb-4">Critérios de Compatibilidade:</h4>
                                     <div className="space-y-4">
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                            <span>Habilidades Técnicas</span>
-                                            <span className="text-blue3 font-semibold">30%</span>
+                                        <div className="flex justify-between items-center p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                            <div>
+                                                <span className="font-medium">Acessibilidade</span>
+                                                <p className="text-sm text-gray-600">Compatibilidade entre deficiência e adaptações</p>
+                                            </div>
+                                            <span className="text-green-600 font-bold text-lg">50%</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                            <span>Experiência Profissional</span>
-                                            <span className="text-blue3 font-semibold">25%</span>
+                                        <div className="flex justify-between items-center p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                            <div>
+                                                <span className="font-medium">Habilidades</span>
+                                                <p className="text-sm text-gray-600">Correspondência entre competências e requisitos</p>
+                                            </div>
+                                            <span className="text-blue-600 font-bold text-lg">40%</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                            <span>Formação Acadêmica</span>
-                                            <span className="text-blue3 font-semibold">20%</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                            <span>Compatibilidade de Acessibilidade</span>
-                                            <span className="text-blue3 font-semibold">15%</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                                            <span>Localização</span>
-                                            <span className="text-blue3 font-semibold">10%</span>
+                                        <div className="flex justify-between items-center p-3 bg-purple-50 rounded border-l-4 border-purple-500">
+                                            <div>
+                                                <span className="font-medium">Apoios da Vaga</span>
+                                                <p className="text-sm text-gray-600">Recursos de suporte e benefícios oferecidos</p>
+                                            </div>
+                                            <span className="text-purple-600 font-bold text-lg">10%</span>
                                         </div>
                                     </div>
                                 </div>
