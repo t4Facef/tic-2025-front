@@ -38,7 +38,9 @@ export default function Login() {
                 // Redirecionar baseado no role
                 if(data.role === 'EMPRESA') {
                     navigate(`/companies/dashboard`)
-                } else {
+                } else if (data.role === 'ADMIN'){
+                    navigate(`/admin/dashboard`)
+                } else if (data.role === 'CANDIDATO') {
                     navigate(`/candidates/dashboard`)
                 }
             }
