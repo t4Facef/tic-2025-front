@@ -311,7 +311,7 @@ export default function CandidateProfile() {
                             </p>
                             {candidateData.endereco && (
                                 <p className="text-sm text-gray-600">
-                                    {candidateData.endereco.cidade}, {candidateData.endereco.estado}
+                                    {candidateData.endereco?.cidade || 'N/A'}, {candidateData.endereco?.estado || 'N/A'}
                                 </p>
                             )}
                         </div>

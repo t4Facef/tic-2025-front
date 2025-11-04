@@ -332,7 +332,7 @@ export default function JobView() {
                             const isExpanded = expandedSections[status]
 
                             return (
-                                <div>
+                                <div key={status}>
                                     {status == 'APROVADO' &&
                                         <div className="flex justify-end gap-2 mb-2">
                                             <button
@@ -623,8 +623,8 @@ export default function JobView() {
                                             <span>Telefones: <strong>{selectedCandidatura.candidato.telefones.map(tel => tel + " ")}</strong></span>
                                         </div>
                                         <div className="flex justify-between">
-                                            <span>Cidade: <strong>{selectedCandidatura.candidato.endereco.cidade}, {selectedCandidatura.candidato.endereco.estado}</strong></span>
-                                            <span>Bairro: <strong>{selectedCandidatura.candidato.endereco.bairro}</strong></span>
+                                            <span>Cidade: <strong>{selectedCandidatura.candidato.endereco?.cidade || 'N/A'}, {selectedCandidatura.candidato.endereco?.estado || 'N/A'}</strong></span>
+                                            <span>Bairro: <strong>{selectedCandidatura.candidato.endereco?.bairro || 'N/A'}</strong></span>
                                         </div>
                                         <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
                                     </div>
