@@ -1,51 +1,50 @@
 # Apojobs - Plataforma de Empregos Inclusiva
 
 ![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-3178c6?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.17-06b6d4?logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178c6?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF?logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.0-06b6d4?logo=tailwindcss)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 
-Uma plataforma web inclusiva para conectar **profissionais PCDs** (Pessoas com Deficiência) e **recrutadores de empresas** que precisam cumprir cotas de inclusão, desenvolvida com React, TypeScript e Tailwind CSS.
+Plataforma web inclusiva que conecta **profissionais PCDs** com **empresas** comprometidas com diversidade e inclusão. Sistema completo com autenticação, perfis personalizados e matching inteligente.
 
 ## 🎯 Objetivo
 
 O Apojobs foi criado para facilitar a inclusão de pessoas com deficiência no mercado de trabalho, conectando talentos PCDs com empresas que buscam cumprir suas metas de diversidade e inclusão de forma eficiente e humanizada.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Stack Tecnológica
 
-- **React 19.1.1** - Biblioteca para construção de interfaces
-- **TypeScript 4.9.5** - Superset do JavaScript com tipagem estática
-- **React Router DOM 7.7.1** - Roteamento para aplicações React
-- **Tailwind CSS 3.4.17** - Framework CSS utilitário
-- **React Testing Library** - Ferramentas para testes de componentes
+- **React 19.1.1** - Interface moderna e reativa
+- **TypeScript 5.8.3** - Tipagem estática e desenvolvimento seguro
+- **Vite 7.1.2** - Build tool rápido e otimizado
+- **React Router DOM 7.8.2** - Roteamento SPA avançado
+- **Tailwind CSS 3.4.0** - Design system responsivo
+- **Lucide React** - Ícones modernos e acessíveis
+- **React Image Crop** - Edição de imagens de perfil
+- **XLSX** - Exportação de dados para Excel
 
-## 📁 Estrutura do Projeto
+## 📁 Arquitetura do Projeto
 
 ```
 src/
 ├── components/           # Componentes reutilizáveis
-│   ├── buttons/         # Botões customizados (GenericBlueButton, HeaderButton)
-│   ├── content/         # Componentes de conteúdo (JobPosition, StepIndicator, etc.)
-│   ├── forms/           # Formulários e campos
-│   │   ├── register/    # Formulários de cadastro (candidate_form1-5, companie_form1-4)
-│   │   └── generic_form_field.tsx # Campo de formulário genérico
-│   ├── profile/         # Componentes de perfil
-│   └── structure/       # Componentes estruturais (Layout, Header, Footer, DevMenu)
-├── data/                # Dados mockados (fakedata.tsx)
-├── pages/               # Páginas da aplicação
-│   ├── home.tsx         # Página inicial
-│   ├── auth_entry.tsx   # Entrada de autenticação
-│   ├── main_register.tsx # Seleção de tipo de cadastro
-│   ├── register.tsx     # Formulário multi-step de cadastro
-│   ├── login.tsx        # Página de login
-│   ├── candidate_*.tsx  # Páginas do candidato (dashboard, profile)
-│   ├── company_*.tsx    # Páginas da empresa (dashboard, profile)
-│   ├── jobs.tsx         # Listagem de vagas
-│   ├── about.tsx        # Sobre a plataforma
-│   ├── faq.tsx          # Perguntas frequentes
-│   ├── adaptation.tsx   # Processo de adequação
-│   └── usage.tsx        # Guia de utilização
-└── App.tsx              # Componente principal com roteamento
+│   ├── accessibility/   # Componentes de acessibilidade
+│   ├── buttons/         # Sistema de botões padronizados
+│   ├── content/         # Componentes de conteúdo e layout
+│   ├── forms/           # Formulários inteligentes e validação
+│   ├── image/           # Componentes de imagem e upload
+│   ├── profile/         # Componentes de perfil de usuário
+│   └── structure/       # Layout e estrutura base
+├── contexts/            # Contextos React (Auth, etc.)
+├── hooks/               # Custom hooks reutilizáveis
+├── pages/               # Páginas da aplicação (25+ rotas)
+├── types/               # Definições TypeScript
+│   ├── forms/           # Tipos para formulários
+│   ├── perfis/          # Tipos para perfis
+│   └── vagas/           # Tipos para sistema de vagas
+├── utils/               # Utilitários e helpers
+├── config/              # Configurações (API, etc.)
+└── data/                # Constantes e dados estáticos
 ```
 
 ## 🎨 Design System
@@ -57,16 +56,18 @@ src/
 - **blue3H**: `#054D71` - Azul escuro hover
 - **blue4**: `#9CDFFE` - Azul suave
 - **blue5**: `#64CEFF` - Azul adicional
-- **orange1**: `#FF950C` - Laranja principal
-- **orange2**: `#FFDCAD` - Laranja claro
+- **blue5H**: `#85D8FF` - Azul hover
+- **red1**: `#FF7979` - Vermelho suave
+- **red2**: `#CA0000` - Vermelho forte
 
 ### Tipografia
 - **Fonte principal**: Georgia (serif)
+- **Fonte secundária**: Nunito (sans-serif)
 
 ## 🛠️ Instalação e Configuração
 
 ### Pré-requisitos
-- Node.js (versão 16 ou superior)
+- Node.js 18+ 
 - npm ou yarn
 
 ### Instalação
@@ -75,95 +76,101 @@ src/
 git clone [url-do-repositorio]
 
 # Navegue até o diretório
-cd front
+cd tic-2025-front
 
 # Instale as dependências
 npm install
+
+# Configure variáveis de ambiente
+cp .env.example .env
 ```
 
 ## 🚀 Scripts Disponíveis
 
 ```bash
-# Inicia o servidor de desenvolvimento
-npm start
+# Servidor de desenvolvimento (Vite)
+npm run dev
 
-# Executa os testes
-npm test
-
-# Gera build de produção
+# Build de produção otimizado
 npm run build
 
-# Ejeta as configurações (irreversível)
-npm run eject
+# Preview do build de produção
+npm run preview
+
+# Linting com ESLint
+npm run lint
 ```
 
-## 📱 Funcionalidades
+## 📱 Funcionalidades Principais
 
-### Páginas Principais
-- **Home** - Apresentação da plataforma e vagas inclusivas em destaque
-- **Auth Entry** - Página de entrada para autenticação
-- **Main Register** - Seleção entre cadastro de candidato ou empresa
-- **Register** - Formulário multi-step para cadastro de candidatos (5 etapas)
-- **Login** - Autenticação de usuários
-- **Dashboards** - Painéis personalizados para candidatos e empresas
-- **Profiles** - Perfis detalhados de candidatos e empresas
-- **Jobs** - Listagem e busca de vagas inclusivas
-- **About** - Informações sobre o projeto de inclusão
-- **FAQ** - Perguntas frequentes sobre acessibilidade
-- **Adaptation** - Processo de adequação de perfis para vagas inclusivas
-- **Usage** - Guia de uso da plataforma com foco em acessibilidade
+### Sistema de Autenticação
+- **Login/Logout** com persistência de sessão
+- **Cadastro multi-step** para candidatos e empresas
+- **Recuperação de senha** com validação segura
+- **Contexto de autenticação** global
+- **Proteção de rotas** baseada em roles
 
-### Componentes Principais
-- **Layout** - Estrutura base acessível com header, footer e menu de desenvolvimento
-- **GenericFormField** - Campo de formulário reutilizável com suporte a autocomplete
-- **StepIndicator** - Indicador visual de progresso em formulários multi-step
-- **GenericBlueButton** - Botão padronizado com variações de cor e tamanho
-- **DevMenu** - Menu lateral de desenvolvimento para navegação rápida
-- **Job Position** - Exibição de vagas inclusivas
-- **Companies Row** - Carrossel de empresas comprometidas com inclusão
-- **Profile Components** - Componentes para perfis de candidatos e empresas
+### Perfis Inteligentes
+- **Candidatos PCD** - Perfil completo com formações, experiências e habilidades
+- **Empresas** - Perfil corporativo com vagas e informações de inclusão
+- **Upload de fotos** com crop e otimização
+- **Validação de documentos** (CPF, CNPJ)
+- **Geolocalização** por CEP
 
-## 🔧 Desenvolvimento
+### Sistema de Vagas
+- **Criação e edição** de vagas inclusivas
+- **Busca avançada** com filtros específicos
+- **Matching inteligente** PCD-Empresa
+- **Notificações** de novas oportunidades
+- **Exportação de dados** para Excel
 
-### Status Atual
-- ✅ Estrutura base do projeto
-- ✅ Sistema de roteamento completo (15+ páginas)
-- ✅ Design system com Tailwind CSS personalizado
-- ✅ Componentes estruturais e de formulário
-- ✅ Formulários multi-step com validação
-- ✅ Sistema de autocomplete em formulários
-- ✅ Menu de desenvolvimento para testes
-- ✅ Scroll suave para navegação interna
-- 🚧 Persistência de dados entre steps (planejado)
-- 🚧 Integração com APIs (CEP, localização)
-- 📋 Backend com Node.js (planejado)
+### Painel Administrativo
+- **Dashboard completo** para administradores
+- **Gestão de usuários** e empresas
+- **Relatórios** de inclusão e estatísticas
+- **Moderação de conteúdo**
 
-### Estrutura de Componentes
-- Componentes funcionais com TypeScript
-- Hooks do React para gerenciamento de estado
-- Tailwind CSS para estilização acessível
-- React Router para navegação
+## 🔧 Status de Desenvolvimento
 
-### Padrões de Código
-- **Componentes** em PascalCase (ex: `GenericFormField`)
-- **Arquivos** em snake_case (ex: `candidate_form1.tsx`)
-- **Props** tipadas com TypeScript interfaces
-- **Responsividade** mobile-first com Tailwind CSS
-- **Acessibilidade** seguindo padrões WCAG
-- **Autocomplete** implementado conforme HTML5 standards
-- **Estados** gerenciados com React Hooks
-- **Roteamento** declarativo com React Router DOM
+### ✅ Implementado
+- **Sistema de autenticação** completo com Context API e persistência
+- **24 páginas** com roteamento avançado e proteção de rotas
+- **Formulários multi-step** com validação TypeScript e persistência local
+- **Upload e crop de imagens** com preview e armazenamento local
+- **Sistema de tipos robusto** (candidatos, empresas, vagas, notificações)
+- **Hooks customizados** (useAuth, useFileStorage, useFormValidation, useDebounceEffect)
+- **Utilitários avançados** para CPF, CNPJ, exportação Excel e manipulação de texto
+- **Editor Markdown** com preview em tempo real e toolbar
+- **Componentes de busca** com filtros avançados e debounce
+- **Sistema de notificações** com modal customizado e feedback visual
+- **Loading states** e spinners para melhor UX
+- **Design system** responsivo com paleta de cores personalizada
 
-## 🧪 Testes
+### 🚧 Em Desenvolvimento
+- Integração completa com backend
+- Sistema de notificações em tempo real
+- Matching avançado com IA
+- Recursos de acessibilidade ARIA
 
-O projeto utiliza React Testing Library para testes de componentes:
+### Arquitetura Técnica
+- **Vite** para build ultrarrápido
+- **Context API** para estado global
+- **Custom Hooks** para lógica reutilizável
+- **TypeScript** com tipagem rigorosa
+- **Componentes funcionais** com performance otimizada
+- **Lazy loading** para otimização de bundle
+
+## 🧪 Qualidade e Testes
 
 ```bash
-# Executar todos os testes
-npm test
+# Linting com ESLint
+npm run lint
 
-# Executar testes em modo watch
-npm test -- --watch
+# Verificação de tipos TypeScript
+npx tsc --noEmit
+
+# Build de produção (validação completa)
+npm run build
 ```
 
 ## 📦 Build e Deploy
@@ -172,7 +179,7 @@ npm test -- --watch
 # Gerar build otimizado
 npm run build
 
-# Os arquivos serão gerados na pasta 'build/'
+# Os arquivos serão gerados na pasta 'dist/'
 ```
 
 ## 🤝 Contribuição
@@ -195,40 +202,60 @@ Projeto desenvolvido como trabalho de faculdade para o **TIC 2025**, com foco em
 - Responsabilidade social corporativa
 - Tecnologias React e TypeScript
 
-## ✨ Funcionalidades Implementadas
+## ✨ Funcionalidades Avançadas Implementadas
 
-### Formulários Inteligentes
-- **Multi-step Registration** - Cadastro em 5 etapas para candidatos
-- **Autocomplete Nativo** - Campos com suporte a preenchimento automático
-- **Validação de Campos** - Tipos específicos (email, date, select)
-- **Campos Inclusivos** - Orientação sexual e identidade de gênero respeitosas
+### 🎨 Interface e UX
+- **Editor Markdown** com preview em tempo real, toolbar e formatação rica
+- **Crop de imagens** com modal interativo e preview instantâneo
+- **Busca inteligente** com filtros dinâmicos e debounce
+- **Loading states** e feedback visual em todas as operações
+- **Modais responsivos** com animações e validação
+- **Sistema de tags** com busca e seleção múltipla
 
-### Experiência do Usuário
-- **Navegação Fluida** - Scroll suave entre seções
-- **Design Responsivo** - Layout adaptável para diferentes telas
-- **Menu de Desenvolvimento** - Navegação rápida entre páginas (temporário)
-- **Indicadores Visuais** - Progresso claro em formulários
+### 🔧 Funcionalidades Técnicas
+- **Persistência local** de arquivos com conversão base64
+- **Validação de documentos** (CPF/CNPJ) com algoritmos matemáticos
+- **Exportação Excel** de dados de candidatos aprovados
+- **Sistema de notificações** com contadores e feedback
+- **Debounce customizado** para otimização de performance
+- **Gerenciamento de estado** complexo com Context API
 
-### Acessibilidade
-- **Labels Semânticos** - Todos os campos com labels apropriados
-- **Autocomplete Standards** - Seguindo padrões HTML5 de acessibilidade
-- **Cores Contrastantes** - Paleta otimizada para legibilidade
-- **Estrutura Semântica** - HTML estruturado para screen readers
+### 📊 Recursos de Dados
+- **Constantes organizadas** para opções de formulários
+- **Tipos TypeScript** robustos para todas as entidades
+- **Matching de compatibilidade** entre candidatos e vagas
+- **Filtros avançados** por localização, setor, tipo de trabalho
+- **Estatísticas visuais** com componentes de métricas
 
-## 🚀 Roadmap
+### 🎯 Inclusão e Acessibilidade
+- **Campos inclusivos** para gênero e orientação sexual
+- **Suporte a diferentes tipos** de deficiência
+- **Design responsivo** mobile-first
+- **Contraste otimizado** para baixa visão
+- **Navegação semântica** estruturada
 
-- [x] Estrutura base do frontend
-- [x] Design system inclusivo
-- [x] Sistema de roteamento completo
-- [x] Formulários multi-step
-- [x] Componentes reutilizáveis
-- [ ] Persistência de dados entre steps
-- [ ] Integração com APIs externas (CEP, localização)
-- [ ] Backend com Node.js
-- [ ] Sistema de autenticação JWT
-- [ ] Matching inteligente PCD-Empresa
-- [ ] Recursos de acessibilidade avançados (ARIA, teclado)
-- [ ] Testes automatizados
+## 🚀 Próximos Passos
+
+### Backend Integration
+- [ ] API REST completa com Node.js
+- [ ] Autenticação JWT segura
+- [ ] Banco de dados PostgreSQL
+- [ ] Upload de arquivos na nuvem
+
+### Features Avançadas
+- [ ] Sistema de chat em tempo real
+- [ ] Matching com Machine Learning
+- [ ] Notificações push
+- [ ] Relatórios avançados com gráficos
+
+### Otimizações
+- [ ] PWA (Progressive Web App)
+- [ ] Testes automatizados (Jest + Testing Library)
+- [ ] CI/CD com GitHub Actions
+- [ ] Monitoramento com Sentry
+- [ ] Lazy loading de componentes
+- [ ] Service Workers para cache
+- [ ] Compressão de imagens automática
 
 ---
 
