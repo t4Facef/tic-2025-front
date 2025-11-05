@@ -54,7 +54,7 @@ export default function Usage(){
                             <div className="bg-blue1 rounded-lg p-6 mb-6">
                                 <h3 className="font-semibold text-blue3 mb-3">Bem-vindo ao Apojobs!</h3>
                                 <p className="text-gray-700">
-                                    O Apojobs é a primeira plataforma brasileira dedicada exclusivamente à inclusão de pessoas com deficiência (PCDs) no mercado de trabalho. Nossa missão é conectar talentos PCDs com empresas comprometidas com a diversidade e inclusão.
+                                    O Apojobs é uma plataforma inovadora dedicada à inclusão de pessoas com deficiência (PCDs) no mercado de trabalho. Nossa missão é conectar talentos PCDs com empresas comprometidas com a diversidade e inclusão.
                                 </p>
                             </div>
                             
@@ -94,9 +94,9 @@ export default function Usage(){
                                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                                     <h4 className="font-semibold text-yellow-800 mb-2">📋 Documentos Necessários:</h4>
                                     <ul className="text-sm text-yellow-700 space-y-1">
-                                        <li>• Laudo médico atualizado (até 2 anos)</li>
                                         <li>• Documento de identidade com foto</li>
                                         <li>• CPF</li>
+                                        <li>• Comprovante de deficiência (quando aplicável)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -121,12 +121,12 @@ export default function Usage(){
                                     
                                     <div className="bg-white border rounded-lg p-4">
                                         <h4 className="font-semibold text-blue3 mb-2">💼 Experiência Profissional</h4>
-                                        <p className="text-sm text-gray-600">Descreva suas experiências anteriores, destacando conquistas e responsabilidades. Use nosso editor markdown para formatação.</p>
+                                        <p className="text-sm text-gray-600">Descreva suas experiências anteriores, destacando conquistas e responsabilidades principais.</p>
                                     </div>
                                     
                                     <div className="bg-white border rounded-lg p-4">
                                         <h4 className="font-semibold text-blue3 mb-2">🛠️ Habilidades</h4>
-                                        <p className="text-sm text-gray-600">Adicione suas competências técnicas e comportamentais. Use nossa busca inteligente para encontrar habilidades relevantes.</p>
+                                        <p className="text-sm text-gray-600">Adicione suas competências técnicas e comportamentais relevantes para as vagas desejadas.</p>
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +268,7 @@ export default function Usage(){
                                     <div>
                                         <h3 className="text-lg font-semibold text-blue3 mb-2">Compromisso com a Acessibilidade</h3>
                                         <p className="text-gray-600">
-                                            Nossa plataforma foi desenvolvida seguindo as diretrizes WCAG 2.1 para garantir acesso a todos.
+                                            Nossa plataforma foi desenvolvida com foco na acessibilidade para garantir acesso a todos os usuários.
                                         </p>
                                     </div>
                                 </div>
@@ -551,7 +551,7 @@ export default function Usage(){
                                             <div className="w-10 h-10 bg-blue3 rounded-full flex items-center justify-center text-white font-semibold">💬</div>
                                             <div>
                                                 <h5 className="font-medium">Chat Online</h5>
-                                                <p className="text-sm text-gray-600">Disponível 24/7 para dúvidas rápidas</p>
+                                                <p className="text-sm text-gray-600">Em breve - Suporte online para dúvidas rápidas</p>
                                             </div>
                                         </div>
                                         
@@ -559,7 +559,7 @@ export default function Usage(){
                                             <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">📧</div>
                                             <div>
                                                 <h5 className="font-medium">Email</h5>
-                                                <p className="text-sm text-gray-600">suporte@apojobs.com.br - Resposta em até 24h</p>
+                                                <p className="text-sm text-gray-600">Em breve - Suporte por email</p>
                                             </div>
                                         </div>
                                         
@@ -567,7 +567,7 @@ export default function Usage(){
                                             <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">📞</div>
                                             <div>
                                                 <h5 className="font-medium">Telefone</h5>
-                                                <p className="text-sm text-gray-600">(11) 3000-0000 - Seg a Sex, 8h às 18h</p>
+                                                <p className="text-sm text-gray-600">Em breve - Suporte telefônico</p>
                                             </div>
                                         </div>
                                     </div>

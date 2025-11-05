@@ -41,9 +41,10 @@ export default function Question({title, description, category}: QuestionProps){
             }`}>
                 <div className="px-5 pb-5 pt-0">
                     <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue3">
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-                            {description}
-                        </div>
+                        <div 
+                            className="text-gray-700 leading-relaxed whitespace-pre-line"
+                            dangerouslySetInnerHTML={{ __html: description }}
+                        />
                     </div>
                 </div>
             </div>

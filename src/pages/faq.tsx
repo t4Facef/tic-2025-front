@@ -13,42 +13,42 @@ export default function Faq() {
         {
             category: "Candidatos",
             title: "Como criar meu perfil de candidato PCD?",
-            description: `Para criar seu perfil:\n\n1. Clique em "Cadastrar" no menu superior\n2. Selecione "Sou Candidato PCD"\n3. Preencha seus dados pessoais\n4. Informe seu tipo de deficiência\n5. Adicione suas experiências e formações\n6. Faça upload de sua foto de perfil\n\nSeu perfil será revisado em até 24 horas e você receberá um email de confirmação.`
+            description: `Para criar seu perfil:\n\n1. Clique em "Cadastrar" no menu superior\n2. Selecione "Sou Candidato PCD"\n3. Preencha seus dados pessoais\n4. Informe seu tipo de deficiência\n5. Adicione suas experiências e formações\n6. Faça upload de sua foto de perfil\n\nSeu perfil será criado imediatamente após o cadastro.`
         },
         {
             category: "Candidatos",
             title: "Preciso comprovar minha deficiência?",
-            description: `Sim, para garantir a veracidade das informações e o cumprimento das cotas de inclusão, é necessário:\n\n• Laudo médico atualizado (até 2 anos)\n• Documento de identidade\n• CPF\n\nTodos os documentos são tratados com total confidencialidade e seguem a LGPD.`
+            description: `Para manter a integridade da plataforma, solicitamos:\n\n• CPF\n• Laudo médico comprovando a deficiência\n\nTodos os dados são tratados com confidencialidade e seguem as melhores práticas de segurança.`
         },
         {
             category: "Empresas",
             title: "Como minha empresa pode se cadastrar?",
-            description: `O cadastro empresarial inclui:\n\n1. Dados da empresa (CNPJ, razão social)\n2. Informações sobre inclusão e acessibilidade\n3. Número atual de funcionários PCDs\n4. Certificações de inclusão (se houver)\n5. Descrição da cultura inclusiva da empresa\n\nApós aprovação, você poderá publicar vagas inclusivas.`
+            description: `O cadastro empresarial inclui:\n\n1. Dados da empresa (CNPJ, razão social)\n2. Informações sobre inclusão e acessibilidade\n3. Número atual de funcionários PCDs\n4. Certificações de inclusão (se houver)\n5. Descrição da cultura inclusiva da empresa\n\nApós o cadastro, você já poderá publicar vagas inclusivas.`
         },
         {
             category: "Empresas",
             title: "Qual o custo para empresas?",
-            description: `O Apojobs oferece diferentes planos:\n\n• **Básico**: Gratuito - até 3 vagas ativas\n• **Profissional**: R$ 299/mês - vagas ilimitadas + relatórios\n• **Enterprise**: R$ 599/mês - recursos avançados + consultoria\n\nTodos os planos incluem suporte especializado em inclusão.`
+            description: `O Apojobs é uma plataforma 100% gratuita:\n\n• <strong>Cadastro</strong>: Totalmente gratuito para candidatos e empresas\n• <strong>Publicação de vagas</strong>: Sem limites ou custos\n• <strong>Todas as funcionalidades</strong>: Disponíveis sem custo\n\nNossa missão é promover a inclusão sem barreiras financeiras.`
         },
         {
             category: "Vagas",
             title: "Como funciona o matching de vagas?",
-            description: `Nosso algoritmo considera:\n\n• **Acessibilidade**: 50% - Compatibilidade entre tipo de deficiência e adaptações oferecidas\n• **Habilidades**: 40% - Correspondência entre suas competências e requisitos da vaga\n• **Apoios da Vaga**: 10% - Recursos de suporte e benefícios oferecidos\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
+            description: `Nosso algoritmo considera:\n\n• <strong>Acessibilidade</strong>: 50% - Compatibilidade entre tipo de deficiência e adaptações oferecidas\n• <strong>Habilidades</strong>: 40% - Correspondência entre suas competências e requisitos da vaga\n• <strong>Apoios da Vaga</strong>: 10% - Recursos de suporte e benefícios oferecidos\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
         },
         {
             category: "Vagas",
             title: "Posso me candidatar a qualquer vaga?",
-            description: `Sim! Todas as vagas na plataforma são inclusivas. Você pode:\n\n• Filtrar por tipo de deficiência\n• Buscar por adaptações específicas\n• Ver o percentual de compatibilidade\n• Candidatar-se com um clique\n\nAs empresas são notificadas sobre sua candidatura automaticamente.`
+            description: `Sim! Todas as vagas na plataforma são inclusivas. Recomendamos que:\n\n• Se candidate em vagas com alto índice de compatibilidade\n• Verifique se as acessibilidades são compatíveis com suas necessidades\n• Analise os recursos de apoio oferecidos\n• Considere a localização e modalidade de trabalho\n\nAs empresas são notificadas sobre sua candidatura automaticamente.`
         },
         {
             category: "Acessibilidade",
             title: "O site é acessível para pessoas com deficiência visual?",
-            description: `Sim! Nosso site foi desenvolvido seguindo as diretrizes WCAG 2.1:\n\n• Compatível com leitores de tela\n• Navegação por teclado\n• Alto contraste\n• Textos alternativos em imagens\n• Estrutura semântica adequada\n\nContinuamos aprimorando a acessibilidade com feedback dos usuários.`
+            description: `Sim! Nosso site foi desenvolvido com foco na acessibilidade:\n\n• Estrutura semântica adequada\n• Navegação intuitiva\n• Contraste otimizado\n\nContinuamos aprimorando a acessibilidade com feedback dos usuários.`
         },
         {
             category: "Acessibilidade",
             title: "Há suporte para diferentes tipos de deficiência?",
-            description: `Atendemos todos os tipos de deficiência:\n\n• **Visual**: Cegueira, baixa visão\n• **Auditiva**: Surdez, deficiência auditiva\n• **Física**: Mobilidade reduzida, amputações\n• **Intelectual**: Deficiência intelectual, autismo\n• **Múltipla**: Combinação de deficiências\n\nCada tipo tem filtros e adaptações específicas.`
+            description: `Atendemos todos os tipos de deficiência:\n\n• <strong>Visual</strong>: Cegueira, baixa visão\n• <strong>Auditiva</strong>: Surdez, deficiência auditiva\n• <strong>Física</strong>: Mobilidade reduzida, amputações\n• <strong>Intelectual</strong>: Deficiência intelectual, autismo\n• <strong>Múltipla</strong>: Combinação de deficiências\n\nCada tipo tem filtros e adaptações específicas.`
         },
         {
             category: "Conta",
@@ -56,10 +56,26 @@ export default function Faq() {
             description: `Para alterar sua senha:\n\n1. Faça login na sua conta\n2. Acesse "Meu Perfil"\n3. Clique em "Configurações de Conta"\n4. Selecione "Alterar Senha"\n5. Digite a senha atual e a nova senha\n6. Confirme a alteração\n\nPor segurança, você será deslogado de outros dispositivos.`
         },
         {
-            category: "Conta",
-            title: "Posso excluir minha conta?",
-            description: `Sim, você pode excluir sua conta a qualquer momento:\n\n1. Acesse "Configurações de Conta"\n2. Role até "Zona de Perigo"\n3. Clique em "Excluir Conta"\n4. Confirme a ação\n\n⚠️ Esta ação é irreversível. Todos os seus dados serão permanentemente removidos em 30 dias.`
-        }
+            category: "Candidatos",
+            title: "Como editar meu perfil?",
+            description: `Para editar seu perfil:\n\n1. Acesse seu dashboard\n2. Clique em "Visitar meu perfil"\n3. Clique no botão "Editar Perfil"\n4. Faça as alterações desejadas\n5. Clique em "Salvar Alterações"\n\nVocê pode editar formações, experiências, habilidades e foto de perfil.`
+        },
+        {
+            category: "Empresas",
+            title: "Como gerenciar candidaturas recebidas?",
+            description: `No seu dashboard empresarial:\n\n1. Acesse a seção "Candidaturas"\n2. Visualize todos os candidatos por vaga\n3. Aprove ou recuse candidaturas\n4. Envie notificações aos candidatos\n5. Exporte dados dos aprovados para Excel\n\nTodos os candidatos recebem feedback sobre o status.`
+        },
+        {
+            category: "Vagas",
+            title: "O que significa o percentual de compatibilidade?",
+            description: `O percentual indica quão compatível você é com a vaga:\n\n• <strong>90-100%</strong>: Excelente compatibilidade\n• <strong>70-89%</strong>: Boa compatibilidade\n• <strong>50-69%</strong>: Compatibilidade moderada\n• <strong>Abaixo de 50%</strong>: Baixa compatibilidade\n\nRecomendamos focar em vagas com 70% ou mais de compatibilidade.`
+        },
+        {
+            category: "Acessibilidade",
+            title: "Como reportar problemas de acessibilidade?",
+            description: `Se encontrar dificuldades de acesso:\n\n1. Anote a página e o problema encontrado\n2. Entre em contato conosco\n3. Descreva sua deficiência e tecnologia assistiva usada\n4. Informe o navegador utilizado\n\nSeu feedback é essencial para melhorarmos a plataforma.`
+        },
+
     ];
 
     const filteredQuestions = questions.filter(q => {
