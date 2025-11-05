@@ -28,7 +28,7 @@ export default function Register() {
     const [apiMessage, setApiMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-    const { files, saveFile, clearAll, hasFile, getFile } = useFileStorage('candidateFiles')
+    const { saveFile, clearAll, hasFile, getFile } = useFileStorage('candidateFiles')
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {

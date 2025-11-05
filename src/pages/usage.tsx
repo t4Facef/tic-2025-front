@@ -39,7 +39,7 @@ export default function Usage(){
                 </nav>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 flex flex-col items-center">
                     <div className="max-w-4xl">
                         {/* Header */}
                         <div className="mb-12">
