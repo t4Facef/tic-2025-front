@@ -67,7 +67,7 @@ export default function Home() {
         getPopularJobs()
     }, [])
     return (
-        <div>
+        <div className="bg-white">
             <section className="relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
                 <div className="absolute inset-0 bg-white bg-opacity-50"></div>
                 <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 md:px-8">
@@ -91,21 +91,24 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <div >
-                <CompaniesRow companyIds={companyIds} />
-            </div>
-            <div className="flex flex-col px-8 items-center my-8">
-                <div className="flex flex-col items-end px-36 space-y-8 w-full">
-                    {popularJobs.length > 0 ? (
-                        popularJobs.slice(0, 3).map(job => (
-                            <JobPosition key={job.id} jobData={job} />
-                        ))
-                    ) : (
-                        <div className="text-center py-8">
-                            <p className="text-gray-600">Carregando vagas populares...</p>
-                        </div>
-                    )}
-                    <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
+            
+            <CompaniesRow companyIds={companyIds} />
+            
+            <div className="bg-white py-12">
+                <div className="max-w-6xl mx-auto px-8">
+                    <div className="flex flex-col items-center space-y-8">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Vagas em Destaque</h2>
+                        {popularJobs.length > 0 ? (
+                            popularJobs.slice(0, 3).map(job => (
+                                <JobPosition key={job.id} jobData={job} />
+                            ))
+                        ) : (
+                            <div className="text-center py-8">
+                                <p className="text-gray-600">Carregando vagas populares...</p>
+                            </div>
+                        )}
+                        <GenericBlueButton color={3} link="/auth/register/main" size="mdy">Registre-se Agora!</GenericBlueButton>
+                    </div>
                 </div>
             </div>
         </div>

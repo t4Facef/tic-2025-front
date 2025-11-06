@@ -44,7 +44,7 @@ export default function App() {
           <Route path='/auth/register/companies' element={<RegisterCompanies/>}></Route>
           <Route path='/auth/register/success' element={<RegisterSuccess/>}></Route>
           <Route path='/auth/password/forgot' element={<ResetPassword/>}></Route>
-          <Route path='/auth/password/reset' element={<ResetPasswordNew/>}></Route>
+          <Route path='/reset-password' element={<ResetPasswordNew/>}></Route>
           <Route path='/candidates/dashboard' element={<CandidateDashboard/>}></Route>
           <Route path='/candidates/profile' element={<CandidateProfile/>}></Route>
           <Route path='/candidates/:id/profile' element={<CandidateProfile/>}></Route>

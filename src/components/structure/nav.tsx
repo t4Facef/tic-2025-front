@@ -13,12 +13,8 @@ export default function Nav(){
     ]
 
     return(
-        <nav className="bg-gradient-to-r from-blue4 via-blue1 to-blue4 shadow-lg border-t border-blue3/30 relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
-            <div className="absolute top-0 left-1/4 w-32 h-1 bg-gradient-to-r from-transparent via-blue2 to-transparent"></div>
-            
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <nav className="bg-gradient-to-r from-blue4 via-blue1 to-blue4 shadow-lg border-t border-blue3/30">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex justify-center items-center py-4">
                     <div className="flex items-center space-x-2 lg:space-x-6">
@@ -37,11 +33,6 @@ export default function Nav(){
                             </div>
                         ))}
                     </div>
-                    
-                    {/* Decorative element */}
-                    <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
-                        <Sparkles size={16} className="text-blue2/50 animate-pulse" />
-                    </div>
                 </div>
 
                 {/* Mobile Navigation */}
@@ -58,7 +49,7 @@ export default function Nav(){
                     </button>
                     
                     {isMobileNavOpen && (
-                        <div className="border-t border-blue3/30 py-3 space-y-2 animate-in slide-in-from-top-3 duration-300 bg-white/5 backdrop-blur-sm rounded-b-lg mx-2 mb-2">
+                        <div className="border-t border-blue3/30 py-3 space-y-2">
                             {navItems.map((item) => (
                                 <NavElement 
                                     key={item.link}

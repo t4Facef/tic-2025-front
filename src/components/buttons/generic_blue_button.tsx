@@ -10,6 +10,7 @@ interface GenericBlueButtonProps {
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';  // Para bordas arredondadas
   submit?: boolean;           // Para type="submit"
   form?: string;              // Para conectar com formulário específico
+  disabled?: boolean;         // Para desabilitar o botão
 }
 
 // Mapeamento de cores - cada número corresponde a uma cor da paleta dentre os tons de azul
@@ -47,7 +48,8 @@ export default function GenericBlueButton({
   size = 'md',       // Valor padrão: médio
   rounded = 'md',    // Valor padrão: arredondamento médio
   submit = false,    // Valor padrão: não é submit
-  form               // ID do formulário para conectar
+  form,              // ID do formulário para conectar
+  disabled = false   // Valor padrão: não desabilitado
 }: GenericBlueButtonProps) {
   // Pega as classes CSS baseadas nas props
   const colorButton = colorMap[color] || "bg-blue1";  // Se cor inválida, usa blue1
@@ -58,6 +60,8 @@ export default function GenericBlueButton({
   const navigate = useNavigate();
 
   function handleClick() {
+    if (disabled) return;  // Se desabilitado, não faz nada
+    
     if (link) {
       navigate(link);      // Se tem link, navega
     } else if (onClick) {
@@ -69,7 +73,10 @@ export default function GenericBlueButton({
     <button
       type={submit ? "submit" : "button"}
       form={form}
-      className={`${colorButton} ${sizeButton} ${roundedButton} flex justify-center items-center transition-colors whitespace-nowrap`}
+      disabled={disabled}
+      className={`${colorButton} ${sizeButton} ${roundedButton} flex justify-center items-center transition-colors whitespace-nowrap ${
+        disabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
       onClick={handleClick}
     >
       {children}

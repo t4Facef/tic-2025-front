@@ -8,10 +8,10 @@ import { useAuth } from "../../hooks/useAuth";
 export default function Layout() {
   const { isAuthenticated } = useAuth()
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header showProfile={isAuthenticated} />
       <Nav />
-      <main className="flex-1 relative">
+      <main className="flex-1">
         <Outlet />
       </main>
       <Footer />
