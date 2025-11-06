@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
 import JobPosition from "../components/content/job_position";
-import StatisticBox from "../components/content/statistic_box";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
@@ -134,123 +133,191 @@ export default function CandidateDashboard() {
 
     if (statistics) {
         return (
-            <div className="flex flex-col items-center">
-                <div className="flex flex-col justify-center items-center">
-                    <div className="flex flex-col w-[72rem]">
-                        <div className="bg-blue2 p-2 mt-5 rounded-lg">
-                            <div className="flex justify-between">
-                                <StatisticBox title="Candidaturas neste mês" animation={true} finalValue={statistics.candidaturasNesteMes}>{statistics.candidaturasNesteMes}</StatisticBox>
-                                <StatisticBox title="Candidatura totais" animation={true} finalValue={statistics.candidaturasTotal}>{statistics.candidaturasTotal}</StatisticBox>
-                                <StatisticBox title="Candidatura abertas" animation={true} finalValue={statistics.candidaturasAbertas}>{statistics.candidaturasAbertas}</StatisticBox>
-                            </div>
-                            <div className="flex justify-end mt-2 pr-2 gap-4">
-                                <GenericBlueButton color={3} link="/jobs">Procurar Vagas</GenericBlueButton>
-                            </div>
+            <div className="min-h-screen bg-slate-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    {/* Header */}
+                    <div className="mb-12">
+                        <div className="mb-4">
+                            <h1 className="text-4xl font-bold text-slate-900">Olá, {user?.nome}!</h1>
+                            <p className="text-slate-600 text-lg">Bem-vindo ao seu painel de controle</p>
                         </div>
-                        <div>
-                            <p className="pt-12">Suas Inscrições</p>
-                            {(appliedJobs && appliedJobs.length > 0) ? (
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
-                                    <div className="flex flex-col items-end px-3 space-y-6 w-full">
-                                        <div className="space-y-8 w-full">
-                                            {appliedJobs.map(vaga => {
-                                                const jobDataProps: JobData = {
-                                                    id: vaga.id,
-                                                    idEmpresa: vaga.empresaId,
-                                                    title: vaga.titulo,
-                                                    company: vaga.empresa.razaoSocial,
-                                                    companyLogo: vaga.empresa.foto || "",
-                                                    location: vaga.localizacao,
-                                                    description: vaga.descricao,
-                                                    skillsTags: vaga.habilidades,
-                                                    supportTags: vaga.apoios,
-                                                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
-                                                    startDate: new Date(vaga.dataInicio),
-                                                    endDate: new Date(vaga.dataFim),
-                                                    typeContract: vaga.tipoContrato,
-                                                    typeWork: vaga.tipoTrabalho,
-                                                    payment: vaga.pagamento,
-                                                    workLevel: vaga.nivelTrabalho,
-                                                    timeShift: vaga.turno,
-                                                    status: vaga.status,
-                                                    sector: vaga.setor
-                                                }
-                                                return <JobPosition key={vaga.id} jobData={jobDataProps} />
-                                            })}
-                                            <div className="flex justify-end">
-                                            <GenericBlueButton color={3} link="/jobs?minhasVagas=true">Acessar minhas candidaturas</GenericBlueButton>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
-                                    <div className="text-center space-y-4">
-                                        <div className="text-6xl mb-4">📝</div>
-                                        <h3 className="text-xl font-medium text-gray-700">Você ainda não se candidatou a nenhuma vaga</h3>
-                                        <p className="text-gray-600 max-w-md mx-auto">
-                                            Explore nossas vagas disponíveis e encontre a oportunidade perfeita para você!
-                                        </p>
-                                        <div className="pt-4 w-full flex justify-center">
-                                            <GenericBlueButton color={3} link="/jobs">Explorar vagas</GenericBlueButton>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div>
-                            <p className="pt-12">Recomendações de vaga para você</p>
-                            {(recommendedJobs && recommendedJobs.length > 0) ? (
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
-                                    <div className="flex flex-col items-end px-3 space-y-6 w-full">
-                                        <div className="space-y-8 w-full">
-                                            {recommendedJobs.map(vaga => {
-                                                const jobDataProps: JobData = {
-                                                    id: vaga.id,
-                                                    idEmpresa: vaga.empresaId,
-                                                    title: vaga.titulo,
-                                                    company: vaga.empresa.razaoSocial,
-                                                    companyLogo: vaga.empresa.foto || "",
-                                                    location: vaga.localizacao,
-                                                    description: vaga.descricao,
-                                                    skillsTags: vaga.habilidades,
-                                                    supportTags: vaga.apoios,
-                                                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
-                                                    startDate: new Date(vaga.dataInicio),
-                                                    endDate: new Date(vaga.dataFim),
-                                                    typeContract: vaga.tipoContrato,
-                                                    typeWork: vaga.tipoTrabalho,
-                                                    payment: vaga.pagamento,
-                                                    workLevel: vaga.nivelTrabalho,
-                                                    timeShift: vaga.turno,
-                                                    status: vaga.status,
-                                                    sector: vaga.setor
-                                                }
-                                                return <JobPosition key={vaga.id} jobData={jobDataProps} />
-                                            })}
-                                        </div>
-                                        <div>
-                                            <GenericBlueButton color={3} link="/jobs">Ver mais</GenericBlueButton>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col justify-center items-center bg-blue1 mb-12 p-10">
-                                    <div className="text-center space-y-4">
-                                        <div className="text-6xl mb-4">🔍</div>
-                                        <h3 className="text-xl font-medium text-gray-700">Ainda não temos vagas recomendadas para você</h3>
-                                        <p className="text-gray-600 max-w-md mx-auto">
-                                            Estamos analisando seu perfil para encontrar as melhores oportunidades.
-                                            Enquanto isso, explore nossas outras vagas disponíveis!
-                                        </p>
-                                        <div className="pt-4 w-full flex justify-center">
-                                            <GenericBlueButton color={3} link="/jobs">Explorar todas as vagas</GenericBlueButton>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
 
-                            )}
+                    {/* Statistics Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue3 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-gray-600 text-sm font-medium">Total Geral</p>
+                                    <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasTotal}</p>
+                                    <p className="text-blue3 text-sm">Candidaturas</p>
+                                </div>
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                    <span className="text-2xl">📊</span>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue2 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-gray-600 text-sm font-medium">Este Mês</p>
+                                    <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasNesteMes}</p>
+                                    <p className="text-blue2 text-sm">Candidaturas</p>
+                                </div>
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                    <span className="text-2xl">📅</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue1 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-gray-600 text-sm font-medium">Em Andamento</p>
+                                    <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasAbertas}</p>
+                                    <p className="text-blue1 text-sm">Processos</p>
+                                </div>
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                    <span className="text-2xl">⏳</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="bg-white rounded-3xl p-8 mb-12 border border-slate-200">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900">Encontre Novas Oportunidades</h3>
+                                <p className="text-slate-600">Explore vagas que combinam com seu perfil</p>
+                            </div>
+                            <GenericBlueButton color={3} link="/jobs" size="lg">Procurar Vagas</GenericBlueButton>
+                        </div>
+                    </div>
+                    {/* Applied Jobs Section */}
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                <span className="text-xl">💼</span>
+                            </div>
+                            <h2 className="text-3xl font-bold text-slate-900">Suas Candidaturas</h2>
+                        </div>
+                        {(appliedJobs && appliedJobs.length > 0) ? (
+                            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
+                                <div className="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                                    <p className="text-slate-600 font-medium">Últimas candidaturas</p>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    {appliedJobs.slice(0, 3).map(vaga => {
+                                        const jobDataProps: JobData = {
+                                            id: vaga.id,
+                                            idEmpresa: vaga.empresaId,
+                                            title: vaga.titulo,
+                                            company: vaga.empresa.razaoSocial,
+                                            companyLogo: vaga.empresa.foto || "",
+                                            location: vaga.localizacao,
+                                            description: vaga.descricao,
+                                            skillsTags: vaga.habilidades,
+                                            supportTags: vaga.apoios,
+                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            startDate: new Date(vaga.dataInicio),
+                                            endDate: new Date(vaga.dataFim),
+                                            typeContract: vaga.tipoContrato,
+                                            typeWork: vaga.tipoTrabalho,
+                                            payment: vaga.pagamento,
+                                            workLevel: vaga.nivelTrabalho,
+                                            timeShift: vaga.turno,
+                                            status: vaga.status,
+                                            sector: vaga.setor
+                                        }
+                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    })}
+                                </div>
+                                <div className="bg-slate-50 px-6 py-4 border-t border-slate-200">
+                                    <GenericBlueButton color={3} link="/jobs?minhasVagas=true" size="mdy">Ver todas as candidaturas</GenericBlueButton>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-3xl border-2 border-dashed border-slate-300 p-16">
+                                <div className="text-center space-y-6">
+                                    <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
+                                        <span className="text-4xl">📝</span>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-bold text-slate-900">Primeira candidatura?</h3>
+                                        <p className="text-slate-600 max-w-md mx-auto">
+                                            Comece sua jornada profissional explorando nossas oportunidades exclusivas!
+                                        </p>
+                                        <div className="flex justify-center pt-4">
+                                            <GenericBlueButton color={3} link="/jobs" size="lg">Explorar Vagas</GenericBlueButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        </div>
+                    {/* Recommended Jobs Section */}
+                    <div>
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                <span className="text-xl">✨</span>
+                            </div>
+                            <h2 className="text-3xl font-bold text-slate-900">Recomendadas para Você</h2>
+                        </div>
+                        {(recommendedJobs && recommendedJobs.length > 0) ? (
+                            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
+                                <div className="bg-blue1 px-6 py-4 border-b border-slate-200">
+                                    <p className="text-blue3 font-medium">Vagas selecionadas especialmente para você</p>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    {recommendedJobs.slice(0, 3).map(vaga => {
+                                        const jobDataProps: JobData = {
+                                            id: vaga.id,
+                                            idEmpresa: vaga.empresaId,
+                                            title: vaga.titulo,
+                                            company: vaga.empresa.razaoSocial,
+                                            companyLogo: vaga.empresa.foto || "",
+                                            location: vaga.localizacao,
+                                            description: vaga.descricao,
+                                            skillsTags: vaga.habilidades,
+                                            supportTags: vaga.apoios,
+                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            startDate: new Date(vaga.dataInicio),
+                                            endDate: new Date(vaga.dataFim),
+                                            typeContract: vaga.tipoContrato,
+                                            typeWork: vaga.tipoTrabalho,
+                                            payment: vaga.pagamento,
+                                            workLevel: vaga.nivelTrabalho,
+                                            timeShift: vaga.turno,
+                                            status: vaga.status,
+                                            sector: vaga.setor
+                                        }
+                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    })}
+                                </div>
+                                <div className="bg-blue1 px-6 py-4 border-t border-slate-200">
+                                    <GenericBlueButton color={3} link="/jobs" size="mdy">Ver mais vagas</GenericBlueButton>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-3xl border-2 border-dashed border-slate-300 p-16">
+                                <div className="text-center space-y-6">
+                                    <div className="w-24 h-24 bg-blue1 rounded-full flex items-center justify-center mx-auto">
+                                        <span className="text-4xl">🔍</span>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-bold text-slate-900">Analisando seu perfil...</h3>
+                                        <p className="text-slate-600 max-w-md mx-auto">
+                                            Nossa IA está encontrando as melhores oportunidades para você. Enquanto isso, explore todas as vagas!
+                                        </p>
+                                        <div className="flex justify-center pt-4">
+                                            <GenericBlueButton color={3} link="/jobs" size="lg">Explorar Todas as Vagas</GenericBlueButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
