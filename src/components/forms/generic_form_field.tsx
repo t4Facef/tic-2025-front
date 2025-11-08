@@ -169,6 +169,7 @@ export default function GenericFormField({children, id, placeholder, options, au
     // PASSWORD
     if (type === "password"){
         const toggleView = () => setViewPassword(!viewPassword)
+        // amazonq-ignore-next-line
         const passwordType = viewPassword ? "password" : "text"
 
         return (

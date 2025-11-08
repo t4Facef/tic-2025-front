@@ -9,16 +9,21 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-  public static getDerivedStateFromError(): State {
+  static getDerivedStateFromError(_: Error): State {
     return { hasError: true };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    const sanitizedError = {
+      message: error.message?.replace(/[\r\n\t]/g, ' '),
+      stack: error.stack?.replace(/[\r\n\t]/g, ' ').substring(0, 500)
+    };
+    console.error('Erro capturado pelo ErrorBoundary:', sanitizedError);
   }
 
   public render() {

@@ -39,11 +39,20 @@ export function useFileStorage(storageKey: string) {
     }, [storageKey]);
 
     const saveFile = (key: string, file: File) => {
+        // Validar tipo de arquivo para prevenir XSS
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'text/plain'];
+        if (!allowedTypes.includes(file.type)) {
+            throw new Error('Tipo de arquivo não permitido');
+        }
+        
+        // Sanitizar nome do arquivo
+        const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        
         const reader = new FileReader();
         reader.onload = () => {
             const base64 = (reader.result as string).split(',')[1];
             const fileData = {
-                name: file.name,
+                name: sanitizedName,
                 type: file.type,
                 data: base64
             };
