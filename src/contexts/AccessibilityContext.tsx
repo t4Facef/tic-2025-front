@@ -1,44 +1,5 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface AccessibilitySettings {
-    fontSize: 'small' | 'normal' | 'large' | 'extra-large';
-    contrast: 'normal' | 'high' | 'inverted';
-    colorBlindness: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia' | 'achromatopsia';
-    fontFamily: 'default' | 'dyslexic' | 'serif';
-    animations: boolean;
-    underlineLinks: boolean;
-    focusIndicator: boolean;
-    buttonSize: 'normal' | 'large';
-    removeGradients: boolean;
-}
-
-interface AccessibilityContextType {
-    settings: AccessibilitySettings;
-    updateSetting: <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => void;
-    resetSettings: () => void;
-}
-
-const defaultSettings: AccessibilitySettings = {
-    fontSize: 'normal',
-    contrast: 'normal',
-    colorBlindness: 'none',
-    fontFamily: 'default',
-    animations: true,
-    underlineLinks: false,
-    focusIndicator: true,
-    buttonSize: 'normal',
-    removeGradients: false
-};
-
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
-
-export const useAccessibility = () => {
-    const context = useContext(AccessibilityContext);
-    if (!context) {
-        throw new Error('useAccessibility deve ser usado dentro de AccessibilityProvider');
-    }
-    return context;
-};
+import { useState, useEffect, ReactNode } from 'react';
+import { AccessibilitySettings, defaultSettings, AccessibilityContext } from './accessibilityConstants';
 
 interface AccessibilityProviderProps {
     children: ReactNode;
@@ -74,7 +35,7 @@ export const AccessibilityProvider = ({ children }: AccessibilityProviderProps) 
         }
 
         // Apply CSS filters for visual effects
-        let filters = [];
+        const filters = [];
         
         // Contrast
         if (settings.contrast === 'high') {

@@ -1,5 +1,4 @@
-// [TODO] - Terminar de implementar as apis
-// [TODO] - Ajeitar a responsividade disso
+
 
 import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";

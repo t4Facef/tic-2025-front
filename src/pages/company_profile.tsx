@@ -264,8 +264,9 @@ export default function CompanyProfile() {
         )
     }
 
-    const img1Url = null // TODO: adicionar endpoint da imagem 1
-    const img2Url = null // TODO: adicionar endpoint da imagem 2
+    // Imagens adicionais da empresa (não implementado)
+    const img1Url = null
+    const img2Url = null
 
     const companie = {
         name: companieInformation.razaoSocial,

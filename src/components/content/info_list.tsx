@@ -1,4 +1,4 @@
-// [TODO] - Ajeitar alinhamento dos items se necessário
+
 
 interface InfoItem {
   label: string;

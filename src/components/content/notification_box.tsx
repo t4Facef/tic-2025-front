@@ -1,4 +1,4 @@
-// src/components/notification.tsx
+
 import { useEffect, useState } from "react";
 import { Bell, BellDot } from "lucide-react";
 import GenericBlueButton from "../buttons/generic_blue_button";

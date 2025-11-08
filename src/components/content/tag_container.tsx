@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
 import Tag from "./tag";
-import SearchableSelect from "../forms/searchable_select ";
+import SearchableSelect from "../forms/searchable_select";
 
 interface TagContainerProps {
     children: ReactNode;

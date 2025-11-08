@@ -1,4 +1,4 @@
-// [TODO] - Pensar em design mais bonito pra essa tela
+
 
 interface NotFoundScreenProps {
     title: string;
