@@ -35,11 +35,11 @@ export default function CandidateDashboard() {
                     }
                 })
 
-                console.log('Stats Response Status:', statsResponse.status)
+
 
                 if (!statsResponse.ok) {
                     const errorText = await statsResponse.text()
-                    console.log('Stats Error Response:', errorText)
+
                     throw new Error(`Erro ${statsResponse.status}: ${errorText}`)
                 }
 
@@ -53,16 +53,16 @@ export default function CandidateDashboard() {
                     }
                 })
 
-                console.log('Jobs Response Status:', jobsResponse.status)
+
 
                 if (!jobsResponse.ok) {
                     const errorText = await jobsResponse.text()
-                    console.log('Jobs Error Response:', errorText)
+
                     throw new Error(`Erro ${jobsResponse.status}: ${errorText}`)
                 }
 
                 const jobsData = await jobsResponse.json()
-                console.log(jobsData)
+
                 setRecommendedJobs(jobsData)
 
                 // Buscar vagas que o candidato se inscreveu
@@ -72,14 +72,14 @@ export default function CandidateDashboard() {
                     }
                 })
 
-                console.log('Applied Jobs Response Status:', appliedJobsResponse.status)
+
 
                 if (appliedJobsResponse.ok) {
                     const appliedJobsData = await appliedJobsResponse.json()
-                    console.log('Applied Jobs Data:', appliedJobsData)
+
                     setAppliedJobs(appliedJobsData)
                 } else {
-                    console.log('Erro ao buscar vagas inscritas')
+
                 }
 
             } catch (error) {

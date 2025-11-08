@@ -72,7 +72,7 @@ export default function JobForm() {
         const opt = data.map((acessibilidade: { nome: string }) => acessibilidade.nome).sort()
         setOptions(opt)
       } catch (error) {
-        console.log("Erro ao buscar as acessibilidades: " + error)
+        console.error("Erro ao buscar as acessibilidades:", error)
       }
     }
 
@@ -198,7 +198,7 @@ export default function JobForm() {
     }
 
     try {
-      console.log('Dados enviados:', formatedData);
+
       
       let res;
       

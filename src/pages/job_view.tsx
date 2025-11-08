@@ -90,7 +90,7 @@ export default function JobView() {
                     })
                 })
                 
-                console.log('Status da resposta:', res.status)
+
                 
                 if (!res.ok) {
                     console.error('Erro na requisição:', res.status, res.statusText)
@@ -101,11 +101,11 @@ export default function JobView() {
                 }
                 
                 const data = await res.json()
-                console.log("Alteração de dados do status: ")
-                console.log(data)
-                console.log('Novo status no servidor:', data.status)
+
+
+
             }catch(err){
-                console.log('Erro na requisição:', err)
+
                 // Reverte o estado local em caso de erro
                 setJobStatus(currentStatus)
                 setJobData(prev => prev ? { ...prev, status: currentStatus || prev.status } : prev)
@@ -119,7 +119,7 @@ export default function JobView() {
         try {
             const candidateIds = notificationModal.candidates.map(c => c.candidatoId)
             const url = `${API_BASE_URL}/api/notificacoes`
-            console.log('Sending notification to:', url)
+
             
             const response = await fetch(url, {
                 method: 'POST',
@@ -139,7 +139,7 @@ export default function JobView() {
                 throw new Error('Falha ao enviar notificação')
             }
             
-            console.log('Notificação enviada com sucesso')
+
         } catch (error) {
             console.error('Erro ao enviar notificação:', error)
             throw error
@@ -237,7 +237,7 @@ export default function JobView() {
                         break
                     case 200: {
                         const data = await res.json()
-                        console.log('Job data received:', data)
+
                         setJobData(data)
                         setJobStatus(data.status)
                         setLoading(false)

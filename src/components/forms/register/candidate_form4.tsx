@@ -40,7 +40,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
                 setTipos(data)
             }
             catch (e) {
-                console.log(e)
+                console.error('Erro ao buscar tipos:', e)
             }
         }
 
@@ -80,7 +80,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
                 setSubTipos(data)
             }
             catch (e) {
-                console.log(e)
+                console.error('Erro ao buscar subtipos:', e)
             }
         }
 
@@ -119,7 +119,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
             setForm4(prev => ({ ...prev, supportNeeds: barreiraDescricoes }))
             
         } catch (error) {
-            console.log('Erro ao buscar barreiras:', error)
+            console.error('Erro ao buscar barreiras:', error)
             // Fallback para opções padrão
             setBarreiras([
                 "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 

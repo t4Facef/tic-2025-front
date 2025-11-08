@@ -136,7 +136,7 @@ export default function RegisterCompanies() {
                     })
                     
                     if (!fileResponse.ok) {
-                        console.warn('Erro ao enviar logo:', await fileResponse.text())
+
                     }
                 }
                 

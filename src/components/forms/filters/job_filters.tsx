@@ -47,7 +47,7 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                 })).sort((a: { nome: string }, b: { nome: string }) => a.nome.localeCompare(b.nome))
                 setEstados(estadosData)
             } catch (error) {
-                console.log('Erro ao buscar estados:', error)
+                console.error('Erro ao buscar estados:', error)
             }
         }
         

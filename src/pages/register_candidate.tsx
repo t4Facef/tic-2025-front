@@ -184,16 +184,16 @@ export default function Register() {
                                 if (arquivo.obrigatorio) {
                                     throw new Error(`Erro ao enviar ${arquivo.key}: ${errorText}`)
                                 } else {
-                                    console.warn(`Erro ao enviar ${arquivo.key}:`, errorText)
+
                                 }
                             } else {
-                                console.log(`✅ ${arquivo.key} enviado com sucesso`)
+
                             }
                         } catch (error) {
                             if (arquivo.obrigatorio) {
                                 throw error
                             } else {
-                                console.warn(`Erro ao enviar ${arquivo.key}:`, error)
+
                             }
                         }
                     } else if (arquivo.obrigatorio) {

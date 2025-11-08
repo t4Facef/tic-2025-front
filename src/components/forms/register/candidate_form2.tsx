@@ -105,9 +105,9 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                     street: data.logradouro || "",
                     neighborhood: data.bairro || ""
                 }));
-                console.log("CEP encontrado:", data);
+
             } else {
-                console.log("CEP não encontrado");
+
             }
         }
         catch (error) {

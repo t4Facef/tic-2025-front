@@ -88,7 +88,7 @@ export default function Jobs() {
 
                 filtrosProcessados = { ...filtrosProcessados, page: currentPage }
                 
-                console.log(filtrosProcessados)
+
                 const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
                     method: "POST",
                     headers: {
@@ -98,13 +98,13 @@ export default function Jobs() {
                 })
 
                 const data = await res.json()
-                console.log(data)
+
                 setVagas(data.vagas || data)
                 if (data.pagination) {
                     setPagination(data.pagination)
                 }
             } catch (err) {
-                console.log(err)
+
             } finally {
                 setIsLoading(false)
             }

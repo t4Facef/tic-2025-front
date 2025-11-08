@@ -36,10 +36,10 @@ export default function CompanyDashboard() {
                 const res = await fetch(`${API_BASE_URL}/api/estatisticas/empresa/${companyId}`)
                 const data = await res.json()
                 setCompanyStatistics(data)
-                console.log(data)
+
 
             } catch (err) {
-                console.log("Error fetching statistics: " + err)
+
             } finally {
                 setLoading(false)
             }
@@ -57,7 +57,7 @@ export default function CompanyDashboard() {
                 const data = await res.json()
                 setOpenJobs(data)
             } catch (err) {
-                console.log("Erro para carregas vagas abertas: " + err)
+
             }
         }
 
@@ -67,7 +67,7 @@ export default function CompanyDashboard() {
                 const data = await res.json()
                 setClosedJobs(data)
             } catch (err) {
-                console.log("Erro para carregas vagas fechadas: " + err)
+
             }
         }
 

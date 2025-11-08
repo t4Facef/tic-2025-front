@@ -78,9 +78,9 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
                     street: data.logradouro || "",
                     neighborhood: data.bairro || ""
                 }));
-                console.log("CEP encontrado:", data);
+
             } else {
-                console.log("CEP não encontrado");
+
             }
         }
         catch (error) {

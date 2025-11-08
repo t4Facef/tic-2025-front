@@ -83,7 +83,7 @@ export default function JobModal({
       mensagem: applicationMessage || ''
     };
 
-    console.log('Enviando candidatura:', requestData);
+
 
     const response = await fetch('http://localhost:3001/api/candidaturas', {
       method: 'POST',
