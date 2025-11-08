@@ -9,6 +9,11 @@ type CompaniesRowProps = {
 };
 
 export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
+  // Don't render if no companies
+  if (!companyIds || companyIds.length === 0) {
+    return null;
+  }
+  
   const [currentIndex, setCurrentIndex] = useState(companyIds.length);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -18,7 +23,7 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
     if (typeof window !== 'undefined') {
       if (window.innerWidth < 640) return 2; // mobile
       if (window.innerWidth < 1024) return 3; // tablet
-      return Math.min(5, companyIds.length); // desktop
+      return companyIds.length > 0 ? Math.min(5, companyIds.length) : 5; // desktop
     }
     return 5;
   };

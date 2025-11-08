@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, RotateCcw } from 'lucide-react';
-import { useAccessibility } from '../../contexts/AccessibilityContext';
+import { useAccessibility } from '../../contexts/accessibilityConstants';
 
 export default function AccessibilityButton() {
     const [isOpen, setIsOpen] = useState(false);

@@ -8,7 +8,7 @@ import { JobData, Vaga } from "../types/vagas/vaga";
 
 
 export default function Home() {
-    const [companyIds, setCompanyIds] = useState([1, 2, 3, 4, 5, 6, 7])
+    const [companyIds, setCompanyIds] = useState<number[]>([])
     const [popularJobs, setPopularJobs] = useState<JobData[]>([])
     
     useEffect(() => {
