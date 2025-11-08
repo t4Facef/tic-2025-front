@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
 import About from './pages/about';
@@ -29,9 +30,10 @@ import AdminDashboard from './pages/admin_dashboard';
 
 export default function App() {
   return (
-    <AccessibilityProvider>
-      <AuthProvider>
-        <BrowserRouter>
+    <ErrorBoundary>
+      <AccessibilityProvider>
+        <AuthProvider>
+          <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
@@ -62,9 +64,10 @@ export default function App() {
 
         </Route>
         <Route path="*" element={<NotFound />} />
-        </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </AccessibilityProvider>
+          </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </AccessibilityProvider>
+    </ErrorBoundary>
   );
 }

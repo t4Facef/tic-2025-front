@@ -60,7 +60,7 @@ export default function Home() {
                 
                 setPopularJobs(jobDataProps)
             } catch (err) {
-                console.log(err)
+                console.error('Erro ao carregar vagas populares:', err)
             }
         }
         
@@ -82,7 +82,7 @@ export default function Home() {
                         </div>
                         <div className="flex-[3] flex justify-between flex-col">
                             <div>
-                                <img className="" src="./img/homepage/Teste.png" alt="home-img-2" />
+                                <img className="" src="/img/homepage/Teste.png" alt="Ilustração Apojobs" />
                             </div>
                             <div className="flex justify-end items-end">
                                 <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton>

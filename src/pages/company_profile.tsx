@@ -69,7 +69,7 @@ export default function CompanyProfile() {
                 headers['Authorization'] = `Bearer ${token}`;
             }
 
-            console.log('Fazendo requisição para:', endpoint)
+
             const res = await fetch(endpoint, {
                 method: 'GET',
                 headers
@@ -82,10 +82,8 @@ export default function CompanyProfile() {
             }
 
             const data = await res.json()
-            console.log('Dados recebidos:', data)
             
             if (data === null) {
-                console.log('Empresa não encontrada')
                 setCompanyInformation(null)
                 setLoading(false)
                 return
