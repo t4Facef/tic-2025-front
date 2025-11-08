@@ -3,7 +3,6 @@ import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { API_BASE_URL } from "../config/api";
 
 export default function Login() {
     const [searchParams] = useSearchParams();
@@ -17,8 +16,7 @@ export default function Login() {
     const fetchLogin = async (email: string, senha: string) => {
         setMessage("🔄️ Processando...")
         try{
-            // amazonq-ignore-next-line
-            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+            const res = await fetch(`http://localhost:3001/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
