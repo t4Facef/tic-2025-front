@@ -1,13 +1,16 @@
 {
-  "name": "frontend",
+  "name": "tic-2025-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "serve": "vite preview --port 3000 --host"
   },
   "dependencies": {
     "lucide-react": "^0.541.0",

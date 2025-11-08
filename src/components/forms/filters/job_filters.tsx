@@ -30,10 +30,25 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
     const [selectedContractTypes, setSelectedContractTypes] = useState<string[]>([])
     const [estados, setEstados] = useState<{ nome: string, sigla: string }[]>([])
     const [minhasVagasValue, setMinhasVagasValue] = useState<string>("")
+    const [recomendadasValue, setRecomendadasValue] = useState<string>("")
+    const [statusValue, setStatusValue] = useState<string>("")
     
     useEffect(() => {
-        const newValue = initialValues?.minhasVagas === true ? "Sim" : ""
-        setMinhasVagasValue(newValue)
+        const minhasVagasVal = initialValues?.minhasVagas === true ? "Sim" : ""
+        const recomendadasVal = initialValues?.recomendadas === true ? "Sim" : ""
+        const statusVal = initialValues?.status === true ? "Sim" : ""
+        
+        setMinhasVagasValue(minhasVagasVal)
+        setRecomendadasValue(recomendadasVal)
+        setStatusValue(statusVal)
+        
+        // Inicializar arrays de checkbox se houver valores iniciais
+        if (initialValues?.tipoTrabalho && Array.isArray(initialValues.tipoTrabalho)) {
+            setSelectedWorkTypes(initialValues.tipoTrabalho)
+        }
+        if (initialValues?.tipoContrato && Array.isArray(initialValues.tipoContrato)) {
+            setSelectedContractTypes(initialValues.tipoContrato)
+        }
     }, [initialValues])
     
     useEffect(() => {
@@ -72,13 +87,26 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
         onFiltersChange({ [filterKey]: newArray.length > 0 ? newArray : undefined })
     }
     
+    const handleRadioChange = (value: string, setter: (val: string) => void, filterKey: keyof VagasSearchFilters) => {
+        setter(value)
+        if (value === "Sim") {
+            onFiltersChange({ [filterKey]: true })
+        } else {
+            onFiltersChange({ [filterKey]: undefined })
+        }
+    }
+    
     return (
         <div className="flex flex-col gap-4 w-full text-sm items-center">
             <FilterCamp>
                 <GenericFormField 
                     type="checkbox" 
                     id="work_type_filter" 
-                    options={[...WORK_TYPES]}
+                    options={WORK_TYPES.map(type => ({
+                        name: type,
+                        value: type,
+                        checked: selectedWorkTypes.includes(type)
+                    }))}
                     onChange={(e) => handleCheckboxChange(e.target.value, selectedWorkTypes, setSelectedWorkTypes, 'tipoTrabalho')}
                 >
                     Tipo de Trabalho
@@ -88,7 +116,11 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                 <GenericFormField 
                     type="checkbox" 
                     id="contract_type_filter" 
-                    options={[...CONTRACT_TYPES]} 
+                    options={CONTRACT_TYPES.map(type => ({
+                        name: type,
+                        value: type,
+                        checked: selectedContractTypes.includes(type)
+                    }))}
                     itemsOrientation={2}
                     onChange={(e) => handleCheckboxChange(e.target.value, selectedContractTypes, setSelectedContractTypes, 'tipoContrato')}
                 >
@@ -114,7 +146,7 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                     options={[...WORK_LEVELS]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
-                    onChange={(e) => onFiltersChange({ nivelTrabalho: e.target.value })}
+                    onChange={(e) => onFiltersChange({ nivelTrabalho: e.target.value || undefined })}
                 >
                     Nivel de Trabalho
                 </GenericFormField>
@@ -126,7 +158,7 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                     options={[...SECTORS]} 
                     itemsOrientation={2} 
                     placeholder="Selecione"
-                    onChange={(e) => onFiltersChange({ setor: e.target.value })}
+                    onChange={(e) => onFiltersChange({ setor: e.target.value || undefined })}
                 >
                     Setor
                 </GenericFormField>
@@ -136,9 +168,9 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                     type="radio" 
                     id="recommended_filter" 
                     options={["Sim", "Não"]} 
-                    itemsOrientation={2} 
-                    placeholder="Selecione"
-                    onChange={(e) => onFiltersChange({ recomendadas: e.target.value === "Sim" })}
+                    itemsOrientation={2}
+                    value={recomendadasValue}
+                    onChange={(e) => handleRadioChange(e.target.value, setRecomendadasValue, 'recomendadas')}
                 >
                     Somente Recomendadas Para Mim?
                 </GenericFormField>
@@ -164,9 +196,8 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
                     id="open_filters"
                     options={["Sim", "Não"]}
                     itemsOrientation={2}
-                    onChange={(e) => {
-                        onFiltersChange({ status: e.target.value === "Sim" })
-                    }}
+                    value={statusValue}
+                    onChange={(e) => handleRadioChange(e.target.value, setStatusValue, 'status')}
                 >
                     Somente Vagas Abertas?
                 </GenericFormField>

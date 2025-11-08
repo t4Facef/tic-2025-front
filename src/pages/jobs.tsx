@@ -71,6 +71,13 @@ export default function Jobs() {
             setIsLoading(true)
             try {
                 let filtrosProcessados = { ...filtros }
+                
+                // Remover propriedades undefined
+                Object.keys(filtrosProcessados).forEach(key => {
+                    if (filtrosProcessados[key as keyof VagasSearchFilters] === undefined) {
+                        delete filtrosProcessados[key as keyof VagasSearchFilters]
+                    }
+                })
 
                 if (user?.id && role?.toLowerCase() === 'candidato') {
                     filtrosProcessados = { ...filtrosProcessados, candidatoId: user.id }
@@ -126,6 +133,15 @@ export default function Jobs() {
                                 setCurrentPage(1)
                             }} 
                         />
+                        <button
+                            onClick={() => {
+                                setFiltros({})
+                                setCurrentPage(1)
+                            }}
+                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors text-sm"
+                        >
+                            Limpar Filtros
+                        </button>
                     </div>
                 </div>
             </div>

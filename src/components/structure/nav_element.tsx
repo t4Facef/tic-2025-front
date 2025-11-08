@@ -1,19 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
 import { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
 
 type navElementProps = {
     link: string,
-    children: ReactNode
+    children: ReactNode,
+    icon?: LucideIcon,
+    description?: string,
+    mobile?: boolean
 }
 
-export default function NavElement({link, children}: navElementProps){
+export default function NavElement({link, children, icon: Icon, description, mobile}: navElementProps){
     const location = useLocation()
     const isActive = location.pathname === link
     
     return (
         <Link 
             className={`
-                block px-4 py-3 md:py-2 text-sm md:text-base font-medium rounded-lg md:rounded-md
+                ${mobile ? 'flex items-center space-x-3' : 'flex flex-col items-center space-y-1'}
+                px-4 py-3 md:py-2 text-sm md:text-base font-medium rounded-lg md:rounded-md
                 transition-all duration-200 hover:scale-105 active:scale-95
                 ${
                     isActive 
@@ -22,8 +27,13 @@ export default function NavElement({link, children}: navElementProps){
                 }
             `} 
             to={link}
+            title={description}
         >
-            {children}
+            {Icon && <Icon size={mobile ? 18 : 20} />}
+            <span className={mobile ? '' : 'text-xs'}>{children}</span>
+            {description && !mobile && (
+                <span className="text-xs opacity-75">{description}</span>
+            )}
         </Link>
     )
 }

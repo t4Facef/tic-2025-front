@@ -17,7 +17,7 @@ interface GenericFormFieldProps {
     id: string;
     type?: string;
     placeholder?: string;
-    options?: string[] | {name: string, value: string}[];
+    options?: string[] | {name: string, value: string, checked?: boolean}[];
     textOrientation?: 1 | 2 | 3;
     autoComplete?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
@@ -83,14 +83,15 @@ export default function GenericFormField({children, id, placeholder, options, au
                         const optValue = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
                         return (
-                            <label key={i} className="flex items-center gap-1">
+                            <label key={i} className="flex items-center gap-1 cursor-pointer">
                                 <input 
                                     type="radio" 
                                     name={id} 
                                     value={optValue} 
                                     checked={value === optValue}
                                     onChange={onChange} 
-                                    required={required} 
+                                    required={required}
+                                    className="cursor-pointer"
                                 />
                                 {label}
                             </label>
@@ -111,11 +112,20 @@ export default function GenericFormField({children, id, placeholder, options, au
                 </span>
                 <div className={`${itemsOrientationClasses[itemsOrientation]}`}>
                     {options?.map((opt, i) => {
-                        const value = typeof opt === 'string' ? opt : opt.value;
+                        const optValue = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
+                        const isChecked = typeof opt === 'string' ? false : opt.checked || false;
                         return (
-                            <label key={i} className="flex items-center gap-1">
-                                <input type="checkbox" name={`${id}_${i}`} value={value} onChange={onChange} required={required} />
+                            <label key={i} className="flex items-center gap-1 cursor-pointer">
+                                <input 
+                                    type="checkbox" 
+                                    name={`${id}_${i}`} 
+                                    value={optValue} 
+                                    checked={isChecked}
+                                    onChange={onChange} 
+                                    required={required}
+                                    className="cursor-pointer"
+                                />
                                 {label}
                             </label>
                         );
@@ -160,6 +170,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                     <div className={`${baseClass} bg-white cursor-pointer flex items-center justify-center py-6 text-gray-700 text-lg font-medium hover:bg-gray-50 transition-colors`}>
                         📁 Clique para selecionar arquivo
                     </div>
+                // amazonq-ignore-next-line
                 </div>
                 {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
