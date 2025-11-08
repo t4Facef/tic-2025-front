@@ -31,7 +31,7 @@ export default function AuthEntry() {
                 </div>
                 <div className="flex flex-col text-[1.2rem] items-center my-12">
                     <span>É sua primeira vez?</span>
-                    <Link to="/registrar" className="underline pt-1">Cadastrar</Link>
+                    <Link to="/auth/register/main" className="underline pt-1">Cadastrar</Link>
                 </div>
             </div>
         </div>

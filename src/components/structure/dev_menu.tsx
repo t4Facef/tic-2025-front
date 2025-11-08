@@ -14,7 +14,7 @@ export default function DevMenu() {
         { path: "/auth/register/companies", name: "Registro Empresas" },
         { path: "/auth/register/success", name: "Sucesso Cadastro" },
         { path: "/auth/password/forgot", name: "Esqueci Senha" },
-        { path: "/auth/password/reset", name: "Redefinir Senha" },
+        { path: "/reset-password", name: "Redefinir Senha" },
         { path: "/jobs", name: "Vagas" },
         { path: "/candidates/dashboard", name: "Dashboard Candidato" },
         { path: "/candidates/profile", name: "Meu Perfil Candidato" },
@@ -24,7 +24,7 @@ export default function DevMenu() {
         { path: "/companies/1/profile", name: "Perfil Empresa Público" },
         { path: "/jobs/new", name: "Nova Vaga" },
         { path: "/notifications", name: "Notificações" },
-        { path: "/test", name: "Testes" },
+
     ];
 
     return (
