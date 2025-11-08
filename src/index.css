@@ -10,6 +10,199 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: "nunito", "sans"
-  @apply font-sans
+  font-family: "nunito", "sans";
+  @apply font-sans;
+}
+
+/* Estilos de Acessibilidade */
+.accessibility-text-sm * {
+  @apply text-sm !important;
+}
+
+.accessibility-text-lg * {
+  @apply text-lg !important;
+}
+
+.accessibility-text-xl * {
+  @apply text-xl !important;
+}
+
+.accessibility-high-contrast {
+  @apply contrast-150 brightness-110;
+}
+
+/* Alto contraste - backgrounds */
+.accessibility-high-contrast .bg-gray-50,
+.accessibility-high-contrast .bg-gray-100 {
+  @apply bg-white !important;
+}
+
+.accessibility-high-contrast .bg-blue1 { background-color: #ffffff !important; }
+.accessibility-high-contrast .bg-blue2 { background-color: #000000 !important; }
+.accessibility-high-contrast .bg-blue3 { background-color: #000000 !important; }
+.accessibility-high-contrast .bg-blue4 { background-color: #ffffff !important; }
+.accessibility-high-contrast .bg-blue5 { background-color: #ffffff !important; }
+
+/* Alto contraste - textos */
+.accessibility-high-contrast .text-gray-600,
+.accessibility-high-contrast .text-gray-700,
+.accessibility-high-contrast .text-gray-500 {
+  @apply text-black !important;
+}
+
+.accessibility-high-contrast .text-blue1 { color: #ffffff !important; }
+.accessibility-high-contrast .text-blue2 { color: #ffffff !important; }
+.accessibility-high-contrast .text-blue3 { color: #000000 !important; }
+.accessibility-high-contrast .text-blue4 { color: #000000 !important; }
+.accessibility-high-contrast .text-blue5 { color: #000000 !important; }
+
+/* Exceções para header/logo */
+.accessibility-high-contrast .bg-blue2 .text-white,
+.accessibility-high-contrast header .text-white {
+  color: #ffffff !important;
+}
+
+.accessibility-high-contrast .bg-blue2,
+.accessibility-high-contrast header .bg-blue2 {
+  background-color: #000000 !important;
+}
+
+/* Corrigir texto com bg-clip-text */
+.accessibility-high-contrast .bg-clip-text,
+.accessibility-high-contrast .text-transparent {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+/* Alto contraste - bordas */
+.accessibility-high-contrast * {
+  border-color: #000000 !important;
+}
+
+.accessibility-high-contrast .border-gray-300,
+.accessibility-high-contrast .border-gray-200 {
+  border-color: #000000 !important;
+}
+
+.accessibility-inverted {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.accessibility-inverted img,
+.accessibility-inverted video {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.accessibility-font-mono,
+.accessibility-font-mono * {
+  @apply font-mono !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.6 !important;
+}
+
+.accessibility-font-serif,
+.accessibility-font-serif * {
+  @apply font-serif !important;
+}
+
+.accessibility-no-animations,
+.accessibility-no-animations *,
+.accessibility-no-animations *::before,
+.accessibility-no-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.accessibility-underline-links a,
+.accessibility-underline-links button {
+  @apply underline !important;
+}
+
+.accessibility-high-contrast *:focus {
+  @apply outline-2 outline-black outline-offset-2 !important;
+}
+
+/* Filtros CSS aplicados via JavaScript - mais eficiente e afeta imagens também */
+
+/* Garantir que elementos de acessibilidade mantenham posição fixa */
+#accessibility-button,
+.accessibility-modal {
+  position: fixed !important;
+  filter: none !important;
+}
+
+#accessibility-button {
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  z-index: 9998 !important;
+}
+
+.accessibility-modal {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+}
+
+/* Indicadores de foco aprimorados */
+.accessibility-enhanced-focus *:focus {
+  @apply outline-4 outline-blue3 outline-offset-4 !important;
+  box-shadow: 0 0 0 4px rgba(2, 48, 71, 0.3) !important;
+}
+
+/* Botões maiores para acessibilidade motora */
+.accessibility-large-buttons button,
+.accessibility-large-buttons input,
+.accessibility-large-buttons select {
+  @apply min-h-12 px-6 py-3 text-lg !important;
+}
+
+.accessibility-large-buttons .p-2 {
+  @apply p-4 !important;
+}
+
+.accessibility-large-buttons .p-3 {
+  @apply p-5 !important;
+}
+
+
+
+/* ALTO CONTRASTE - Gradientes removidos */
+.accessibility-high-contrast .bg-gradient-to-r,
+.accessibility-high-contrast .bg-gradient-to-l,
+.accessibility-high-contrast .bg-gradient-to-t,
+.accessibility-high-contrast .bg-gradient-to-b,
+.accessibility-high-contrast .bg-gradient-to-br,
+.accessibility-high-contrast .bg-gradient-to-bl,
+.accessibility-high-contrast .bg-gradient-to-tr,
+.accessibility-high-contrast .bg-gradient-to-tl {
+  background: #000000 !important;
+}
+
+/* REMOVER GRADIENTES - Opção específica */
+.accessibility-no-gradients .bg-gradient-to-r,
+.accessibility-no-gradients .bg-gradient-to-l,
+.accessibility-no-gradients .bg-gradient-to-t,
+.accessibility-no-gradients .bg-gradient-to-b,
+.accessibility-no-gradients .bg-gradient-to-br,
+.accessibility-no-gradients .bg-gradient-to-bl,
+.accessibility-no-gradients .bg-gradient-to-tr,
+.accessibility-no-gradients .bg-gradient-to-tl {
+  background: var(--tw-gradient-from, #219EBC) !important;
+}
+
+/* Corrigir texto com gradiente quando remover gradientes */
+.accessibility-no-gradients .bg-clip-text,
+.accessibility-no-gradients .text-transparent {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: unset !important;
 }

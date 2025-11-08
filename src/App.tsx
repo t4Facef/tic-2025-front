@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthProvider';
+import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
 import About from './pages/about';
@@ -28,8 +29,9 @@ import AdminDashboard from './pages/admin_dashboard';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <AccessibilityProvider>
+      <AuthProvider>
+        <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
@@ -60,8 +62,9 @@ export default function App() {
           <Route path='/test' element={<TestPage/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+        </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </AccessibilityProvider>
   );
 }
