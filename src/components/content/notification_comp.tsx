@@ -34,6 +34,28 @@ export default function NotificationComp() {
     }
   };
 
+  const markAllAsRead = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/notificacoes/${role == "CANDIDATO" ? "candidato" : "empresa"}/${user.id}/todas-lidas`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setNotifications(prev => 
+          prev.map(notif => ({ ...notif, lida: true }))
+        );
+      }
+    } catch (error) {
+      console.error("Error marking all notifications as read:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!user?.id) return;
@@ -52,9 +74,20 @@ export default function NotificationComp() {
 
   return (
     <div className="m-8 space-y-4">
-      <h1 className="flex justify-center text-[2rem] font-bold text-blue3">
-        Notificações
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-[2rem] font-bold text-blue3">
+          Notificações
+        </h1>
+        {notifications.some(n => !n.lida) && (
+          <GenericBlueButton
+            color={3}
+            size="sm"
+            onClick={markAllAsRead}
+          >
+            Marcar todas como lidas
+          </GenericBlueButton>
+        )}
+      </div>
       <div className="space-y-10">
         {notifications.map((notification) => (
           <div key={notification.notificacaoId} className="flex flex-col mx-24">

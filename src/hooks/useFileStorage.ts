@@ -7,75 +7,42 @@ interface FileStorage {
 export function useFileStorage(storageKey: string) {
     const [files, setFiles] = useState<FileStorage>({});
 
-    // Carregar arquivos do localStorage na inicialização
+    // Carregar apenas metadados pequenos do localStorage na inicialização
     useEffect(() => {
-        const savedFiles = localStorage.getItem(storageKey);
-        if (savedFiles) {
+        const savedFileNames = localStorage.getItem(`${storageKey}_names`);
+        if (savedFileNames) {
             try {
-                const parsedFiles = JSON.parse(savedFiles);
-                const restoredFiles: FileStorage = {};
-                
-                // Restaurar arquivos do localStorage
-                Object.keys(parsedFiles).forEach(key => {
-                    const fileData = parsedFiles[key];
-                    if (fileData.name && fileData.data) {
-                        // Converter base64 de volta para File
-                        const byteCharacters = atob(fileData.data);
-                        const byteNumbers = new Array(byteCharacters.length);
-                        for (let i = 0; i < byteCharacters.length; i++) {
-                            byteNumbers[i] = byteCharacters.charCodeAt(i);
-                        }
-                        const byteArray = new Uint8Array(byteNumbers);
-                        const file = new File([byteArray], fileData.name, { type: fileData.type });
-                        restoredFiles[key] = file;
-                    }
-                });
-                
-                setFiles(restoredFiles);
+                const fileNames = JSON.parse(savedFileNames);
+                console.log('Arquivos salvos encontrados:', Object.keys(fileNames));
+                // Apenas log para debug, arquivos grandes não são restaurados do localStorage
             } catch (error) {
-                console.error('Erro ao restaurar arquivos:', error);
+                console.error('Erro ao verificar arquivos salvos:', error);
+                // Limpar dados corrompidos
+                localStorage.removeItem(`${storageKey}_names`);
             }
         }
     }, [storageKey]);
 
     const saveFile = (key: string, file: File) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const base64 = (reader.result as string).split(',')[1];
-            const fileData = {
-                name: file.name,
-                type: file.type,
-                data: base64
-            };
+        setFiles(prev => {
+            const newFiles = { ...prev, [key]: file };
             
-            setFiles(prev => {
-                const newFiles = { ...prev, [key]: file };
-                
-                // Salvar no localStorage
-                const filesToSave = { ...prev };
-                filesToSave[key] = file;
-                
-                const serializedFiles: any = {};
-                Object.keys(filesToSave).forEach(k => {
-                    if (k === key) {
-                        serializedFiles[k] = fileData;
-                    } else {
-                        // Para outros arquivos, manter dados existentes se já estão no localStorage
-                        const existing = localStorage.getItem(storageKey);
-                        if (existing) {
-                            const parsed = JSON.parse(existing);
-                            if (parsed[k]) {
-                                serializedFiles[k] = parsed[k];
-                            }
-                        }
-                    }
-                });
-                
-                localStorage.setItem(storageKey, JSON.stringify(serializedFiles));
-                return newFiles;
-            });
-        };
-        reader.readAsDataURL(file);
+            // Salvar apenas metadados no localStorage para arquivos pequenos
+            try {
+                const fileNames = JSON.parse(localStorage.getItem(`${storageKey}_names`) || '{}');
+                fileNames[key] = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                };
+                localStorage.setItem(`${storageKey}_names`, JSON.stringify(fileNames));
+            } catch (error) {
+                console.warn('Não foi possível salvar metadados do arquivo:', error);
+                // Se localStorage falhar, continua sem ele
+            }
+            
+            return newFiles;
+        });
     };
 
     const removeFile = (key: string) => {
@@ -83,12 +50,13 @@ export function useFileStorage(storageKey: string) {
             const newFiles = { ...prev };
             delete newFiles[key];
             
-            // Atualizar localStorage
-            const existing = localStorage.getItem(storageKey);
-            if (existing) {
-                const parsed = JSON.parse(existing);
-                delete parsed[key];
-                localStorage.setItem(storageKey, JSON.stringify(parsed));
+            // Remover metadados do localStorage
+            try {
+                const fileNames = JSON.parse(localStorage.getItem(`${storageKey}_names`) || '{}');
+                delete fileNames[key];
+                localStorage.setItem(`${storageKey}_names`, JSON.stringify(fileNames));
+            } catch (error) {
+                console.warn('Erro ao remover metadados:', error);
             }
             
             return newFiles;
@@ -97,7 +65,10 @@ export function useFileStorage(storageKey: string) {
 
     const clearAll = () => {
         setFiles({});
+        localStorage.removeItem(`${storageKey}_names`);
+        // Limpar chaves antigas que podem estar causando problemas
         localStorage.removeItem(storageKey);
+        localStorage.removeItem('candidateFiles'); // Limpar dados antigos específicos
     };
 
     const hasFile = (key: string) => {

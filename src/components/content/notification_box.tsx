@@ -79,10 +79,12 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
                     >
                       <div className="flex items-start gap-2">
                         {notif.notificacao.remetenteEmpresaId && (
-                          <Link
-                            to={`/companies/${notif.notificacao.remetenteEmpresaId}/profile/`}
-                            className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity"
-                            onClick={(e) => e.stopPropagation()}
+                          <div
+                            className="w-6 h-6 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(`/companies/${notif.notificacao.remetenteEmpresaId}/profile/`, '_blank');
+                            }}
                           >
                             <img
                               src={`${API_BASE_URL}/api/arquivos/empresa/${notif.notificacao.remetenteEmpresaId}/foto/view`}
@@ -97,7 +99,7 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
                             <span className="text-gray-600 text-xs font-semibold" style={{ display: 'none' }}>
                               E
                             </span>
-                          </Link>
+                          </div>
                         )}
                         <div className="flex-1">
                           <h4 className="font-semibold">{truncate(notif.notificacao.titulo, 35)}</h4>
