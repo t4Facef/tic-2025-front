@@ -3,6 +3,7 @@ import GenericFormField from '../generic_form_field';
 import { CandidateForm1Data } from '../../../types/forms/candidate';
 import { formatCPF, validateCPF } from '../../../utils/cpf';
 import { useFormValidation } from '../../../hooks/useFormValidation';
+import { getMinBirthDate, getMaxBirthDate } from '../../../utils/date';
 
 export default function CandidateForm1({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
     const [form1, setForm1] = useState<CandidateForm1Data>(initialData || {} as CandidateForm1Data)
@@ -82,7 +83,19 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
                         <p className="text-blue-600 text-sm mt-1">🔄 Verificando CPF...</p>
                     )}
                 </div>
-                <GenericFormField id="candidate_birth_date_register" type="date" autoComplete="bday" required onChange={(e) => setForm1((prev) => ({ ...prev, birthDate: e.target.value }))} value={form1.birthDate || ""} error={errors.birthDate}>Data de Nascimento</GenericFormField>
+                <GenericFormField 
+                    id="candidate_birth_date_register" 
+                    type="date" 
+                    autoComplete="bday" 
+                    required 
+                    min={getMinBirthDate()}
+                    max={getMaxBirthDate()}
+                    onChange={(e) => setForm1((prev) => ({ ...prev, birthDate: e.target.value }))} 
+                    value={form1.birthDate || ""} 
+                    error={errors.birthDate}
+                >
+                    Data de Nascimento
+                </GenericFormField>
             </div>
             <div className="flex justify-between space-x-16">
                 <GenericFormField id="candidate_sexuality_register" type="select" options={['Selecione', 'Heterossexual', 'Homossexual', 'Bissexual', 'Pansexual', 'Assexual', 'Outro', 'Prefiro não especificar']} onChange={(e) => setForm1((prev) => ({ ...prev, sexuality: e.target.value }))} value={form1.sexuality || ""}>Orientação Sexual</GenericFormField>

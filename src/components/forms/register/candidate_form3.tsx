@@ -2,6 +2,7 @@ import { EDUCATION_STATUS, EDUCATION_TYPES } from "../../../data/constants/selec
 import { CandidateForm3Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
 import { useState } from "react";
+import { getMinEducationDate, getMaxEducationDate, getMinJobDate, getMaxJobDate } from '../../../utils/date';
 
 export default function CandidateForm3({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CandidateForm3Data) => void, formId: string, initialData?: CandidateForm3Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form3, setForm3] = useState<CandidateForm3Data>(initialData || {} as CandidateForm3Data)
@@ -43,10 +44,28 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                     <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso" onChange={(e) => setForm3((prev) => ({ ...prev, courseName: e.target.value }))} value={form3.courseName || ""}>Nome do Curso</GenericFormField>
                     <div className="flex gap-4">
                         <div>
-                            <GenericFormField id="candidate_education_start_date_register" type="date" onChange={(e) => setForm3((prev) => ({ ...prev, educationStartDate: e.target.value }))} value={form3.educationStartDate || ""}>Data de Início</GenericFormField>
+                            <GenericFormField 
+                                id="candidate_education_start_date_register" 
+                                type="date" 
+                                min={getMinEducationDate()}
+                                max={getMaxEducationDate()}
+                                onChange={(e) => setForm3((prev) => ({ ...prev, educationStartDate: e.target.value }))} 
+                                value={form3.educationStartDate || ""}
+                            >
+                                Data de Início
+                            </GenericFormField>
                         </div>
                         <div>
-                            <GenericFormField id="candidate_education_end_date_register" type="date" onChange={(e) => setForm3((prev) => ({ ...prev, educationEndDate: e.target.value }))} value={form3.educationEndDate || ""}>Data de Término Prevista</GenericFormField>
+                            <GenericFormField 
+                                id="candidate_education_end_date_register" 
+                                type="date" 
+                                min={getMinEducationDate()}
+                                max={getMaxEducationDate()}
+                                onChange={(e) => setForm3((prev) => ({ ...prev, educationEndDate: e.target.value }))} 
+                                value={form3.educationEndDate || ""}
+                            >
+                                Data de Término Prevista
+                            </GenericFormField>
                         </div>
                     </div>
                     <GenericFormField id="candidate_education_institution_register" placeholder="Digite o nome da instituição de ensino" onChange={(e) => setForm3((prev) => ({ ...prev, educationInstitution: e.target.value }))} value={form3.educationInstitution || ""}>Instituição de Ensino</GenericFormField>
@@ -67,7 +86,16 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                     <GenericFormField id="candidate_company_name_register" placeholder="Digite o nome da empresa" onChange={(e) => setForm3((prev) => ({ ...prev, companyName: e.target.value }))} value={form3.companyName || ""}>Empresa</GenericFormField>
                     <div className="flex gap-4 items-end">
                         <div>
-                            <GenericFormField id="candidate_job_start_date_register" type="date" onChange={(e) => setForm3((prev) => ({ ...prev, jobStartDate: e.target.value }))} value={form3.jobStartDate || ""}>Data de Início</GenericFormField>
+                            <GenericFormField 
+                                id="candidate_job_start_date_register" 
+                                type="date" 
+                                min={getMinJobDate()}
+                                max={getMaxJobDate()}
+                                onChange={(e) => setForm3((prev) => ({ ...prev, jobStartDate: e.target.value }))} 
+                                value={form3.jobStartDate || ""}
+                            >
+                                Data de Início
+                            </GenericFormField>
                         </div>
                         <div>
                             {stillWorking ? (
@@ -78,7 +106,16 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                                     </div>
                                 </div>
                             ) : (
-                                <GenericFormField id="candidate_job_end_date_register" type="date" onChange={(e) => setForm3((prev) => ({ ...prev, jobEndDate: e.target.value }))} value={form3.jobEndDate || ""}>Data de Saída</GenericFormField>
+                                <GenericFormField 
+                                    id="candidate_job_end_date_register" 
+                                    type="date" 
+                                    min={getMinJobDate()}
+                                    max={getMaxJobDate()}
+                                    onChange={(e) => setForm3((prev) => ({ ...prev, jobEndDate: e.target.value }))} 
+                                    value={form3.jobEndDate || ""}
+                                >
+                                    Data de Saída
+                                </GenericFormField>
                             )}
                         </div>
                         <div className="pb-2">

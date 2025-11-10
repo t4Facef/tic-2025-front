@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import GenericFormField from "../generic_form_field";
 import { CandidateForm2Data } from "../../../types/forms/candidate";
 import { useFormValidation } from '../../../hooks/useFormValidation';
+import { formatPhone, validatePhone, cleanPhone } from '../../../utils/phone';
 
 export default function CandidateForm2 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm2Data) => void, formId: string, initialData?: CandidateForm2Data}){
     const [form2, setForm2] = useState<CandidateForm2Data>(initialData || {} as CandidateForm2Data)
@@ -136,10 +137,12 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                 return; // Para aqui se houver erros de validação
             }
             
-            // Limpa CEP antes de enviar para API
+            // Limpa CEP e telefones antes de enviar para API
             const cleanedData = {
                 ...form2,
-                zipCode: form2.zipCode?.replace(/\D/g, '') || ""
+                zipCode: form2.zipCode?.replace(/\D/g, '') || "",
+                phoneNumber1: cleanPhone(form2.phoneNumber1 || ""),
+                phoneNumber2: cleanPhone(form2.phoneNumber2 || "")
             };
 
             setIsCheckingEmail(true)
@@ -177,8 +180,32 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                 )}
             </div>
             <div className="flex space-x-24">
-                <GenericFormField id="candidate_telefone1_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel" required  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber1: e.target.value}))} value={form2.phoneNumber1 || ""} error={errors.phoneNumber1}>Telefone 1</GenericFormField>
-                <GenericFormField id="candidate_telefone2_register" placeholder="Digite aqui um número de telefone ou celular" autoComplete="tel"  onChange={(e) => setForm2((prev) => ({...prev, phoneNumber2: e.target.value}))} value={form2.phoneNumber2 || ""}>Telefone 2</GenericFormField>
+                <GenericFormField 
+                    id="candidate_telefone1_register" 
+                    placeholder="(XX) XXXXX-XXXX" 
+                    autoComplete="tel" 
+                    required  
+                    onChange={(e) => {
+                        const formatted = formatPhone(e.target.value);
+                        setForm2((prev) => ({...prev, phoneNumber1: formatted}));
+                    }} 
+                    value={form2.phoneNumber1 || ""} 
+                    error={errors.phoneNumber1}
+                >
+                    Telefone 1
+                </GenericFormField>
+                <GenericFormField 
+                    id="candidate_telefone2_register" 
+                    placeholder="(XX) XXXXX-XXXX" 
+                    autoComplete="tel"  
+                    onChange={(e) => {
+                        const formatted = formatPhone(e.target.value);
+                        setForm2((prev) => ({...prev, phoneNumber2: formatted}));
+                    }} 
+                    value={form2.phoneNumber2 || ""}
+                >
+                    Telefone 2
+                </GenericFormField>
             </div>
             <div>
                 <p>Endereço</p>
