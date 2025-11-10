@@ -8,13 +8,13 @@ interface TagProps {
 
 export default function Tag({children, removable = false, onRemove}: TagProps ){
     return(
-        <div className="bg-blue4 inline-flex items-center px-3 m-2 rounded-2xl font-medium group">
-            <span>{children}</span>
+        <div className="bg-blue2 text-white inline-flex items-center px-3 py-1 rounded-full font-medium shadow-sm hover:bg-blue3 transition-colors group">
+            <span className="text-sm font-medium">{children}</span>
             {removable && (
                 <button 
                     type="button"
                     onClick={onRemove}
-                    className="ml-2 text-gray-600 hover:text-red-600 hover:bg-red-100 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
+                    className="ml-2 text-white hover:text-red1 hover:bg-white hover:bg-opacity-20 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold transition-all duration-200"
                 >
                     ×
                 </button>

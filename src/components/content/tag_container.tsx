@@ -50,46 +50,55 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
     return (
         <div className="w-full space-y-4">
             <div>
-                <p className="inline-flex bg-blue3 text-white p-2 px-4 rounded-t-xl text-center justify-center items-center font-medium">{children}</p>
-                <div className="border-2 border-blue3 min-h-[8rem] rounded-b-xl p-4 gap-2 bg-white relative">
+                <p className="inline-flex bg-blue3 text-white p-3 px-6 rounded-t-2xl text-center justify-center items-center font-medium text-lg">{children}</p>
+                <div className="border border-blue3 min-h-[8rem] rounded-b-2xl rounded-tr-2xl p-6 gap-2 bg-white relative shadow-sm">
                     {edit && currentTags.length > 0 && (
                         <button
                             type="button"
                             onClick={handleClearAll}
-                            className="absolute top-2 right-2 bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 border border-red-300 hover:border-red-400"
+                            className="absolute top-3 right-3 bg-red1 hover:bg-red2 text-white px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-200"
                         >
-                            🗑️ Limpar Tudo
+                            Limpar Tudo
                         </button>
                     )}
-                    {currentTags.map((tag, index) => (
-                        <Tag
-                            key={index}
-                            removable={edit}
-                            onRemove={() => handleRemoveTag(index)}
-                        >
-                            {tag}
-                        </Tag>
-                    ))}
+                    <div className="flex flex-wrap gap-2 mt-2">
+                        {currentTags.map((tag, index) => (
+                            <Tag
+                                key={index}
+                                removable={edit}
+                                onRemove={() => handleRemoveTag(index)}
+                            >
+                                {tag}
+                            </Tag>
+                        ))}
+                    </div>
                     {edit && options && (
-                        <SearchableSelect options={options} addTag={handleAddTag} currentTags={currentTags}/>
+                        <div className="mt-4">
+                            <SearchableSelect options={options} addTag={handleAddTag} currentTags={currentTags}/>
+                        </div>
                     )}
                     {edit && !options && (
-                        <div className="inline-flex items-center bg-blue1 px-3 m-2 rounded-2xl font-medium">
+                        <div className="inline-flex items-center bg-blue1 px-4 py-2 mt-4 rounded-xl font-medium border border-blue2">
                             <input
                                 type="text"
                                 value={newTagText}
                                 onChange={(e) => setNewTagText(e.target.value)}
                                 onKeyPress={handleKeyPress}
-                                placeholder="Nova capacidade..."
-                                className="bg-transparent border-none outline-none placeholder-gray-500 text-sm min-w-[120px]"
+                                placeholder="Nova habilidade..."
+                                className="bg-transparent border-none outline-none placeholder-blue3 text-blue3 min-w-[150px] font-medium"
                             />
                             <button 
                                 type="button"
                                 onClick={() => handleAddTag()}
-                                className="ml-2 text-blue3 hover:text-blue3H hover:bg-blue1 rounded-full w-5 h-5 flex items-center justify-center text-sm transition-colors"
+                                className="ml-3 bg-blue3 hover:bg-blue3H text-white rounded-full w-7 h-7 flex items-center justify-center text-lg font-bold transition-colors"
                             >
                                 +
                             </button>
+                        </div>
+                    )}
+                    {currentTags.length === 0 && !edit && (
+                        <div className="text-center py-8 text-gray-500">
+                            <p>Nenhuma tag adicionada ainda</p>
                         </div>
                     )}
                 </div>

@@ -300,75 +300,138 @@ export default function CandidateProfile() {
 
     if (candidateData) {
         return (
-            <div className="max-w-6xl mx-auto px-6 py-10 space-y-8">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                        <img src={`${API_BASE_URL}/api/arquivos/candidato/${isViewingOwnProfile ? user?.id : id}/foto/view`} alt="Foto de perfil" className="w-32 h-32 rounded-full object-cover mr-5 shadow-xl border-[0.5px]" />
-                        <div>
-                            <h1 className="font-bold text-[32px]">{candidateData.nome}</h1>
-                            <p>
-                                {candidateData.areaInteresse} | {candidateData.genero}
-                            </p>
-                            {candidateData.endereco && (
-                                <p className="text-sm text-gray-600">
-                                    {candidateData.endereco?.cidade || 'N/A'}, {candidateData.endereco?.estado || 'N/A'}
-                                </p>
+            <div className="min-h-screen bg-slate-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    {/* Header Section */}
+                    <div className="bg-white rounded-3xl p-8 mb-8 border border-blue3 shadow-lg hover:shadow-xl transition-shadow">
+                        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                            <div className="flex flex-col lg:flex-row items-center gap-6">
+                                <div className="relative">
+                                    <img 
+                                        src={`${API_BASE_URL}/api/arquivos/candidato/${isViewingOwnProfile ? user?.id : id}/foto/view`} 
+                                        alt="Foto de perfil" 
+                                        className="w-32 h-32 rounded-3xl object-cover shadow-lg" 
+                                    />
+                                    <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue2 rounded-full border-4 border-white"></div>
+                                </div>
+                                <div className="text-center lg:text-left">
+                                    <h1 className="text-4xl font-bold text-blue3 mb-2">{candidateData.nome}</h1>
+                                    <div className="flex flex-col lg:flex-row items-center gap-2 text-blue2 mb-3">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-2 h-2 bg-blue2 rounded-full"></span>
+                                            <span className="font-semibold text-lg">{candidateData.areaInteresse}</span>
+                                        </div>
+                                        <span className="hidden lg:block text-blue3">•</span>
+                                        <span className="text-blue3 font-medium">{candidateData.genero}</span>
+                                    </div>
+                                    {candidateData.endereco && (
+                                        <div className="flex items-center justify-center lg:justify-start gap-2 bg-blue1 px-4 py-2 rounded-xl">
+                                            <span className="text-blue3 font-medium">{candidateData.endereco?.cidade || 'N/A'}, {candidateData.endereco?.estado || 'N/A'}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            {isViewingOwnProfile && role !== 'ADMIN' && (
+                                <div className="flex gap-3">
+                                    <GenericBlueButton color={3} size="lg" onClick={() => handleEditing(isEditing)}>
+                                        {isEditing ? "Salvar alterações" : "Editar Perfil"}
+                                    </GenericBlueButton>
+                                </div>
                             )}
                         </div>
                     </div>
-                    {isViewingOwnProfile && role !== 'ADMIN' && <div>
-                        <GenericBlueButton color={3} size="lg" rounded="lg" onClick={() => handleEditing(isEditing)}>{isEditing ? "Salvar alterações" : "Editar Perfil"}</GenericBlueButton>
+                    
+                    {/* Content Sections */}
+                    <div className="space-y-8">
+                        {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
+                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                                <div className="bg-blue3 px-6 py-4 border-b border-blue3">
+                                    <h2 className="text-xl font-bold text-white">Formação Acadêmica</h2>
+                                    <p className="text-blue1 mt-1 text-sm">Histórico educacional e qualificações acadêmicas obtidas</p>
+                                </div>
+                                <div className="p-6">
+                                    <PerfilContentSection
+                                        title=""
+                                        type="formacao"
+                                        info={candidateData.formacoes?.map(f => ({
+                                            id: f.id,
+                                            formationType: f.tipoFormacao,
+                                            institut: f.instituicao,
+                                            course: f.nomeCurso,
+                                            startDate: formatDate(f.dataInicio),
+                                            endDate: formatDate(f.dataFim),
+                                            status: f.situacao,
+                                            desc: f.descricao
+                                        })) || []}
+                                        description=""
+                                        edit={isEditing}
+                                        onUpdate={handleFormacaoUpdate}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
+                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                                <div className="bg-blue3 px-6 py-4 border-b border-blue3">
+                                    <h2 className="text-xl font-bold text-white">Experiência Profissional</h2>
+                                    <p className="text-blue1 mt-1 text-sm">Trajetória profissional e principais conquistas no mercado de trabalho</p>
+                                </div>
+                                <div className="p-6">
+                                    <PerfilContentSection
+                                        title=""
+                                        type="experiencia"
+                                        info={candidateData.experiencia?.map(e => ({
+                                            id: e.id,
+                                            formationType: e.tipoContrato,
+                                            institut: e.instituicao,
+                                            course: e.titulo,
+                                            startDate: formatDate(e.dataInicio),
+                                            endDate: formatDate(e.dataFim),
+                                            status: "Concluído",
+                                            desc: e.descricao
+                                        })) || []}
+                                        description=""
+                                        edit={isEditing}
+                                        onUpdate={handleExperienciaUpdate}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Skills Section */}
+                        <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                            <div className="bg-blue2 px-6 py-4 border-b border-blue3">
+                                <h2 className="text-xl font-bold text-white">Habilidades</h2>
+                                <p className="text-blue1 mt-1 text-sm">Competências técnicas e interpessoais desenvolvidas</p>
+                            </div>
+                            <div className="p-6">
+                                <TagContainer 
+                                    tags={isEditing ? editForm.habilidades : candidateData.habilidades || []} 
+                                    edit={!!isEditing}
+                                    onChange={(newHabilidades) => setEditForm((prev) => ({...prev, habilidades: newHabilidades}))}
+                                >
+                                    Habilidades Profissionais
+                                </TagContainer>
+                            </div>
+                        </div>
+                        
+                        {/* Limitations Section */}
+                        {barreiras.length > 0 && (
+                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                                <div className="bg-blue2 px-6 py-4 border-b border-blue3">
+                                    <h2 className="text-xl font-bold text-white">Necessidades Especiais</h2>
+                                    <p className="text-blue1 mt-1 text-sm">Adaptações e apoios necessários para o ambiente de trabalho</p>
+                                </div>
+                                <div className="p-6">
+                                    <TagContainer tags={barreiras} edit={false}>
+                                        Adaptações Necessárias
+                                    </TagContainer>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    }
                 </div>
-                {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
-                    <PerfilContentSection
-                        title="Formação Acadêmica"
-                        type="formacao"
-                        info={candidateData.formacoes?.map(f => ({
-                            id: f.id,
-                            formationType: f.tipoFormacao,
-                            institut: f.instituicao,
-                            course: f.nomeCurso,
-                            startDate: formatDate(f.dataInicio),
-                            endDate: formatDate(f.dataFim),
-                            status: f.situacao,
-                            desc: f.descricao
-                        })) || []}
-                        description="Histórico educacional e qualificações acadêmicas obtidas"
-                        edit={isEditing}
-                        onUpdate={handleFormacaoUpdate}
-                    />
-                )}
-
-                {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
-                    <PerfilContentSection
-                        title="Experiência Profissional"
-                        type="experiencia"
-                        info={candidateData.experiencia?.map(e => ({
-                            id: e.id,
-                            formationType: e.tipoContrato,
-                            institut: e.instituicao,
-                            course: e.titulo,
-                            startDate: formatDate(e.dataInicio),
-                            endDate: formatDate(e.dataFim),
-                            status: "Concluído",
-                            desc: e.descricao
-                        })) || []}
-                        description="Trajetória profissional e principais conquistas no mercado de trabalho"
-                        edit={isEditing}
-                        onUpdate={handleExperienciaUpdate}
-                    />
-                )}
-                <TagContainer 
-                    tags={isEditing ? editForm.habilidades : candidateData.habilidades || []} 
-                    edit={!!isEditing}
-                    onChange={(newHabilidades) => setEditForm((prev) => ({...prev, habilidades: newHabilidades}))}
-                >
-                    Habilidades
-                </TagContainer>
-                <TagContainer tags={barreiras} edit={false}>Limitações</TagContainer>
-
             </div>
         )
     }
