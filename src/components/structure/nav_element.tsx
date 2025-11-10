@@ -29,11 +29,7 @@ export default function NavElement({link, children, icon: Icon, description, mob
             to={link}
             title={description}
         >
-            {Icon && <Icon size={mobile ? 18 : 20} />}
-            <span className={mobile ? '' : 'text-xs'}>{children}</span>
-            {description && !mobile && (
-                <span className="text-xs opacity-75">{description}</span>
-            )}
+            <span>{children}</span>
         </Link>
     )
 }

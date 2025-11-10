@@ -6,9 +6,9 @@ export const getMinBirthDate = (): string => {
 };
 
 export const getMaxBirthDate = (): string => {
-  // Máximo: 14 anos atrás (idade mínima para trabalhar)
+  // Máximo: 18 anos atrás (idade mínima para trabalhar)
   const date = new Date();
-  date.setFullYear(date.getFullYear() - 14);
+  date.setFullYear(date.getFullYear() - 18);
   return date.toISOString().split('T')[0];
 };
 

@@ -21,9 +21,7 @@ export default function Nav(){
                         {navItems.map((item, index) => (
                             <div key={item.link} className="relative group">
                                 <NavElement 
-                                    link={item.link} 
-                                    icon={item.icon}
-                                    description={item.description}
+                                    link={item.link}
                                 >
                                     {item.label}
                                 </NavElement>
@@ -53,9 +51,7 @@ export default function Nav(){
                             {navItems.map((item) => (
                                 <NavElement 
                                     key={item.link}
-                                    link={item.link} 
-                                    icon={item.icon}
-                                    description={item.description}
+                                    link={item.link}
                                     mobile
                                 >
                                     {item.label}

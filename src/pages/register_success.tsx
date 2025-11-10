@@ -2,7 +2,7 @@ import GenericBlueButton from '../components/buttons/generic_blue_button'
 
 export default function RegisterSuccess() {
     return (
-        <div className="min-h-screen bg-blue1 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-blue4 flex items-center justify-center px-4">
             <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center space-y-6">
                 <div className="text-6xl">🎉</div>
                 
@@ -13,7 +13,7 @@ export default function RegisterSuccess() {
                     </p>
                 </div>
 
-                <div className="bg-blue4 rounded-lg p-4 space-y-2">
+                <div className="bg-blue1 rounded-lg p-4 space-y-2">
                     <h3 className="font-semibold text-blue3">Próximos passos:</h3>
                     <ul className="text-sm text-gray-700 space-y-1">
                         <li>- Faça login na plataforma</li>

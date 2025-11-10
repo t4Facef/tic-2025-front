@@ -7,6 +7,26 @@ import { getMinEducationDate, getMaxEducationDate, getMinJobDate, getMaxJobDate 
 export default function CandidateForm3({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CandidateForm3Data) => void, formId: string, initialData?: CandidateForm3Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form3, setForm3] = useState<CandidateForm3Data>(initialData || {} as CandidateForm3Data)
     const [stillWorking, setStillWorking] = useState(false)
+    const [dateErrors, setDateErrors] = useState<{[key: string]: string}>({})
+    
+    const validateDate = (dateString: string, type: 'education' | 'job', field: string): boolean => {
+        if (!dateString) return true; // Campos opcionais
+        
+        const inputDate = new Date(dateString);
+        const minDate = new Date(type === 'education' ? getMinEducationDate() : getMinJobDate());
+        const maxDate = new Date(type === 'education' ? getMaxEducationDate() : getMaxJobDate());
+        
+        if (inputDate < minDate || inputDate > maxDate) {
+            const errorMsg = type === 'education' 
+                ? 'Data fora do período permitido para formação'
+                : 'Data fora do período permitido para experiência';
+            setDateErrors(prev => ({...prev, [field]: errorMsg}));
+            return false;
+        }
+        
+        setDateErrors(prev => {const newErrors = {...prev}; delete newErrors[field]; return newErrors;});
+        return true;
+    };
 
     function handleStillWorking(e: React.ChangeEvent<HTMLInputElement>) {
         setStillWorking(e.target.checked)
@@ -25,6 +45,13 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
     return (
         <form id={formId} className="flex-col text-start space-y-8" onSubmit={(e) => {
             e.preventDefault();
+            
+            // Validar todas as datas antes de prosseguir
+            const hasDateErrors = Object.keys(dateErrors).length > 0;
+            if (hasDateErrors) {
+                return;
+            }
+            
             formFunc(form3)
         }}>
             <h2 className="font-semibold text-[1.3rem]">Perfil Profissional</h2>
@@ -49,8 +76,12 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                                 type="date" 
                                 min={getMinEducationDate()}
                                 max={getMaxEducationDate()}
-                                onChange={(e) => setForm3((prev) => ({ ...prev, educationStartDate: e.target.value }))} 
+                                onChange={(e) => {
+                                    setForm3((prev) => ({ ...prev, educationStartDate: e.target.value }));
+                                    validateDate(e.target.value, 'education', 'educationStartDate');
+                                }} 
                                 value={form3.educationStartDate || ""}
+                                error={dateErrors.educationStartDate}
                             >
                                 Data de Início
                             </GenericFormField>
@@ -61,8 +92,12 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                                 type="date" 
                                 min={getMinEducationDate()}
                                 max={getMaxEducationDate()}
-                                onChange={(e) => setForm3((prev) => ({ ...prev, educationEndDate: e.target.value }))} 
+                                onChange={(e) => {
+                                    setForm3((prev) => ({ ...prev, educationEndDate: e.target.value }));
+                                    validateDate(e.target.value, 'education', 'educationEndDate');
+                                }} 
                                 value={form3.educationEndDate || ""}
+                                error={dateErrors.educationEndDate}
                             >
                                 Data de Término Prevista
                             </GenericFormField>
@@ -91,8 +126,12 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                                 type="date" 
                                 min={getMinJobDate()}
                                 max={getMaxJobDate()}
-                                onChange={(e) => setForm3((prev) => ({ ...prev, jobStartDate: e.target.value }))} 
+                                onChange={(e) => {
+                                    setForm3((prev) => ({ ...prev, jobStartDate: e.target.value }));
+                                    validateDate(e.target.value, 'job', 'jobStartDate');
+                                }} 
                                 value={form3.jobStartDate || ""}
+                                error={dateErrors.jobStartDate}
                             >
                                 Data de Início
                             </GenericFormField>
@@ -111,8 +150,12 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
                                     type="date" 
                                     min={getMinJobDate()}
                                     max={getMaxJobDate()}
-                                    onChange={(e) => setForm3((prev) => ({ ...prev, jobEndDate: e.target.value }))} 
+                                    onChange={(e) => {
+                                        setForm3((prev) => ({ ...prev, jobEndDate: e.target.value }));
+                                        validateDate(e.target.value, 'job', 'jobEndDate');
+                                    }} 
                                     value={form3.jobEndDate || ""}
+                                    error={dateErrors.jobEndDate}
                                 >
                                     Data de Saída
                                 </GenericFormField>

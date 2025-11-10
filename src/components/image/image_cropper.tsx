@@ -14,10 +14,18 @@ export default function ImageCropper({ onCropComplete, initialFile }: ImageCropp
 
     // Restaurar preview se há arquivo inicial
     useEffect(() => {
-        if (initialFile) {
+        if (initialFile && !croppedFile) {
             setPreviewUrl(URL.createObjectURL(initialFile));
+            setCroppedFile(initialFile);
         }
-    }, [initialFile]);
+    }, [initialFile, croppedFile]);
+    
+    // Salvar arquivo inicial apenas uma vez
+    useEffect(() => {
+        if (initialFile && onCropComplete && !croppedFile) {
+            onCropComplete(initialFile);
+        }
+    }, [initialFile]); // Sem onCropComplete nas dependências
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {

@@ -10,12 +10,43 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
     const [cpfError, setCpfError] = useState<string>('')
     const [isCheckingCpf, setIsCheckingCpf] = useState(false)
     
+    const [birthDateError, setBirthDateError] = useState<string>('')
+    
     const { errors, validateForm } = useFormValidation({
         name: { required: true, message: 'Nome completo é obrigatório' },
         cpf: { required: true, message: 'CPF é obrigatório' },
         birthDate: { required: true, message: 'Data de nascimento é obrigatória' },
         gender: { required: true, message: 'Identidade de gênero é obrigatória' }
     })
+    
+    const validateBirthDate = (dateString: string): boolean => {
+        if (!dateString) return false;
+        
+        const inputDate = new Date(dateString);
+        const year = inputDate.getFullYear();
+        
+        // Verificar se é um ano válido primeiro
+        if (year < 1900 || year > 2024) {
+            setBirthDateError('Data inválida. Digite uma data válida.');
+            return false;
+        }
+        
+        const minDate = new Date(getMinBirthDate());
+        const maxDate = new Date(getMaxBirthDate());
+        
+        if (inputDate < minDate) {
+            setBirthDateError('Data inválida. Tente novamente.');
+            return false;
+        }
+        
+        if (inputDate > maxDate) {
+            setBirthDateError('Data inválida. Tente novamente.');
+            return false;
+        }
+        
+        setBirthDateError('');
+        return true;
+    };
 
     const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const maskedValue = formatCPF(e.target.value);
@@ -36,6 +67,11 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
             
             if (!validateForm(formDataForValidation)) {
                 return; // Para aqui se houver erros de validação
+            }
+            
+            // Validar data de nascimento
+            if (!validateBirthDate(form1.birthDate || '')) {
+                return; // Para aqui se a data for inválida
             }
             
             setIsCheckingCpf(true)
@@ -90,9 +126,14 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
                     required 
                     min={getMinBirthDate()}
                     max={getMaxBirthDate()}
-                    onChange={(e) => setForm1((prev) => ({ ...prev, birthDate: e.target.value }))} 
+                    onChange={(e) => {
+                        setForm1((prev) => ({ ...prev, birthDate: e.target.value }));
+                        if (e.target.value) {
+                            validateBirthDate(e.target.value);
+                        }
+                    }} 
                     value={form1.birthDate || ""} 
-                    error={errors.birthDate}
+                    error={errors.birthDate || birthDateError}
                 >
                     Data de Nascimento
                 </GenericFormField>

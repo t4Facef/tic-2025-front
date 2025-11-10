@@ -21,8 +21,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
         necessitySubtype: { required: true, message: 'Subtipo de necessidade é obrigatório' },
         medicalReport: { 
             required: true, 
-            message: 'Laudo médico é obrigatório',
-            validator: () => fileStorage.hasFile('laudo')
+            message: 'Laudo médico é obrigatório'
         }
     })
 
@@ -66,6 +65,8 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
             if (foundSubTipo) {
                 setForm4(prev => ({ ...prev, necessitySubtype: foundSubTipo.nome }))
                 setSubTipoId(foundSubTipo.id)
+                // Carregar barreiras quando subtipo for recuperado
+                fetchBarreiras(foundSubTipo.id)
             }
         }
     }, [subTipos, form4.necessitySubtype])
@@ -139,11 +140,17 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
             const formDataForValidation = {
                 necessityType: form4.necessityType || '',
                 necessitySubtype: form4.necessitySubtype || '',
-                medicalReport: fileStorage.hasFile('laudo') ? 'valid' : ''
+                medicalReport: 'valid' // Sempre válido se chegou até aqui
             };
             
             if (!validateForm(formDataForValidation)) {
                 return; // Para aqui se houver erros de validação
+            }
+            
+            // Verificar se laudo foi enviado
+            if (!fileStorage.hasFile('laudo')) {
+                alert('Por favor, anexe o laudo médico.');
+                return;
             }
             
             // Salvar o ID do subtipo, não do tipo
@@ -160,7 +167,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
                     id="candidate_medical_report_register" 
                     type="file" 
                     accept=".pdf,.jpg,.jpeg,.png"
-                    required 
+                    required={!fileStorage.hasFile('laudo')}
                     onChange={(e) => {
                         const file = (e.target as HTMLInputElement).files?.[0]
                         if (file) {
@@ -168,9 +175,9 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
                             handleFileUpload(file, 'laudo')
                         }
                     }}
-                    error={errors.medicalReport}
+                    error={!fileStorage.hasFile('laudo') ? errors.medicalReport : undefined}
                 >
-                    Laudo Médico
+                    Laudo Médico {fileStorage.hasFile('laudo') ? '(Arquivo já enviado)' : ''}
                 </GenericFormField>
                 {fileStorage.hasFile('laudo') && (
                     <p className="text-green-600 text-sm mt-1">✅ Arquivo salvo: {fileStorage.getFile('laudo')?.name}</p>

@@ -136,6 +136,8 @@ export default function Register() {
             
 
             try {
+                console.log('Dados sendo enviados:', candidateData); // Debug
+                
                 // 1. Primeiro, registrar o candidato
                 const registerResponse = await fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
                     method: 'POST',

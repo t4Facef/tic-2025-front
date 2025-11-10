@@ -28,9 +28,11 @@ interface GenericFormFieldProps {
     accept?: string;
     rows?: number;
     error?: string;
+    min?: string;
+    max?: string;
 }
 
-export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept, rows, error}: GenericFormFieldProps){
+export default function GenericFormField({children, id, placeholder, options, autoComplete, onChange, value, type = "text", textOrientation = 1, itemsOrientation = 1, disabled = false, required = false, accept, rows, error, min, max}: GenericFormFieldProps){
     const [viewPassword, setViewPassword] = useState(true)
 
     // Mapeamento de orientação de texto
@@ -170,7 +172,6 @@ export default function GenericFormField({children, id, placeholder, options, au
                     <div className={`${baseClass} bg-white cursor-pointer flex items-center justify-center py-6 text-gray-700 text-lg font-medium hover:bg-gray-50 transition-colors`}>
                         📁 Clique para selecionar arquivo
                     </div>
-                // amazonq-ignore-next-line
                 </div>
                 {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
             </div>
@@ -180,7 +181,6 @@ export default function GenericFormField({children, id, placeholder, options, au
     // PASSWORD
     if (type === "password"){
         const toggleView = () => setViewPassword(!viewPassword)
-        // amazonq-ignore-next-line
         const passwordType = viewPassword ? "password" : "text"
 
         return (
@@ -264,7 +264,29 @@ export default function GenericFormField({children, id, placeholder, options, au
                 {children}
                 {required && <span className="text-black ml-1">*</span>}
             </label>
-            <input type={type} name={id} id={id} placeholder={placeholder} autoComplete={autoComplete} className={`${baseClass} ${textAlign} ${type === 'date' ? 'cursor-pointer' : ''} ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}`} onChange={onChange} value={value} disabled={disabled} required={required} />
+            <input 
+                type={type} 
+                name={id} 
+                id={id} 
+                placeholder={placeholder} 
+                autoComplete={autoComplete} 
+                className={`${baseClass} ${textAlign} ${type === 'date' ? 'cursor-pointer' : ''} ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}`} 
+                onChange={(e) => {
+                    if (type === 'date' && e.target.value) {
+                        const year = new Date(e.target.value).getFullYear();
+                        if (year > 20050) {
+                            e.target.value = '';
+                            return;
+                        }
+                    }
+                    if (onChange) onChange(e);
+                }} 
+                value={value} 
+                disabled={disabled} 
+                required={required}
+                min={min}
+                max={max}
+            />
             {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
         </div>
     );

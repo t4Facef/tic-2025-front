@@ -9,7 +9,14 @@ const ImageCropper = lazy(() => import("../../image/image_cropper"));
 
 
 export default function CandidateForm5({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CandidateForm5Data) => void, formId: string, initialData?: CandidateForm5Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
-    const [form5, setForm5] = useState<CandidateForm5Data>(initialData || {} as CandidateForm5Data)
+    const [form5, setForm5] = useState<CandidateForm5Data>(() => {
+        const data = initialData || {} as CandidateForm5Data;
+        // Se não há foto no form mas há no storage, usar a do storage
+        if (!data.profilePicture && fileStorage.hasFile('foto')) {
+            data.profilePicture = fileStorage.getFile('foto') || undefined;
+        }
+        return data;
+    })
     const [passwordError, setPasswordError] = useState<string>('')
     const [passwordRequirements, setPasswordRequirements] = useState([
         { text: "Pelo menos 8 caracteres", valid: (form5.password || "").length >= 8 },
