@@ -54,9 +54,14 @@ export default function Jobs() {
         
         const urlParams = new URLSearchParams(location.search)
         const minhasVagas = urlParams.get('minhasVagas')
+        const empresaId = urlParams.get('empresa')
         
         if (minhasVagas === 'true') {
             setFiltros(prev => ({ ...prev, minhasVagas: true }))
+        }
+        
+        if (empresaId) {
+            setFiltros(prev => ({ ...prev, empresaId }))
         }
         
         hasInitialized.current = true
@@ -110,8 +115,8 @@ export default function Jobs() {
                 if (data.pagination) {
                     setPagination(data.pagination)
                 }
-            } catch (err) {
-
+            } catch (error) {
+                console.error('Erro ao buscar vagas:', error)
             } finally {
                 setIsLoading(false)
             }

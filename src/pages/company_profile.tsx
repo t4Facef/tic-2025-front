@@ -10,6 +10,8 @@ import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { PenLine } from "lucide-react";
 import GenericFormField from "../components/forms/generic_form_field";
 import { SECTORS } from "../data/constants/select_options";
+import { Vaga, JobData } from "../types/vagas/vaga";
+import JobPosition from "../components/content/job_position";
 
 interface editCompanyProfile {
     acessibilidades: string[]
@@ -42,6 +44,7 @@ export default function CompanyProfile() {
     })
     const [supportOptions, setSupportOptions] = useState<string[]>([])
     const [acessibilidades, setAcessibilidades] = useState<Acessibilidade[]>([])
+    const [companyJobs, setCompanyJobs] = useState<Vaga[]>([])
     const [editForm, setEditForm] = useState<editCompanyProfile>({
         acessibilidades: [],
         descricao: "",
@@ -131,6 +134,27 @@ export default function CompanyProfile() {
             })
         }
     }, [companieInformation])
+
+    // Função para buscar vagas da empresa
+    const getCompanyJobs = useCallback(async () => {
+        if (!companieInformation?.id) return;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/vagas/empresa/${companieInformation.id}?status=DISPONIVEL`);
+            if (response.ok) {
+                const data = await response.json();
+                setCompanyJobs(data);
+            }
+        } catch (error) {
+            console.error('Erro ao buscar vagas da empresa:', error);
+        }
+    }, [companieInformation?.id]);
+
+    useEffect(() => {
+        if (companieInformation?.id) {
+            getCompanyJobs();
+        }
+    }, [companieInformation?.id, getCompanyJobs]);
 
     const updateCompanieProfile = async () => {
         try {
@@ -559,15 +583,53 @@ export default function CompanyProfile() {
                             <h2 className="text-3xl font-bold text-blue3">Vagas Disponíveis</h2>
                             <p className="text-blue2 mt-2">Oportunidades de trabalho em {companie.name}</p>
                         </div>
-                        <div className="bg-blue1 border border-gray-300 rounded-2xl p-16 text-center shadow-sm">
-                            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-300 shadow-sm">
-                                <span className="text-4xl text-blue2">?</span>
+                        {companyJobs.length > 0 ? (
+                            <div className="bg-white rounded-2xl shadow-lg p-6">
+                                <div className="space-y-6">
+                                    {companyJobs.slice(0, 3).map(vaga => {
+                                        const jobDataProps: JobData = {
+                                            id: vaga.id,
+                                            idEmpresa: vaga.empresaId,
+                                            title: vaga.titulo,
+                                            company: vaga.empresa.razaoSocial,
+                                            companyLogo: vaga.empresa.foto || "",
+                                            location: vaga.localizacao,
+                                            description: vaga.descricao,
+                                            skillsTags: vaga.habilidades,
+                                            supportTags: vaga.apoios,
+                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            startDate: new Date(vaga.dataInicio),
+                                            endDate: new Date(vaga.dataFim),
+                                            typeContract: vaga.tipoContrato,
+                                            typeWork: vaga.tipoTrabalho,
+                                            payment: vaga.pagamento,
+                                            workLevel: vaga.nivelTrabalho,
+                                            timeShift: vaga.turno,
+                                            sector: vaga.setor,
+                                            status: vaga.status
+                                        }
+                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    })}
+                                    {companyJobs.length > 3 && (
+                                        <div className="flex justify-center pt-4">
+                                            <GenericBlueButton color={3} link={`/jobs?empresa=${companieInformation?.id}`} size="mdy">
+                                                Ver todas as {companyJobs.length} vagas
+                                            </GenericBlueButton>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <h3 className="text-xl font-semibold text-blue3 mb-2">Em breve</h3>
-                            <p className="text-blue3 max-w-md mx-auto">
-                                As vagas desta empresa serão exibidas aqui quando estiverem disponíveis
-                            </p>
-                        </div>
+                        ) : (
+                            <div className="bg-blue1 border border-gray-300 rounded-2xl p-16 text-center shadow-sm">
+                                <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-300 shadow-sm">
+                                    <span className="text-4xl text-blue2">💼</span>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue3 mb-2">Nenhuma vaga disponível</h3>
+                                <p className="text-blue3 max-w-md mx-auto">
+                                    Esta empresa não possui vagas abertas no momento
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
