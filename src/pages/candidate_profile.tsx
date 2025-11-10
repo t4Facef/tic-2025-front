@@ -303,7 +303,7 @@ export default function CandidateProfile() {
             <div className="min-h-screen bg-slate-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Header Section */}
-                    <div className="bg-white rounded-3xl p-8 mb-8 border border-blue3 shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="bg-white rounded-3xl p-8 mb-8 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
                         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                             <div className="flex flex-col lg:flex-row items-center gap-6">
                                 <div className="relative">
@@ -344,7 +344,7 @@ export default function CandidateProfile() {
                     {/* Content Sections */}
                     <div className="space-y-8">
                         {((candidateData.formacoes && candidateData.formacoes.length > 0) || isEditing) && (
-                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                            <div className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                                 <div className="bg-blue3 px-6 py-4 border-b border-blue3">
                                     <h2 className="text-xl font-bold text-white">Formação Acadêmica</h2>
                                     <p className="text-blue1 mt-1 text-sm">Histórico educacional e qualificações acadêmicas obtidas</p>
@@ -372,7 +372,7 @@ export default function CandidateProfile() {
                         )}
 
                         {((candidateData.experiencia && candidateData.experiencia.length > 0) || isEditing) && (
-                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                            <div className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                                 <div className="bg-blue3 px-6 py-4 border-b border-blue3">
                                     <h2 className="text-xl font-bold text-white">Experiência Profissional</h2>
                                     <p className="text-blue1 mt-1 text-sm">Trajetória profissional e principais conquistas no mercado de trabalho</p>
@@ -400,7 +400,7 @@ export default function CandidateProfile() {
                         )}
                         
                         {/* Skills Section */}
-                        <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                        <div className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                             <div className="bg-blue2 px-6 py-4 border-b border-blue3">
                                 <h2 className="text-xl font-bold text-white">Habilidades</h2>
                                 <p className="text-blue1 mt-1 text-sm">Competências técnicas e interpessoais desenvolvidas</p>
@@ -418,7 +418,7 @@ export default function CandidateProfile() {
                         
                         {/* Limitations Section */}
                         {barreiras.length > 0 && (
-                            <div className="bg-white rounded-3xl border border-blue3 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                            <div className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                                 <div className="bg-blue2 px-6 py-4 border-b border-blue3">
                                     <h2 className="text-xl font-bold text-white">Necessidades Especiais</h2>
                                     <p className="text-blue1 mt-1 text-sm">Adaptações e apoios necessários para o ambiente de trabalho</p>
