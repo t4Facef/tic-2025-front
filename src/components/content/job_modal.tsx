@@ -263,7 +263,23 @@ export default function JobModal({
             return (
               <div className="flex w-full">
                 <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-3xl rounded-bl-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue2 hover:bg-blue3 text-white flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold" onClick={() => navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`)}>{isEditing ? "Editar" : "Vizualizar"}</button>
+                <button 
+                  className={`flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold ${
+                    isEditing && (!jobData.id || jobData.id === 0)
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
+                      : 'bg-blue2 hover:bg-blue3 text-white'
+                  }`}
+                  onClick={() => {
+                    if (isEditing && (!jobData.id || jobData.id === 0)) {
+                      alert('Esta vaga ainda não foi criada. Salve a vaga primeiro para visualizá-la.');
+                      return;
+                    }
+                    navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`);
+                  }}
+                  disabled={isEditing && (!jobData.id || jobData.id === 0)}
+                >
+                  {isEditing ? "Editar" : "Vizualizar"}
+                </button>
               </div>
             );
           } else {

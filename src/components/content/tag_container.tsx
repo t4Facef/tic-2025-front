@@ -78,22 +78,24 @@ export default function TagContainer({ children, edit = false, tags = [], onChan
                         </div>
                     )}
                     {edit && !options && (
-                        <div className="inline-flex items-center bg-blue1 px-4 py-2 mt-4 rounded-xl font-medium border border-blue2">
-                            <input
-                                type="text"
-                                value={newTagText}
-                                onChange={(e) => setNewTagText(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                placeholder="Nova habilidade..."
-                                className="bg-transparent border-none outline-none placeholder-blue3 text-blue3 min-w-[150px] font-medium"
-                            />
-                            <button 
-                                type="button"
-                                onClick={() => handleAddTag()}
-                                className="ml-3 bg-blue3 hover:bg-blue3H text-white rounded-full w-7 h-7 flex items-center justify-center text-lg font-bold transition-colors"
-                            >
-                                +
-                            </button>
+                        <div className="mt-4">
+                            <div className="inline-flex items-center bg-blue1 px-4 py-2 rounded-xl font-medium border border-blue2">
+                                <input
+                                    type="text"
+                                    value={newTagText}
+                                    onChange={(e) => setNewTagText(e.target.value)}
+                                    onKeyPress={handleKeyPress}
+                                    placeholder="Nova habilidade..."
+                                    className="bg-transparent border-none outline-none placeholder-blue3 text-blue3 min-w-[150px] font-medium"
+                                />
+                                <button 
+                                    type="button"
+                                    onClick={() => handleAddTag()}
+                                    className="ml-3 bg-blue3 hover:bg-blue3H text-white rounded-full w-7 h-7 flex items-center justify-center text-lg font-bold transition-colors"
+                                >
+                                    +
+                                </button>
+                            </div>
                         </div>
                     )}
                     {currentTags.length === 0 && !edit && (

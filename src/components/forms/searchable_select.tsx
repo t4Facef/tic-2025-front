@@ -40,23 +40,23 @@ export default function SearchableSelect({options, addTag, currentTags}: Searcha
   }, [])
 
   return (
-    <div className="relative inline-flex items-center bg-blue1 px-3 m-2 rounded-2xl font-medium" ref={dropdownRef}>
+    <div className="relative inline-flex items-center bg-blue1 px-4 py-2 rounded-xl font-medium border border-blue2" ref={dropdownRef}>
       <input
         type="text"
         value={search}
         onChange={(e) => handleSearch(e)}
         onFocus={() => setIsOpen(true)}
-        className="bg-transparent border-none outline-none placeholder-gray-500 text-sm min-w-[120px]"
+        className="bg-transparent border-none outline-none placeholder-blue3 text-blue3 min-w-[150px] font-medium"
         placeholder="Nova capacidade..."
       />
       {
-        isOpen && (
-          <div className="absolute top-full left-0 w-full bg-white border shadow-lg max-h-48 overflow-y-auto">
+        isOpen && filteredOptions.length > 0 && (
+          <div className="absolute top-full left-0 w-full bg-white border border-blue2 shadow-lg max-h-48 overflow-y-auto rounded-lg z-10 mt-1">
             {filteredOptions.map(option => (
               <div
                 key={option}
                 onClick={handleSelected(option)}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
+                className="p-2 hover:bg-blue1 cursor-pointer text-blue3 text-sm"
               >
                 {option}
               </div>

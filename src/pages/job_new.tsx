@@ -223,10 +223,8 @@ export default function JobForm() {
       }
       
       if (res.ok) {
-        const responseData = await res.json();
-        const vagaId = isEditing ? id : responseData.id;
         alert(isEditing ? 'Vaga atualizada com sucesso!' : 'Vaga cadastrada com sucesso!');
-        navigate(`/jobs/${vagaId}/view`);
+        navigate('/companies/dashboard');
       } else {
         const errorText = await res.text();
         console.error('Erro do servidor:', errorText);
@@ -348,7 +346,7 @@ export default function JobForm() {
 
         <div>
           <h3 className="font-medium">Pré-visualização da Vaga</h3>
-          <JobPosition jobData={dataForm}></JobPosition>
+          <JobPosition jobData={dataForm} isEditing={true}></JobPosition>
         </div>
       </div>
     );
