@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CircleCheck, CircleX } from "lucide-react";
+import { CircleCheckBig, CircleX } from "lucide-react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";
 import { API_BASE_URL } from "../config/api";
@@ -135,7 +135,7 @@ export default function ResetPasswordNew() {
               : 'bg-red-100 text-red-700 border border-red-300'
           }`}>
             <div>
-              {success ? <CircleCheck /> : <CircleX />}
+              {success ? <CircleCheckBig /> : <CircleX />}
             </div>
             <div className="font-semibold">
               <p>{message}</p>
@@ -187,9 +187,11 @@ export default function ResetPasswordNew() {
               <ul className="space-y-3">
                 {passwordRequirements.map((req, index) => (
                   <li key={index} className="flex items-center gap-3 text-base">
-                    <span className={req.valid ? "text-green-500" : "text-gray-500"}>
-                      {req.valid ? "✅" : "⭕"}
-                    </span>
+                    {req.valid ? (
+                      <CircleCheckBig className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <CircleX className="w-5 h-5 text-red-400" />
+                    )}
                     <span className={req.valid ? "text-green-700" : "text-gray-700"}>
                       {req.text}
                     </span>

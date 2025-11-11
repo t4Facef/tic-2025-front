@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CompanieForm5Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 import ImageCropper from "../../image/image_cropper";
+import { CircleCheckBig, CircleX } from "lucide-react";
 
 export default function CompanieForm5({ formFunc, formId, initialData, fileStorage }: { formFunc: (data: CompanieForm5Data) => void, formId: string, initialData?: CompanieForm5Data, fileStorage: { saveFile: (key: string, file: File) => void, hasFile: (key: string) => boolean, getFile: (key: string) => File | undefined } }) {
     const [form5, setForm5] = useState<CompanieForm5Data>(initialData || {} as CompanieForm5Data)
@@ -107,9 +108,11 @@ export default function CompanieForm5({ formFunc, formId, initialData, fileStora
                 <ul className="space-y-3">
                     {passwordRequirements.map((req, index) => (
                         <li key={index} className="flex items-center gap-3 text-base">
-                            <span className={req.valid ? "text-green-500" : "text-gray-500"}>
-                                {req.valid ? "✅" : "⭕"}
-                            </span>
+                            {req.valid ? (
+                                <CircleCheckBig className="w-5 h-5 text-green-500" />
+                            ) : (
+                                <CircleX className="w-5 h-5 text-red-400" />
+                            )}
                             <span className={req.valid ? "text-green-700" : "text-gray-700"}>
                                 {req.text}
                             </span>

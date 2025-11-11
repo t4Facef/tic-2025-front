@@ -3,6 +3,7 @@
 import { useState, lazy, Suspense } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";
+import { CircleCheckBig, CircleX } from "lucide-react";
 
 // Importação dinâmica para evitar problemas no Vercel
 const ImageCropper = lazy(() => import("../../image/image_cropper"));
@@ -114,9 +115,11 @@ export default function CandidateForm5({ formFunc, formId, initialData, fileStor
                 <ul className="space-y-3">
                     {passwordRequirements.map((req, index) => (
                         <li key={index} className="flex items-center gap-3 text-base">
-                            <span className={req.valid ? "text-green-500" : "text-gray-500"}>
-                                {req.valid ? "✅" : "⭕"}
-                            </span>
+                            {req.valid ? (
+                                <CircleCheckBig className="w-5 h-5 text-green-500" />
+                            ) : (
+                                <CircleX className="w-5 h-5 text-red-400" />
+                            )}
                             <span className={req.valid ? "text-green-700" : "text-gray-700"}>
                                 {req.text}
                             </span>
