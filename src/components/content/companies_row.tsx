@@ -13,10 +13,14 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
+  // Touch/Swipe states
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  
   // Responsive visible count
   const getVisibleCount = useCallback(() => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 2; // mobile
+      if (window.innerWidth < 640) return 4; // mobile - agora mostra 4 empresas
       if (window.innerWidth < 1024) return 3; // tablet
       return companyIds && companyIds.length > 0 ? Math.min(5, companyIds.length) : 5; // desktop
     }
@@ -38,9 +42,43 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
     setCurrentIndex(prev => prev + 1);
   }, [isTransitioning]);
 
+  // Touch/Swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsAutoPlaying(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      handleRight();
+    } else if (isRightSwipe) {
+      handleLeft();
+    }
+    
+    // Reset auto-play after swipe
+    setTimeout(() => setIsAutoPlaying(true), 3000);
+  };
+
   // Handle window resize
   useEffect(() => {
-    const handleResize = () => setVisibleCount(getVisibleCount());
+    const handleResize = () => {
+      const newCount = getVisibleCount();
+      setVisibleCount(newCount);
+    };
+    
+    // Set initial value
+    handleResize();
+    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [getVisibleCount]);
@@ -118,16 +156,19 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
             }}
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
-            className="group p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+            className="group p-1.5 sm:p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
           >
-            <ChevronLeft size={24} className="lg:size-8 text-white group-hover:text-blue1 transition-colors" />
+            <ChevronLeft size={16} className="sm:size-6 lg:size-8 text-white group-hover:text-blue1 transition-colors" />
           </button>
 
           {/* Companies Container */}
           <div 
-            className="overflow-hidden flex-1 mx-4 lg:mx-8"
+            className="overflow-hidden flex-1 mx-1 sm:mx-4 lg:mx-8"
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <div
               className={`flex ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
@@ -140,7 +181,7 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
                 <div
                   key={`${id}-${index}`}
                   style={{ width: itemWidth }}
-                  className="flex justify-center px-2 lg:px-4"
+                  className="flex justify-center px-0.5 sm:px-1 lg:px-2"
                 >
                   <CompanyImage id={id} />
                 </div>
@@ -156,9 +197,9 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
             }}
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
-            className="group p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+            className="group p-1.5 sm:p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
           >
-            <ChevronRight size={24} className="lg:size-8 text-white group-hover:text-blue1 transition-colors" />
+            <ChevronRight size={16} className="sm:size-6 lg:size-8 text-white group-hover:text-blue1 transition-colors" />
           </button>
         </div>
 

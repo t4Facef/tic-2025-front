@@ -17,7 +17,7 @@ export default function CompanyImage({ id }: CompanyImageProps) {
   };
 
   return (
-    <div className="group relative p-2">
+    <div className="group relative p-0 sm:p-1 lg:p-2">
       <button
         onClick={() => navigate(`/companies/${id}/profile`)}
         onMouseEnter={() => setIsHovered(true)}
@@ -25,7 +25,7 @@ export default function CompanyImage({ id }: CompanyImageProps) {
         className="relative block transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/30 rounded-full"
       >
         {/* Main container */}
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32">
+        <div className="relative w-14 h-14 sm:w-20 sm:h-20 lg:w-32 lg:h-32">
           {/* Background glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue1 to-white rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
           
@@ -40,7 +40,7 @@ export default function CompanyImage({ id }: CompanyImageProps) {
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-blue3 to-blue2 flex items-center justify-center">
-                <Building2 size={24} className="sm:size-8 lg:size-12 text-white" />
+                <Building2 size={18} className="sm:size-6 lg:size-12 text-white" />
               </div>
             )}
           </div>
@@ -49,7 +49,7 @@ export default function CompanyImage({ id }: CompanyImageProps) {
           <div className={`absolute inset-0 bg-blue3/20 rounded-full flex items-center justify-center transition-opacity duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}>
-            <ExternalLink size={16} className="sm:size-5 lg:size-6 text-white drop-shadow-lg" />
+            <ExternalLink size={14} className="sm:size-4 lg:size-6 text-white drop-shadow-lg" />
           </div>
 
           {/* Decorative ring */}
