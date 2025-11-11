@@ -13,7 +13,7 @@ export default function CandidateForm5({ formFunc, formId, initialData, fileStor
         const data = initialData || {} as CandidateForm5Data;
         // Se não há foto no form mas há no storage, usar a do storage
         if (!data.profilePicture && fileStorage.hasFile('foto')) {
-            data.profilePicture = fileStorage.getFile('foto') || undefined;
+            data.profilePicture = fileStorage.getFile('foto') || null;
         }
         return data;
     })

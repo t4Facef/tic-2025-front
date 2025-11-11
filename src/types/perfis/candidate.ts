@@ -25,4 +25,5 @@ export interface EditProfileCandidate {
     formacao: FormacaoCandidate[];
     experiencia: ExperienciaCandidate[];
     habilidades: string[];
+    barreiras: string[];
 }

@@ -26,13 +26,16 @@ export default function CandidateProfile() {
     const { id } = useParams<{ id: string }>()
     const [candidateData, setCandidateData] = useState<CandidateProfileType | null>(null)
     const [barreiras, setBarreiras] = useState<string[]>([])
+    const [allBarreirasOptions, setAllBarreirasOptions] = useState<string[]>([])
+    const [barreirasMapeamento, setBarreirasMapeamento] = useState<{ [descricao: string]: number }>({})
     const [isEditing, setIsEditing] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
     const [editForm, setEditForm] = useState<EditProfileCandidate>({
         formacao: [],
         experiencia: [],
-        habilidades: []
+        habilidades: [],
+        barreiras: []
     })
 
     // Conversão de InfoType para FormacaoCandidate
@@ -148,7 +151,8 @@ export default function CandidateProfile() {
                     descricao: e.descricao,
                     tipoContrato: e.tipoContrato
                 })) || [],
-                habilidades: candidateData?.habilidades || []
+                habilidades: candidateData?.habilidades || [],
+                barreiras: barreiras || []
             })
         }
         else{
@@ -203,6 +207,22 @@ export default function CandidateProfile() {
                 
                 if (!response.ok) {
                     throw new Error(`Erro ao salvar habilidades: ${result.message || response.statusText}`)
+                }
+            }
+
+            // Salvar barreiras personalizadas
+            if (editForm.barreiras.length >= 0) { // Permitir salvar mesmo se vazio (para remover todas)
+                const barreiraIds = editForm.barreiras.map(desc => barreirasMapeamento[desc] || 0).filter(id => id > 0)
+                
+                const response = await fetch(`${API_BASE_URL}/api/candidato-barreira/minhas-barreiras`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify({ barreiraIds })
+                })
+                
+                if (!response.ok) {
+                    const result = await response.json()
+                    throw new Error(`Erro ao salvar barreiras: ${result.message || response.statusText}`)
                 }
             }
             
@@ -262,6 +282,32 @@ export default function CandidateProfile() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [candidateData])
+
+    // Buscar todas as barreiras disponíveis para edição
+    useEffect(() => {
+        const fetchAllBarreiras = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/barreiras`)
+                const data = await response.json()
+                
+                // Criar mapeamento de descrição -> ID
+                const mapeamento: { [descricao: string]: number } = {}
+                const opcoes: string[] = []
+                
+                data.forEach((barreira: { id: number; descricao: string }) => {
+                    mapeamento[barreira.descricao] = barreira.id
+                    opcoes.push(barreira.descricao)
+                })
+                
+                setBarreirasMapeamento(mapeamento)
+                setAllBarreirasOptions(opcoes)
+            } catch (error) {
+                console.error('Erro ao buscar todas as barreiras:', error)
+            }
+        }
+
+        fetchAllBarreiras()
+    }, [])
 
     const fetchBarreirasDiretas = async (candidatoId: number) => {
         try {
@@ -442,14 +488,19 @@ export default function CandidateProfile() {
                         </div>
                         
                         {/* Limitations Section */}
-                        {barreiras.length > 0 && (
+                        {(barreiras.length > 0 || isEditing) && (
                             <div className="bg-white rounded-3xl border border-gray-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                                 <div className="bg-blue2 px-6 py-4 border-b border-blue3">
                                     <h2 className="text-xl font-bold text-white">Necessidades Especiais</h2>
                                     <p className="text-blue1 mt-1 text-sm">Adaptações e apoios necessários para o ambiente de trabalho</p>
                                 </div>
                                 <div className="p-6">
-                                    <TagContainer tags={barreiras} edit={false}>
+                                    <TagContainer 
+                                        tags={isEditing ? editForm.barreiras : barreiras} 
+                                        edit={!!isEditing}
+                                        options={allBarreirasOptions}
+                                        onChange={(newBarreiras) => setEditForm((prev) => ({...prev, barreiras: newBarreiras}))}
+                                    >
                                         Adaptações Necessárias
                                     </TagContainer>
                                 </div>
