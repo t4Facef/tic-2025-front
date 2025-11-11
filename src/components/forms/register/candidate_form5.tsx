@@ -98,7 +98,7 @@ export default function CandidateForm5({ formFunc, formId, initialData, fileStor
                     <p className="text-sm text-green-600 mt-1">✅ Foto salva: {fileStorage.getFile('foto')?.name}</p>
                 )}
                 {form5.profilePicture && !fileStorage.hasFile('foto') && (
-                    <p className="text-sm text-blue-600 mt-1">🔄 Processando foto...</p>
+                    <p className="text-sm text-blue-600 mt-1">Processando foto...</p>
                 )}
             </div>
             <div className="space-y-6">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Building2, Sparkles } from "lucide-react";
 import CompanyImage from "./company_image";
 
@@ -9,37 +9,41 @@ type CompaniesRowProps = {
 };
 
 export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
-  // Don't render if no companies
-  if (!companyIds || companyIds.length === 0) {
-    return null;
-  }
-  
-  const [currentIndex, setCurrentIndex] = useState(companyIds.length);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
   // Responsive visible count
-  const getVisibleCount = () => {
+  const getVisibleCount = useCallback(() => {
     if (typeof window !== 'undefined') {
       if (window.innerWidth < 640) return 2; // mobile
       if (window.innerWidth < 1024) return 3; // tablet
-      return companyIds.length > 0 ? Math.min(5, companyIds.length) : 5; // desktop
+      return companyIds && companyIds.length > 0 ? Math.min(5, companyIds.length) : 5; // desktop
     }
     return 5;
-  };
+  }, [companyIds]);
   
   const [visibleCount, setVisibleCount] = useState(getVisibleCount());
 
-  // Create infinite array
-  const infiniteIds = [...companyIds, ...companyIds, ...companyIds];
-  const totalItems = infiniteIds.length;
+  // Handler functions
+  const handleLeft = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev - 1);
+  }, [isTransitioning]);
+
+  const handleRight = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev + 1);
+  }, [isTransitioning]);
 
   // Handle window resize
   useEffect(() => {
     const handleResize = () => setVisibleCount(getVisibleCount());
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [getVisibleCount]);
 
   // Auto-play functionality
   useEffect(() => {
@@ -48,22 +52,12 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
       handleRight();
     }, 3000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, currentIndex]);
-
-  const handleLeft = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex(prev => prev - 1);
-  };
-
-  const handleRight = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex(prev => prev + 1);
-  };
+  }, [isAutoPlaying, currentIndex, handleRight]);
 
   // Reset position when reaching boundaries
   useEffect(() => {
+    if (!companyIds || companyIds.length === 0) return;
+    
     if (currentIndex <= 0) {
       setTimeout(() => {
         setIsTransitioning(false);
@@ -77,7 +71,16 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
     } else {
       setTimeout(() => setIsTransitioning(false), 500);
     }
-  }, [currentIndex, companyIds.length]);
+  }, [currentIndex, companyIds]);
+
+  // Don't render if no companies
+  if (!companyIds || companyIds.length === 0) {
+    return null;
+  }
+
+  // Create infinite array
+  const infiniteIds = [...companyIds, ...companyIds, ...companyIds];
+  const totalItems = infiniteIds.length;
 
   const itemWidth = `${100 / totalItems}%`;
   const containerWidth = `${(totalItems / visibleCount) * 100}%`;

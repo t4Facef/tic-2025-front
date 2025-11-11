@@ -25,7 +25,8 @@ export default function ImageCropper({ onCropComplete, initialFile }: ImageCropp
         if (initialFile && onCropComplete && !croppedFile) {
             onCropComplete(initialFile);
         }
-    }, [initialFile]); // Sem onCropComplete nas dependências
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialFile]); // Intencionalmente omitindo onCropComplete e croppedFile para evitar loops
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {

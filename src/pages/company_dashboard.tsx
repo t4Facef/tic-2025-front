@@ -7,6 +7,7 @@ import JobPosition from "../components/content/job_position";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
+import { Briefcase, FileText, Target, Calendar } from "lucide-react";
 
 interface meta {
     faltam: number
@@ -114,38 +115,40 @@ export default function CompanyDashboard() {
                     <div className="bg-white rounded-3xl p-6 border-l-4 border-blue3 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium">Total Geral</p>
+                                <p className="text-gray-600 text-sm font-medium">Vagas Abertas</p>
                                 <p className="text-3xl font-bold text-gray-900">{companyStatistics?.vagasAbertas || 0}</p>
-                                <p className="text-blue3 text-sm">Vagas</p>
+                                <p className="text-blue3 text-sm">Ativas no momento</p>
                             </div>
                             <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                                <span className="text-2xl">💼</span>
+                                <Briefcase className="h-6 w-6 text-blue3" />
                             </div>
                         </div>
                     </div>
                     
-                    <div className="bg-white rounded-3xl p-6 border-l-4 border-blue2 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-white rounded-3xl p-6 border-l-4 border-green-500 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium">Em Andamento</p>
+                                <p className="text-gray-600 text-sm font-medium">Candidaturas Hoje</p>
                                 <p className="text-3xl font-bold text-gray-900">{companyStatistics?.candidaturasHoje || 0}</p>
-                                <p className="text-blue2 text-sm">Candidaturas</p>
+                                <p className="text-green-600 text-sm">Recebidas hoje</p>
                             </div>
-                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                                <span className="text-2xl">📝</span>
+                            <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center">
+                                <FileText className="h-6 w-6 text-green-600" />
                             </div>
                         </div>
                     </div>
                     
-                    <div className="bg-white rounded-3xl p-6 border-l-4 border-blue1 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-white rounded-3xl p-6 border-l-4 border-orange-500 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium">Meta</p>
+                                <p className="text-gray-600 text-sm font-medium">Lei de Cotas</p>
                                 <p className="text-3xl font-bold text-gray-900">{companyStatistics?.metaContratacao?.faltam || 0}</p>
-                                <p className="text-blue1 text-sm">Faltam</p>
+                                <p className="text-orange-600 text-sm">
+                                    {companyStatistics?.metaContratacao?.faltam === 0 ? 'Meta cumprida!' : 'Faltam contratar'}
+                                </p>
                             </div>
-                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                                <span className="text-2xl">🎯</span>
+                            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
+                                <Target className="h-6 w-6 text-orange-600" />
                             </div>
                         </div>
                     </div>
@@ -165,7 +168,7 @@ export default function CompanyDashboard() {
                 <div className="mb-12">
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                            <span className="text-xl">💼</span>
+                            <Briefcase className="h-6 w-6 text-blue3" />
                         </div>
                         <h2 className="text-3xl font-bold text-slate-900">Vagas Ativas</h2>
                     </div>
@@ -204,7 +207,11 @@ export default function CompanyDashboard() {
                     ) : (
                         <div className="bg-white rounded-2xl shadow-lg p-12">
                             <div className="text-center space-y-4">
-                                <div className="text-6xl mb-4">💼</div>
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-24 h-24 bg-blue1 rounded-full flex items-center justify-center">
+                                        <Briefcase className="h-12 w-12 text-blue3" />
+                                    </div>
+                                </div>
                                 <h3 className="text-xl font-semibold text-gray-700">Nenhuma vaga aberta</h3>
                                 <p className="text-gray-600 max-w-md mx-auto">
                                     Crie sua primeira vaga para começar a atrair talentos incríveis!
@@ -221,7 +228,7 @@ export default function CompanyDashboard() {
                 <div>
                     <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                            <span className="text-xl">📋</span>
+                            <Calendar className="h-6 w-6 text-blue3" />
                         </div>
                         <h2 className="text-3xl font-bold text-slate-900">Vagas Encerradas</h2>
                     </div>
@@ -260,7 +267,11 @@ export default function CompanyDashboard() {
                     ) : (
                         <div className="bg-white rounded-2xl shadow-lg p-12">
                             <div className="text-center space-y-4">
-                                <div className="text-6xl mb-4">📋</div>
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-24 h-24 bg-blue1 rounded-full flex items-center justify-center">
+                                        <Calendar className="h-12 w-12 text-blue3" />
+                                    </div>
+                                </div>
                                 <h3 className="text-xl font-semibold text-gray-700">Nenhuma vaga encerrada</h3>
                                 <p className="text-gray-600">Suas vagas finalizadas aparecerão aqui para consulta</p>
                             </div>
