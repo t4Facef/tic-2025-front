@@ -1,6 +1,6 @@
 import NavElement from "./nav_element"
 import { useState } from "react"
-import { ChevronDown, Info, HelpCircle, Settings, BookOpen, Sparkles } from "lucide-react"
+import { ChevronDown, Info, HelpCircle, Settings, BookOpen } from "lucide-react"
 
 export default function Nav(){
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)

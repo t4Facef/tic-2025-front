@@ -35,6 +35,7 @@ export default function CreateAdminForm() {
                 setMessage(`❌ ${data.error}`);
             }
         } catch (error) {
+            console.error('Erro ao criar admin:', error);
             setMessage('❌ Erro ao criar administrador');
         } finally {
             setLoading(false);

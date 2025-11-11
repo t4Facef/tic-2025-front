@@ -34,6 +34,26 @@ export interface CandidateSubtipo {
     subtipo: Subtipo;
 }
 
+// Novas interfaces para barreiras
+export interface Acessibilidade {
+    id: number;
+    nome: string;
+}
+
+export interface Barreira {
+    id: number;
+    descricao: string;
+    acessibilidades: {
+        acessibilidade: Acessibilidade;
+    }[];
+}
+
+export interface CandidateBarreira {
+    candidatoId: number;
+    barreiraId: number;
+    barreira: Barreira;
+}
+
 export interface Formacao {
     id: number;
     candidatoId: number;
@@ -74,10 +94,11 @@ export interface CandidateProfileType {
     experiencia: Experiencia[];
     habilidades: string[];
     subtipos: CandidateSubtipo[];
+    barreiras: CandidateBarreira[]; // Nova propriedade
     foto: string | null;
     laudo: {
         type: string;
-        data: any[];
+        data: ArrayBuffer;
     };
     createdAt: string;
     updatedAt: string;

@@ -17,13 +17,6 @@ export default function JobPosition({ jobData, isEditing=false }: JobPositionPro
     return null;
   }
 
-  const getCompatibilityColor = (compatibility: number) => {
-    if (compatibility >= 80) return 'bg-green-100 text-green-800';
-    if (compatibility >= 60) return 'bg-blue1 text-blue3';
-    if (compatibility >= 40) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-red1 text-red2';
-  };
-
   return (
     <>
       <div 

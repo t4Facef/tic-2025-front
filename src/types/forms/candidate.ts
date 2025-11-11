@@ -42,6 +42,7 @@ export interface CandidateForm4Data {
     necessitySubtype: string;
     medicalReport: File | null;
     supportNeeds: string[];
+    selectedBarreirasIds?: number[]; // Nova propriedade para IDs das barreiras selecionadas
 }
 
 export interface CandidateForm5Data {

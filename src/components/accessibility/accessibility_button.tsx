@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, RotateCcw } from 'lucide-react';
-import { useAccessibility } from '../../contexts/accessibilityConstants';
+import { useAccessibility, AccessibilitySettings } from '../../contexts/accessibilityConstants';
 
 export default function AccessibilityButton() {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function AccessibilityButton() {
                                     ].map(option => (
                                         <button
                                             key={option.value}
-                                            onClick={() => updateSetting('fontSize', option.value as any)}
+                                            onClick={() => updateSetting('fontSize', option.value as AccessibilitySettings['fontSize'])}
                                             className={`p-2 text-sm rounded border transition-colors ${
                                                 settings.fontSize === option.value
                                                     ? 'bg-blue3 text-white border-blue3'
@@ -84,7 +84,7 @@ export default function AccessibilityButton() {
                                     ].map(option => (
                                         <button
                                             key={option.value}
-                                            onClick={() => updateSetting('contrast', option.value as any)}
+                                            onClick={() => updateSetting('contrast', option.value as AccessibilitySettings['contrast'])}
                                             className={`p-2 text-sm rounded border transition-colors ${
                                                 settings.contrast === option.value
                                                     ? 'bg-blue3 text-white border-blue3'
@@ -112,7 +112,7 @@ export default function AccessibilityButton() {
                                     ].map(option => (
                                         <button
                                             key={option.value}
-                                            onClick={() => updateSetting('colorBlindness', option.value as any)}
+                                            onClick={() => updateSetting('colorBlindness', option.value as AccessibilitySettings['colorBlindness'])}
                                             className={`p-2 text-sm rounded border transition-colors ${
                                                 settings.colorBlindness === option.value
                                                     ? 'bg-blue3 text-white border-blue3'
@@ -138,7 +138,7 @@ export default function AccessibilityButton() {
                                     ].map(option => (
                                         <button
                                             key={option.value}
-                                            onClick={() => updateSetting('fontFamily', option.value as any)}
+                                            onClick={() => updateSetting('fontFamily', option.value as AccessibilitySettings['fontFamily'])}
                                             className={`p-2 text-sm rounded border transition-colors ${
                                                 settings.fontFamily === option.value
                                                     ? 'bg-blue3 text-white border-blue3'

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import GenericFormField from "../components/forms/generic_form_field";
 import { useState } from "react";
@@ -10,7 +10,6 @@ export function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
 
     const handleResetPassword = async () => {
         if (!email || !email.includes('@')) {
@@ -41,6 +40,7 @@ export function ResetPassword() {
                 setSuccess(false);
             }
         } catch (error) {
+            console.error('Erro ao solicitar reset de senha:', error);
             setMessage("Erro de conexão. Tente novamente.");
             setSuccess(false);
         } finally {

@@ -67,7 +67,7 @@ export default function CompanieForm5({ formFunc, formId, initialData, fileStora
                     try {
                         await loadDefaultCompanyLogo()
                     } catch (error) {
-
+                        console.error('Erro ao carregar logo padrão:', error);
                     }
                 }
                 formFunc(form5)

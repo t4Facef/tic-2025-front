@@ -19,16 +19,16 @@ export default function AdminDashboard() {
                 
                 // Para cada subtipo, buscar suas barreiras
                 const tiposComBarreiras = await Promise.all(
-                    tiposData.map(async (tipo: any) => {
+                    tiposData.map(async (tipo: { id: number; nome: string; subtipos: Array<{ id: number; nome: string }> }) => {
                         const subtiposComBarreiras = await Promise.all(
-                            tipo.subtipos.map(async (subtipo: any) => {
+                            tipo.subtipos.map(async (subtipo: { id: number; nome: string }) => {
                                 try {
                                     const barreirasResponse = await fetch(`${API_BASE_URL}/api/barreiras/subtipo/${subtipo.id}`);
                                     const barreiras = await barreirasResponse.json();
                                     
                                     // Para cada barreira, buscar suas acessibilidades
                                     const barreirasComAcess = await Promise.all(
-                                        barreiras.map(async (barreira: any) => {
+                                        barreiras.map(async (barreira: { id: number; descricao: string }) => {
                                             try {
                                                 const acessResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/barreira/${barreira.id}`);
                                                 const acessibilidades = await acessResponse.json();
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
                                                     id: barreira.id,
                                                     nome: barreira.descricao,
                                                     subtipoId: subtipo.id,
-                                                    acessibilidades: acessibilidades.map((a: any) => ({
+                                                    acessibilidades: acessibilidades.map((a: { id: number; nome: string }) => ({
                                                         id: a.id,
                                                         nome: a.nome,
                                                         barreiraId: barreira.id

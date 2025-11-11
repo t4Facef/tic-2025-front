@@ -79,7 +79,7 @@ export default function CandidateDashboard() {
 
                     setAppliedJobs(appliedJobsData)
                 } else {
-
+                    console.warn('Erro ao buscar vagas aplicadas');
                 }
 
             } catch (error) {

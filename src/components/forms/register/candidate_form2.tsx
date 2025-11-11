@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import GenericFormField from "../generic_form_field";
 import { CandidateForm2Data } from "../../../types/forms/candidate";
 import { useFormValidation } from '../../../hooks/useFormValidation';
-import { formatPhone, validatePhone, cleanPhone } from '../../../utils/phone';
+import { formatPhone, cleanPhone } from '../../../utils/phone';
 
 export default function CandidateForm2 ({ formFunc, formId, initialData } : {formFunc: (data: CandidateForm2Data) => void, formId: string, initialData?: CandidateForm2Data}){
     const [form2, setForm2] = useState<CandidateForm2Data>(initialData || {} as CandidateForm2Data)
@@ -106,9 +106,8 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                     street: data.logradouro || "",
                     neighborhood: data.bairro || ""
                 }));
-
             } else {
-
+                console.warn('CEP não encontrado');
             }
         }
         catch (error) {

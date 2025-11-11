@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Plus, Edit, Trash2, ChevronRight } from 'lucide-react';
-import { TipoDeficiencia, SubtipoDeficiencia, Barreira, Acessibilidade } from '../../types/admin';
+import { Plus, Trash2 } from 'lucide-react';
+import { TipoDeficiencia } from '../../types/admin';
 import AdminModal from './admin_modal';
 
 interface DeficiencyManagerProps {

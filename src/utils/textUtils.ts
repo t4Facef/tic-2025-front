@@ -27,9 +27,7 @@ export function stripHtmlAndTruncate(html: string, maxLength: number = 200): str
  * @returns HTML sanitizado
  */
 export function sanitizeHtml(html: string): string {
-  // Lista de tags permitidas (React Quill já sanitiza, mas por segurança)
-  const allowedTags = ['p', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'br'];
-  
-  // Remove tags não permitidas (implementação básica)
-  return html.replace(/<(?!\/?(?:p|strong|em|u|ol|ul|li|br)\b)[^>]*>/gi, '');
+  // Remove tags não permitidas usando regex que permite apenas tags básicas
+  const allowedTagsRegex = /<(?!\/?(?:p|strong|em|u|ol|ul|li|br)\b)[^>]*>/gi;
+  return html.replace(allowedTagsRegex, '');
 }

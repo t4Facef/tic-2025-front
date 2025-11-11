@@ -100,12 +100,11 @@ export default function JobView() {
                     return
                 }
                 
-                const data = await res.json()
+                // Sucesso - não precisa processar resposta
+                console.log('Candidatura enviada com sucesso')
 
-
-
-            }catch(err){
-
+            } catch (error) {
+                console.error('Erro ao candidatar-se:', error);
                 // Reverte o estado local em caso de erro
                 setJobStatus(currentStatus)
                 setJobData(prev => prev ? { ...prev, status: currentStatus || prev.status } : prev)

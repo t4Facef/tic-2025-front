@@ -4,7 +4,6 @@ import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
 import JobPosition from "../components/content/job_position";
-import StatisticBox from "../components/content/statistic_box";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
@@ -38,8 +37,8 @@ export default function CompanyDashboard() {
                 setCompanyStatistics(data)
 
 
-            } catch (err) {
-
+            } catch (error) {
+                console.error('Erro ao buscar vagas:', error);
             } finally {
                 setLoading(false)
             }
@@ -56,8 +55,8 @@ export default function CompanyDashboard() {
                 const res = await fetch(`${API_BASE_URL}/api/vagas/empresa/${companyId}?status=DISPONIVEL`)
                 const data = await res.json()
                 setOpenJobs(data)
-            } catch (err) {
-
+            } catch (error) {
+                console.error('Erro ao buscar vagas abertas:', error);
             }
         }
 
@@ -66,8 +65,8 @@ export default function CompanyDashboard() {
                 const res = await fetch(`${API_BASE_URL}/api/vagas/empresa/${companyId}?status=ENCERRADA`)
                 const data = await res.json()
                 setClosedJobs(data)
-            } catch (err) {
-
+            } catch (error) {
+                console.error('Erro ao buscar vagas fechadas:', error);
             }
         }
 

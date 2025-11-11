@@ -12,7 +12,8 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
     const [form4, setForm4] = useState<CandidateForm4Data>(initialData || {} as CandidateForm4Data)
     const [tipos, setTipos] = useState<{ nome: string, id: number }[]>([])
     const [subTipos, setSubTipos] = useState<{ nome: string, id: number }[]>([])
-    const [barreiras, setBarreiras] = useState<string[]>([])
+    const [barreirasMapeamento, setBarreirasMapeamento] = useState<{ [descricao: string]: number }>({})
+    const [allBarreirasOptions, setAllBarreirasOptions] = useState<string[]>([])
     const [tipoId, setTipoId] = useState<number>()
     const [subTipoId, setSubTipoId] = useState<number>()
     
@@ -29,7 +30,16 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
         fileStorage.saveFile(tipo, file)
     }
 
-
+    const handleBarreirasChange = (newBarreiras: string[]) => {
+        // Atualizar supportNeeds e calcular IDs das barreiras
+        const barreiraIds = newBarreiras.map(desc => barreirasMapeamento[desc] || 0).filter(id => id > 0)
+        
+        setForm4(prev => ({
+            ...prev,
+            supportNeeds: newBarreiras,
+            selectedBarreirasIds: barreiraIds
+        }))
+    }
 
     useEffect(() => {
         const fetchTipos = async () => {
@@ -44,6 +54,32 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
         }
 
         fetchTipos()
+    }, [])
+
+    // Buscar todas as barreiras disponíveis para options
+    useEffect(() => {
+        const fetchAllBarreiras = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/barreiras`)
+                const data = await response.json()
+                
+                // Criar mapeamento de descrição -> ID
+                const mapeamento: { [descricao: string]: number } = {}
+                const opcoes: string[] = []
+                
+                data.forEach((barreira: { id: number; descricao: string }) => {
+                    mapeamento[barreira.descricao] = barreira.id
+                    opcoes.push(barreira.descricao)
+                })
+                
+                setBarreirasMapeamento(mapeamento)
+                setAllBarreirasOptions(opcoes)
+            } catch (error) {
+                console.error('Erro ao buscar todas as barreiras:', error)
+            }
+        }
+
+        fetchAllBarreiras()
     }, [])
 
     // Inicializar tipoId quando tipos carregarem e houver necessityType no initialData
@@ -92,7 +128,7 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
         setForm4((prev) => ({ ...prev, necessityType: e.target.value }))
         setTipoId(tipos.find(tipo => tipo.nome === e.target.value)?.id || 0)
         // Limpar subtipo quando mudar o tipo
-        setForm4((prev) => ({ ...prev, necessitySubtype: "" }))
+        setForm4((prev) => ({ ...prev, necessitySubtype: "", supportNeeds: [] }))
         setSubTipoId(undefined)
     }
 
@@ -112,23 +148,31 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
             const response = await fetch(`${API_BASE_URL}/api/barreiras/subtipo/${subtipoId}`)
             const data = await response.json()
             
-            // Extrair descrições das barreiras
+            // Extrair descrições das barreiras do subtipo (padrão)
             const barreiraDescricoes = data.map((barreira: { descricao: string }) => barreira.descricao)
-            setBarreiras(barreiraDescricoes)
             
-            // Definir automaticamente as barreiras no formulário
-            setForm4(prev => ({ ...prev, supportNeeds: barreiraDescricoes }))
+            // Definir automaticamente as barreiras padrão no formulário
+            setForm4(prev => ({ 
+                ...prev, 
+                supportNeeds: barreiraDescricoes,
+                selectedBarreirasIds: data.map((b: { id: number }) => b.id)
+            }))
             
         } catch (error) {
             console.error('Erro ao buscar barreiras:', error)
             // Fallback para opções padrão
-            setBarreiras([
+            const fallbackBarreiras = [
                 "Rampa de acesso", "Elevador", "Banheiro adaptado", "Intérprete de Libras", 
                 "Software leitor de tela", "Mesa ajustável", "Cadeira ergonômica", 
                 "Iluminação adequada", "Piso tátil", "Sinalização em Braille",
                 "Apoio psicológico", "Flexibilidade de horário", "Transporte adaptado",
                 "Tecnologia assistiva", "Acompanhamento especializado"
-            ])
+            ]
+            
+            setForm4(prev => ({ 
+                ...prev, 
+                supportNeeds: fallbackBarreiras 
+            }))
         }
     }
 
@@ -184,8 +228,10 @@ export default function CandidateForm4({ formFunc, formId, initialData, fileStor
                 )}
             </div>
             <TagContainer 
-                edit={false} 
-                tags={barreiras}
+                edit={true}
+                tags={form4.supportNeeds || []}
+                options={allBarreirasOptions}
+                onChange={handleBarreirasChange}
             >
                 Limitações Identificadas
             </TagContainer>

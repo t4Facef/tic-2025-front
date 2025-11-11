@@ -257,11 +257,36 @@ export default function CandidateProfile() {
 
     // Buscar barreiras quando candidateData for carregado
     useEffect(() => {
-        if (candidateData?.subtipos && candidateData.subtipos.length > 0) {
-            const subtipoId = candidateData.subtipos[0].subtipoId
-            fetchBarreiras(subtipoId)
+        if (candidateData?.id) {
+            fetchBarreirasDiretas(candidateData.id)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [candidateData])
+
+    const fetchBarreirasDiretas = async (candidatoId: number) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/candidato-barreira/candidato/${candidatoId}`)
+            const data = await response.json()
+
+            // Se não houver barreiras diretas, fazer fallback para barreiras dos subtipos
+            if (data.length === 0 && candidateData?.subtipos && candidateData.subtipos.length > 0) {
+                const subtipoId = candidateData.subtipos[0].subtipoId
+                fetchBarreiras(subtipoId)
+            } else {
+                // Usar barreiras diretas do candidato
+                const barreiraDescricoes = data.map((cb: { barreira: { descricao: string } }) => cb.barreira.descricao)
+                setBarreiras(barreiraDescricoes)
+            }
+
+        } catch (error) {
+            console.error('Erro ao buscar barreiras diretas:', error)
+            // Fallback para barreiras dos subtipos
+            if (candidateData?.subtipos && candidateData.subtipos.length > 0) {
+                const subtipoId = candidateData.subtipos[0].subtipoId
+                fetchBarreiras(subtipoId)
+            }
+        }
+    }
 
     const fetchBarreiras = async (subtipoId: number) => {
         try {

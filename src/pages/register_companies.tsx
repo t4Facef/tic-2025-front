@@ -19,7 +19,7 @@ export default function RegisterCompanies() {
     const [apiMessage, setApiMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-    const { files, saveFile, clearAll, hasFile, getFile } = useFileStorage('companieFiles')
+    const { saveFile, clearAll, hasFile, getFile } = useFileStorage('companieFiles')
 
     // Mapeamento dos textos dos botões baseado no step
     const buttonTexts = {
@@ -62,7 +62,7 @@ export default function RegisterCompanies() {
 
             const allData = { ...formData.formdata1, ...formData.formdata2, ...formData.formdata3, ...formData.formdata4, ...data }
 
-            const companieData: any = {
+            const companieData: Record<string, unknown> = {
                 razaoSocial: allData.companyName,
                 nomeFantasia: allData.tradeName,
                 email: allData.email,
@@ -136,7 +136,7 @@ export default function RegisterCompanies() {
                     })
                     
                     if (!fileResponse.ok) {
-
+                        console.error('Erro ao enviar arquivo da empresa');
                     }
                 }
                 

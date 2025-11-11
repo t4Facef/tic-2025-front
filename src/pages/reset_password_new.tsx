@@ -91,6 +91,7 @@ export default function ResetPasswordNew() {
         setSuccess(false);
       }
     } catch (error) {
+      console.error('Erro ao redefinir senha:', error);
       setMessage("Erro de conexão. Tente novamente.");
       setSuccess(false);
     } finally {

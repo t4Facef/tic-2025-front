@@ -1,16 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { ReactNode } from "react";
-import { LucideIcon } from "lucide-react";
 
 type navElementProps = {
     link: string,
     children: ReactNode,
-    icon?: LucideIcon,
     description?: string,
     mobile?: boolean
 }
 
-export default function NavElement({link, children, icon: Icon, description, mobile}: navElementProps){
+export default function NavElement({link, children, description, mobile}: navElementProps){
     const location = useLocation()
     const isActive = location.pathname === link
     

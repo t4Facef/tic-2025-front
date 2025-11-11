@@ -186,16 +186,16 @@ export default function Register() {
                                 if (arquivo.obrigatorio) {
                                     throw new Error(`Erro ao enviar ${arquivo.key}: ${errorText}`)
                                 } else {
-
+                                    console.warn(`Aviso: erro ao enviar arquivo opcional ${arquivo.key}:`, errorText)
                                 }
                             } else {
-
+                                console.log(`✅ Arquivo ${arquivo.key} enviado com sucesso`)
                             }
                         } catch (error) {
                             if (arquivo.obrigatorio) {
                                 throw error
                             } else {
-
+                                console.warn(`Erro ao enviar arquivo opcional ${arquivo.key}:`, error)
                             }
                         }
                     } else if (arquivo.obrigatorio) {
@@ -203,7 +203,33 @@ export default function Register() {
                     }
                 }
                 
-                // 3. Sucesso - limpar e navegar
+                // 3. Enviar barreiras personalizadas se existirem
+                if (allData.selectedBarreirasIds && allData.selectedBarreirasIds.length > 0) {
+                    setApiMessage('🎯 Configurando barreiras personalizadas...')
+                    
+                    try {
+                        const barreirasResponse = await fetch(`${API_BASE_URL}/api/candidato-barreira/candidato/${candidatoId}/batch`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                barreiraIds: allData.selectedBarreirasIds 
+                            })
+                        })
+                        
+                        if (!barreirasResponse.ok) {
+                            const errorText = await barreirasResponse.text()
+                            console.warn('Erro ao enviar barreiras personalizadas:', errorText)
+                            // Não interromper o fluxo, apenas logar o aviso
+                        }
+                    } catch (error) {
+                        console.warn('Erro ao configurar barreiras personalizadas:', error)
+                        // Não interromper o fluxo
+                    }
+                }
+                
+                // 4. Sucesso - limpar e navegar
                 localStorage.removeItem('candidateFormData')
                 clearAll() // Limpar arquivos temporários
                 navigate('/auth/register/success')
