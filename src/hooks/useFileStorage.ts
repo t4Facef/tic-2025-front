@@ -12,9 +12,7 @@ export function useFileStorage(storageKey: string) {
         const savedFileNames = localStorage.getItem(`${storageKey}_names`);
         if (savedFileNames) {
             try {
-                const fileNames = JSON.parse(savedFileNames);
-                console.log('Arquivos salvos encontrados:', Object.keys(fileNames));
-                // Apenas log para debug, arquivos grandes não são restaurados do localStorage
+                // Verificar se há arquivos salvos
             } catch (error) {
                 console.error('Erro ao verificar arquivos salvos:', error);
                 // Limpar dados corrompidos

@@ -1,5 +1,3 @@
-// [TODO] - Adicionar pacote node que permite editar a foto antes de enviar (a foto deve ser um quadrado perfeito pra não dar problema com o rounded-full)
-
 import { useState, lazy, Suspense } from "react";
 import { CandidateForm5Data } from "../../../types/forms/candidate";
 import GenericFormField from "../generic_form_field";

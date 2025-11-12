@@ -1,7 +1,3 @@
-// [TODO] - Conciliar informações de filtros e cadastro
-// [TODO] - Organizar as options dos selects
-
-
 import { useState, useEffect } from "react";
 import GenericFormField from "../generic_form_field";
 import FilterCamp from "./filter_camp";

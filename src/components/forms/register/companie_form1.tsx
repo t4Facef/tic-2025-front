@@ -1,5 +1,3 @@
-// [TODO] - Colocar uma janelinha caso o número de funcionarios pcds seja muito abaixo da meta
-
 import { useState } from "react";
 import { CompanieForm1Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";

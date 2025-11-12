@@ -1,6 +1,4 @@
-// [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
-
-import { useState } from 'react'
+import { useState } from 'react';
 import GenericBlueButton from '../components/buttons/generic_blue_button'
 import StepIndicator from '../components/content/step_indicator'
 import CompanieForm1 from '../components/forms/register/companie_form1'

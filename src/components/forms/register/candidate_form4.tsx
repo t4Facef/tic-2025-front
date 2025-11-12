@@ -1,5 +1,3 @@
-// [TODO] - Linkar as APIs para o o conteúdo do Select, pegando dados especificos de subtipo de necessidade dependendo do tipo
-
 import { useEffect, useState } from "react";
 import { CandidateForm4Data } from "../../../types/forms/candidate";
 import TagContainer from "../../content/tag_container";

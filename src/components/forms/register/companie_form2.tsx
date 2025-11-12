@@ -1,6 +1,3 @@
-// [TODO] - Adicionar a busca de CEP automática (aqui uma api https://viacep.com.br/ws/01001000/json/ ai só mudar os numeros no meio pelo cep)
-// [TODO] - Procurar uma api com os estados e cidades automaticamente, talvez no mesmo lugar da cep automatica
-
 import { useEffect, useState } from "react";
 import { CompanieForm2Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";

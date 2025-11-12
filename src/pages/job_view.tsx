@@ -101,7 +101,7 @@ export default function JobView() {
                 }
                 
                 // Sucesso - não precisa processar resposta
-                console.log('Candidatura enviada com sucesso')
+                // Candidatura enviada com sucesso
 
             } catch (error) {
                 console.error('Erro ao candidatar-se:', error);

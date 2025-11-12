@@ -1,6 +1,3 @@
-// [TODO] - Organizar o a requisição do banco para pegar as vagas que mais condizem, então colocar os numeros na nav com base no numero de vagas
-// [TODO] - Colocar as estatisticas no depois da barra de pesquisar de forma horizontal
-
 import JobPositionMobile from "../components/content/job_position_mobile";
 import JobPositionDesktop from "../components/content/job_position_desktop";
 import SearchBox from "../components/content/search_box";

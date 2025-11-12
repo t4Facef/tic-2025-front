@@ -1,6 +1,3 @@
-// [TODO] - Fazer com que os campos só apareçam na visualização se existir o dado no banco (pra evitar ficar espaço vazio)
-// [TODO] - Adicionar uma view diferente caso seja um usuario não logado, logado e dono da vaga
-
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import TagContainer from "./tag_container";

@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
 import CreateAdminForm from "../components/admin/create_admin_form";
+import SmartAccessibilityInput from "../components/admin/smart_accessibility_input";
 import { API_BASE_URL } from "../config/api";
+import { api } from "../services/api"; // Serviço de API com autenticação
 import { 
     Layers, 
     Users, 
@@ -26,6 +28,15 @@ type EntityData = {
 
 export default function AdminDashboard() {
     const { role, isAuthenticated } = useAuth();
+    
+    // Helper function para obter headers de autenticação
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        return {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` }),
+        };
+    };
     const [currentView, setCurrentView] = useState<ViewMode>('overview');
     const [selectedParent, setSelectedParent] = useState<EntityData | null>(null);
     const [breadcrumb, setBreadcrumb] = useState<EntityData[]>([]);
@@ -236,7 +247,7 @@ export default function AdminDashboard() {
 
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(body)
             });
 
@@ -284,32 +295,27 @@ export default function AdminDashboard() {
                     break;
             }
 
-            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-
-            if (response.ok) {
-                setEditingItem(null);
-                setEditingName('');
-                refreshCurrentView();
-                // Show success message
-                alert('Item editado com sucesso!');
-            } else {
-                const errorText = await response.text();
-                console.error('Erro ao editar item:', errorText);
-                
-                // Check if it's a "not implemented" error
-                if (response.status === 404 || errorText.includes('Cannot PUT')) {
-                    alert('Funcionalidade de edição ainda não implementada no backend para este item.');
-                } else {
-                    alert('Erro ao editar item. Verifique se os dados estão corretos.');
-                }
-            }
-        } catch (error) {
+            // Usar o serviço de API que inclui autenticação
+            await api.put(endpoint, body);
+            
+            setEditingItem(null);
+            setEditingName('');
+            refreshCurrentView();
+            alert('Item editado com sucesso!');
+        } catch (error: unknown) {
             console.error('Erro ao editar item:', error);
-            alert('Erro de conexão ao editar item.');
+            
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            
+            if (errorMessage.includes('Token não fornecido') || errorMessage.includes('401')) {
+                alert('Erro de autenticação. Faça login novamente como administrador.');
+            } else if (errorMessage.includes('403')) {
+                alert('Acesso negado. Apenas administradores podem editar itens.');
+            } else if (errorMessage.includes('404') || errorMessage.includes('Cannot PUT')) {
+                alert('Funcionalidade de edição ainda não implementada no backend para este item.');
+            } else {
+                alert('Erro ao editar item. Verifique se os dados estão corretos.');
+            }
         }
     };
 
@@ -334,7 +340,8 @@ export default function AdminDashboard() {
             }
 
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: getAuthHeaders()
             });
 
             if (response.ok) {
@@ -651,22 +658,61 @@ export default function AdminDashboard() {
                                      currentView === 'subtipos' ? 'Subtipo' :
                                      currentView === 'barreiras' ? 'Barreira' : 'Acessibilidade'}
                         </h3>
-                        <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
-                            <input
-                                type="text"
-                                value={newItemName}
-                                onChange={(e) => setNewItemName(e.target.value)}
-                                placeholder="Nome do item"
-                                className="flex-1 px-3 py-2 lg:px-4 lg:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm lg:text-base"
+                        
+                        {currentView === 'acessibilidades' && selectedParent ? (
+                            <SmartAccessibilityInput 
+                                onAdd={async (nome, isNew) => {
+                                    try {
+                                        // Fazer a vinculação diretamente aqui
+                                        const response = await fetch(`${API_BASE_URL}/api/acessibilidades/vincular-barreira`, {
+                                            method: 'POST',
+                                            headers: getAuthHeaders(),
+                                            body: JSON.stringify({ 
+                                                barreiraId: selectedParent.id, 
+                                                nome: nome 
+                                            })
+                                        });
+
+                                        if (response.ok) {
+                                            refreshCurrentView();
+                                            if (isNew) {
+                                                alert(`Nova acessibilidade "${nome}" criada e vinculada com sucesso!`);
+                                            } else {
+                                                alert(`Acessibilidade "${nome}" vinculada com sucesso!`);
+                                            }
+                                        } else {
+                                            const errorData = await response.text();
+                                            console.error('Erro ao vincular:', errorData);
+                                            alert('Erro ao vincular acessibilidade.');
+                                        }
+                                    } catch (error) {
+                                        console.error('Erro ao vincular acessibilidade:', error);
+                                        alert('Erro ao vincular acessibilidade.');
+                                    }
+                                }}
+                                placeholder="Digite para buscar acessibilidade existente ou criar nova..."
                             />
-                            <button
-                                onClick={handleAdd}
-                                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 lg:px-6 lg:py-2 rounded-lg flex items-center space-x-1 lg:space-x-2 transition-colors text-sm lg:text-base"
-                            >
-                                <CheckCircle className="h-4 w-4" />
-                                <span className="hidden sm:inline">Salvar</span>
-                                <span className="sm:hidden">✓</span>
-                            </button>
+                        ) : (
+                            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
+                                <input
+                                    type="text"
+                                    value={newItemName}
+                                    onChange={(e) => setNewItemName(e.target.value)}
+                                    placeholder="Nome do item"
+                                    className="flex-1 px-3 py-2 lg:px-4 lg:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm lg:text-base"
+                                />
+                                <button
+                                    onClick={handleAdd}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 lg:px-6 lg:py-2 rounded-lg flex items-center space-x-1 lg:space-x-2 transition-colors text-sm lg:text-base"
+                                >
+                                    <CheckCircle className="h-4 w-4" />
+                                    <span className="hidden sm:inline">Salvar</span>
+                                    <span className="sm:hidden">✓</span>
+                                </button>
+                            </div>
+                        )}
+                        
+                        <div className="flex justify-end mt-4">
                             <button
                                 onClick={() => {setShowAddForm(false); setNewItemName('');}}
                                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 lg:px-6 lg:py-2 rounded-lg flex items-center space-x-1 lg:space-x-2 transition-colors text-sm lg:text-base"

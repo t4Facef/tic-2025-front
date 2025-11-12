@@ -1,6 +1,4 @@
-// [TODO] - Adicionar "Tem certeza que deseja cancelar em uma caixinha separada"
-
-import { useState } from 'react'
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import GenericBlueButton from '../components/buttons/generic_blue_button'
 import StepIndicator from '../components/content/step_indicator'
@@ -136,8 +134,6 @@ export default function Register() {
             
 
             try {
-                console.log('Dados sendo enviados:', candidateData); // Debug
-                
                 // 1. Primeiro, registrar o candidato
                 const registerResponse = await fetch(`${API_BASE_URL}/api/auth/candidato/register`, {
                     method: 'POST',
@@ -189,7 +185,7 @@ export default function Register() {
                                     console.warn(`Aviso: erro ao enviar arquivo opcional ${arquivo.key}:`, errorText)
                                 }
                             } else {
-                                console.log(`✅ Arquivo ${arquivo.key} enviado com sucesso`)
+                                // Arquivo enviado com sucesso
                             }
                         } catch (error) {
                             if (arquivo.obrigatorio) {

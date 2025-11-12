@@ -8,3 +8,17 @@ export const useAuth = () => {
     }
     return context
 }
+
+export function useAdminAuth() {
+    const { isAuthenticated, role, token, user } = useAuth();
+    
+    const isAdmin = isAuthenticated && role === 'ADMIN';
+    
+    return {
+        isAdmin,
+        isAuthenticated,
+        token,
+        user,
+        role,
+    };
+}

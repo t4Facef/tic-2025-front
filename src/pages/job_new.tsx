@@ -1,5 +1,3 @@
-// [TODO] - Para a pré visualização, pegar também a foto de perfil da empresa e as formas de suporte
-
 import GenericFormField from "../components/forms/generic_form_field";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import TagContainer from "../components/content/tag_container";
@@ -66,15 +64,15 @@ export default function JobForm() {
   useEffect(() => {
     const fetchAcessibilidades = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/acessibilidades/nomes`)
-        const data = await res.json()
-
-        const opt = data.map((acessibilidade: { nome: string }) => acessibilidade.nome).sort()
-        setOptions(opt)
+        const { acessibilidadesService } = await import('../services/acessibilidades.service');
+        const data = await acessibilidadesService.listarNomes();
+        
+        const opt = data.sort();
+        setOptions(opt);
       } catch (error) {
-        console.error("Erro ao buscar as acessibilidades:", error)
+        console.error("Erro ao buscar as acessibilidades:", error);
       }
-    }
+    };
 
     const fetchJobData = async () => {
       if (isEditing && id) {
