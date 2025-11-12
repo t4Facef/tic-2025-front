@@ -97,14 +97,17 @@ export default function JobModalMobile({ jobData, open, onClose }: JobModalMobil
         <div className="flex-1 overflow-y-auto overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="p-4 space-y-6 min-h-full">{/* Garante altura mínima para scroll */}
           {/* Compatibilidade */}
-          {jobData.compatibility > 0 && (
+          {jobData.compatibility >= 0 && (
             <div className="bg-blue1 p-4 rounded-lg border border-blue2">
               <div className="flex items-center justify-center gap-2">
                 <Star size={18} className="text-blue3" />
                 <span className="text-blue3 font-bold text-base">{jobData.compatibility}% de compatibilidade</span>
               </div>
               <p className="text-blue3 text-sm text-center mt-1">
-                Esta vaga é compatível com seu perfil
+                {jobData.compatibility === 0 
+                  ? 'Complete seu perfil para melhor compatibilidade'
+                  : 'Esta vaga é compatível com seu perfil'
+                }
               </p>
             </div>
           )}

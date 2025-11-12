@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, RotateCcw } from 'lucide-react';
 import { useAccessibility, AccessibilitySettings } from '../../contexts/accessibilityConstants';
@@ -6,6 +6,32 @@ import { useAccessibility, AccessibilitySettings } from '../../contexts/accessib
 export default function AccessibilityButton() {
     const [isOpen, setIsOpen] = useState(false);
     const { settings, updateSetting, resetSettings } = useAccessibility();
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    // Fechar modal ao clicar fora
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        const handleEscapeKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, [isOpen]);
 
     return createPortal(
         <>
@@ -29,7 +55,10 @@ export default function AccessibilityButton() {
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50"
                     style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999 }}
                 >
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div 
+                        ref={modalRef}
+                        className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+                    >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b">
                             <h2 className="text-xl font-semibold text-blue3">Configurações de Acessibilidade</h2>

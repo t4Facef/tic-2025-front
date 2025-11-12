@@ -46,7 +46,7 @@ export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
             </div>
           </div>
           
-          {jobData.compatibility > 0 && (
+          {jobData.compatibility >= 0 && (
             <div className="bg-white text-blue3 px-2 py-1 rounded-full text-sm font-semibold">
               <div className="flex items-center gap-1">
                 <Star size={12} className="text-blue2" />

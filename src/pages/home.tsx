@@ -47,7 +47,7 @@ export default function Home() {
                     description: vaga.descricao,
                     skillsTags: vaga.habilidades,
                     supportTags: vaga.apoios,
-                    compatibility: 0, // Sem compatibilidade na home
+                    compatibility: -1, // Sem compatibilidade na home
                     startDate: new Date(vaga.dataInicio),
                     endDate: new Date(vaga.dataFim),
                     typeContract: vaga.tipoContrato,

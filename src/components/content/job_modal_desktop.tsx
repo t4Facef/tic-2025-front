@@ -149,7 +149,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
           </div>
           
           <div className="flex items-center gap-4">
-            {jobData.compatibility > 0 && (
+            {jobData.compatibility >= 0 && (
               <div className="bg-gradient-to-r from-white to-blue1 text-blue3 px-6 py-3 rounded-full font-bold shadow-xl border-2 border-blue1 transform hover:scale-105 transition-transform">
                 <div className="flex items-center gap-2">
                   <Star size={20} className="text-blue2" fill="currentColor" />
@@ -200,14 +200,17 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
           ) : !isApplying ? (
             <div className="p-6 space-y-6">
               {/* Compatibilidade */}
-              {jobData.compatibility > 0 && (
+              {jobData.compatibility >= 0 && (
                 <div className="bg-blue1 p-4 rounded-lg border border-blue2">
                   <div className="flex items-center justify-center gap-2">
                     <Star size={20} className="text-blue3" />
                     <span className="text-blue3 font-bold text-lg">{jobData.compatibility}% de compatibilidade</span>
                   </div>
                   <p className="text-blue3 text-center text-sm mt-1">
-                    Esta vaga é compatível com seu perfil
+                    {jobData.compatibility === 0 
+                      ? 'Complete seu perfil para melhor compatibilidade'
+                      : 'Esta vaga é compatível com seu perfil'
+                    }
                   </p>
                 </div>
               )}

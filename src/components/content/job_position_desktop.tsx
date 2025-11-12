@@ -47,7 +47,7 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
             </div>
           </div>
           
-          {jobData.compatibility > 0 && (
+          {jobData.compatibility >= 0 && (
             <div className="bg-white text-blue3 px-3 py-1.5 rounded-full font-semibold shadow-lg">
               <div className="flex items-center gap-1.5">
                 <Star size={14} className="text-blue2" />

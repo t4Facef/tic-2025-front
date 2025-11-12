@@ -43,7 +43,7 @@ export default function JobPosition({ jobData, isEditing=false }: JobPositionPro
                 <p className="text-xs text-blue4">{jobData.company}</p>
               </div>
               
-              {jobData.compatibility > 0 && (
+              {jobData.compatibility >= 0 && (
                 <div className="bg-white text-blue3 px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
                   <div className="flex items-center gap-1">
                     <Star size={14} className="text-blue2" />
