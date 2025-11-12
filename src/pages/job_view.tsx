@@ -5,7 +5,7 @@ import { API_BASE_URL } from "../config/api";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { VagaComCandidaturas } from "../types/vagas/vagaCandidaturas";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
-import JobPosition from "../components/content/job_position";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 import { exportApprovedCandidates } from "../utils/excelExport";
 import NotificationModal from "../components/content/notification_modal";
 
@@ -296,7 +296,7 @@ export default function JobView() {
                     <div className="text-start">
                         <p>Clique na vaga para visualizar e editar </p>
                         {jobData && (
-                            <JobPosition jobData={{
+                            <JobPositionDesktop jobData={{
                                 id: jobData.id,
                                 idEmpresa: jobData.empresaId,
                                 title: jobData.titulo,

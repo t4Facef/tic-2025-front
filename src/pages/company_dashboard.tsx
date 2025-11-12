@@ -3,14 +3,18 @@
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
-import JobPosition from "../components/content/job_position";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
-import { Briefcase, FileText, Target, Calendar } from "lucide-react";
+import { Briefcase, Users, TrendingUp, Calendar } from "lucide-react";
 
 interface meta {
+    atual: number
+    necessario: number
     faltam: number
+    percentual: number
+    totalFuncionarios: number
 }
 
 interface CompanyStatistics {
@@ -21,7 +25,7 @@ interface CompanyStatistics {
 
 export default function CompanyDashboard() {
     const { user, isAuthenticated, role } = useAuth()
-    const [companyStatistics, setCompanyStatistics] = useState<CompanyStatistics>({} as CompanyStatistics)
+    const [statisticsData, setStatisticsData] = useState<CompanyStatistics>({} as CompanyStatistics)
     const [openJobs, setOpenJobs] = useState<Vaga[]>([])
     const [closedJobs, setClosedJobs] = useState<Vaga[]>([])
     const [loading, setLoading] = useState(false)
@@ -35,7 +39,7 @@ export default function CompanyDashboard() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/estatisticas/empresa/${companyId}`)
                 const data = await res.json()
-                setCompanyStatistics(data)
+                setStatisticsData(data)
 
 
             } catch (error) {
@@ -112,43 +116,41 @@ export default function CompanyDashboard() {
 
                 {/* Statistics Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <div className="bg-white rounded-3xl p-6 border-l-4 border-blue3 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue3">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium">Vagas Abertas</p>
-                                <p className="text-3xl font-bold text-gray-900">{companyStatistics?.vagasAbertas || 0}</p>
+                                <p className="text-3xl font-bold text-gray-900">{statisticsData?.vagasAbertas || 0}</p>
                                 <p className="text-blue3 text-sm">Ativas no momento</p>
                             </div>
-                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
                                 <Briefcase className="h-6 w-6 text-blue3" />
                             </div>
                         </div>
                     </div>
                     
-                    <div className="bg-white rounded-3xl p-6 border-l-4 border-green-500 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-green-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium">Candidaturas Hoje</p>
-                                <p className="text-3xl font-bold text-gray-900">{companyStatistics?.candidaturasHoje || 0}</p>
+                                <p className="text-gray-600 text-sm font-medium">Candidaturas Recebidas</p>
+                                <p className="text-3xl font-bold text-gray-900">{statisticsData?.candidaturasHoje || 0}</p>
                                 <p className="text-green-600 text-sm">Recebidas hoje</p>
                             </div>
-                            <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center">
-                                <FileText className="h-6 w-6 text-green-600" />
+                            <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center shadow-md">
+                                <Users className="h-6 w-6 text-green-600" />
                             </div>
                         </div>
                     </div>
                     
-                    <div className="bg-white rounded-3xl p-6 border-l-4 border-orange-500 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-orange-500">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium">Lei de Cotas</p>
-                                <p className="text-3xl font-bold text-gray-900">{companyStatistics?.metaContratacao?.faltam || 0}</p>
-                                <p className="text-orange-600 text-sm">
-                                    {companyStatistics?.metaContratacao?.faltam === 0 ? 'Meta cumprida!' : 'Faltam contratar'}
-                                </p>
+                                <p className="text-3xl font-bold text-gray-900">{statisticsData?.metaContratacao?.faltam || 0}</p>
+                                <p className="text-orange-600 text-sm">Meta de contratação</p>
                             </div>
-                            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center">
-                                <Target className="h-6 w-6 text-orange-600" />
+                            <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center shadow-md">
+                                <TrendingUp className="h-6 w-6 text-orange-600" />
                             </div>
                         </div>
                     </div>
@@ -197,7 +199,7 @@ export default function CompanyDashboard() {
                                         sector: vaga.setor,
                                         status: vaga.status
                                     }
-                                    return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                 })}
                                 <div className="flex justify-center pt-4">
                                     <GenericBlueButton color={3} link="/jobs?minhasVagas=true" size="mdy">Ver todas as vagas</GenericBlueButton>
@@ -257,7 +259,7 @@ export default function CompanyDashboard() {
                                         sector: vaga.setor,
                                         status: vaga.status
                                     }
-                                    return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                    return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                 })}
                                 <div className="flex justify-center pt-4">
                                     <GenericBlueButton color={3} link="/jobs?minhasVagas=true" size="mdy">Ver todas as vagas</GenericBlueButton>

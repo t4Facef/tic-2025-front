@@ -8,7 +8,7 @@ interface SearchableSelectProps {
 
 export default function SearchableSelect({options, addTag, currentTags}: SearchableSelectProps) {
   const [search, setSearch] = useState('')
-  const [filteredOptions, setFilteredOptions] = useState(options)
+  const [filteredOptions, setFilteredOptions] = useState<string[]>(options)
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -24,7 +24,8 @@ export default function SearchableSelect({options, addTag, currentTags}: Searcha
 
   useEffect(() => {
     setFilteredOptions(options.filter(option => 
-      option.toLowerCase().includes(search.toLowerCase()) && !currentTags.includes(option)
+      option.toLowerCase().includes(search.toLowerCase()) && 
+      !currentTags.includes(option)
     ))
   }, [currentTags, search, options])
 

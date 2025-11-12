@@ -4,7 +4,7 @@ import TagContainer from "../components/content/tag_container";
 import MarkdownEditor from "../components/forms/markdown_editor";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import JobPosition from "../components/content/job_position";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 import { WORK_LEVELS, WORK_TYPES, CONTRACT_TYPES, SECTORS } from "../data/constants/select_options";
 import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../hooks/useAuth";
@@ -344,7 +344,7 @@ export default function JobForm() {
 
         <div>
           <h3 className="font-medium">Pré-visualização da Vaga</h3>
-          <JobPosition jobData={dataForm} isEditing={true}></JobPosition>
+          <JobPositionDesktop jobData={dataForm} isEditing={true}></JobPositionDesktop>
         </div>
       </div>
     );

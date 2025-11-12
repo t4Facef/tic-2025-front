@@ -19,7 +19,7 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
   return (
     <>
       <div 
-        className="w-full bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group"
+        className="w-full bg-gray-50 rounded-xl shadow-xl border border-gray-300 hover:shadow-2xl hover:border-gray-400 transition-all duration-300 overflow-hidden cursor-pointer group"
         onClick={() => setOpen(true)}
       >
         {/* Header com empresa e compatibilidade */}
@@ -48,7 +48,7 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
           </div>
           
           {jobData.compatibility >= 0 && (
-            <div className="bg-white text-blue3 px-3 py-1.5 rounded-full font-semibold shadow-lg">
+            <div className="bg-white text-blue3 px-3 py-1.5 rounded-full font-semibold shadow-xl border-2 border-blue1">
               <div className="flex items-center gap-1.5">
                 <Star size={14} className="text-blue2" />
                 <span className="text-sm">{jobData.compatibility}%</span>
@@ -61,8 +61,8 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
         <div className="p-4 space-y-3">
           {/* Grid de informações principais */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="flex items-center gap-2 bg-gray-50 p-2.5 rounded-lg">
-              <div className="p-1.5 bg-blue1 rounded-full">
+            <div className="flex items-center gap-2 bg-white p-2.5 rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+              <div className="p-1.5 bg-blue1 rounded-lg shadow-sm">
                 <MapPin size={14} className="text-blue3" />
               </div>
               <div>
@@ -71,8 +71,8 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
               </div>
             </div>
             
-            <div className="flex items-center gap-2 bg-gray-50 p-2.5 rounded-lg">
-              <div className="p-1.5 bg-blue1 rounded-full">
+            <div className="flex items-center gap-2 bg-white p-2.5 rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+              <div className="p-1.5 bg-blue1 rounded-lg shadow-sm">
                 <Clock size={14} className="text-blue3" />
               </div>
               <div>
@@ -81,8 +81,8 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-gray-50 p-2.5 rounded-lg">
-              <div className="p-1.5 bg-blue1 rounded-full">
+            <div className="flex items-center gap-2 bg-white p-2.5 rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+              <div className="p-1.5 bg-blue1 rounded-lg shadow-sm">
                 <CreditCard size={14} className="text-blue3" />
               </div>
               <div>
@@ -91,8 +91,8 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-gray-50 p-2.5 rounded-lg">
-              <div className="p-1.5 bg-blue1 rounded-full">
+            <div className="flex items-center gap-2 bg-white p-2.5 rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow">
+              <div className="p-1.5 bg-blue1 rounded-lg shadow-sm">
                 <Briefcase size={14} className="text-blue3" />
               </div>
               <div>

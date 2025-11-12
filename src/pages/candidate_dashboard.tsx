@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
-import JobPosition from "../components/content/job_position";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
@@ -145,40 +145,40 @@ export default function CandidateDashboard() {
 
                     {/* Statistics Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue3 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue3">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-gray-600 text-sm font-medium">Total Geral</p>
                                     <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasTotal}</p>
                                     <p className="text-blue3 text-sm">Candidaturas</p>
                                 </div>
-                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
                                     <span className="text-2xl">📊</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue2 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue2">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-gray-600 text-sm font-medium">Este Mês</p>
                                     <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasNesteMes}</p>
                                     <p className="text-blue2 text-sm">Candidaturas</p>
                                 </div>
-                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
                                     <span className="text-2xl">📅</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="bg-white rounded-3xl p-6 border-l-4 border-blue1 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue1">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-gray-600 text-sm font-medium">Em Andamento</p>
                                     <p className="text-3xl font-bold text-gray-900">{statistics.candidaturasAbertas}</p>
                                     <p className="text-blue1 text-sm">Processos</p>
                                 </div>
-                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
+                                <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
                                     <span className="text-2xl">⏳</span>
                                 </div>
                             </div>
@@ -231,7 +231,7 @@ export default function CandidateDashboard() {
                                             status: vaga.status,
                                             sector: vaga.setor
                                         }
-                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                     })}
                                 </div>
                                 <div className="bg-slate-50 px-6 py-4 border-t border-slate-200">
@@ -293,7 +293,7 @@ export default function CandidateDashboard() {
                                             status: vaga.status,
                                             sector: vaga.setor
                                         }
-                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                     })}
                                 </div>
                                 <div className="bg-blue1 px-6 py-4 border-t border-slate-200">

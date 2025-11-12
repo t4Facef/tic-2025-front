@@ -11,7 +11,7 @@ import { PenLine } from "lucide-react";
 import GenericFormField from "../components/forms/generic_form_field";
 import { SECTORS } from "../data/constants/select_options";
 import { Vaga, JobData } from "../types/vagas/vaga";
-import JobPosition from "../components/content/job_position";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 
 interface editCompanyProfile {
     acessibilidades: string[]
@@ -608,7 +608,7 @@ export default function CompanyProfile() {
                                             sector: vaga.setor,
                                             status: vaga.status
                                         }
-                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                     })}
                                     {companyJobs.length > 3 && (
                                         <div className="flex justify-center pt-4">
