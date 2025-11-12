@@ -20,9 +20,11 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
   // Responsive visible count
   const getVisibleCount = useCallback(() => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 4; // mobile - agora mostra 4 empresas
-      if (window.innerWidth < 1024) return 3; // tablet
-      return companyIds && companyIds.length > 0 ? Math.min(5, companyIds.length) : 5; // desktop
+      const w = window.innerWidth;
+      // For narrow widths (mobile/tablet and similar like 820px) show 4
+      if (w < 900) return Math.min(4, companyIds.length);
+      // Desktop: show up to 5 companies per view
+      return companyIds && companyIds.length > 0 ? Math.min(5, companyIds.length) : 5;
     }
     return 5;
   }, [companyIds]);

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
-import JobPosition from "../components/content/job_position"
+import JobPositionMobile from "../components/content/job_position_mobile"
+import JobPositionDesktop from "../components/content/job_position_desktop"
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
 
@@ -9,7 +10,7 @@ import { JobData, Vaga } from "../types/vagas/vaga";
 
 export default function Home() {
     const [companyIds, setCompanyIds] = useState<number[]>([])
-    const [popularJobs, setPopularJobs] = useState<JobData[]>([])
+    const [popularJobs, setPopularJobs] = useState<JobData[]>([]);
     
     useEffect(() => {
         const getTopCompanies = async () => {
@@ -46,7 +47,7 @@ export default function Home() {
                     description: vaga.descricao,
                     skillsTags: vaga.habilidades,
                     supportTags: vaga.apoios,
-                    compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                    compatibility: 0, // Sem compatibilidade na home
                     startDate: new Date(vaga.dataInicio),
                     endDate: new Date(vaga.dataFim),
                     typeContract: vaga.tipoContrato,
@@ -68,31 +69,33 @@ export default function Home() {
     }, [])
     return (
         <div className="bg-white">
-            {/* Desktop version */}
-            <section className="hidden md:block relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
+            {/* Desktop version (shows only on lg+) */}
+            <section className="hidden lg:block relative w-full h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
                 <div className="absolute inset-0 bg-white bg-opacity-50"></div>
-                <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 md:px-8">
-                    <div className="bg-blue1 bg-opacity-90 rounded-xl shadow-lg p-6 sm:p-8 md:p-10 max-w-7xl flex flex-1 max-h-full">
-                        <div className="flex-[8]">
-                            <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
-                                Conheça Apojobs!
-                            </h1>
-                            <p className="text-gray-700 text-base sm:text-lg mb-4">
-                                Nosso site nasceu com a missão de aproximar pessoas e oportunidades, promovendo inclusão e acessibilidade no mercado de trabalho. Sabemos que encontrar vagas pode ser um desafio para profissionais com deficiência, assim como para empresas que desejam contratar e não sabem por onde começar. Por isso, criamos um espaço simples e intuitivo, onde candidatos podem descobrir vagas pensadas especialmente para PCDs e empresas comprometidas com a diversidade podem encontrar talentos qualificados. Mais do que conectar currículos a oportunidades, queremos construir pontes que incentivem práticas justas, humanas e inclusivas. Acreditamos que cada pessoa tem muito a oferecer e que ambientes diversos transformam a vida profissional e social de todos. Se você é candidato, cadastre seu perfil e explore novas possibilidades; se é empresa, publique suas vagas e faça parte dessa rede que valoriza a inclusão.
-                            </p>
-                            <div className="flex justify-center">
-                                <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton>
+                <div className="relative z-10 flex items-center justify-center h-full px-2 sm:px-4 lg:px-8">
+                    <div className="bg-blue1 bg-opacity-90 rounded-xl shadow-lg p-6 sm:p-8 lg:p-10 max-w-7xl w-full">
+                        <div className="flex flex-col lg:flex-row items-center lg:items-start">
+                            <div className="w-full lg:flex-[8]">
+                                <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
+                                    Conheça Apojobs!
+                                </h1>
+                                <p className="text-gray-700 text-base sm:text-lg mb-4">
+                                    Nosso site nasceu com a missão de aproximar pessoas e oportunidades, promovendo inclusão e acessibilidade no mercado de trabalho. Sabemos que encontrar vagas pode ser um desafio para profissionais com deficiência, assim como para empresas que desejam contratar e não sabem por onde começar. Por isso, criamos um espaço simples e intuitivo, onde candidatos podem descobrir vagas pensadas especialmente para PCDs e empresas comprometidas com a diversidade podem encontrar talentos qualificados. Mais do que conectar currículos a oportunidades, queremos construir pontes que incentivem práticas justas, humanas e inclusivas. Acreditamos que cada pessoa tem muito a oferecer e que ambientes diversos transformam a vida profissional e social de todos. Se você é candidato, cadastre seu perfil e explore novas possibilidades; se é empresa, publique suas vagas e faça parte dessa rede que valoriza a inclusão.
+                                </p>
+                            </div>
+                            <div className="w-full lg:flex-[3] flex justify-center items-center">
+                                <img className="" src="/img/homepage/Teste.png" alt="Ilustração Apojobs" />
                             </div>
                         </div>
-                        <div className="flex-[3] flex justify-center items-center">
-                            <img className="" src="/img/homepage/Teste.png" alt="Ilustração Apojobs" />
+                        <div className="w-full flex justify-center lg:justify-end">
+                            <GenericBlueButton color={3} link='/about' size="mdy">Conheça Mais Sobre</GenericBlueButton>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Mobile version */}
-            <section className="md:hidden relative w-full h-96 bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
+            <section className="lg:hidden relative w-full h-96 bg-cover bg-center" style={{ backgroundImage: "url('/img/homepage/home-page-img1.jpg')" }}>
                 <div className="absolute inset-0 bg-white bg-opacity-50"></div>
                 <div className="relative z-10 flex items-center justify-center h-full px-4">
                     <div className="bg-blue1 bg-opacity-90 rounded-xl shadow-lg p-6 max-w-sm w-full text-center">
@@ -118,9 +121,19 @@ export default function Home() {
                 <div className="max-w-6xl mx-auto px-4 md:px-8">
                     <div className="flex flex-col items-center space-y-6 md:space-y-8">
                         <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 md:mb-4">Vagas em Destaque</h2>
+
                         {popularJobs.length > 0 ? (
                             popularJobs.slice(0, 3).map(job => (
-                                <JobPosition key={job.id} jobData={job} />
+                                <div key={job.id} className="w-full">
+                                    {/* Desktop - Novo estilo como padrão */}
+                                    <div className="hidden md:block">
+                                        <JobPositionDesktop jobData={job} />
+                                    </div>
+                                    {/* Mobile */}
+                                    <div className="md:hidden">
+                                        <JobPositionMobile jobData={job} />
+                                    </div>
+                                </div>
                             ))
                         ) : (
                             <div className="text-center py-8">

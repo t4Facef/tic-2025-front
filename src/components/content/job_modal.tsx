@@ -255,16 +255,16 @@ export default function JobModal({
           if (role === "CANDIDATO" && !isCompleted && !hasError && !alreadyApplied) {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-3xl rounded-bl-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
-                <button className="bg-blue2 hover:bg-blue3 text-white flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleApplying}>{isApplying ? 'Confirmar' : 'Inscrever'}</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-xl lg:text-3xl rounded-bl-3xl py-2 lg:py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue2 hover:bg-blue3 text-white flex-1 border-blue2 border-2 text-xl lg:text-3xl rounded-br-3xl py-2 lg:py-3 transition-colors duration-200 font-semibold" onClick={handleApplying}>{isApplying ? 'Confirmar' : 'Inscrever'}</button>
               </div>
             );
           } else if (role === "EMPRESA" && user?.id === jobData.idEmpresa) {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-3xl rounded-bl-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white flex-1 text-xl lg:text-3xl rounded-bl-3xl py-2 lg:py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
                 <button 
-                  className={`flex-1 border-blue2 border-2 text-3xl rounded-br-3xl py-3 transition-colors duration-200 font-semibold ${
+                  className={`flex-1 border-blue2 border-2 text-xl lg:text-3xl rounded-br-3xl py-2 lg:py-3 transition-colors duration-200 font-semibold ${
                     isEditing && (!jobData.id || jobData.id === 0)
                       ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
                       : 'bg-blue2 hover:bg-blue3 text-white'
@@ -285,7 +285,7 @@ export default function JobModal({
           } else {
             return (
               <div className="flex w-full">
-                <button className="bg-blue3 hover:bg-blue3H text-white w-full text-3xl rounded-b-3xl py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
+                <button className="bg-blue3 hover:bg-blue3H text-white w-full text-xl lg:text-3xl rounded-b-3xl py-2 lg:py-3 transition-colors duration-200 font-semibold" onClick={handleClose}>Fechar</button>
               </div>
             );
           }

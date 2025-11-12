@@ -1,7 +1,8 @@
 // [TODO] - Organizar o a requisição do banco para pegar as vagas que mais condizem, então colocar os numeros na nav com base no numero de vagas
 // [TODO] - Colocar as estatisticas no depois da barra de pesquisar de forma horizontal
 
-import JobPosition from "../components/content/job_position";
+import JobPositionMobile from "../components/content/job_position_mobile";
+import JobPositionDesktop from "../components/content/job_position_desktop";
 import SearchBox from "../components/content/search_box";
 import LoadingSpinner from "../components/content/loading_spinner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -184,7 +185,18 @@ export default function Jobs() {
                                             sector: vaga.setor,
                                             status: vaga.status
                                         }
-                                        return <JobPosition key={vaga.id} jobData={jobDataProps} />
+                                        return (
+                                            <div key={vaga.id} className="w-full">
+                                                {/* Desktop */}
+                                                <div className="hidden md:block">
+                                                    <JobPositionDesktop jobData={jobDataProps} />
+                                                </div>
+                                                {/* Mobile */}
+                                                <div className="md:hidden">
+                                                    <JobPositionMobile jobData={jobDataProps} />
+                                                </div>
+                                            </div>
+                                        )
                                     })
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-16 px-8">
