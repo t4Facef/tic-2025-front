@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Star, Clock, CreditCard, Users, Briefcase } from "lucide-react";
 import JobModalDesktop from "./job_modal_desktop";
+import MarkdownRenderer from "./markdown_renderer";
 import { API_BASE_URL } from "../../config/api";
 import { JobData } from "../../types/vagas/vaga";
 
@@ -104,14 +105,17 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
 
           {/* Descrição compacta */}
           <div>
-            <p className="text-gray-700 text-sm leading-relaxed overflow-hidden" 
-               style={{
-                 display: '-webkit-box',
-                 WebkitLineClamp: 2,
-                 WebkitBoxOrient: 'vertical'
-               }}>
-              {jobData.description.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1')}
-            </p>
+            <div className="text-gray-700 text-sm leading-relaxed overflow-hidden" 
+                 style={{
+                   display: '-webkit-box',
+                   WebkitLineClamp: 2,
+                   WebkitBoxOrient: 'vertical'
+                 }}>
+              <MarkdownRenderer 
+                content={jobData.description} 
+                className="text-sm leading-relaxed"
+              />
+            </div>
           </div>
           
           {/* Tags compactas */}

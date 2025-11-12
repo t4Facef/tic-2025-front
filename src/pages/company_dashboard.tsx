@@ -129,28 +129,28 @@ export default function CompanyDashboard() {
                         </div>
                     </div>
                     
-                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-green-500">
+                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue2">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium">Candidaturas Recebidas</p>
                                 <p className="text-3xl font-bold text-gray-900">{statisticsData?.candidaturasHoje || 0}</p>
-                                <p className="text-green-600 text-sm">Recebidas hoje</p>
+                                <p className="text-blue2 text-sm">Recebidas hoje</p>
                             </div>
-                            <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center shadow-md">
-                                <Users className="h-6 w-6 text-green-600" />
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
+                                <Users className="h-6 w-6 text-blue3" />
                             </div>
                         </div>
                     </div>
                     
-                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-orange-500">
+                    <div className="bg-gray-50 rounded-3xl p-6 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow border-l-4 border-l-blue1">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium">Lei de Cotas</p>
                                 <p className="text-3xl font-bold text-gray-900">{statisticsData?.metaContratacao?.faltam || 0}</p>
-                                <p className="text-orange-600 text-sm">Meta de contratação</p>
+                                <p className="text-blue1 text-sm">Meta de contratação</p>
                             </div>
-                            <div className="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center shadow-md">
-                                <TrendingUp className="h-6 w-6 text-orange-600" />
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
+                                <TrendingUp className="h-6 w-6 text-blue3" />
                             </div>
                         </div>
                     </div>

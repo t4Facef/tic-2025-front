@@ -8,6 +8,7 @@ import JobPositionDesktop from "../components/content/job_position_desktop";
 import NotFoundScreen from "../components/content/not_found_screen";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
+import { BarChart3, Calendar, Clock } from "lucide-react";
 
 interface Statistics {
     candidaturasNesteMes: number
@@ -153,7 +154,7 @@ export default function CandidateDashboard() {
                                     <p className="text-blue3 text-sm">Candidaturas</p>
                                 </div>
                                 <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
-                                    <span className="text-2xl">📊</span>
+                                    <BarChart3 className="h-6 w-6 text-blue3" />
                                 </div>
                             </div>
                         </div>
@@ -166,7 +167,7 @@ export default function CandidateDashboard() {
                                     <p className="text-blue2 text-sm">Candidaturas</p>
                                 </div>
                                 <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
-                                    <span className="text-2xl">📅</span>
+                                    <Calendar className="h-6 w-6 text-blue3" />
                                 </div>
                             </div>
                         </div>
@@ -179,7 +180,7 @@ export default function CandidateDashboard() {
                                     <p className="text-blue1 text-sm">Processos</p>
                                 </div>
                                 <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
-                                    <span className="text-2xl">⏳</span>
+                                    <Clock className="h-6 w-6 text-blue3" />
                                 </div>
                             </div>
                         </div>
@@ -198,8 +199,8 @@ export default function CandidateDashboard() {
                     {/* Applied Jobs Section */}
                     <div className="mb-12">
                         <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                                <span className="text-xl">💼</span>
+                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center shadow-md">
+                                <BarChart3 className="h-6 w-6 text-blue3" />
                             </div>
                             <h2 className="text-3xl font-bold text-slate-900">Suas Candidaturas</h2>
                         </div>

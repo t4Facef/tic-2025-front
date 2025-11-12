@@ -10,6 +10,7 @@ import {
   Timer,
   Building2
 } from "lucide-react";
+import MarkdownRenderer from "./markdown_renderer";
 import { API_BASE_URL } from "../../config/api";
 import { JobData } from "../../types/vagas/vaga";
 import { useAuth } from "../../hooks/useAuth";
@@ -304,9 +305,10 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
                   Descrição da Vaga
                 </h3>
                 <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {jobData.description.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1')}
-                  </p>
+                  <MarkdownRenderer 
+                    content={jobData.description} 
+                    className="text-gray-700 leading-relaxed"
+                  />
                 </div>
               </div>
 

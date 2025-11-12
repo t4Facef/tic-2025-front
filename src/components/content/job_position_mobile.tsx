@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Star, Clock, CreditCard, Users } from "lucide-react";
 import JobModalMobile from "./job_modal_mobile";
+import MarkdownRenderer from "./markdown_renderer";
 import { API_BASE_URL } from "../../config/api";
 import { JobData } from "../../types/vagas/vaga";
 
@@ -86,7 +87,10 @@ export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
                WebkitLineClamp: 3,
                WebkitBoxOrient: 'vertical'
              }}>
-            {jobData.description.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1')}
+            <MarkdownRenderer 
+              content={jobData.description} 
+              className="text-sm leading-relaxed"
+            />
           </p>
           
           {/* Tags principais */}
