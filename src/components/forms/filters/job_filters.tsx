@@ -93,7 +93,7 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
     }
     
     return (
-        <div className="flex flex-col gap-4 w-full text-sm items-center">
+        <div className="flex flex-col gap-3 w-full text-sm">
             <FilterCamp>
                 <GenericFormField 
                     type="checkbox" 

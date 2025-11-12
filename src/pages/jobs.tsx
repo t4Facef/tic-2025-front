@@ -126,9 +126,12 @@ export default function Jobs() {
     return (
         <div className="flex flex-1">
             <div className="min-w-36 sm:min-w-40 md:min-w-44">
-                <div className="bg-blue1 w-full py-6 flex flex-col items-center px-3">
-                    <p className="text-black px-4 text-center mb-4 font-bold text-lg">Filtros</p>
-                    <div className="flex flex-col gap-4 w-full">
+                <div className="bg-gradient-to-b from-blue1 to-blue-50 w-full py-8 flex flex-col items-center px-4 shadow-lg border-r border-blue2/20">
+                    <div className="mb-6">
+                        <h2 className="text-black text-center font-bold text-xl mb-1">Filtros</h2>
+                        <div className="w-12 h-0.5 bg-blue3 mx-auto rounded-full"></div>
+                    </div>
+                    <div className="flex flex-col gap-3 w-full">
                         <JobFilters 
                             initialValues={filtros}
                             onFiltersChange={(newFilters) => {
@@ -136,15 +139,17 @@ export default function Jobs() {
                                 setCurrentPage(1)
                             }} 
                         />
-                        <button
-                            onClick={() => {
-                                setFiltros({})
-                                setCurrentPage(1)
-                            }}
-                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors text-sm"
-                        >
-                            Limpar Filtros
-                        </button>
+                        <div className="mt-4 pt-4 border-t border-blue2/20">
+                            <button
+                                onClick={() => {
+                                    setFiltros({})
+                                    setCurrentPage(1)
+                                }}
+                                className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                            >
+                                🗑️ Limpar Filtros
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
