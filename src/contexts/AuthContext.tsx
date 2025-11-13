@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
 interface User {
     id: number
@@ -85,4 +85,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             {children}
         </AuthContext.Provider>
     )
+}
+
+// Hook para usar o contexto
+export const useAuth = () => {
+    const context = useContext(AuthContext)
+    if (!context) {
+        throw new Error('useAuth deve ser usado dentro de um AuthProvider')
+    }
+    return context
 }
