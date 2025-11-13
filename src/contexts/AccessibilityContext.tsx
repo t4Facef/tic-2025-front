@@ -44,19 +44,23 @@ export const AccessibilityProvider = ({ children }: AccessibilityProviderProps) 
             filters.push('invert(1)');
         }
 
-        // Color Blindness Filters (suavizados)
+        // Color Blindness Filters (equilibrados - eficazes mas não excessivos)
         switch (settings.colorBlindness) {
             case 'protanopia':
-                filters.push('sepia(0.3) saturate(0.9) hue-rotate(-10deg)');
+                // Protanopia: dificuldade com vermelho - ajustar para tons mais perceptíveis
+                filters.push('sepia(0.4) saturate(0.7) hue-rotate(-20deg) brightness(1.1)');
                 break;
             case 'deuteranopia':
-                filters.push('sepia(0.2) saturate(0.8) hue-rotate(15deg)');
+                // Deuteranopia: dificuldade com verde - melhorar distinção verde/vermelho
+                filters.push('sepia(0.35) saturate(0.75) hue-rotate(25deg) brightness(1.05)');
                 break;
             case 'tritanopia':
-                filters.push('sepia(0.3) saturate(0.85) hue-rotate(90deg)');
+                // Tritanopia: dificuldade com azul - ajustar espectro azul/amarelo
+                filters.push('sepia(0.4) saturate(0.8) hue-rotate(70deg) brightness(1.1)');
                 break;
             case 'achromatopsia':
-                filters.push('grayscale(0.8)');
+                // Acromatopsia: visão apenas em tons de cinza - manter contraste
+                filters.push('grayscale(1) contrast(1.1) brightness(1.05)');
                 break;
         }
         

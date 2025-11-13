@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
+import SkipNavigation from './components/accessibility/skip_navigation';
 import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
@@ -33,6 +34,7 @@ export default function App() {
     <ErrorBoundary>
       <AccessibilityProvider>
         <AuthProvider>
+          <SkipNavigation />
           <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout/>}>

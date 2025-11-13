@@ -54,18 +54,25 @@ export default function AccessibilityButton() {
                 <div 
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50"
                     style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999 }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="accessibility-modal-title"
                 >
                     <div 
                         ref={modalRef}
                         className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+                        role="document"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b">
-                            <h2 className="text-xl font-semibold text-blue3">Configurações de Acessibilidade</h2>
+                            <h2 id="accessibility-modal-title" className="text-xl font-semibold text-blue3">
+                                Configurações de Acessibilidade
+                            </h2>
                             <button
                                 onClick={() => setIsOpen(false)}
                                 className="text-gray-400 hover:text-gray-600 focus:outline-none"
-                                aria-label="Fechar"
+                                aria-label="Fechar modal de acessibilidade"
+                                type="button"
                             >
                                 <X size={24} />
                             </button>
@@ -74,11 +81,11 @@ export default function AccessibilityButton() {
                         {/* Content */}
                         <div className="p-6 space-y-6">
                             {/* Tamanho da Fonte */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-3">
+                            <fieldset>
+                                <legend className="block text-sm font-medium text-gray-700 mb-3">
                                     Tamanho da Fonte
-                                </label>
-                                <div className="grid grid-cols-2 gap-2">
+                                </legend>
+                                <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="font-size-legend">
                                     {[
                                         { value: 'small', label: 'Pequena' },
                                         { value: 'normal', label: 'Normal' },
@@ -93,19 +100,22 @@ export default function AccessibilityButton() {
                                                     ? 'bg-blue3 text-white border-blue3'
                                                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                                             }`}
+                                            aria-pressed={settings.fontSize === option.value}
+                                            aria-label={`Definir fonte como ${option.label.toLowerCase()}`}
+                                            type="button"
                                         >
                                             {option.label}
                                         </button>
                                     ))}
                                 </div>
-                            </div>
+                            </fieldset>
 
                             {/* Contraste */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-3">
+                            <fieldset>
+                                <legend className="block text-sm font-medium text-gray-700 mb-3">
                                     Contraste
-                                </label>
-                                <div className="grid grid-cols-3 gap-2">
+                                </legend>
+                                <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="contrast-legend">
                                     {[
                                         { value: 'normal', label: 'Normal' },
                                         { value: 'high', label: 'Alto' },
@@ -119,12 +129,15 @@ export default function AccessibilityButton() {
                                                     ? 'bg-blue3 text-white border-blue3'
                                                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                                             }`}
+                                            aria-pressed={settings.contrast === option.value}
+                                            aria-label={`Definir contraste como ${option.label.toLowerCase()}`}
+                                            type="button"
                                         >
                                             {option.label}
                                         </button>
                                     ))}
                                 </div>
-                            </div>
+                            </fieldset>
 
                             {/* Daltonismo */}
                             <div>
@@ -183,37 +196,55 @@ export default function AccessibilityButton() {
                             {/* Opções de Toggle */}
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-sm font-medium text-gray-700">
+                                    <label htmlFor="animations-toggle" className="text-sm font-medium text-gray-700">
                                         Animações
+                                        <span className="sr-only">
+                                            {settings.animations ? ' ativadas' : ' desativadas'}
+                                        </span>
                                     </label>
                                     <button
+                                        id="animations-toggle"
                                         onClick={() => updateSetting('animations', !settings.animations)}
                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                                             settings.animations ? 'bg-blue3' : 'bg-gray-300'
                                         }`}
+                                        role="switch"
+                                        aria-checked={settings.animations}
+                                        aria-label={`${settings.animations ? 'Desativar' : 'Ativar'} animações`}
+                                        type="button"
                                     >
                                         <span
                                             className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                                                 settings.animations ? 'translate-x-6' : 'translate-x-1'
                                             }`}
+                                            aria-hidden="true"
                                         />
                                     </button>
                                 </div>
 
                                 <div className="flex items-center justify-between">
-                                    <label className="text-sm font-medium text-gray-700">
+                                    <label htmlFor="underline-links-toggle" className="text-sm font-medium text-gray-700">
                                         Sublinhar Links
+                                        <span className="sr-only">
+                                            {settings.underlineLinks ? ' ativado' : ' desativado'}
+                                        </span>
                                     </label>
                                     <button
+                                        id="underline-links-toggle"
                                         onClick={() => updateSetting('underlineLinks', !settings.underlineLinks)}
                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                                             settings.underlineLinks ? 'bg-blue3' : 'bg-gray-300'
                                         }`}
+                                        role="switch"
+                                        aria-checked={settings.underlineLinks}
+                                        aria-label={`${settings.underlineLinks ? 'Desativar' : 'Ativar'} sublinhado em links`}
+                                        type="button"
                                     >
                                         <span
                                             className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                                                 settings.underlineLinks ? 'translate-x-6' : 'translate-x-1'
                                             }`}
+                                            aria-hidden="true"
                                         />
                                     </button>
                                 </div>
@@ -278,8 +309,10 @@ export default function AccessibilityButton() {
                                 <button
                                     onClick={resetSettings}
                                     className="flex items-center gap-2 w-full justify-center p-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded transition-colors"
+                                    aria-label="Restaurar todas as configurações de acessibilidade para os valores padrão"
+                                    type="button"
                                 >
-                                    <RotateCcw size={16} />
+                                    <RotateCcw size={16} aria-hidden="true" />
                                     Restaurar Padrões
                                 </button>
                             </div>
