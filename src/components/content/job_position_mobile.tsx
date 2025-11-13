@@ -81,7 +81,7 @@ export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
           </div>
           
           {/* Descrição */}
-          <p className="text-gray-700 text-sm leading-relaxed overflow-hidden" 
+          <div className="text-gray-700 text-sm leading-relaxed overflow-hidden" 
              style={{
                display: '-webkit-box',
                WebkitLineClamp: 3,
@@ -91,7 +91,7 @@ export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
               content={jobData.description} 
               className="text-sm leading-relaxed"
             />
-          </p>
+          </div>
           
           {/* Tags principais */}
           <div className="flex flex-wrap gap-1.5">

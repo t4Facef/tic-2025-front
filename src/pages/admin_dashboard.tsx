@@ -3,6 +3,8 @@ import { useAuth } from "../hooks/useAuth";
 import NotFoundScreen from "../components/content/not_found_screen";
 import CreateAdminForm from "../components/admin/create_admin_form";
 import SmartAccessibilityInput from "../components/admin/smart_accessibility_input";
+import SmartBarreiraInput from "../components/admin/smart_barreira_input";
+import SmartDeleteConfirmation from "../components/admin/smart_delete_confirmation";
 import { API_BASE_URL } from "../config/api";
 import { api } from "../services/api"; // Serviço de API com autenticação
 import { 
@@ -53,6 +55,21 @@ export default function AdminDashboard() {
     const [editingItem, setEditingItem] = useState<EntityData | null>(null);
     const [editingName, setEditingName] = useState('');
     
+    // Delete confirmation state
+    const [deleteConfirmation, setDeleteConfirmation] = useState<{
+        isOpen: boolean;
+        entityType: string;
+        entityId: number;
+        entityName: string;
+        onConfirm: () => void;
+    }>({
+        isOpen: false,
+        entityType: '',
+        entityId: 0,
+        entityName: '',
+        onConfirm: () => {}
+    });
+    
     // Statistics
     const [totalStats, setTotalStats] = useState({
         tipos: 0,
@@ -62,7 +79,7 @@ export default function AdminDashboard() {
     });
 
     // Navigation functions
-    const navigateTo = (view: ViewMode, parent?: EntityData) => {
+    const navigateTo = (view: ViewMode, parent?: EntityData, grandParent?: EntityData) => {
         setCurrentView(view);
         setSelectedParent(parent || null);
         setShowAddForm(false);
@@ -70,11 +87,23 @@ export default function AdminDashboard() {
         setNewItemName('');
         setEditingName('');
 
-        // Update breadcrumb
+        // Update breadcrumb based on view hierarchy
         const newBreadcrumb: EntityData[] = [];
-        if (parent) {
-            newBreadcrumb.push(parent);
+        
+        switch (view) {
+            case 'subtipos':
+                if (parent) newBreadcrumb.push(parent);
+                break;
+            case 'barreiras':
+                if (grandParent) newBreadcrumb.push(grandParent);
+                if (parent) newBreadcrumb.push(parent);
+                break;
+            case 'acessibilidades':
+                if (grandParent) newBreadcrumb.push(grandParent);
+                if (parent) newBreadcrumb.push(parent);
+                break;
         }
+        
         setBreadcrumb(newBreadcrumb);
     };
 
@@ -320,19 +349,40 @@ export default function AdminDashboard() {
     };
 
     const handleDelete = async (item: EntityData) => {
-        if (!confirm(`Tem certeza que deseja excluir "${item.nome}"?`)) return;
+        // Open smart delete confirmation
+        const getEntityType = (viewMode: string) => {
+            switch (viewMode) {
+                case 'tipos': return 'tipo';
+                case 'subtipos': return 'subtipo';
+                case 'barreiras': return 'barreira';
+                case 'acessibilidades': return 'acessibilidade';
+                default: return viewMode;
+            }
+        };
 
+        setDeleteConfirmation({
+            isOpen: true,
+            entityType: getEntityType(currentView),
+            entityId: item.id,
+            entityName: item.nome,
+            onConfirm: () => performDelete(item)
+        });
+    };
+
+    const performDelete = async (item: EntityData) => {
         try {
             let endpoint = '';
+            const useCascade = ['tipos', 'subtipos', 'barreiras'].includes(currentView);
+            
             switch (currentView) {
                 case 'tipos':
-                    endpoint = `/api/tipos/${item.id}`;
+                    endpoint = useCascade ? `/api/tipos/${item.id}/cascade` : `/api/tipos/${item.id}`;
                     break;
                 case 'subtipos':
-                    endpoint = `/api/subtipos/${item.id}`;
+                    endpoint = useCascade ? `/api/subtipos/${item.id}/cascade` : `/api/subtipos/${item.id}`;
                     break;
                 case 'barreiras':
-                    endpoint = `/api/barreiras/${item.id}`;
+                    endpoint = useCascade ? `/api/barreiras/${item.id}/cascade` : `/api/barreiras/${item.id}`;
                     break;
                 case 'acessibilidades':
                     endpoint = `/api/acessibilidades/${item.id}`;
@@ -345,8 +395,14 @@ export default function AdminDashboard() {
             });
 
             if (response.ok) {
+                const result = await response.json();
                 refreshCurrentView();
-                alert('Item excluído com sucesso!');
+                
+                if (useCascade && result.summary) {
+                    alert(`Sucesso!\n${result.summary}`);
+                } else {
+                    alert('Item excluído com sucesso!');
+                }
             } else {
                 const errorData = await response.text();
                 console.error('Erro ao excluir item:', errorData);
@@ -396,9 +452,9 @@ export default function AdminDashboard() {
     const getCurrentTitle = () => {
         switch (currentView) {
             case 'tipos': return 'Tipos de Deficiência';
-            case 'subtipos': return `Subtipos de ${selectedParent?.nome}`;
-            case 'barreiras': return `Barreiras de ${selectedParent?.nome}`;
-            case 'acessibilidades': return `Acessibilidades de ${selectedParent?.nome}`;
+            case 'subtipos': return selectedParent ? `Subtipos de ${selectedParent.nome}` : 'Subtipos';
+            case 'barreiras': return selectedParent ? `Barreiras de ${selectedParent.nome}` : 'Barreiras';
+            case 'acessibilidades': return selectedParent ? `Acessibilidades de ${selectedParent.nome}` : 'Acessibilidades';
             case 'admin': return 'Gerenciar Administradores';
             default: return 'Painel Administrativo';
         }
@@ -442,84 +498,87 @@ export default function AdminDashboard() {
                                         Início
                                     </button>
                                     
-                                    {currentView === 'tipos' && (
-                                        <>
-                                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                            <span className="font-medium text-gray-800">Tipos de Deficiência</span>
-                                        </>
-                                    )}
-                                    
-                                    {currentView === 'subtipos' && (
+                    {currentView === 'tipos' && (
+                        <>
+                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                            <span className="font-medium text-gray-800">Tipos de Deficiência</span>
+                        </>
+                    )}                    {currentView === 'subtipos' && (
+                        <>
+                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                            <button 
+                                onClick={() => {
+                                    navigateTo('tipos');
+                                    fetchTipos();
+                                }}
+                                className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
+                            >
+                                Tipos
+                            </button>
+                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                            <span className="font-medium text-gray-800">{selectedParent ? selectedParent.nome : 'Subtipos'}</span>
+                        </>
+                    )}                    {currentView === 'barreiras' && (
+                        <>
+                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                            <button 
+                                onClick={() => {
+                                    navigateTo('tipos');
+                                    fetchTipos();
+                                }}
+                                className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
+                            >
+                                Tipos
+                            </button>
+                            {breadcrumb[0] && (
+                                <>
+                                    <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                                    <button 
+                                        onClick={() => {
+                                            navigateTo('subtipos', breadcrumb[0]);
+                                            fetchSubtipos(breadcrumb[0].id);
+                                        }}
+                                        className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
+                                    >
+                                        Subtipos
+                                    </button>
+                                </>
+                            )}
+                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
+                            <span className="font-medium text-gray-800">{selectedParent ? selectedParent.nome : 'Barreiras'}</span>
+                        </>
+                    )}                                    {currentView === 'acessibilidades' && (
                                         <>
                                             <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
                                             <button 
-                                                onClick={() => navigateTo('tipos')}
+                                                onClick={() => {
+                                                    navigateTo('tipos');
+                                                    fetchTipos();
+                                                }}
                                                 className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
                                             >
                                                 Tipos
                                             </button>
-                                            {selectedParent && (
+                                            {breadcrumb[0] && (
                                                 <>
                                                     <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <span className="font-medium text-gray-800 truncate max-w-32 lg:max-w-none">{selectedParent.nome}</span>
+                                                    <button 
+                                                        onClick={() => {
+                                                            navigateTo('subtipos', breadcrumb[0]);
+                                                            fetchSubtipos(breadcrumb[0].id);
+                                                        }}
+                                                        className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
+                                                    >
+                                                        Subtipos
+                                                    </button>
                                                 </>
                                             )}
-                                        </>
-                                    )}
-                                    
-                                    {currentView === 'barreiras' && (
-                                        <>
-                                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                            <button 
-                                                onClick={() => navigateTo('tipos')}
-                                                className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
-                                            >
-                                                Tipos
-                                            </button>
                                             {selectedParent && (
                                                 <>
                                                     <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
                                                     <button 
                                                         onClick={() => {
-                                                            navigateTo('subtipos', selectedParent);
-                                                            fetchSubtipos(selectedParent.id);
-                                                        }}
-                                                        className="text-blue-600 hover:text-blue-800 truncate max-w-24 lg:max-w-none"
-                                                    >
-                                                        {selectedParent.nome}
-                                                    </button>
-                                                    <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <span className="font-medium text-gray-800">Barreiras</span>
-                                                </>
-                                            )}
-                                        </>
-                                    )}
-                                    
-                                    {currentView === 'acessibilidades' && (
-                                        <>
-                                            <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                            <button 
-                                                onClick={() => navigateTo('tipos')}
-                                                className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
-                                            >
-                                                Tipos
-                                            </button>
-                                            {selectedParent && (
-                                                <>
-                                                    <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <button 
-                                                        onClick={() => {
-                                                            navigateTo('subtipos', selectedParent);
-                                                            fetchSubtipos(selectedParent.id);
-                                                        }}
-                                                        className="text-blue-600 hover:text-blue-800 truncate max-w-24 lg:max-w-none"
-                                                    >
-                                                        {selectedParent.nome}
-                                                    </button>
-                                                    <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <button 
-                                                        onClick={() => {
-                                                            navigateTo('barreiras', selectedParent);
+                                                            navigateTo('barreiras', selectedParent, breadcrumb[0]);
                                                             fetchBarreiras(selectedParent.id);
                                                         }}
                                                         className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
@@ -527,7 +586,7 @@ export default function AdminDashboard() {
                                                         Barreiras
                                                     </button>
                                                     <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <span className="font-medium text-gray-800">Acessibilidades</span>
+                                                    <span className="font-medium text-gray-800">{selectedParent ? selectedParent.nome : 'Acessibilidades'}</span>
                                                 </>
                                             )}
                                         </>
@@ -539,7 +598,7 @@ export default function AdminDashboard() {
                         {currentView !== 'overview' && currentView !== 'admin' && (
                             <button
                                 onClick={() => setShowAddForm(!showAddForm)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 lg:px-4 lg:py-2 rounded-lg flex items-center space-x-1 lg:space-x-2 transition-colors text-sm lg:text-base"
+                                className="bg-blue3 hover:bg-blue3H text-white px-3 py-2 lg:px-4 lg:py-2 rounded-lg flex items-center space-x-1 lg:space-x-2 transition-colors text-sm lg:text-base"
                             >
                                 <Plus className="h-4 w-4" />
                                 <span className="hidden sm:inline">Adicionar</span>
@@ -692,6 +751,39 @@ export default function AdminDashboard() {
                                 }}
                                 placeholder="Digite para buscar acessibilidade existente ou criar nova..."
                             />
+                        ) : currentView === 'barreiras' && selectedParent ? (
+                            <SmartBarreiraInput 
+                                onAdd={async (descricao, isNew) => {
+                                    try {
+                                        // Fazer a vinculação inteligente diretamente aqui
+                                        const response = await fetch(`${API_BASE_URL}/api/barreiras/vincular-subtipo-inteligente`, {
+                                            method: 'POST',
+                                            headers: getAuthHeaders(),
+                                            body: JSON.stringify({ 
+                                                subtipoId: selectedParent.id, 
+                                                descricao: descricao 
+                                            })
+                                        });
+
+                                        if (response.ok) {
+                                            refreshCurrentView();
+                                            if (isNew) {
+                                                alert(`Nova barreira "${descricao}" criada e vinculada com sucesso!`);
+                                            } else {
+                                                alert(`Barreira "${descricao}" vinculada com sucesso!`);
+                                            }
+                                        } else {
+                                            const errorData = await response.text();
+                                            console.error('Erro ao vincular:', errorData);
+                                            alert('Erro ao vincular barreira.');
+                                        }
+                                    } catch (error) {
+                                        console.error('Erro ao vincular barreira:', error);
+                                        alert('Erro ao vincular barreira.');
+                                    }
+                                }}
+                                placeholder="Digite para buscar barreira existente ou criar nova..."
+                            />
                         ) : (
                             <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
                                 <input
@@ -773,7 +865,14 @@ export default function AdminDashboard() {
                                                 onClick={() => {
                                                     const nextView = getNextView(currentView);
                                                     if (nextView) {
-                                                        navigateTo(nextView, item);
+                                                        if (currentView === 'tipos') {
+                                                            navigateTo(nextView, item);
+                                                        } else if (currentView === 'subtipos') {
+                                                            navigateTo(nextView, item, breadcrumb[0]);
+                                                        } else if (currentView === 'barreiras') {
+                                                            navigateTo(nextView, item, breadcrumb[0]);
+                                                        }
+                                                        
                                                         switch (nextView) {
                                                             case 'subtipos':
                                                                 fetchSubtipos(item.id);
@@ -842,6 +941,16 @@ export default function AdminDashboard() {
                     </div>
                 )}
             </div>
+            
+            {/* Smart Delete Confirmation Modal */}
+            <SmartDeleteConfirmation
+                isOpen={deleteConfirmation.isOpen}
+                onClose={() => setDeleteConfirmation({ ...deleteConfirmation, isOpen: false })}
+                onConfirm={deleteConfirmation.onConfirm}
+                entityType={deleteConfirmation.entityType}
+                entityId={deleteConfirmation.entityId}
+                entityName={deleteConfirmation.entityName}
+            />
         </div>
     );
 }
