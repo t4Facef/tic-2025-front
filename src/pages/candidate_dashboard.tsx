@@ -261,15 +261,18 @@ export default function CandidateDashboard() {
                     {/* Recommended Jobs Section */}
                     <div>
                         <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 bg-blue1 rounded-2xl flex items-center justify-center">
-                                <span className="text-xl">✨</span>
-                            </div>
+ 
                             <h2 className="text-3xl font-bold text-slate-900">Recomendadas para Você</h2>
                         </div>
                         {(recommendedJobs && recommendedJobs.length > 0) ? (
-                            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
-                                <div className="bg-blue1 px-6 py-4 border-b border-slate-200">
-                                    <p className="text-blue3 font-medium">Vagas selecionadas especialmente para você</p>
+                            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-5 border-b border-slate-200">
+                                    <div className="flex items-center gap-3">
+                                        <div>
+                                            <p className="text-slate-800 font-semibold text-lg">Vagas Especiais para Você</p>
+                                            <p className="text-slate-600 text-sm">Selecionadas com base no seu perfil</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="p-6 space-y-6">
                                     {recommendedJobs.slice(0, 3).map(vaga => {
@@ -297,15 +300,17 @@ export default function CandidateDashboard() {
                                         return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
                                     })}
                                 </div>
-                                <div className="bg-blue1 px-6 py-4 border-t border-slate-200">
-                                    <GenericBlueButton color={3} link="/jobs" size="mdy">Ver mais vagas</GenericBlueButton>
+                                <div className="bg-gradient-to-r from-slate-50 to-gray-50 px-6 py-5 border-t border-slate-200">
+                                    <div className="flex justify-center">
+                                        <GenericBlueButton color={3} link="/jobs" size="lg">Explorar Mais Vagas</GenericBlueButton>
+                                    </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="bg-white rounded-3xl border-2 border-dashed border-slate-300 p-16">
+                            <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 rounded-3xl border border-indigo-200 p-16 shadow-sm">
                                 <div className="text-center space-y-6">
-                                    <div className="w-24 h-24 bg-blue1 rounded-full flex items-center justify-center mx-auto">
-                                        <span className="text-4xl">🔍</span>
+                                    <div className="w-24 h-24 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                                        <span className="text-4xl text-white font-bold">?</span>
                                     </div>
                                     <div className="space-y-4">
                                         <h3 className="text-2xl font-bold text-slate-900">Analisando seu perfil...</h3>

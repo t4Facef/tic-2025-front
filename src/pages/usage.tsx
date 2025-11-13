@@ -544,35 +544,6 @@ export default function Usage(){
                                     </div>
                                 </div>
                                 
-                                <div className="bg-white border rounded-lg p-6">
-                                    <h4 className="font-semibold mb-4">Canais de Atendimento:</h4>
-                                    <div className="space-y-4">
-                                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                                            <div className="w-10 h-10 bg-blue3 rounded-full flex items-center justify-center text-white font-semibold">💬</div>
-                                            <div>
-                                                <h5 className="font-medium">Chat Online</h5>
-                                                <p className="text-sm text-gray-600">Em breve - Suporte online para dúvidas rápidas</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">📧</div>
-                                            <div>
-                                                <h5 className="font-medium">Email</h5>
-                                                <p className="text-sm text-gray-600">Em breve - Suporte por email</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                                            <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">📞</div>
-                                            <div>
-                                                <h5 className="font-medium">Telefone</h5>
-                                                <p className="text-sm text-gray-600">Em breve - Suporte telefônico</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                                 <div className="bg-blue1 rounded-lg p-6">
                                     <h4 className="font-semibold text-blue3 mb-3">💡 Dica Importante</h4>
                                     <p className="text-gray-700">

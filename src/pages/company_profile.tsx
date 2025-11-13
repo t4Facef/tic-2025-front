@@ -23,6 +23,14 @@ interface editCompanyProfile {
     numFunc: number | null
     numFuncPcd: number | null
     site: string
+    // Campos de endereço
+    cep: string
+    estado: string
+    cidade: string
+    bairro: string
+    rua: string
+    numero: string
+    complemento: string
 }
 
 interface Acessibilidade {
@@ -54,7 +62,15 @@ export default function CompanyProfile() {
         anoFundacao: null,
         numFunc: null,
         numFuncPcd: null,
-        site: ""
+        site: "",
+        // Campos de endereço
+        cep: "",
+        estado: "",
+        cidade: "",
+        bairro: "",
+        rua: "",
+        numero: "",
+        complemento: ""
     })
 
     const getProfileInformation = useCallback(async () => {
@@ -130,7 +146,15 @@ export default function CompanyProfile() {
                 anoFundacao: companieInformation.anoFundacao || null,
                 numFunc: companieInformation.numFunc || null,
                 numFuncPcd: companieInformation.numFuncPcd || null,
-                site: companieInformation.site || ''
+                site: companieInformation.site || '',
+                // Campos de endereço
+                cep: companieInformation.endereco?.cep || '',
+                estado: companieInformation.endereco?.estado || '',
+                cidade: companieInformation.endereco?.cidade || '',
+                bairro: companieInformation.endereco?.bairro || '',
+                rua: companieInformation.endereco?.rua || '',
+                numero: companieInformation.endereco?.numero || '',
+                complemento: companieInformation.endereco?.complemento || ''
             })
         }
     }, [companieInformation])
@@ -171,6 +195,16 @@ export default function CompanyProfile() {
                     numFunc: editForm.numFunc || undefined,
                     numFuncPcd: editForm.numFuncPcd || undefined,
                     site: editForm.site,
+                    endereco: {
+                        id: prev.endereco?.id || 0,
+                        cep: editForm.cep,
+                        estado: editForm.estado,
+                        cidade: editForm.cidade,
+                        bairro: editForm.bairro,
+                        rua: editForm.rua,
+                        numero: editForm.numero,
+                        complemento: editForm.complemento
+                    },
                     empresaAcessibilidade: editForm.acessibilidades.map(nome => {
                         const acess = acessibilidades.find(a => a.nome === nome)
                         return { acessibilidade: { nome, id: acess?.id || 0 } }
@@ -192,7 +226,17 @@ export default function CompanyProfile() {
                 numFunc: editForm.numFunc,
                 numFuncPcd: editForm.numFuncPcd,
                 site: editForm.site,
-                acessibilidades: acessibilidadeIds
+                acessibilidades: acessibilidadeIds,
+                // Dados de endereço
+                endereco: {
+                    cep: editForm.cep,
+                    estado: editForm.estado,
+                    cidade: editForm.cidade,
+                    bairro: editForm.bairro,
+                    rua: editForm.rua,
+                    numero: editForm.numero,
+                    complemento: editForm.complemento
+                }
             }
 
             const res = await fetch(`${API_BASE_URL}/api/empresa/${user?.id}`, {
@@ -228,7 +272,15 @@ export default function CompanyProfile() {
             anoFundacao: companieInformation.anoFundacao || null,
             numFunc: companieInformation.numFunc || null,
             numFuncPcd: companieInformation.numFuncPcd || null,
-            site: companieInformation.site || ''
+            site: companieInformation.site || '',
+            // Campos de endereço
+            cep: companieInformation.endereco?.cep || '',
+            estado: companieInformation.endereco?.estado || '',
+            cidade: companieInformation.endereco?.cidade || '',
+            bairro: companieInformation.endereco?.bairro || '',
+            rua: companieInformation.endereco?.rua || '',
+            numero: companieInformation.endereco?.numero || '',
+            complemento: companieInformation.endereco?.complemento || ''
         })
     }
 
@@ -496,14 +548,6 @@ export default function CompanyProfile() {
                                 </div>
                             ) : (
                                 <div className="bg-white p-6 rounded-2xl border border-gray-300 shadow-sm space-y-6">
-                                    <GenericFormField 
-                                        id="edit_employees" 
-                                        type="number" 
-                                        value={editForm.numFunc?.toString() || ''} 
-                                        onChange={(e) => setEditForm(prev => ({ ...prev, numFunc: parseInt(e.target.value) || null }))}
-                                    >
-                                        Funcionários
-                                    </GenericFormField>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <GenericFormField 
                                             id="edit_founded" 
@@ -514,16 +558,6 @@ export default function CompanyProfile() {
                                             Ano de fundação
                                         </GenericFormField>
                                         <GenericFormField 
-                                            id="edit_pcd_employees" 
-                                            type="number" 
-                                            value={editForm.numFuncPcd?.toString() || ''} 
-                                            onChange={(e) => setEditForm(prev => ({ ...prev, numFuncPcd: parseInt(e.target.value) || null }))}
-                                        >
-                                            Funcionários PCDs
-                                        </GenericFormField>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <GenericFormField 
                                             id="edit_area" 
                                             type="select" 
                                             options={SECTORS} 
@@ -532,14 +566,96 @@ export default function CompanyProfile() {
                                         >
                                             Área de atuação
                                         </GenericFormField>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <GenericFormField 
-                                            id="edit_website" 
-                                            value={editForm.site} 
-                                            onChange={(e) => setEditForm(prev => ({ ...prev, site: e.target.value }))}
+                                            id="edit_employees" 
+                                            type="number" 
+                                            value={editForm.numFunc?.toString() || ''} 
+                                            onChange={(e) => setEditForm(prev => ({ ...prev, numFunc: parseInt(e.target.value) || null }))}
                                         >
-                                            Site
+                                            Funcionários
+                                        </GenericFormField>
+                                        <GenericFormField 
+                                            id="edit_pcd_employees" 
+                                            type="number" 
+                                            value={editForm.numFuncPcd?.toString() || ''} 
+                                            onChange={(e) => setEditForm(prev => ({ ...prev, numFuncPcd: parseInt(e.target.value) || null }))}
+                                        >
+                                            Funcionários PCDs
                                         </GenericFormField>
                                     </div>
+                                    <GenericFormField 
+                                        id="edit_website" 
+                                        value={editForm.site} 
+                                        onChange={(e) => setEditForm(prev => ({ ...prev, site: e.target.value }))}
+                                    >
+                                        Site
+                                    </GenericFormField>
+                                    
+                                    {/* Campos de Endereço */}
+                                    <div className="border-t pt-6">
+                                        <h3 className="text-lg font-semibold text-blue3 mb-4">Endereço</h3>
+                                        <div className="space-y-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                                <GenericFormField 
+                                                    id="edit_cep" 
+                                                    value={editForm.cep} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, cep: e.target.value }))}
+                                                    placeholder="00000-000"
+                                                >
+                                                    CEP
+                                                </GenericFormField>
+                                                <GenericFormField 
+                                                    id="edit_estado" 
+                                                    value={editForm.estado} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, estado: e.target.value }))}
+                                                >
+                                                    Estado
+                                                </GenericFormField>
+                                                <GenericFormField 
+                                                    id="edit_cidade" 
+                                                    value={editForm.cidade} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, cidade: e.target.value }))}
+                                                >
+                                                    Cidade
+                                                </GenericFormField>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <GenericFormField 
+                                                    id="edit_bairro" 
+                                                    value={editForm.bairro} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, bairro: e.target.value }))}
+                                                >
+                                                    Bairro
+                                                </GenericFormField>
+                                                <GenericFormField 
+                                                    id="edit_rua" 
+                                                    value={editForm.rua} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, rua: e.target.value }))}
+                                                >
+                                                    Rua
+                                                </GenericFormField>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <GenericFormField 
+                                                    id="edit_numero" 
+                                                    value={editForm.numero} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, numero: e.target.value }))}
+                                                >
+                                                    Número
+                                                </GenericFormField>
+                                                <GenericFormField 
+                                                    id="edit_complemento" 
+                                                    value={editForm.complemento} 
+                                                    onChange={(e) => setEditForm(prev => ({ ...prev, complemento: e.target.value }))}
+                                                >
+                                                    Complemento (opcional)
+                                                </GenericFormField>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div className="flex justify-end gap-2">
                                         <GenericBlueButton color={3} size="sm" onClick={() => { handleCancelEdit(); setEditFields(prev => ({...prev, isEditingInfoList: false})); }}>
                                             Cancelar
