@@ -147,7 +147,7 @@ export default function Jobs() {
                                 }}
                                 className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-[1.02]"
                             >
-                                🗑️ Limpar Filtros
+                                Limpar Filtros
                             </button>
                         </div>
                     </div>

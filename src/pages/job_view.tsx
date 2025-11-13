@@ -301,7 +301,7 @@ export default function JobView() {
                                 idEmpresa: jobData.empresaId,
                                 title: jobData.titulo,
                                 company: jobData.empresa.razaoSocial,
-                                companyLogo: jobData.empresa.nomeFantasia || "",
+                                companyLogo: `${API_BASE_URL}/api/arquivos/empresa/${jobData.empresaId}/foto/view`,
                                 location: jobData.localizacao,
                                 description: jobData.descricao,
                                 skillsTags: jobData.habilidades,

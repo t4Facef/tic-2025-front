@@ -28,6 +28,11 @@ interface sendJobData {
   setor: string
 }
 
+interface EmpresaAcessibilidade {
+  id: number;
+  nome: string;
+}
+
 export default function JobForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -71,6 +76,29 @@ export default function JobForm() {
         setOptions(opt);
       } catch (error) {
         console.error("Erro ao buscar as acessibilidades:", error);
+      }
+    };
+
+    const fetchEmpresaAcessibilidades = async () => {
+      // Buscar acessibilidades da empresa para pré-carregar no formulário (apenas para novas vagas)
+      if (!isEditing && user?.id) {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/acessibilidades/empresa/${user.id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (res.ok) {
+            const empresaAcessibilidades: EmpresaAcessibilidade[] = await res.json();
+            const acessibilidadeNames = empresaAcessibilidades.map((acc: EmpresaAcessibilidade) => acc.nome);
+            setAcessibilityTags(acessibilidadeNames);
+            setDataForm(prev => ({ ...prev, supportTags: acessibilidadeNames }));
+          }
+        } catch (error) {
+          console.error("Erro ao buscar acessibilidades da empresa:", error);
+        }
       }
     };
 
@@ -125,6 +153,7 @@ export default function JobForm() {
     }
 
     fetchAcessibilidades()
+    fetchEmpresaAcessibilidades()
     fetchJobData()
   }, [isEditing, id, token, user, navigate])
 
