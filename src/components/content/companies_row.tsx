@@ -113,18 +113,18 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
     }
   }, [currentIndex, companyIds]);
 
-  // Don't render if no companies
-  if (!companyIds || companyIds.length === 0) {
-    return null;
-  }
+  // Show structure even when no companies
+  const hasCompanies = companyIds && companyIds.length > 0;
+  
+  // Create infinite array or placeholder array
+  const infiniteIds = hasCompanies 
+    ? [...companyIds, ...companyIds, ...companyIds]
+    : [1, 2, 3, 4, 5]; // Placeholder IDs for empty state
 
-  // Create infinite array
-  const infiniteIds = [...companyIds, ...companyIds, ...companyIds];
   const totalItems = infiniteIds.length;
-
   const itemWidth = `${100 / totalItems}%`;
   const containerWidth = `${(totalItems / visibleCount) * 100}%`;
-  const translateX = `translateX(-${(currentIndex * 100) / totalItems}%)`;
+  const translateX = hasCompanies ? `translateX(-${(currentIndex * 100) / totalItems}%)` : 'translateX(0%)';
 
   return (
     <section className="relative bg-gradient-to-r from-blue2 via-blue3 to-blue2 py-8 lg:py-12 overflow-hidden">
@@ -144,7 +144,10 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
             <Sparkles size={24} className="text-blue1 animate-pulse" />
           </div>
           <p className="text-blue1 text-sm lg:text-base max-w-2xl mx-auto">
-            Organizações comprometidas com a diversidade e inclusão no ambiente de trabalho
+            {hasCompanies 
+              ? "Organizações comprometidas com a diversidade e inclusão no ambiente de trabalho"
+              : "Carregando empresas parceiras..."
+            }
           </p>
         </div>
 
@@ -153,27 +156,35 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
           {/* Left Arrow */}
           <button
             onClick={() => {
-              handleLeft();
-              setIsAutoPlaying(false);
+              if (hasCompanies) {
+                handleLeft();
+                setIsAutoPlaying(false);
+              }
             }}
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => setIsAutoPlaying(true)}
-            className="group p-1.5 sm:p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+            onMouseEnter={() => hasCompanies && setIsAutoPlaying(false)}
+            onMouseLeave={() => hasCompanies && setIsAutoPlaying(true)}
+            className={`group p-1.5 sm:p-3 lg:p-4 rounded-full backdrop-blur-sm border transition-all duration-300 z-10 ${
+              hasCompanies 
+                ? 'bg-white/10 hover:bg-white/20 border-white/20 hover:scale-110 active:scale-95 cursor-pointer'
+                : 'bg-white/5 border-white/10 cursor-not-allowed opacity-50'
+            }`}
           >
-            <ChevronLeft size={16} className="sm:size-6 lg:size-8 text-white group-hover:text-blue1 transition-colors" />
+            <ChevronLeft size={16} className={`sm:size-6 lg:size-8 transition-colors ${
+              hasCompanies ? 'text-white group-hover:text-blue1' : 'text-white/50'
+            }`} />
           </button>
 
           {/* Companies Container */}
           <div 
             className="overflow-hidden flex-1 mx-1 sm:mx-4 lg:mx-8"
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => setIsAutoPlaying(true)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            onMouseEnter={() => hasCompanies && setIsAutoPlaying(false)}
+            onMouseLeave={() => hasCompanies && setIsAutoPlaying(true)}
+            onTouchStart={hasCompanies ? handleTouchStart : undefined}
+            onTouchMove={hasCompanies ? handleTouchMove : undefined}
+            onTouchEnd={hasCompanies ? handleTouchEnd : undefined}
           >
             <div
-              className={`flex ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
+              className={`flex ${hasCompanies && isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
               style={{
                 width: containerWidth,
                 transform: translateX
@@ -181,11 +192,17 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
             >
               {infiniteIds.map((id, index) => (
                 <div
-                  key={`${id}-${index}`}
+                  key={hasCompanies ? `${id}-${index}` : `placeholder-${index}`}
                   style={{ width: itemWidth }}
                   className="flex justify-center px-0.5 sm:px-1 lg:px-2"
                 >
-                  <CompanyImage id={id} />
+                  {hasCompanies ? (
+                    <CompanyImage id={id} />
+                  ) : (
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-white/10 rounded-full border-2 border-white/20 flex items-center justify-center animate-pulse">
+                      <Building2 size={24} className="text-white/50" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -194,14 +211,22 @@ export default function CompaniesRow({ companyIds }: CompaniesRowProps) {
           {/* Right Arrow */}
           <button
             onClick={() => {
-              handleRight();
-              setIsAutoPlaying(false);
+              if (hasCompanies) {
+                handleRight();
+                setIsAutoPlaying(false);
+              }
             }}
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => setIsAutoPlaying(true)}
-            className="group p-1.5 sm:p-3 lg:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-110 active:scale-95 z-10"
+            onMouseEnter={() => hasCompanies && setIsAutoPlaying(false)}
+            onMouseLeave={() => hasCompanies && setIsAutoPlaying(true)}
+            className={`group p-1.5 sm:p-3 lg:p-4 rounded-full backdrop-blur-sm border transition-all duration-300 z-10 ${
+              hasCompanies 
+                ? 'bg-white/10 hover:bg-white/20 border-white/20 hover:scale-110 active:scale-95 cursor-pointer'
+                : 'bg-white/5 border-white/10 cursor-not-allowed opacity-50'
+            }`}
           >
-            <ChevronRight size={16} className="sm:size-6 lg:size-8 text-white group-hover:text-blue1 transition-colors" />
+            <ChevronRight size={16} className={`sm:size-6 lg:size-8 transition-colors ${
+              hasCompanies ? 'text-white group-hover:text-blue1' : 'text-white/50'
+            }`} />
           </button>
         </div>
 
