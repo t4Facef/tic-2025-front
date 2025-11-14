@@ -99,7 +99,8 @@ export default function Register() {
                     numero: allData.number,
                     complemento: allData.complement
                 },
-                subtiposDeficiencia: [Number(allData.necessitySubtype)],
+                subtiposDeficiencia: allData.necessitySubtype.split(',').map(id => Number(id.trim())).filter(id => !isNaN(id) && id > 0),
+                barreiraIds: allData.selectedBarreirasIds || [],
             }
 
             // Adicionar campos obrigatórios
