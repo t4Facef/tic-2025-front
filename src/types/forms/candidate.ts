@@ -40,6 +40,7 @@ export interface CandidateForm3Data {
 export interface CandidateForm4Data {
     necessityType: string;
     necessitySubtype: string;
+    selectedSubtypes: { id: number; nome: string }[]; // Múltiplos subtipos selecionados
     medicalReport: File | null;
     supportNeeds: string[];
     selectedBarreirasIds?: number[]; // Nova propriedade para IDs das barreiras selecionadas

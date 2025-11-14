@@ -170,7 +170,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                         required={required} 
                     />
                     <div className={`${baseClass} bg-white cursor-pointer flex items-center justify-center py-6 text-gray-700 text-lg font-medium hover:bg-gray-50 transition-colors`}>
-                        📁 Clique para selecionar arquivo
+                        Clique para selecionar arquivo
                     </div>
                 </div>
                 {error && <p className="text-red-600 text-sm mt-1">❌ {error}</p>}
