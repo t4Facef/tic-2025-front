@@ -1,4 +1,4 @@
-import { BookOpen, Users, Building, Search, Heart, Shield, Zap } from "lucide-react";
+import { BookOpen, Users, Building, Search, Heart, Shield, Zap, Check, X, Mail, BarChart3, FileText, Sparkles, RotateCcw } from "lucide-react";
 import AnchorListItem from "../components/content/anchor_list_item";
 import TextSection from "../components/content/text_section";
 
@@ -7,7 +7,7 @@ export default function Usage(){
         <div className="min-h-screen bg-gray-50">
             <div className="flex">
                 {/* Sidebar Navigation */}
-                <nav className="w-80 shrink-0 bg-blue3 text-white sticky top-0 h-screen overflow-y-auto">
+                <nav className="hidden lg:block w-80 shrink-0 bg-blue3 text-white sticky top-0 h-screen overflow-y-auto">
                     <div className="p-6">
                         <div className="flex items-center gap-3 mb-8">
                             <BookOpen size={32} />
@@ -39,12 +39,12 @@ export default function Usage(){
                 </nav>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8 flex flex-col items-center">
-                    <div className="max-w-4xl">
+                <div className="flex-1 p-4 md:p-8 flex flex-col items-center">
+                    <div className="max-w-4xl w-full">
                         {/* Header */}
-                        <div className="mb-12">
-                            <h1 className="text-4xl font-bold text-blue3 mb-4">Guia de Utilização do Apojobs</h1>
-                            <p className="text-xl text-gray-600">
+                        <div className="mb-8 md:mb-12">
+                            <h1 className="text-2xl md:text-4xl font-bold text-blue3 mb-4">Guia de Utilização do Apojobs</h1>
+                            <p className="text-lg md:text-xl text-gray-600">
                                 Aprenda a usar todas as funcionalidades da nossa plataforma de inclusão profissional
                             </p>
                         </div>
@@ -387,7 +387,9 @@ export default function Usage(){
                                     <h4 className="font-semibold mb-4">Funcionalidades Disponíveis:</h4>
                                     <div className="space-y-4">
                                         <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">✓</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                                <Check size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Aprovar Candidatos</h5>
                                                 <p className="text-sm text-gray-600">Selecione os candidatos que atendem aos requisitos da vaga</p>
@@ -395,7 +397,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">✗</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                                <X size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Recusar Candidatos</h5>
                                                 <p className="text-sm text-gray-600">Decline candidaturas que não se adequam à posição</p>
@@ -403,7 +407,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-sm font-semibold">📧</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                                <Mail size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Enviar Notificações</h5>
                                                 <p className="text-sm text-gray-600">Comunique-se diretamente com os candidatos aprovados ou recusados</p>
@@ -411,7 +417,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">📊</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                                <BarChart3 size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Exportar Dados</h5>
                                                 <p className="text-sm text-gray-600">Baixe planilhas Excel com dados dos candidatos aprovados</p>
@@ -489,7 +497,9 @@ export default function Usage(){
                                     <h4 className="font-semibold mb-4">Tipos de Notificações:</h4>
                                     <div className="space-y-4">
                                         <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-sm">📝</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                                <FileText size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Novas Candidaturas</h5>
                                                 <p className="text-sm text-gray-600">Seja notificado quando alguém se candidatar às suas vagas</p>
@@ -497,7 +507,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm">✨</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                                <Sparkles size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Novas Vagas</h5>
                                                 <p className="text-sm text-gray-600">Candidatos recebem alertas de vagas compatíveis com seu perfil</p>
@@ -505,7 +517,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm">🔄</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                                <RotateCcw size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Status de Candidatura</h5>
                                                 <p className="text-sm text-gray-600">Atualizações sobre aprovação, recusa ou próximas etapas</p>
@@ -513,7 +527,9 @@ export default function Usage(){
                                         </div>
                                         
                                         <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
-                                            <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm">⚡</div>
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                                <Zap size={16} />
+                                            </div>
                                             <div>
                                                 <h5 className="font-medium">Atualizações da Plataforma</h5>
                                                 <p className="text-sm text-gray-600">Novos recursos, melhorias e comunicados importantes</p>

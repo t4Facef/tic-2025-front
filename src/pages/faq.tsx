@@ -98,20 +98,20 @@ export default function Faq() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-blue3 mb-4">Perguntas Frequentes</h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <div className="text-center mb-8 md:mb-12">
+                    <h1 className="text-2xl md:text-4xl font-bold text-blue3 mb-4">Perguntas Frequentes</h1>
+                    <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                         Encontre respostas para as dúvidas mais comuns sobre nossa plataforma de inclusão profissional
                     </p>
                 </div>
 
                 <div className="flex gap-8">
                     {/* Main Content */}
-                    <div className="flex-1">
+                    <div className="flex-1 w-full">
                         {/* Search and Filters */}
-                        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+                        <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 mb-6 md:mb-8">
                             <div className="relative mb-6">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                 <input
@@ -161,7 +161,7 @@ export default function Faq() {
                     </div>
 
                     {/* Sidebar */}
-                    <aside className="w-80">
+                    <aside className="hidden lg:block w-80">
                         <div className="bg-white rounded-xl shadow-sm p-6 sticky top-6">
                             <h2 className="text-xl font-semibold text-blue3 mb-6">Links Úteis</h2>
                             <div className="space-y-3">
