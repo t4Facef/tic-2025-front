@@ -240,16 +240,16 @@ export default function Register() {
     }
 
     return (
-        <div className="px-52 py-10 space-y-10">
-            <div className="space-y-4">
-                <h1 className="font-medium text-4xl">Vamos dar o primeiro passo</h1>
-                <p>Preencha algumas informações para começarmos</p>
+        <div className="px-4 md:px-20 lg:px-52 py-6 md:py-10 space-y-6 md:space-y-10">
+            <div className="space-y-3 md:space-y-4">
+                <h1 className="font-medium text-2xl md:text-4xl">Vamos dar o primeiro passo</h1>
+                <p className="text-sm md:text-base">Preencha algumas informações para começarmos</p>
             </div>
             <div>
-                <div className="bg-blue3 rounded-t-lg text-white p-3 text-center ">
+                <div className="bg-blue3 rounded-t-lg text-white p-2 md:p-3 text-center ">
                     <StepIndicator step={step} stepsTitles={{ 1: "Dados Pessoais", 2: "Contatos", 3: "Perfil Profissional", 4: "Acessibilidade", 5: "Finalização" }}></StepIndicator>
                 </div>
-                <div className="bg-blue1 rounded-b-lg border-black text-center px-16 py-7 space-y-12 w-full">
+                <div className="bg-blue1 rounded-b-lg border-black text-center px-4 md:px-8 lg:px-16 py-4 md:py-7 space-y-8 md:space-y-12 w-full">
                     {step == 1 && <CandidateForm1 formFunc={handlesForm[1]} formId="step1Form" initialData={formData.formdata1}/>}
                     {step == 2 && <CandidateForm2 formFunc={handlesForm[2]} formId="step2Form" initialData={formData.formdata2}/>}
                     {step == 3 && <CandidateForm3 formFunc={handlesForm[3]} formId="step3Form" initialData={formData.formdata3} fileStorage={{ saveFile, hasFile, getFile }}/>}

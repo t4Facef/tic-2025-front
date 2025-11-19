@@ -101,11 +101,11 @@ export default function ResetPasswordNew() {
 
   if (!tokenValid) {
     return (
-      <div className="mx-96 my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
-        <h2 className="bg-blue3 text-center text-white font-bold text-[1.4rem] p-4 rounded-t-md w-full">
+      <div className="mx-4 md:mx-20 lg:mx-96 my-6 md:my-16 lg:my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
+        <h2 className="bg-blue3 text-center text-white font-bold text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">
           Redefinição de senha
         </h2>
-        <div className="p-8">
+        <div className="p-4 md:p-8">
           <div className="flex flex-row space-x-4 rounded-lg p-4 bg-red-100 text-red-700 border border-red-300">
             <CircleX />
             <div className="font-semibold">
@@ -123,11 +123,11 @@ export default function ResetPasswordNew() {
   }
 
   return (
-    <div className="mx-96 my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
-      <h2 className="bg-blue3 text-center text-white font-bold text-[1.4rem] p-4 rounded-t-md w-full">
+    <div className="mx-4 md:mx-20 lg:mx-96 my-6 md:my-16 lg:my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
+      <h2 className="bg-blue3 text-center text-white font-bold text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">
         Redefinição de senha
       </h2>
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         {message && (
           <section className={`flex flex-row space-x-4 rounded-lg p-4 mb-4 ${
             success 
