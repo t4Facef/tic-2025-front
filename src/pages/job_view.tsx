@@ -286,12 +286,19 @@ export default function JobView() {
     }
 
     return (
-        <div className="flex flex-col items-center p-8 max-w-6xl mx-auto">
-            <div className="space-y-6 w-full">
-                <div className="text-center space-y-6">
-                    <div className="relative flex items-center mb-16">
-                        <h1 className="text-4xl text-blue3 absolute left-1/2 transform -translate-x-1/2">Visualização <strong>{jobData?.titulo} - <span className={`${jobData?.status === 'DISPONIVEL' ? 'text-green-600' : 'text-red-600'}`}>{jobData?.status}</span></strong></h1>
-                        <button className={`p-3 rounded-lg ml-auto ${jobStatus === 'DISPONIVEL' ? "bg-red-500" : "bg-green-500"}`} onClick={() => handleJobStatusChange()}>{jobData?.status === 'DISPONIVEL' ? "Encerrar": "Ativar"}</button>
+        <div className="flex flex-col items-center p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
+            <div className="space-y-4 sm:space-y-6 w-full">
+                <div className="text-center space-y-4 sm:space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-16">
+                        <div className="flex-1">
+                            <h1 className="text-xl sm:text-2xl lg:text-4xl text-blue3">
+                                Visualização <strong className="block sm:inline">{jobData?.titulo}</strong>
+                                <span className={`block sm:inline text-lg sm:text-xl lg:text-4xl ${jobData?.status === 'DISPONIVEL' ? 'text-green-600' : 'text-red-600'}`}> - {jobData?.status}</span>
+                            </h1>
+                        </div>
+                        <button className={`w-full sm:w-auto px-4 py-2 sm:p-3 rounded-lg font-medium ${jobStatus === 'DISPONIVEL' ? "bg-red-500" : "bg-green-500"}`} onClick={() => handleJobStatusChange()}>
+                            {jobData?.status === 'DISPONIVEL' ? "Encerrar": "Ativar"}
+                        </button>
                     </div>
                     <div className="text-start">
                         <p>Clique na vaga para visualizar e editar </p>
@@ -333,9 +340,9 @@ export default function JobView() {
                             return (
                                 <div key={status}>
                                     {status == 'APROVADO' &&
-                                        <div className="flex justify-end gap-2 mb-2">
+                                        <div className="flex flex-col sm:flex-row justify-end gap-2 mb-2">
                                             <button
-                                                className="px-4 py-2 bg-green-900 hover:bg-green-950 text-white rounded-lg transition-colors"
+                                                className="px-4 py-2 bg-green-900 hover:bg-green-950 text-white rounded-lg transition-colors text-sm sm:text-base"
                                                 onClick={() => setNotificationModal({ 
                                                     isOpen: true, 
                                                     status: 'APROVADO', 
@@ -350,7 +357,7 @@ export default function JobView() {
                                     {status == 'RECUSADO' &&
                                         <div className="flex justify-end mb-2">
                                             <button
-                                                className="px-4 py-2 bg-red-900 hover:bg-red-950 text-white rounded-lg transition-colors"
+                                                className="w-full sm:w-auto px-4 py-2 bg-red-900 hover:bg-red-950 text-white rounded-lg transition-colors text-sm sm:text-base"
                                                 onClick={() => setNotificationModal({ 
                                                     isOpen: true, 
                                                     status: 'RECUSADO', 
@@ -385,12 +392,12 @@ export default function JobView() {
                                                     return (
                                                         <div
                                                             key={candidatura.id}
-                                                            className={`${cardBg} ${config.cardHover} transition-all duration-200 p-4 cursor-pointer border-b border-gray-200 last:border-b-0`}
+                                                            className={`${cardBg} ${config.cardHover} transition-all duration-200 p-3 sm:p-4 cursor-pointer border-b border-gray-200 last:border-b-0`}
                                                             onClick={() => setSelectedCandidatura(candidatura)}
                                                         >
-                                                            <div className="flex items-start gap-4">
+                                                            <div className="flex items-start gap-3 sm:gap-4">
                                                                 <div
-                                                                    className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
+                                                                    className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0"
                                                                     onClick={(e) => {
                                                                         e.stopPropagation()
                                                                         navigate(`/candidates/${candidatura.candidatoId}/profile/`)
@@ -411,10 +418,10 @@ export default function JobView() {
                                                                     </span>
                                                                 </div>
                                                                 <div className="flex-1 min-w-0">
-                                                                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                                                                    <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1">
                                                                         {candidatura.candidato.nome}
                                                                     </h3>
-                                                                    <p className="text-gray-600 text-sm line-clamp-2">
+                                                                    <p className="text-gray-600 text-xs sm:text-sm line-clamp-2">
                                                                         {candidatura.mensagem || 'Nenhuma mensagem enviada'}
                                                                     </p>
                                                                     <p className="text-xs text-gray-500 mt-1">
@@ -422,13 +429,13 @@ export default function JobView() {
                                                                     </p>
                                                                 </div>
                                                                 {status === 'PENDENTE' ? (
-                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                    <div className="flex gap-1 sm:gap-2 flex-shrink-0">
                                                                         <button
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation()
                                                                                 handleStatusChange(candidatura.id, 'APROVADO')
                                                                             }}
-                                                                            className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors text-xs sm:text-sm"
                                                                             title="Aprovar candidatura"
                                                                         >
                                                                             ✓
@@ -438,33 +445,33 @@ export default function JobView() {
                                                                                 e.stopPropagation()
                                                                                 handleStatusChange(candidatura.id, 'RECUSADO')
                                                                             }}
-                                                                            className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            className="w-8 h-8 sm:w-10 sm:h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors text-xs sm:text-sm"
                                                                             title="Recusar candidatura"
                                                                         >
                                                                             ✕
                                                                         </button>
                                                                     </div>
                                                                 ) : status === 'APROVADO' ? (
-                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                    <div className="flex gap-1 sm:gap-2 flex-shrink-0">
                                                                         <button
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation()
                                                                                 handleStatusChange(candidatura.id, 'RECUSADO')
                                                                             }}
-                                                                            className="w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            className="w-8 h-8 sm:w-10 sm:h-10 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors text-xs sm:text-sm"
                                                                             title="Reprovar candidatura"
                                                                         >
                                                                             ✕
                                                                         </button>
                                                                     </div>
                                                                 ) : status === 'RECUSADO' ? (
-                                                                    <div className="flex gap-2 flex-shrink-0">
+                                                                    <div className="flex gap-1 sm:gap-2 flex-shrink-0">
                                                                         <button
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation()
                                                                                 handleStatusChange(candidatura.id, 'APROVADO')
                                                                             }}
-                                                                            className="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                                                            className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center transition-colors text-xs sm:text-sm"
                                                                             title="Aprovar candidatura"
                                                                         >
                                                                             ✓
@@ -498,24 +505,24 @@ export default function JobView() {
 
                 {/* Modal */}
                 {selectedCandidatura && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                        <div className="bg-gradient-to-br from-blue1 to-blue4 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-                            <div className="bg-blue3 text-white p-4 rounded-t-lg">
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+                        <div className="bg-gradient-to-br from-blue1 to-blue4 rounded-lg max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl">
+                            <div className="bg-blue3 text-white p-3 sm:p-4 rounded-t-lg">
                                 <div className="flex justify-between items-start">
-                                    <h2 className="text-2xl font-bold">Detalhes da Candidatura</h2>
+                                    <h2 className="text-lg sm:text-2xl font-bold">Detalhes da Candidatura</h2>
                                     <button
                                         onClick={() => setSelectedCandidatura(null)}
-                                        className="text-white hover:text-blue1 text-2xl transition-colors"
+                                        className="text-white hover:text-blue1 text-xl sm:text-2xl transition-colors flex-shrink-0"
                                     >
                                         ×
                                     </button>
                                 </div>
                             </div>
-                            <div className="p-6">
+                            <div className="p-3 sm:p-6">
 
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-20 h-20 rounded-full overflow-hidden bg-blue1 flex items-center justify-center">
+                                <div className="space-y-3 sm:space-y-4">
+                                    <div className="flex items-center gap-3 sm:gap-4">
+                                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-blue1 flex items-center justify-center flex-shrink-0">
                                             <img
                                                 src={`${API_BASE_URL}/api/arquivos/candidato/${selectedCandidatura.candidatoId}/foto/view`}
                                                 alt="Candidato"
@@ -526,19 +533,19 @@ export default function JobView() {
                                                     if (nextElement) nextElement.style.display = 'flex'
                                                 }}
                                             />
-                                            <span className="text-blue3 text-xl font-semibold" style={{ display: 'none' }}>
+                                            <span className="text-blue3 text-lg sm:text-xl font-semibold" style={{ display: 'none' }}>
                                                 C
                                             </span>
                                         </div>
-                                        <div>
-                                            <h3 className="text-xl font-semibold text-blue3">{selectedCandidatura.candidato.nome}</h3>
-                                            <p className="text-gray-600">ID: {selectedCandidatura.candidatoId}</p>
+                                        <div className="min-w-0">
+                                            <h3 className="text-lg sm:text-xl font-semibold text-blue3">{selectedCandidatura.candidato.nome}</h3>
+                                            <p className="text-gray-600 text-sm sm:text-base">ID: {selectedCandidatura.candidatoId}</p>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                         <div>
-                                            <h4 className="font-semibold text-blue3 mb-2">Status</h4>
+                                            <h4 className="font-semibold text-blue3 mb-2 text-sm sm:text-base">Status</h4>
                                             <span className={`px-3 py-1 rounded-full text-sm ${selectedCandidatura.status === 'APROVADO' ? 'bg-green-100 text-green-800' :
                                                 selectedCandidatura.status === 'RECUSADO' ? 'bg-red-100 text-red-800' :
                                                     'bg-yellow-100 text-yellow-800'
@@ -559,9 +566,9 @@ export default function JobView() {
                                         </p>
                                     </div>
 
-                                    <div className="bg-white p-4 rounded border border-blue2">
-                                        <h4 className="font-semibold text-blue3 mb-3">Documentos</h4>
-                                        <div className="flex gap-3">
+                                    <div className="bg-white p-3 sm:p-4 rounded border border-blue2 space-y-3 sm:space-y-4">
+                                        <h4 className="font-semibold text-blue3 mb-2 sm:mb-3 text-sm sm:text-base">Documentos</h4>
+                                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                             <button
                                                 onClick={async () => {
                                                     try {
@@ -615,20 +622,20 @@ export default function JobView() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white p-4 rounded border border-blue2 space-y-4">
-                                        <h4 className="font-semibold text-blue3 mb-2">Informações Adicionais</h4>
-                                        <div className="flex justify-between">
+                                    <div className="bg-white p-3 sm:p-4 rounded border border-blue2 space-y-3 sm:space-y-4">
+                                        <h4 className="font-semibold text-blue3 mb-2 text-sm sm:text-base">Informações Adicionais</h4>
+                                        <div className="space-y-2 sm:space-y-0 sm:flex sm:justify-between text-sm sm:text-base">
                                             <span>Email: <strong>{selectedCandidatura.candidato.email}</strong></span>
                                             <span>Telefones: <strong>{selectedCandidatura.candidato.telefones.map(tel => tel + " ")}</strong></span>
                                         </div>
-                                        <div className="flex justify-between">
+                                        <div className="space-y-2 sm:space-y-0 sm:flex sm:justify-between text-sm sm:text-base">
                                             <span>Cidade: <strong>{selectedCandidatura.candidato.endereco?.cidade || 'N/A'}, {selectedCandidatura.candidato.endereco?.estado || 'N/A'}</strong></span>
                                             <span>Bairro: <strong>{selectedCandidatura.candidato.endereco?.bairro || 'N/A'}</strong></span>
                                         </div>
-                                        <p className="text-blue3">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
+                                        <p className="text-blue3 text-xs sm:text-sm">Para ver habilidades e detalhes completos, acesse o perfil do candidato.</p>
                                     </div>
 
-                                    <div className="flex gap-3 pt-4">
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-3 sm:pt-4">
                                         <GenericBlueButton
                                             color={3}
                                             size="md"

@@ -265,22 +265,22 @@ export default function JobForm() {
 
   if (role === "EMPRESA") {
     return (
-      <div className="my-16 mx-64 space-y-8">
+      <div className="my-8 sm:my-12 lg:my-16 mx-4 sm:mx-8 lg:mx-32 xl:mx-64 space-y-6 lg:space-y-8">
         <div>
-          <div className="p-3 text-white text-[1.5rem] bg-blue3 border border-black min-w-[28rem] rounded-t-lg">
+          <div className="p-3 text-white text-lg sm:text-xl lg:text-[1.5rem] bg-blue3 border border-black w-full rounded-t-lg">
             <h2>
               {isEditing ? 'Edite sua vaga' : 'Cadastre sua vaga'}
             </h2>
           </div>
-          <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-12">
-            <div className="p-3 space-y-5">
+          <form className="flex-col text-start space-5 text-blue3 bg-blue1 rounded-b-lg px-4 sm:px-6 lg:px-12">
+            <div className="p-3 space-y-4 sm:space-y-5">
               <GenericFormField id="job_title" type="text" placeholder="Titulo da vaga" value={dataForm.title} onChange={(e) => setDataForm(prev => ({ ...prev, title: e.target.value }))}>
                 Nome da vaga
               </GenericFormField>
               <GenericFormField id="job_sector" type="select" placeholder="Selecione" options={SECTORS} value={dataForm.sector} onChange={(e) => setDataForm(prev => ({ ...prev, sector: e.target.value }))}>
                 Area da Vaga
               </GenericFormField>
-              <div className="flex gap-24">
+              <div className="flex flex-col lg:flex-row gap-4 lg:gap-24">
                 <GenericFormField id="start_date" type="date" value={dataForm.startDate.toISOString().split('T')[0]} onChange={(e) => setDataForm(prev => ({ ...prev, startDate: e.target.value ? new Date(e.target.value) : new Date() }))}>
                   Início das inscrições
                 </GenericFormField>
@@ -318,8 +318,8 @@ export default function JobForm() {
                 Horário de trabalho
               </GenericFormField>
               <div>
-                <p>Caracteristicas da vaga</p>
-                <div className="p-6 bg-blue4 rounded-lg space-y-8">
+                <p className="text-base sm:text-lg font-medium mb-3">Caracteristicas da vaga</p>
+                <div className="p-4 sm:p-6 bg-blue4 rounded-lg space-y-6 sm:space-y-8">
                   <GenericFormField
                     id="job_type_work"
                     type="radio"
@@ -365,14 +365,14 @@ export default function JobForm() {
                 Apoio da Empresa
               </TagContainer>
             </div>
-            <div className="flex justify-end p-4">
+            <div className="flex justify-center sm:justify-end p-3 sm:p-4">
               <GenericBlueButton color={3} onClick={handleSubmit}>{isEditing ? 'Salvar Alterações' : 'Cadastrar Vaga'}</GenericBlueButton>
             </div>
           </form>
         </div>
 
-        <div>
-          <h3 className="font-medium">Pré-visualização da Vaga</h3>
+        <div className="hidden lg:block">
+          <h3 className="font-medium text-lg mb-4">Pré-visualização da Vaga</h3>
           <JobPositionDesktop jobData={dataForm} isEditing={true}></JobPositionDesktop>
         </div>
       </div>

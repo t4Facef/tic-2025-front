@@ -12,16 +12,21 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../../config/api";
 import { JobData } from "../../types/vagas/vaga";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import GenericBlueButton from "../buttons/generic_blue_button";
 
 interface JobModalMobileProps {
   jobData: JobData;
   open: boolean;
   onClose: () => void;
+  isEditing?: boolean;
 }
 
-export default function JobModalMobile({ jobData, open, onClose }: JobModalMobileProps) {
+export default function JobModalMobile({ jobData, open, onClose, isEditing = false }: JobModalMobileProps) {
   const [imageError, setImageError] = useState(false);
+  const { user, role } = useAuth();
+  const navigate = useNavigate();
 
   // Previne scroll do body quando modal está aberto
   useEffect(() => {
@@ -219,20 +224,63 @@ export default function JobModalMobile({ jobData, open, onClose }: JobModalMobil
         {/* Footer fixo com botões */}
         <div className="flex-none bg-white border-t border-gray-200 p-4 space-y-3 safe-area-inset-bottom">
           <div className="w-full max-w-sm mx-auto space-y-3">
-            <GenericBlueButton 
-              color={3} 
-              size="lg"
-              link={`/jobs/${jobData.id}/apply`}
-            >
-              Candidatar-se à Vaga
-            </GenericBlueButton>
-            <GenericBlueButton 
-              color={2} 
-              size="md"
-              link={`/companies/${jobData.idEmpresa}/profile`}
-            >
-              Ver Perfil da Empresa
-            </GenericBlueButton>
+            {role === "CANDIDATO" ? (
+              <>
+                <GenericBlueButton 
+                  color={3} 
+                  size="lg"
+                  link={`/jobs/${jobData.id}/apply`}
+                >
+                  Candidatar-se à Vaga
+                </GenericBlueButton>
+                <GenericBlueButton 
+                  color={2} 
+                  size="md"
+                  link={`/companies/${jobData.idEmpresa}/profile`}
+                >
+                  Ver Perfil da Empresa
+                </GenericBlueButton>
+              </>
+            ) : role === "EMPRESA" && user?.id === jobData.idEmpresa ? (
+              <>
+                <button 
+                  className="w-full bg-blue3 hover:bg-blue3H text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200"
+                  onClick={() => {
+                    if (isEditing && (!jobData.id || jobData.id === 0)) {
+                      alert('Esta vaga ainda não foi criada. Salve a vaga primeiro para visualizá-la.');
+                      return;
+                    }
+                    navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`);
+                  }}
+                  disabled={isEditing && (!jobData.id || jobData.id === 0)}
+                >
+                  {isEditing ? "Editar Vaga" : "Visualizar Vaga"}
+                </button>
+                <button 
+                  className="w-full bg-gray-500 hover:bg-gray-600 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200"
+                  onClick={onClose}
+                >
+                  Fechar
+                </button>
+              </>
+            ) : (
+              <>
+                <GenericBlueButton 
+                  color={3} 
+                  size="lg"
+                  link={`/jobs/${jobData.id}/apply`}
+                >
+                  Candidatar-se à Vaga
+                </GenericBlueButton>
+                <GenericBlueButton 
+                  color={2} 
+                  size="md"
+                  link={`/companies/${jobData.idEmpresa}/profile`}
+                >
+                  Ver Perfil da Empresa
+                </GenericBlueButton>
+              </>
+            )}
           </div>
         </div>
       </div>

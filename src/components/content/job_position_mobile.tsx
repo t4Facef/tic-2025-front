@@ -7,9 +7,10 @@ import { JobData } from "../../types/vagas/vaga";
 
 interface JobPositionMobileProps {
   jobData: JobData;
+  isEditing?: boolean;
 }
 
-export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
+export default function JobPositionMobile({ jobData, isEditing = false }: JobPositionMobileProps) {
   const [open, setOpen] = useState(false);
 
   if (!jobData) {
@@ -126,6 +127,7 @@ export default function JobPositionMobile({ jobData }: JobPositionMobileProps) {
         jobData={jobData}
         open={open}
         onClose={() => setOpen(false)}
+        isEditing={isEditing}
       />
     </>
   );

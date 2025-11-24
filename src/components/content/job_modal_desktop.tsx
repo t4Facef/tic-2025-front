@@ -123,13 +123,13 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
       }}
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-blue3 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white rounded-full overflow-hidden border-3 border-blue1 shadow-lg">
+        <div className="flex-none bg-blue3 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full overflow-hidden border-3 border-blue1 shadow-lg flex-shrink-0">
               {!imageError ? (
                 <img 
                   src={jobData.companyLogo || `${API_BASE_URL}/api/arquivos/empresa/${jobData.idEmpresa}/foto/view`}
@@ -143,34 +143,34 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
                 </div>
               )}
             </div>
-            <div>
-              <p className="text-blue1 font-medium mb-1">{jobData.company}</p>
-              <h2 className="text-white font-bold text-2xl leading-tight">{jobData.title}</h2>
+            <div className="min-w-0 flex-1">
+              <p className="text-blue1 font-medium mb-1 text-sm sm:text-base truncate">{jobData.company}</p>
+              <h2 className="text-white font-bold text-lg sm:text-2xl leading-tight">{jobData.title}</h2>
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
             {jobData.compatibility >= 0 && (
-              <div className="bg-gradient-to-r from-white to-blue1 text-blue3 px-6 py-3 rounded-full font-bold shadow-xl border-2 border-blue1 transform hover:scale-105 transition-transform">
-                <div className="flex items-center gap-2">
-                  <Star size={20} className="text-blue2" fill="currentColor" />
-                  <span className="text-xl font-black">{jobData.compatibility}%</span>
-                  <span className="text-base font-semibold">MATCH</span>
+              <div className="bg-gradient-to-r from-white to-blue1 text-blue3 px-3 sm:px-6 py-2 sm:py-3 rounded-full font-bold shadow-xl border-2 border-blue1 transform hover:scale-105 transition-transform">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Star size={16} className="text-blue2 sm:w-5 sm:h-5" fill="currentColor" />
+                  <span className="text-base sm:text-xl font-black">{jobData.compatibility}%</span>
+                  <span className="text-xs sm:text-base font-semibold hidden sm:inline">MATCH</span>
                 </div>
               </div>
             )}
             
             <button 
               onClick={onClose}
-              className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors group shadow-lg"
+              className="p-2 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors group shadow-lg"
             >
-              <X size={24} className="text-white group-hover:text-blue1" />
+              <X size={20} className="text-white group-hover:text-blue1 sm:w-6 sm:h-6" />
             </button>
           </div>
         </div>
 
         {/* Conteúdo com scroll */}
-        <div className="overflow-y-auto max-h-[calc(90vh-160px)]">
+        <div className="flex-1 overflow-y-auto min-h-0">
           {isCompleted ? (
             <div className="flex items-center justify-center h-96">
               <div className="text-center space-y-4">
@@ -199,7 +199,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
               </div>
             </div>
           ) : !isApplying ? (
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
               {/* Compatibilidade */}
               {jobData.compatibility >= 0 && (
                 <div className="bg-blue1 p-4 rounded-lg border border-blue2">
@@ -217,7 +217,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
               )}
 
               {/* Grid de informações */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 bg-blue1 rounded-full">
@@ -262,7 +262,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
               </div>
 
               {/* Informações adicionais em linha */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div className="bg-blue1 p-4 rounded-xl">
                   <div className="flex items-center gap-2 mb-2">
                     <Calendar size={18} className="text-blue3" />
@@ -376,20 +376,20 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
         </div>
 
         {/* Footer com botões */}
-        <div className="bg-gray-50 border-t border-gray-200 p-4">
+        <div className="flex-none bg-gray-50 border-t border-gray-200 p-3 sm:p-4">
           <div className="w-full">
             {(() => {
               if (role === "CANDIDATO" && !isCompleted && !hasError && !alreadyApplied) {
                 return (
-                  <div className="flex gap-4 w-full">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
                     <button 
-                      className="bg-gray-500 hover:bg-gray-600 text-white flex-1 text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
+                      className="bg-gray-500 hover:bg-gray-600 text-white flex-1 text-base sm:text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
                       onClick={handleClose}
                     >
                       Fechar
                     </button>
                     <button 
-                      className="bg-blue3 hover:bg-blue3H text-white flex-1 text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
+                      className="bg-blue3 hover:bg-blue3H text-white flex-1 text-base sm:text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
                       onClick={handleApplying}
                     >
                       {isApplying ? 'Confirmar' : 'Inscrever-se'}
@@ -398,15 +398,15 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
                 );
               } else if (role === "EMPRESA" && user?.id === jobData.idEmpresa) {
                 return (
-                  <div className="flex gap-4 w-full">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full">
                     <button 
-                      className="bg-gray-500 hover:bg-gray-600 text-white flex-1 text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
+                      className="bg-gray-500 hover:bg-gray-600 text-white flex-1 text-base sm:text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
                       onClick={handleClose}
                     >
                       Fechar
                     </button>
                     <button 
-                      className={`flex-1 text-lg rounded-lg py-3 transition-colors duration-200 font-medium ${
+                      className={`flex-1 text-base sm:text-lg rounded-lg py-3 transition-colors duration-200 font-medium ${
                         isEditing && (!jobData.id || jobData.id === 0)
                           ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
                           : 'bg-blue3 hover:bg-blue3H text-white'
@@ -427,7 +427,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
               } else {
                 return (
                   <button 
-                    className="bg-blue3 hover:bg-blue3H text-white w-full text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
+                    className="bg-blue3 hover:bg-blue3H text-white w-full text-base sm:text-lg rounded-lg py-3 transition-colors duration-200 font-medium" 
                     onClick={handleClose}
                   >
                     Fechar
@@ -436,7 +436,7 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
               }
             })()}
             {!isCompleted && !hasError && !alreadyApplied && (
-              <p className="text-center text-gray-500 text-sm mt-3">
+              <p className="text-center text-gray-500 text-xs sm:text-sm mt-3">
                 Pressione ESC para fechar
               </p>
             )}

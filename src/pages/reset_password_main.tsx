@@ -49,11 +49,11 @@ export function ResetPassword() {
     };
 
     return (
-        <div className="mx-4 md:mx-20 lg:mx-96 my-6 md:my-12 lg:my-24 border border-black rounded-lg bg-blue1 space-y-5 flex flex-col items-center">
-            <h2 className=" bg-blue3 text-center text-white font-bold text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">Redefinição de senha</h2>
-            <div className="p-4 md:p-8">
+        <div className="mx-4 sm:mx-8 md:mx-20 lg:mx-64 xl:mx-96 my-6 md:my-12 lg:my-24 border border-black rounded-lg bg-blue1 space-y-4 sm:space-y-5 flex flex-col items-center">
+            <h2 className="bg-blue3 text-center text-white font-bold text-base sm:text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">Redefinição de senha</h2>
+            <div className="p-4 sm:p-6 md:p-8">
                 <div className="w-full flex flex-col items-center">
-                    <p className="font-semibold text-blue3 text-[1.2rem] mb-6">
+                    <p className="font-semibold text-blue3 text-base sm:text-lg md:text-[1.2rem] mb-4 sm:mb-6 text-center sm:text-left">
                         Digite seu e-mail no campo abaixo para realizar a redefinição de senha!
                     </p>
                     {message && (

@@ -123,11 +123,11 @@ export default function ResetPasswordNew() {
   }
 
   return (
-    <div className="mx-4 md:mx-20 lg:mx-96 my-6 md:my-16 lg:my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
-      <h2 className="bg-blue3 text-center text-white font-bold text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">
+    <div className="mx-4 sm:mx-8 md:mx-20 lg:mx-64 xl:mx-96 my-6 md:my-16 lg:my-28 border border-black rounded-lg bg-blue1 space-y-4 flex flex-col items-center">
+      <h2 className="bg-blue3 text-center text-white font-bold text-base sm:text-lg md:text-[1.4rem] p-3 md:p-4 rounded-t-md w-full">
         Redefinição de senha
       </h2>
-      <div className="p-4 md:p-8">
+      <div className="p-4 sm:p-6 md:p-8">
         {message && (
           <section className={`flex flex-row space-x-4 rounded-lg p-4 mb-4 ${
             success 
@@ -182,15 +182,15 @@ export default function ResetPasswordNew() {
               </div>
             </div>
             
-            <div className="bg-white border border-gray-400 rounded-xl p-4">
-              <h3 className="font-medium text-[1.15rem] mb-3">Requisitos da senha</h3>
-              <ul className="space-y-3">
+            <div className="bg-white border border-gray-400 rounded-xl p-3 sm:p-4">
+              <h3 className="font-medium text-sm sm:text-base lg:text-[1.15rem] mb-2 sm:mb-3">Requisitos da senha</h3>
+              <ul className="space-y-2 sm:space-y-3">
                 {passwordRequirements.map((req, index) => (
-                  <li key={index} className="flex items-center gap-3 text-base">
+                  <li key={index} className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
                     {req.valid ? (
-                      <CircleCheckBig className="w-5 h-5 text-green-500" />
+                      <CircleCheckBig className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
                     ) : (
-                      <CircleX className="w-5 h-5 text-red-400" />
+                      <CircleX className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 flex-shrink-0" />
                     )}
                     <span className={req.valid ? "text-green-700" : "text-gray-700"}>
                       {req.text}
