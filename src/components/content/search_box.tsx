@@ -32,21 +32,21 @@ export default function SearchBox({ onFiltersChange }: SearchBoxProps){
     }
     
     return(
-        <form className="flex h-[3.5rem]" onSubmit={handleSubmit}>
+        <form className="flex h-12 md:h-14" onSubmit={handleSubmit}>
             <input 
                 type="text" 
                 name="search" 
                 id="search" 
-                placeholder="Pesquisar" 
-                className="border border-black rounded-l-lg w-full pl-5"
+                placeholder="Pesquisar vagas..." 
+                className="border border-black rounded-l-lg w-full pl-4 md:pl-5 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue3 focus:border-blue3"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button 
                 type="submit"
-                className="flex bg-blue4 border border-black rounded-r-lg p-2 items-center justify-center w-[8vh]"
+                className="flex bg-blue4 hover:bg-blue5H border border-black rounded-r-lg p-2 md:p-3 items-center justify-center w-12 md:w-16 transition-colors"
             >
-                <Search/>
+                <Search size={18} className="md:w-5 md:h-5"/>
             </button>
         </form>
     )

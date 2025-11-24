@@ -2,7 +2,7 @@ import JobPositionMobile from "../components/content/job_position_mobile";
 import JobPositionDesktop from "../components/content/job_position_desktop";
 import SearchBox from "../components/content/search_box";
 import LoadingSpinner from "../components/content/loading_spinner";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, X } from "lucide-react";
 import JobFilters from "../components/forms/filters/job_filters";
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
@@ -45,6 +45,7 @@ export default function Jobs() {
     const [isLoading, setIsLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [pagination, setPagination] = useState({ totalPages: 1, totalItems: 0, itemsPerPage: 8 })
+    const [showMobileFilters, setShowMobileFilters] = useState(false)
     const hasInitialized = useRef(false)
     
     useEffect(() => {
@@ -98,7 +99,6 @@ export default function Jobs() {
 
                 filtrosProcessados = { ...filtrosProcessados, page: currentPage }
                 
-
                 const res = await fetch(`${API_BASE_URL}/api/vagas/search`, {
                     method: "POST",
                     headers: {
@@ -123,9 +123,22 @@ export default function Jobs() {
         fetchVagas()
     }, [filtros, user?.id, role, currentPage, user])
 
+    // Fechar filtros mobile com ESC
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && showMobileFilters) {
+                setShowMobileFilters(false)
+            }
+        }
+
+        document.addEventListener('keydown', handleEscape)
+        return () => document.removeEventListener('keydown', handleEscape)
+    }, [showMobileFilters])
+
     return (
-        <div className="flex flex-1">
-            <div className="min-w-36 sm:min-w-40 md:min-w-44">
+        <div className="flex flex-1 relative">
+            {/* Filtros Desktop - Sidebar fixa */}
+            <div className="hidden md:block min-w-36 sm:min-w-40 md:min-w-44">
                 <div className="bg-gradient-to-b from-blue1 to-blue-50 w-full py-8 flex flex-col items-center px-4 shadow-lg border-r border-blue2/20">
                     <div className="mb-6">
                         <h2 className="text-black text-center font-bold text-xl mb-1">Filtros</h2>
@@ -153,12 +166,86 @@ export default function Jobs() {
                     </div>
                 </div>
             </div>
-            <div className="flex-1 flex flex-col items-center my-7 px-36">
+
+            {/* Overlay para mobile quando filtros estão abertos */}
+            {showMobileFilters && (
+                <div 
+                    className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+                    onClick={() => setShowMobileFilters(false)}
+                />
+            )}
+
+            {/* Modal de Filtros Mobile */}
+            <div className={`md:hidden fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white z-50 transform transition-transform duration-300 ease-in-out ${showMobileFilters ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="bg-gradient-to-b from-blue1 to-blue-50 h-full flex flex-col">
+                    {/* Header do modal */}
+                    <div className="flex items-center justify-between p-4 border-b border-blue2/20">
+                        <div className="flex items-center gap-3">
+                            <Filter size={20} className="text-blue3" />
+                            <h2 className="text-black font-bold text-lg">Filtros</h2>
+                        </div>
+                        <button
+                            onClick={() => setShowMobileFilters(false)}
+                            className="p-2 rounded-full hover:bg-white/20 transition-colors"
+                        >
+                            <X size={20} className="text-blue3" />
+                        </button>
+                    </div>
+
+                    {/* Conteúdo dos filtros */}
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <div className="flex flex-col gap-4">
+                            <JobFilters 
+                                initialValues={filtros}
+                                onFiltersChange={(newFilters) => {
+                                    setFiltros(prev => ({ ...prev, ...newFilters }))
+                                    setCurrentPage(1)
+                                }} 
+                            />
+                        </div>
+                    </div>
+
+                    {/* Footer com botões */}
+                    <div className="p-4 border-t border-blue2/20 space-y-3">
+                        <button
+                            onClick={() => {
+                                setFiltros({})
+                                setCurrentPage(1)
+                            }}
+                            className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 text-sm font-medium shadow-md"
+                        >
+                            Limpar Filtros
+                        </button>
+                        <button
+                            onClick={() => setShowMobileFilters(false)}
+                            className="w-full bg-blue3 text-white px-4 py-3 rounded-lg hover:bg-blue3H transition-colors text-sm font-medium shadow-md"
+                        >
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Conteúdo principal */}
+            <div className="flex-1 flex flex-col items-center my-7 px-4 md:px-36">
+                {/* Botão de filtros mobile */}
+                <div className="md:hidden w-full mb-4">
+                    <button
+                        onClick={() => setShowMobileFilters(true)}
+                        className="flex items-center gap-2 bg-blue3 text-white px-4 py-3 rounded-lg shadow-md hover:bg-blue3H transition-colors w-full justify-center"
+                    >
+                        <Filter size={18} />
+                        <span className="font-medium">Filtros</span>
+                    </button>
+                </div>
+
                 <div className="space-y-8 w-full">
-                    <SearchBox onFiltersChange={(newFilters) => {
-                        setFiltros(prev => ({ ...prev, ...newFilters }))
-                        setCurrentPage(1)
-                    }} />
+                    <div className="w-full">
+                        <SearchBox onFiltersChange={(newFilters) => {
+                            setFiltros(prev => ({ ...prev, ...newFilters }))
+                            setCurrentPage(1)
+                        }} />
+                    </div>
                     <div>
                         {isLoading ? (
                             <LoadingSpinner />
@@ -212,63 +299,74 @@ export default function Jobs() {
                             </div>
                         )}
                         {pagination.totalPages > 1 && (
-                            <div className="flex justify-center items-center gap-2 my-8">
-                                <button
-                                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                                    disabled={currentPage === 1}
-                                    className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    <ChevronLeft size={20} />
-                                </button>
-                                
-                                <div className="flex gap-1">
-                                    {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
-                                        let pageNum;
-                                        if (pagination.totalPages <= 5) {
-                                            pageNum = i + 1;
-                                        } else if (currentPage <= 3) {
-                                            pageNum = i + 1;
-                                        } else if (currentPage >= pagination.totalPages - 2) {
-                                            pageNum = pagination.totalPages - 4 + i;
-                                        } else {
-                                            pageNum = currentPage - 2 + i;
-                                        }
-                                        
-                                        return (
-                                            <button
-                                                key={pageNum}
-                                                onClick={() => setCurrentPage(pageNum)}
-                                                className={`px-3 py-1 rounded ${
-                                                    currentPage === pageNum
-                                                        ? 'bg-blue3 text-white'
-                                                        : 'hover:bg-blue1'
-                                                }`}
-                                            >
-                                                {pageNum}
-                                            </button>
-                                        );
-                                    })}
-                                    
-                                    {pagination.totalPages > 5 && currentPage < pagination.totalPages - 2 && (
-                                        <>
-                                            <span className="px-2">...</span>
-                                            <button
-                                                onClick={() => setCurrentPage(pagination.totalPages)}
-                                                className="px-3 py-1 rounded hover:bg-blue1"
-                                            >
-                                                {pagination.totalPages}
-                                            </button>
-                                        </>
-                                    )}
+                            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+                                {/* Informação de página atual - só no mobile */}
+                                <div className="sm:hidden text-sm text-gray-600">
+                                    Página {currentPage} de {pagination.totalPages}
                                 </div>
                                 
-                                <button
-                                    onClick={() => setCurrentPage(prev => Math.min(pagination.totalPages, prev + 1))}
-                                    disabled={currentPage === pagination.totalPages}
-                                    className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    <ChevronRight size={20} />
-                                </button>
+                                {/* Botões de navegação */}
+                                <div className="flex justify-center items-center gap-2">
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                        disabled={currentPage === 1}
+                                        className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        aria-label="Página anterior"
+                                    >
+                                        <ChevronLeft size={20} />
+                                    </button>
+                                    
+                                    {/* Botões de página - escondidos no mobile muito pequeno */}
+                                    <div className="hidden sm:flex gap-1">
+                                        {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
+                                            let pageNum;
+                                            if (pagination.totalPages <= 5) {
+                                                pageNum = i + 1;
+                                            } else if (currentPage <= 3) {
+                                                pageNum = i + 1;
+                                            } else if (currentPage >= pagination.totalPages - 2) {
+                                                pageNum = pagination.totalPages - 4 + i;
+                                            } else {
+                                                pageNum = currentPage - 2 + i;
+                                            }
+                                            
+                                            return (
+                                                <button
+                                                    key={pageNum}
+                                                    onClick={() => setCurrentPage(pageNum)}
+                                                    className={`px-3 py-1 rounded text-sm transition-colors ${
+                                                        currentPage === pageNum
+                                                            ? 'bg-blue3 text-white'
+                                                            : 'hover:bg-blue1'
+                                                    }`}
+                                                >
+                                                    {pageNum}
+                                                </button>
+                                            );
+                                        })}
+                                        
+                                        {pagination.totalPages > 5 && currentPage < pagination.totalPages - 2 && (
+                                            <>
+                                                <span className="px-2 text-gray-400">...</span>
+                                                <button
+                                                    onClick={() => setCurrentPage(pagination.totalPages)}
+                                                    className="px-3 py-1 rounded text-sm hover:bg-blue1 transition-colors"
+                                                >
+                                                    {pagination.totalPages}
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                    
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(pagination.totalPages, prev + 1))}
+                                        disabled={currentPage === pagination.totalPages}
+                                        className="p-2 rounded hover:bg-blue1 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        aria-label="Próxima página"
+                                    >
+                                        <ChevronRight size={20} />
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
