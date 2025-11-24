@@ -5,7 +5,7 @@ import { useEntityUsage, UsageInfo } from '../../hooks/useEntityUsage';
 interface SmartDeleteConfirmationProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (usageInfo?: UsageInfo) => void; // Modificado para passar usageInfo
   entityType: string;
   entityId: number;
   entityName: string;
@@ -33,7 +33,7 @@ const SmartDeleteConfirmation: React.FC<SmartDeleteConfirmationProps> = ({
 
   const handleConfirm = () => {
     if (usageInfo?.canDelete) {
-      onConfirm();
+      onConfirm(usageInfo); // Passa usageInfo para a função
       onClose();
     } else if (!usageInfo?.canDelete) {
       alert('Esta entidade não pode ser excluída no momento devido às dependências.');
@@ -70,7 +70,7 @@ const SmartDeleteConfirmation: React.FC<SmartDeleteConfirmationProps> = ({
               )}
             </div>
             <h3 className="text-lg font-semibold">
-              {title || `Excluir ${getEntityTypeLabel(entityType)}`}
+              {title || `${usageInfo?.isDelete === false ? 'Desassociar' : 'Excluir'} ${getEntityTypeLabel(entityType)}`}
             </h3>
           </div>
           <button
@@ -209,7 +209,9 @@ const SmartDeleteConfirmation: React.FC<SmartDeleteConfirmationProps> = ({
               className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center space-x-2"
             >
               <Trash2 className="h-4 w-4" />
-              <span>Excluir Permanentemente</span>
+              <span>
+                {usageInfo.isDelete === false ? 'Desassociar' : 'Excluir Permanentemente'}
+              </span>
             </button>
           )}
           

@@ -14,6 +14,7 @@ export interface UsageInfo {
     vagas?: number;
   };
   warningMessage: string;
+  isDelete?: boolean; // Flag para determinar se é exclusão ou desassociação
   cascadeInfo?: {
     willBeDeleted: Array<{
       type: string;
@@ -54,6 +55,8 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
             willBeDeleted: [] as Array<{ type: string; name: string; reason: string }>,
             willBeDisassociated: [] as Array<{ type: string; name: string; reason: string }>
           };
+
+          const isDelete = true; // Tipos sempre são excluídos (não desassociados)
           
           // Verificar subtipos vinculados
           const subtiposResponse = await fetch(`${API_BASE_URL}/api/subtipos/tipoId/${entityId}`);
@@ -122,7 +125,8 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
             usageCount,
             usageDetails,
             warningMessage,
-            cascadeInfo
+            cascadeInfo,
+            isDelete
           };
         }
 
@@ -131,35 +135,52 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
             willBeDeleted: [] as Array<{ type: string; name: string; reason: string }>,
             willBeDisassociated: [] as Array<{ type: string; name: string; reason: string }>
           };
-          
-          // Verificar barreiras vinculadas
-          const barreirasResponse = await fetch(`${API_BASE_URL}/api/barreiras/subtipo/${entityId}`);
-          if (barreirasResponse.ok) {
-            const barreiras = await barreirasResponse.json();
-            usageDetails.barreiras = barreiras.length;
-            usageCount += barreiras.length;
-            
-            for (const barreira of barreiras) {
-              // Por enquanto, assumir que barreiras serão excluídas (lógica mais complexa depois)
-              cascadeInfo.willBeDeleted.push({
-                type: 'barreira',
-                name: barreira.descricao || `Barreira ID: ${barreira.id}`,
-                reason: 'SERÁ DELETADA - pertence apenas a este subtipo'
-              });
+
+          let isDelete = false;
+
+          // Verificar barreiras vinculadas a este subtipo
+          try {
+            const barreirasResponse = await fetch(`${API_BASE_URL}/api/barreiras/subtipo/${entityId}`);
+            if (barreirasResponse.ok) {
+              const barreiras = await barreirasResponse.json();
+              usageDetails.barreiras = barreiras.length;
+              usageCount = 1; // Sempre 1 item (o próprio subtipo)
+
+              // Para subtipos, sempre excluir (não tem lógica de desassociação por enquanto)
+              isDelete = true;
+              if (barreiras.length > 0) {
+                cascadeInfo.willBeDeleted.push({
+                  type: 'subtipo',
+                  name: `Subtipo será excluído`,
+                  reason: `Vinculado a ${barreiras.length} barreira(s) - todas as vinculações serão removidas`
+                });
+                
+                warningMessage = `Este subtipo possui ${barreiras.length} barreira(s) vinculada(s). Todas as vinculações serão removidas.`;
+              } else {
+                cascadeInfo.willBeDeleted.push({
+                  type: 'subtipo',
+                  name: `Subtipo será excluído`,
+                  reason: 'Não possui barreiras vinculadas'
+                });
+                
+                warningMessage = 'Este subtipo não possui barreiras vinculadas e será removido com segurança.';
+              }
             }
+          } catch (error) {
+            console.error('Erro ao verificar vínculos do subtipo:', error);
+            warningMessage = 'Não foi possível verificar os vínculos. Prossiga com cautela.';
+            isDelete = true;
           }
 
           canDelete = true;
-          warningMessage = usageCount > 0 
-            ? `Este subtipo possui ${usageDetails.barreiras} barreira(s). Veja abaixo o que será excluído.`
-            : 'Este subtipo não possui barreiras vinculadas e pode ser removido com segurança.';
-            
+
           return {
             canDelete,
             usageCount,
             usageDetails,
             warningMessage,
-            cascadeInfo
+            cascadeInfo,
+            isDelete
           };
         }
 
@@ -168,54 +189,75 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
             willBeDeleted: [] as Array<{ type: string; name: string; reason: string }>,
             willBeDisassociated: [] as Array<{ type: string; name: string; reason: string }>
           };
-          
-          // Verificar acessibilidades vinculadas
-          const acessibilidadesResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/barreira/${entityId}`);
-          if (acessibilidadesResponse.ok) {
-            const acessibilidades = await acessibilidadesResponse.json();
-            usageDetails.acessibilidades = acessibilidades.length;
-            usageCount += acessibilidades.length;
-            
-            for (const acessibilidade of acessibilidades) {
-              // Por enquanto, assumir desassociação (implementar verificação de uso por empresas)
-              cascadeInfo.willBeDisassociated.push({
-                type: 'acessibilidade',
-                name: acessibilidade.nome || `Acessibilidade ID: ${acessibilidade.id}`,
-                reason: 'SERÁ DESVINCULADA - pode estar em outras barreiras'
-              });
-            }
-          }
 
-          // Verificar candidatos que têm esta barreira
+          let isDelete = false;
+
+          // Verificar acessibilidades e subtipos vinculados a esta barreira
           try {
-            const candidatoBarreiraResponse = await fetch(`${API_BASE_URL}/api/candidato-barreira/barreira/${entityId}`);
-            if (candidatoBarreiraResponse.ok) {
-              const candidatoBarreiras = await candidatoBarreiraResponse.json();
-              usageDetails.candidatos = candidatoBarreiras.length;
-              
-              if (candidatoBarreiras.length > 0) {
-                cascadeInfo.willBeDisassociated.push({
-                  type: 'candidatos',
-                  name: `${candidatoBarreiras.length} candidato(s)`,
-                  reason: 'SERÃO DESVINCULADOS - não deletados'
-                });
-              }
+            // Verificar acessibilidades
+            const acessibilidadesResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/barreira/${entityId}`);
+            let totalAcessibilidades = 0;
+            if (acessibilidadesResponse.ok) {
+              const acessibilidades = await acessibilidadesResponse.json();
+              totalAcessibilidades = acessibilidades.length;
+              usageDetails.acessibilidades = totalAcessibilidades;
             }
-          } catch {
-            // Ignorar erro se endpoint não existir
+
+            // Verificar subtipos (buscar na API de subtipos)
+            let totalSubtipos = 0;
+            try {
+              const subtiposResponse = await fetch(`${API_BASE_URL}/api/subtipos`);
+              if (subtiposResponse.ok) {
+                const todosSubtipos = await subtiposResponse.json();
+                const subtiposVinculados = todosSubtipos.filter((subtipo: { barreiras?: { barreiraId: number }[] }) => {
+                  return subtipo.barreiras && subtipo.barreiras.some((b: { barreiraId: number }) => b.barreiraId === entityId);
+                });
+                totalSubtipos = subtiposVinculados.length;
+                usageDetails.subtipos = totalSubtipos;
+              }
+            } catch {
+              // Ignorar se não conseguir verificar subtipos
+            }
+
+            usageCount = 1; // Sempre 1 item (a própria barreira)
+
+            // Para barreiras, sempre excluir (não tem lógica de desassociação por enquanto)
+            isDelete = true;
+            const totalVinculos = totalAcessibilidades + totalSubtipos;
+            
+            if (totalVinculos > 0) {
+              cascadeInfo.willBeDeleted.push({
+                type: 'barreira',
+                name: `Barreira será excluída`,
+                reason: `Vinculada a ${totalAcessibilidades} acessibilidade(s) e ${totalSubtipos} subtipo(s) - todas as vinculações serão removidas`
+              });
+              
+              warningMessage = `Esta barreira possui ${totalVinculos} vínculo(s). Todas as vinculações serão removidas.`;
+            } else {
+              cascadeInfo.willBeDeleted.push({
+                type: 'barreira',
+                name: `Barreira será excluída`,
+                reason: 'Não possui vínculos'
+              });
+              
+              warningMessage = 'Esta barreira não possui vínculos e será removida com segurança.';
+            }
+
+          } catch (error) {
+            console.error('Erro ao verificar vínculos da barreira:', error);
+            warningMessage = 'Não foi possível verificar os vínculos. Prossiga com cautela.';
+            isDelete = true;
           }
 
           canDelete = true;
-          warningMessage = usageCount > 0 
-            ? `Esta barreira possui vínculos. Veja abaixo o que será desvinculado.`
-            : 'Esta barreira não possui vínculos e pode ser removida com segurança.';
-            
+
           return {
             canDelete,
             usageCount,
             usageDetails,
             warningMessage,
-            cascadeInfo
+            cascadeInfo,
+            isDelete
           };
         }
 
@@ -225,91 +267,61 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
             willBeDisassociated: [] as Array<{ type: string; name: string; reason: string }>
           };
 
-          // Verificar empresas que oferecem esta acessibilidade
-          try {
-            const empresasResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/${entityId}`);
-            if (empresasResponse.ok) {
-              const data = await empresasResponse.json();
-              if (data.EmpresaAcessibilidade) {
-                usageDetails.empresas = data.EmpresaAcessibilidade.length;
-                usageCount += data.EmpresaAcessibilidade.length;
-                
-                // Adicionar empresas que serão desassociadas
-                data.EmpresaAcessibilidade.forEach((empresaAcess: any) => {
-                  cascadeInfo.willBeDisassociated.push({
-                    type: 'empresa',
-                    name: empresaAcess.empresa?.nomeFantasia || empresaAcess.empresa?.razaoSocial || `Empresa ID: ${empresaAcess.empresaId}`,
-                    reason: 'SERÁ DESVINCULADA - não deletada'
-                  });
-                });
-              }
-            }
-          } catch {
-            // Tentar endpoint alternativo
-            try {
-              const empresasResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/empresa`);
-              if (empresasResponse.ok) {
-                const allEmpresas = await empresasResponse.json();
-                const empresasComAcessibilidade = allEmpresas.filter((empresa: { acessibilidades?: { id: number }[] }) => 
-                  empresa.acessibilidades && empresa.acessibilidades.some((acc) => acc.id === entityId)
-                );
-                usageDetails.empresas = empresasComAcessibilidade.length;
-                usageCount += empresasComAcessibilidade.length;
-                
-                // Adicionar empresas que serão desassociadas
-                empresasComAcessibilidade.forEach((empresa: any) => {
-                  cascadeInfo.willBeDisassociated.push({
-                    type: 'empresa',
-                    name: empresa.nomeFantasia || empresa.razaoSocial || `Empresa ID: ${empresa.id}`,
-                    reason: 'SERÁ DESVINCULADA - não deletada'
-                  });
-                });
-              }
-            } catch {
-              // Ignorar se não conseguir buscar
-            }
-          }
+          let isDelete = false; // Para mudar o texto do botão
 
-          // Verificar barreiras vinculadas
+          // Verificar quantas barreiras esta acessibilidade está vinculada
           try {
-            const barreirasResponse = await fetch(`${API_BASE_URL}/api/barreiras`);
-            if (barreirasResponse.ok) {
-              const todasBarreiras = await barreirasResponse.json();
-              const barreirasComAcessibilidade = todasBarreiras.filter((barreira: any) => 
-                barreira.acessibilidades && barreira.acessibilidades.some((acc: any) => acc.id === entityId)
-              );
+            const acessibilidadeResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/${entityId}`);
+            if (acessibilidadeResponse.ok) {
+              const data = await acessibilidadeResponse.json();
               
-              if (barreirasComAcessibilidade.length > 0) {
-                usageDetails.barreiras = barreirasComAcessibilidade.length;
-                usageCount += barreirasComAcessibilidade.length;
-                
-                barreirasComAcessibilidade.forEach((barreira: any) => {
-                  cascadeInfo.willBeDisassociated.push({
-                    type: 'barreira',
-                    name: barreira.descricao || `Barreira ID: ${barreira.id}`,
-                    reason: 'SERÁ DESVINCULADA - não deletada'
-                  });
+              // Contar barreiras vinculadas através das relações BarreiraAcessibilidade
+              const totalBarreiras = data.barreiras ? data.barreiras.length : 0;
+              usageDetails.barreiras = totalBarreiras;
+              usageCount = 1; // Sempre 1 item (a própria acessibilidade)
+
+              if (totalBarreiras <= 1) {
+                // Se está vinculada a apenas 1 barreira (ou nenhuma), será excluída
+                isDelete = true;
+                cascadeInfo.willBeDeleted.push({
+                  type: 'acessibilidade',
+                  name: data.nome || `Acessibilidade ID: ${entityId}`,
+                  reason: totalBarreiras === 1 
+                    ? 'Vinculada apenas a esta barreira - será excluída completamente'
+                    : 'Não vinculada a nenhuma barreira - será excluída'
                 });
+                
+                warningMessage = totalBarreiras === 1 
+                  ? 'Esta acessibilidade está vinculada apenas a esta barreira e será completamente excluída.'
+                  : 'Esta acessibilidade não está vinculada a nenhuma barreira e será excluída.';
+              } else {
+                // Se está vinculada a múltiplas barreiras, será apenas desassociada
+                isDelete = false;
+                cascadeInfo.willBeDisassociated.push({
+                  type: 'acessibilidade',
+                  name: data.nome || `Acessibilidade ID: ${entityId}`,
+                  reason: `Será apenas desvinculada desta barreira (permanece em ${totalBarreiras - 1} outra(s))`
+                });
+                
+                warningMessage = `Esta acessibilidade está vinculada a ${totalBarreiras} barreiras. Será apenas desvinculada desta barreira.`;
               }
             }
-          } catch {
-            // Ignorar se endpoint não existir
+          } catch (error) {
+            console.error('Erro ao verificar vínculos da acessibilidade:', error);
+            warningMessage = 'Não foi possível verificar os vínculos. Prossiga com cautela.';
+            isDelete = true; // Default para excluir em caso de erro
           }
 
-          // SEMPRE permitir exclusão com desassociação automática (onDelete: Cascade)
+          // SEMPRE permitir a operação
           canDelete = true;
-          if (usageCount > 0) {
-            warningMessage = `Esta acessibilidade está vinculada a ${usageCount} entidade(s). Todas as vinculações serão automaticamente desfeitas.`;
-          } else {
-            warningMessage = 'Esta acessibilidade não está vinculada a nenhuma entidade e pode ser removida com segurança.';
-          }
 
           return {
             canDelete,
             usageCount,
             usageDetails,
             warningMessage,
-            cascadeInfo
+            cascadeInfo,
+            isDelete // Adicionar flag para o botão
           };
         }
 

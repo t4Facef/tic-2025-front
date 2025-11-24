@@ -5,6 +5,7 @@ import CreateAdminForm from "../components/admin/create_admin_form";
 import SmartAccessibilityInput from "../components/admin/smart_accessibility_input";
 import SmartBarreiraInput from "../components/admin/smart_barreira_input";
 import SmartDeleteConfirmation from "../components/admin/smart_delete_confirmation";
+import { UsageInfo } from "../hooks/useEntityUsage";
 import { API_BASE_URL } from "../config/api";
 import { api } from "../services/api"; // Serviço de API com autenticação
 import { 
@@ -365,14 +366,15 @@ export default function AdminDashboard() {
             entityType: getEntityType(currentView),
             entityId: item.id,
             entityName: item.nome,
-            onConfirm: () => performDelete(item)
+            onConfirm: (usageInfo?: UsageInfo) => performDelete(item, usageInfo) // Modificado para passar usageInfo
         });
     };
 
-    const performDelete = async (item: EntityData) => {
+    const performDelete = async (item: EntityData, usageInfo?: UsageInfo) => {
         try {
             let endpoint = '';
-            const useCascade = ['tipos', 'subtipos', 'barreiras'].includes(currentView);
+            let method = 'DELETE';
+            const useCascade = ['tipos', 'subtipos', 'barreiras', 'acessibilidades'].includes(currentView);
             
             switch (currentView) {
                 case 'tipos':
@@ -385,12 +387,21 @@ export default function AdminDashboard() {
                     endpoint = useCascade ? `/api/barreiras/${item.id}/cascade` : `/api/barreiras/${item.id}`;
                     break;
                 case 'acessibilidades':
-                    endpoint = `/api/acessibilidades/${item.id}`;
+                    // Lógica especial para acessibilidades
+                    if (selectedParent && usageInfo?.isDelete === false) {
+                        // Desassociar da barreira atual
+                        endpoint = `/api/vinculos/barreiras/${selectedParent.id}/acessibilidades/${item.id}`;
+                        method = 'DELETE';
+                    } else {
+                        // Excluir completamente
+                        endpoint = `/api/acessibilidades/${item.id}`;
+                        method = 'DELETE';
+                    }
                     break;
             }
 
             const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                method: 'DELETE',
+                method: method,
                 headers: getAuthHeaders()
             });
 
@@ -400,17 +411,20 @@ export default function AdminDashboard() {
                 
                 if (useCascade && result.summary) {
                     alert(`Sucesso!\n${result.summary}`);
+                } else if (result.message) {
+                    alert(result.message);
                 } else {
-                    alert('Item excluído com sucesso!');
+                    const actionText = usageInfo?.isDelete === false ? 'desassociado' : 'excluído';
+                    alert(`Item ${actionText} com sucesso!`);
                 }
             } else {
                 const errorData = await response.text();
-                console.error('Erro ao excluir item:', errorData);
-                alert('Erro ao excluir item. Verifique se não há dependências.');
+                console.error('Erro ao processar item:', errorData);
+                alert('Erro ao processar item. Verifique se não há dependências.');
             }
         } catch (error) {
-            console.error('Erro ao excluir item:', error);
-            alert('Erro ao excluir item. Verifique o console para mais detalhes.');
+            console.error('Erro ao processar item:', error);
+            alert('Erro ao processar item. Verifique o console para mais detalhes.');
         }
     };
 
@@ -578,15 +592,16 @@ export default function AdminDashboard() {
                                                     <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
                                                     <button 
                                                         onClick={() => {
-                                                            navigateTo('barreiras', selectedParent, breadcrumb[0]);
-                                                            fetchBarreiras(selectedParent.id);
+                                                            // Voltar para barreiras do subtipo pai (breadcrumb[0])
+                                                            navigateTo('barreiras', breadcrumb[0]);
+                                                            if (breadcrumb[0]) fetchBarreiras(breadcrumb[0].id);
                                                         }}
                                                         className="text-blue-600 hover:text-blue-800 whitespace-nowrap"
                                                     >
                                                         Barreiras
                                                     </button>
                                                     <ChevronRight className="h-3 w-3 lg:h-4 lg:w-4" />
-                                                    <span className="font-medium text-gray-800">{selectedParent ? selectedParent.nome : 'Acessibilidades'}</span>
+                                                    <span className="font-medium text-gray-800">{selectedParent.nome}</span>
                                                 </>
                                             )}
                                         </>
