@@ -55,7 +55,7 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
         />
       </button>
       {isOpen && (
-        <div className="absolute z-50 bg-white right-0 mt-3 w-72 shadow-xl p-4 rounded-xl border border-gray-200 text-black space-y-4 animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute z-50 bg-white right-0 md:right-0 mt-3 w-72 max-w-[calc(100vw-2rem)] md:w-72 shadow-xl p-4 rounded-xl border border-gray-200 text-black space-y-4 animate-in slide-in-from-top-2 duration-200 transform md:transform-none -translate-x-1/2 md:translate-x-0 left-1/2 md:left-auto">
           <div className="flex-1 flex flex-row">
             <div className="flex-[2] h-max">
               <img
@@ -73,25 +73,25 @@ export default function ProfilePicture({ isOpen, onToggle }: ProfilePictureProps
               />
             </div>
             <div className="flex-[6] px-3">
-              <p className="font-semibold">{displayName}</p>
-              <p className="text-sm text-justify">{user?.email}</p>
+              <p className="font-semibold text-sm md:text-base break-words">{displayName}</p>
+              <p className="text-xs md:text-sm break-all">{user?.email}</p>
               <p className="text-xs text-gray-500 capitalize">
                 {role === 'CANDIDATO' ? 'Candidato' : role === 'EMPRESA' ? 'Empresa' : 'Administrador'}
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-center w-full gap-4 justify-center">
+          <div className="flex flex-col items-center w-full gap-3 justify-center">
             {role === 'ADMIN' ? (
-              <Link to="/admin/dashboard">
-                <GenericBlueButton color={3}>Painel Administrativo</GenericBlueButton>
+              <Link to="/admin/dashboard" className="w-full">
+                <GenericBlueButton color={3} size="mdxMax">Painel Administrativo</GenericBlueButton>
               </Link>
             ) : (
               <>
-                <Link to={role === 'CANDIDATO' ? '/candidates/profile' : '/companies/profile'}>
-                  <GenericBlueButton color={3}>Visitar meu perfil</GenericBlueButton>
+                <Link to={role === 'CANDIDATO' ? '/candidates/profile' : '/companies/profile'} className="w-full">
+                  <GenericBlueButton color={3} size="mdxMax">Visitar meu perfil</GenericBlueButton>
                 </Link>
-                <Link to={role === 'CANDIDATO' ? '/candidates/dashboard' : '/companies/dashboard'}>
-                  <GenericBlueButton color={4}>Visitar meu Dashboard</GenericBlueButton>
+                <Link to={role === 'CANDIDATO' ? '/candidates/dashboard' : '/companies/dashboard'} className="w-full">
+                  <GenericBlueButton color={4} size="mdxMax">Visitar meu Dashboard</GenericBlueButton>
                 </Link>
               </>
             )}

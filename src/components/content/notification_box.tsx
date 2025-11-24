@@ -62,7 +62,7 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-80 bg-white border border-gray-200 rounded-xl shadow-xl p-4 z-50 animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 md:right-0 mt-3 w-80 max-w-[calc(100vw-2rem)] md:w-80 bg-white border border-gray-200 rounded-xl shadow-xl p-4 z-50 animate-in slide-in-from-top-2 duration-200 transform md:transform-none -translate-x-1/2 md:translate-x-0 left-1/2 md:left-auto">
           <p className="text-blue3 my-2 font-semibold">Veja suas notificações</p>
           {notifications.length > 0 ? (
             <>
@@ -101,14 +101,14 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
                             </span>
                           </div>
                         )}
-                        <div className="flex-1">
-                          <h4 className="font-semibold">{truncate(notif.notificacao.titulo, 35)}</h4>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-sm break-words">{truncate(notif.notificacao.titulo, 35)}</h4>
                           {notif.notificacao.remetenteEmpresa && (
-                            <p className="text-xs opacity-70 mb-1">
+                            <p className="text-xs opacity-70 mb-1 break-words">
                               De: {truncate(notif.notificacao.remetenteEmpresa.razaoSocial, 25)}
                             </p>
                           )}
-                          <p className="text-xs">{truncate(notif.notificacao.conteudo, 60)}</p>
+                          <p className="text-xs break-words">{truncate(notif.notificacao.conteudo, 60)}</p>
                         </div>
                       </div>
                     </Link>
@@ -117,16 +117,18 @@ export default function NotificationBox({ isOpen, onToggle }: NotificationBoxPro
               </ul>
 
               {/* Rodapé do dropdown */}
-              <div className="flex justify-between items-center mt-4">
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-2 sm:gap-0">
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-blue3 hover:underline"
+                  className="text-sm text-blue3 hover:underline order-2 sm:order-1"
                 >
                   Marcar todas como lidas
                 </button>
-                <GenericBlueButton color={3} size="sm" link="/notifications">
-                  Ver todas
-                </GenericBlueButton>
+                <div className="order-1 sm:order-2 w-full sm:w-auto">
+                  <GenericBlueButton color={3} size="sm" link="/notifications">
+                    Ver todas
+                  </GenericBlueButton>
+                </div>
               </div>
             </>
           ) : (
