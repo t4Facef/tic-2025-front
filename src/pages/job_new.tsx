@@ -141,12 +141,10 @@ export default function JobForm() {
             setSalario(jobData.pagamento || "R$ ")
             setAcessibilityTags(jobData.apoios || [])
           } else {
-            alert('Erro ao carregar dados da vaga')
             navigate('/companies/dashboard')
           }
         } catch (error) {
           console.error('Erro ao buscar dados da vaga:', error)
-          alert('Erro ao carregar dados da vaga')
           navigate('/companies/dashboard')
         }
       }
@@ -250,16 +248,13 @@ export default function JobForm() {
       }
       
       if (res.ok) {
-        alert(isEditing ? 'Vaga atualizada com sucesso!' : 'Vaga cadastrada com sucesso!');
         navigate('/companies/dashboard');
       } else {
         const errorText = await res.text();
         console.error('Erro do servidor:', errorText);
-        alert(`Erro ao ${isEditing ? 'atualizar' : 'cadastrar'} vaga: ${res.status} - ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro de conexão. Tente novamente.');
     }
   };
 

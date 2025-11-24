@@ -220,6 +220,11 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
         }
 
         case 'acessibilidade': {
+          const cascadeInfo = {
+            willBeDeleted: [] as Array<{ type: string; name: string; reason: string }>,
+            willBeDisassociated: [] as Array<{ type: string; name: string; reason: string }>
+          };
+
           // Verificar empresas que oferecem esta acessibilidade
           try {
             const empresasResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/${entityId}`);
@@ -228,28 +233,84 @@ export const useEntityUsage = (): UseEntityUsageReturn => {
               if (data.EmpresaAcessibilidade) {
                 usageDetails.empresas = data.EmpresaAcessibilidade.length;
                 usageCount += data.EmpresaAcessibilidade.length;
+                
+                // Adicionar empresas que serão desassociadas
+                data.EmpresaAcessibilidade.forEach((empresaAcess: any) => {
+                  cascadeInfo.willBeDisassociated.push({
+                    type: 'empresa',
+                    name: empresaAcess.empresa?.nomeFantasia || empresaAcess.empresa?.razaoSocial || `Empresa ID: ${empresaAcess.empresaId}`,
+                    reason: 'SERÁ DESVINCULADA - não deletada'
+                  });
+                });
               }
             }
           } catch {
             // Tentar endpoint alternativo
-            const empresasResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/empresa`);
-            if (empresasResponse.ok) {
-              const allEmpresas = await empresasResponse.json();
-              const empresasComAcessibilidade = allEmpresas.filter((empresa: { acessibilidades?: { id: number }[] }) => 
-                empresa.acessibilidades && empresa.acessibilidades.some((acc) => acc.id === entityId)
-              );
-              usageDetails.empresas = empresasComAcessibilidade.length;
-              usageCount += empresasComAcessibilidade.length;
+            try {
+              const empresasResponse = await fetch(`${API_BASE_URL}/api/acessibilidades/empresa`);
+              if (empresasResponse.ok) {
+                const allEmpresas = await empresasResponse.json();
+                const empresasComAcessibilidade = allEmpresas.filter((empresa: { acessibilidades?: { id: number }[] }) => 
+                  empresa.acessibilidades && empresa.acessibilidades.some((acc) => acc.id === entityId)
+                );
+                usageDetails.empresas = empresasComAcessibilidade.length;
+                usageCount += empresasComAcessibilidade.length;
+                
+                // Adicionar empresas que serão desassociadas
+                empresasComAcessibilidade.forEach((empresa: any) => {
+                  cascadeInfo.willBeDisassociated.push({
+                    type: 'empresa',
+                    name: empresa.nomeFantasia || empresa.razaoSocial || `Empresa ID: ${empresa.id}`,
+                    reason: 'SERÁ DESVINCULADA - não deletada'
+                  });
+                });
+              }
+            } catch {
+              // Ignorar se não conseguir buscar
             }
           }
 
-          if (usageCount > 0) {
-            canDelete = false;
-            warningMessage = `Esta acessibilidade é oferecida por ${usageDetails.empresas} empresa(s). Remova das empresas antes de deletar a acessibilidade.`;
-          } else {
-            warningMessage = 'Esta acessibilidade não está sendo oferecida por nenhuma empresa e pode ser removida com segurança.';
+          // Verificar barreiras vinculadas
+          try {
+            const barreirasResponse = await fetch(`${API_BASE_URL}/api/barreiras`);
+            if (barreirasResponse.ok) {
+              const todasBarreiras = await barreirasResponse.json();
+              const barreirasComAcessibilidade = todasBarreiras.filter((barreira: any) => 
+                barreira.acessibilidades && barreira.acessibilidades.some((acc: any) => acc.id === entityId)
+              );
+              
+              if (barreirasComAcessibilidade.length > 0) {
+                usageDetails.barreiras = barreirasComAcessibilidade.length;
+                usageCount += barreirasComAcessibilidade.length;
+                
+                barreirasComAcessibilidade.forEach((barreira: any) => {
+                  cascadeInfo.willBeDisassociated.push({
+                    type: 'barreira',
+                    name: barreira.descricao || `Barreira ID: ${barreira.id}`,
+                    reason: 'SERÁ DESVINCULADA - não deletada'
+                  });
+                });
+              }
+            }
+          } catch {
+            // Ignorar se endpoint não existir
           }
-          break;
+
+          // SEMPRE permitir exclusão com desassociação automática (onDelete: Cascade)
+          canDelete = true;
+          if (usageCount > 0) {
+            warningMessage = `Esta acessibilidade está vinculada a ${usageCount} entidade(s). Todas as vinculações serão automaticamente desfeitas.`;
+          } else {
+            warningMessage = 'Esta acessibilidade não está vinculada a nenhuma entidade e pode ser removida com segurança.';
+          }
+
+          return {
+            canDelete,
+            usageCount,
+            usageDetails,
+            warningMessage,
+            cascadeInfo
+          };
         }
 
         default:

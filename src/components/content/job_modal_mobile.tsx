@@ -247,7 +247,6 @@ export default function JobModalMobile({ jobData, open, onClose, isEditing = fal
                   className="w-full bg-blue3 hover:bg-blue3H text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200"
                   onClick={() => {
                     if (isEditing && (!jobData.id || jobData.id === 0)) {
-                      alert('Esta vaga ainda não foi criada. Salve a vaga primeiro para visualizá-la.');
                       return;
                     }
                     navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`);

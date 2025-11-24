@@ -413,7 +413,6 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
                       }`}
                       onClick={() => {
                         if (isEditing && (!jobData.id || jobData.id === 0)) {
-                          alert('Esta vaga ainda não foi criada. Salve a vaga primeiro para visualizá-la.');
                           return;
                         }
                         navigate(`/jobs/${jobData.id}/${isEditing ? "edit" : "view"}`);
