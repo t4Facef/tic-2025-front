@@ -164,9 +164,9 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
                     <p className="text-blue-600 text-sm mt-1">🔄 Verificando email...</p>
                 )}
             </div>
-            <div className="flex space-x-24">
+            <div className="flex flex-col lg:flex-row lg:space-x-24 gap-4 lg:gap-0">
                 <GenericFormField 
-                    id="companie_telefone_register" 
+                    id="companie_business_phone_register" 
                     type="tel" 
                     placeholder="(XX) XXXXX-XXXX" 
                     autoComplete="tel" 
@@ -184,24 +184,24 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
             </div>
             <div>
                 <p>Endereço da Empresa</p>
-                <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5">
-                    <div className="w-[30rem] space-y-5">
+                <div className="bg-blue4 rounded-lg py-6 px-6 md:px-12 space-y-5">
+                    <div className="w-full max-w-[30rem] space-y-5">
                         <GenericFormField id="companie_cep_register" placeholder="Digite aqui o CEP da empresa" autoComplete="postal-code" required onChange={(e) => handleCepChange(e)} value={form2.postalCode || ""} error={errors.postalCode}>CEP</GenericFormField>
-                        <div className="flex flex-1 space-x-5">
-                            <div className="flex-[3] w-full">
+                        <div className="flex flex-col sm:flex-row sm:flex-1 gap-4 sm:gap-0 sm:space-x-5">
+                            <div className="sm:flex-[3] w-full">
                                 <GenericFormField id="companie_estado_register" type="select" options={estados} required onChange={(e) => setForm2((prev) => ({...prev, state: e.target.value}))} value={form2.state || ""} error={errors.state}>Estado</GenericFormField>
                             </div>
-                            <div className="flex-[7] w-full">
+                            <div className="sm:flex-[7] w-full">
                                 <GenericFormField id="companie_cidade_register" type="select" options={cidades} required onChange={(e) => setForm2((prev) => ({...prev, city: e.target.value}))} value={form2.city || ""} error={errors.city}>Cidade</GenericFormField>
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-1 justify-between space-x-16">
-                        <div className="flex flex-col w-full flex-[7] space-y-5">
+                    <div className="flex flex-col md:flex-row md:flex-1 md:justify-between gap-4 md:gap-0 md:space-x-16">
+                        <div className="flex flex-col w-full md:flex-[7] space-y-5">
                             <GenericFormField id="companie_rua_register" placeholder="Digite aqui a rua" autoComplete="address-line1" required onChange={(e) => setForm2((prev) => ({...prev, street: e.target.value}))} value={form2.street || ""} error={errors.street}>Rua</GenericFormField>
                             <GenericFormField id="companie_complemento_register" placeholder="Digite aqui o complemento" autoComplete="address-line2" onChange={(e) => setForm2((prev) => ({...prev, adressComplement: e.target.value}))} value={form2.adressComplement || ""}>Complemento</GenericFormField>
                         </div>
-                        <div className="flex flex-col w-full flex-[2] space-y-5">
+                        <div className="flex flex-col w-full md:flex-[2] space-y-5">
                             <GenericFormField id="companie_bairro_register" placeholder="Digite aqui o bairro" autoComplete="address-level2" required onChange={(e) => setForm2((prev) => ({...prev, neighborhood: e.target.value}))} value={form2.neighborhood || ""} error={errors.neighborhood}>Bairro</GenericFormField>
                             <GenericFormField id="companie_numero_register" placeholder="Digite aqui o número" required onChange={(e) => setForm2((prev) => ({...prev, streetNumber: e.target.value}))} value={form2.streetNumber || ""} error={errors.streetNumber}>Número</GenericFormField>
                         </div>

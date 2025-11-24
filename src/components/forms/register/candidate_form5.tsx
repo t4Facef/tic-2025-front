@@ -100,7 +100,7 @@ export default function CandidateForm5({ formFunc, formId, initialData, fileStor
                 )}
             </div>
             <div className="space-y-6">
-                <div className="space-y-4 max-w-[28rem]">
+                <div className="space-y-4 w-full max-w-[28rem]">
                     <GenericFormField id="candidate_password_register" type="password" autoComplete="new-password" required onChange={(e) => handlePasswordChange(e)} value={form5.password || ""}>Senha</GenericFormField>
                     <GenericFormField id="candidate_password_confirm_register" type="password" autoComplete="new-password" required onChange={(e) => handleConfirmPasswordChange(e)} value={form5.confirmPassword || ""}>Confirme sua Senha</GenericFormField>
                     {passwordError && (

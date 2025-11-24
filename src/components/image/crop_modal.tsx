@@ -97,8 +97,8 @@ export default function CropModal({ isOpen, onClose, imageSrc, onCropComplete }:
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-4xl max-h-[90vh] overflow-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-6xl max-h-[95vh] overflow-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">Ajustar Foto de Perfil</h3>
                     <button 
@@ -109,31 +109,33 @@ export default function CropModal({ isOpen, onClose, imageSrc, onCropComplete }:
                     </button>
                 </div>
                 
-                <div className="flex gap-8">
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
                     <div className="flex-1">
                         <h4 className="text-sm font-medium mb-3">Ajustar imagem:</h4>
-                        <ReactCrop
-                            crop={crop}
-                            onChange={(_, percentCrop) => setCrop(percentCrop)}
-                            onComplete={(c) => setCompletedCrop(c)}
-                            aspect={1}
-                            circularCrop
-                        >
-                            <img
-                                ref={imgRef}
-                                alt="Ajustar imagem"
-                                src={imageSrc}
-                                style={{ 
-                                    transform: `scale(${scale}) rotate(${rotate}deg)`,
-                                    maxWidth: '400px',
-                                    maxHeight: '400px'
-                                }}
-                                onLoad={onImageLoad}
-                            />
-                        </ReactCrop>
+                        <div className="overflow-auto max-h-[50vh] lg:max-h-[60vh]">
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                onComplete={(c) => setCompletedCrop(c)}
+                                aspect={1}
+                                circularCrop
+                            >
+                                <img
+                                    ref={imgRef}
+                                    alt="Ajustar imagem"
+                                    src={imageSrc}
+                                    style={{ 
+                                        transform: `scale(${scale}) rotate(${rotate}deg)`,
+                                        maxWidth: '100%',
+                                        height: 'auto'
+                                    }}
+                                    onLoad={onImageLoad}
+                                />
+                            </ReactCrop>
+                        </div>
                     </div>
                     
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 lg:w-64">
                         <h4 className="text-sm font-medium mb-3">Preview:</h4>
                         <div className="flex flex-col items-center space-y-4">
                             <canvas
@@ -141,25 +143,25 @@ export default function CropModal({ isOpen, onClose, imageSrc, onCropComplete }:
                                 className="border border-gray-300 rounded-full"
                                 style={{
                                     objectFit: 'contain',
-                                    width: 200,
-                                    height: 200,
+                                    width: '150px',
+                                    height: '150px',
                                 }}
                             />
                         </div>
                     </div>
                 </div>
                 
-                <div className="flex justify-end gap-3 mt-6">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
                     <button 
                         onClick={onClose}
-                        className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50"
+                        className="w-full sm:w-auto px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50"
                     >
                         Cancelar
                     </button>
                     <button 
                         onClick={handleConfirmCrop}
                         disabled={!completedCrop}
-                        className="px-4 py-2 bg-blue3 text-white rounded hover:bg-blue3H disabled:opacity-50"
+                        className="w-full sm:w-auto px-4 py-2 bg-blue3 text-white rounded hover:bg-blue3H disabled:opacity-50"
                     >
                         Confirmar
                     </button>

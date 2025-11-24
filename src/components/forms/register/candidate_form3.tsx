@@ -60,16 +60,16 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
             <div>
                 <p className="font-semibold text-lg">Formação Mais Recente</p>
                 <div className="bg-blue4 rounded-lg p-4 space-y-6">
-                    <div className="flex flex-1 gap-24">
-                        <div className="flex-[6]">
+                    <div className="flex flex-col md:flex-row md:flex-1 gap-4 md:gap-24">
+                        <div className="md:flex-[6]">
                             <GenericFormField id="candidate_education_type_register" type="select" options={EDUCATION_TYPES} placeholder="Selecione" onChange={(e) => setForm3((prev) => ({ ...prev, educationType: e.target.value }))} value={form3.educationType || ""}>Tipo de Formação</GenericFormField>
                         </div>
-                        <div className="flex-[4]">
+                        <div className="md:flex-[4]">
                             <GenericFormField id="candidate_education_status_register" type="select" options={EDUCATION_STATUS} placeholder="Selecione" onChange={(e) => setForm3((prev) => ({ ...prev, educationStatus: e.target.value }))} value={form3.educationStatus || ""}>Situação</GenericFormField>
                         </div>
                     </div>
                     <GenericFormField id="candidate_course_name_register" placeholder="Digite o nome do curso" onChange={(e) => setForm3((prev) => ({ ...prev, courseName: e.target.value }))} value={form3.courseName || ""}>Nome do Curso</GenericFormField>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row sm:gap-4 gap-4">
                         <div>
                             <GenericFormField 
                                 id="candidate_education_start_date_register" 
@@ -110,16 +110,16 @@ export default function CandidateForm3({ formFunc, formId, initialData, fileStor
             <div>
                 <p className="font-semibold text-lg">Experiência Profissional Mais Recente</p>
                 <div className="bg-blue4 rounded-lg p-4 space-y-6">
-                    <div className="flex flex-1 gap-24">
-                        <div className="flex-[7]">
+                    <div className="flex flex-col md:flex-row md:flex-1 gap-4 md:gap-24">
+                        <div className="md:flex-[7]">
                             <GenericFormField id="candidate_job_title_register" placeholder="Digite o cargo da sua experiência mais recente" onChange={(e) => setForm3((prev) => ({ ...prev, jobTitle: e.target.value }))} value={form3.jobTitle || ""}>Cargo/Função</GenericFormField>
                         </div>
-                        <div className="flex-[3]">
+                        <div className="md:flex-[3]">
                             <GenericFormField id="candidate_job_type_register" type="select" options={['Selecione', 'CLT', 'PJ', 'Estágio', 'Freelancer', 'Temporário', 'Meio período', 'Integral']} onChange={(e) => setForm3((prev) => ({ ...prev, jobType: e.target.value }))} value={form3.jobType || ""}>Tipo de Contrato</GenericFormField>
                         </div>
                     </div>
                     <GenericFormField id="candidate_company_name_register" placeholder="Digite o nome da empresa" onChange={(e) => setForm3((prev) => ({ ...prev, companyName: e.target.value }))} value={form3.companyName || ""}>Empresa</GenericFormField>
-                    <div className="flex gap-4 items-end">
+                    <div className="flex flex-col sm:flex-row sm:gap-4 gap-4 sm:items-end">
                         <div>
                             <GenericFormField 
                                 id="candidate_job_start_date_register" 

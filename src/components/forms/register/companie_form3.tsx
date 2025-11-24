@@ -15,7 +15,7 @@ export default function CompanieForm3({ formFunc, formId, initialData }: { formF
                 <p className="text-gray-700 leading-relaxed">Conte-nos mais sobre sua empresa para criar um perfil atrativo para os candidatos.</p>
             </div>
 
-            <div className="flex gap-8">
+            <div className="flex flex-col sm:flex-row sm:gap-8 gap-4">
                 <GenericFormField 
                     id="companie_employees_register" 
                     type="number" 

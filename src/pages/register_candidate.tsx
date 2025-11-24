@@ -264,7 +264,7 @@ export default function Register() {
                             <p className="text-sm font-medium">{apiMessage}</p>
                         </div>
                     )}
-                    <div className='flex justify-between'>
+                    <div className='flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-0'>
                         <GenericBlueButton
                             color={3}
                             size='md'

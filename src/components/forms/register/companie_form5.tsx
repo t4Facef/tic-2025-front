@@ -81,8 +81,8 @@ export default function CompanieForm5({ formFunc, formId, initialData, fileStora
                 <p className="text-gray-700 leading-relaxed">Para finalizar o cadastro da sua empresa, precisamos de uma senha segura para proteger a conta e o logo da empresa para que os candidatos possam identificá-la facilmente.</p>
             </div>
 
-            <div className="space-y-6">
-                <div className="max-w-[28rem]">
+            <div className="space-y-4 sm:space-y-6">
+                <div className="w-full max-w-[28rem]">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Logo da Empresa (Opcional)</label>
                     <ImageCropper onCropComplete={handleCroppedImage} initialFile={form5.profilePicture || null} />
                     <p className="text-sm text-gray-600 mt-2">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>

@@ -178,7 +178,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                     <p className="text-blue-600 text-sm mt-1">🔄 Verificando email...</p>
                 )}
             </div>
-            <div className="flex space-x-24">
+            <div className="flex flex-col md:flex-row md:space-x-24 gap-4 md:gap-0">
                 <GenericFormField 
                     id="candidate_telefone1_register" 
                     placeholder="(XX) XXXXX-XXXX" 
@@ -208,16 +208,16 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
             </div>
             <div>
                 <p>Endereço</p>
-                <div className="bg-blue4 rounded-lg py-6 px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
-                    <div className="w-[30rem] space-y-5">
+                <div className="bg-blue4 rounded-lg py-6 px-6 md:px-12 space-y-5"> {/*Verificar possiblidades de cores*/}
+                    <div className="w-full max-w-[30rem] space-y-5">
                         <div>
                             <GenericFormField id="candidate_cep_register" placeholder="Digite aqui o CEP de sua residência" autoComplete="postal-code" onChange={handleCepChange} required value={form2.zipCode || ""} error={errors.zipCode}>CEP</GenericFormField>
                             {cepError && (
                                 <p className="text-red-600 text-sm mt-1">❌ {cepError}</p>
                             )}
                         </div>
-                        <div className="flex flex-1 space-x-5">
-                            <div className="flex-[3] w-full">
+                        <div className="flex flex-col sm:flex-row sm:flex-1 gap-4 sm:gap-0 sm:space-x-5">
+                            <div className="sm:flex-[3] w-full">
                                 <GenericFormField 
                                     id="candidate_estado_register" 
                                     type="select" 
@@ -230,7 +230,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                                     Estado
                                 </GenericFormField>
                             </div>
-                            <div className="flex-[7] w-full">
+                            <div className="sm:flex-[7] w-full">
                                 <GenericFormField 
                                     id="candidate_cidade_register" 
                                     type="select" 
@@ -245,8 +245,8 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-1 justify-between space-x-16">
-                        <div className="flex flex-col w-full flex-[7] space-y-5">
+                    <div className="flex flex-col md:flex-row md:flex-1 md:justify-between gap-4 md:gap-0 md:space-x-16">
+                        <div className="flex flex-col w-full md:flex-[7] space-y-5">
                             <GenericFormField 
                                 id="candidate_rua_register" 
                                 placeholder="Digite aqui a rua" 
@@ -260,7 +260,7 @@ export default function CandidateForm2 ({ formFunc, formId, initialData } : {for
                             </GenericFormField>
                             <GenericFormField id="candidate_complemento_register" placeholder="Digite aqui o complemento" autoComplete="address-line2" onChange={(e) => setForm2((prev) => ({...prev, complement: e.target.value}))} value={form2.complement || ""}>Complemento</GenericFormField>
                         </div>
-                        <div className="flex flex-col w-full flex-[2] space-y-5">
+                        <div className="flex flex-col w-full md:flex-[2] space-y-5">
                             <GenericFormField 
                                 id="candidate_bairro_register" 
                                 placeholder="Digite aqui o bairro" 
