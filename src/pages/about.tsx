@@ -55,7 +55,7 @@ export default function About() {
                     
                     <div className="bg-gradient-to-r from-blue1 to-blue4 p-4 md:p-8 rounded-xl">
                         <div className="flex flex-col lg:flex-row items-center gap-8">
-                            <img src="/img/tic2.jpg" alt="Equipe TIC 2025" className="w-56 h-72 object-cover rounded-xl shadow-lg" />
+                            <img src="/img/tic2.jpg" alt="Equipe TIC 2025" className="w-56 h-72 object-cover object-center rounded-xl shadow-lg" />
                             <div className="flex-1">
                                 <h3 className="text-2xl font-semibold text-blue3 mb-6">Nossa Equipe</h3>
                                 <div className="grid md:grid-cols-2 gap-4">
