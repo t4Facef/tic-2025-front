@@ -85,17 +85,28 @@ export default function GenericFormField({children, id, placeholder, options, au
                         const optValue = typeof opt === 'string' ? opt : opt.value;
                         const label = typeof opt === 'string' ? opt : opt.name;
                         return (
-                            <label key={i} className="flex items-center gap-1 cursor-pointer">
-                                <input 
-                                    type="radio" 
-                                    name={id} 
-                                    value={optValue} 
-                                    checked={value === optValue}
-                                    onChange={onChange} 
-                                    required={required}
-                                    className="cursor-pointer"
-                                />
-                                {label}
+                            <label key={i} className="flex items-center gap-2 cursor-pointer group">
+                                <div className="relative">
+                                    <input 
+                                        type="radio" 
+                                        name={id} 
+                                        value={optValue} 
+                                        checked={value === optValue}
+                                        onChange={onChange} 
+                                        required={required}
+                                        className="sr-only"
+                                    />
+                                    <div className={`w-4 h-4 rounded-full border-2 transition-all duration-200 ${
+                                        value === optValue 
+                                            ? 'border-blue3 bg-blue3' 
+                                            : 'border-gray-300 bg-white hover:border-blue3'
+                                    }`}>
+                                        {value === optValue && (
+                                            <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                                        )}
+                                    </div>
+                                </div>
+                                <span className={`text-sm transition-colors ${value === optValue ? 'text-blue3 font-semibold' : 'text-gray-700'}`}>{label}</span>
                             </label>
                         );
                     })}
@@ -118,7 +129,7 @@ export default function GenericFormField({children, id, placeholder, options, au
                         const label = typeof opt === 'string' ? opt : opt.name;
                         const isChecked = typeof opt === 'string' ? false : opt.checked || false;
                         return (
-                            <label key={i} className="flex items-center gap-1 cursor-pointer">
+                            <label key={i} className="flex items-center gap-2 cursor-pointer">
                                 <input 
                                     type="checkbox" 
                                     name={`${id}_${i}`} 
@@ -126,9 +137,9 @@ export default function GenericFormField({children, id, placeholder, options, au
                                     checked={isChecked}
                                     onChange={onChange} 
                                     required={required}
-                                    className="cursor-pointer"
+                                    className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                                 />
-                                {label}
+                                <span className="text-sm text-gray-700">{label}</span>
                             </label>
                         );
                     })}

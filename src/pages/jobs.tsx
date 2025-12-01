@@ -112,6 +112,9 @@ export default function Jobs() {
                 setVagas(data.vagas || data)
                 if (data.pagination) {
                     setPagination(data.pagination)
+                } else {
+                    // Reset pagination se não há paginação retornada
+                    setPagination({ totalPages: 1, totalItems: (data.vagas || data).length, itemsPerPage: 8 })
                 }
             } catch (error) {
                 console.error('Erro ao buscar vagas:', error)

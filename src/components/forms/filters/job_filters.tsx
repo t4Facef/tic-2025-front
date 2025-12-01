@@ -30,9 +30,9 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
     const [statusValue, setStatusValue] = useState<string>("")
     
     useEffect(() => {
-        const minhasVagasVal = initialValues?.minhasVagas === true ? "Sim" : ""
-        const recomendadasVal = initialValues?.recomendadas === true ? "Sim" : ""
-        const statusVal = initialValues?.status === true ? "Sim" : ""
+        const minhasVagasVal = initialValues?.minhasVagas === true ? "Sim" : initialValues?.minhasVagas === false ? "Não" : ""
+        const recomendadasVal = initialValues?.recomendadas === true ? "Sim" : initialValues?.recomendadas === false ? "Não" : ""
+        const statusVal = initialValues?.status === true ? "Sim" : initialValues?.status === false ? "Não" : ""
         
         setMinhasVagasValue(minhasVagasVal)
         setRecomendadasValue(recomendadasVal)
@@ -87,6 +87,8 @@ export default function JobFilters({ onFiltersChange, initialValues }: jobFilter
         setter(value)
         if (value === "Sim") {
             onFiltersChange({ [filterKey]: true })
+        } else if (value === "Não") {
+            onFiltersChange({ [filterKey]: false })
         } else {
             onFiltersChange({ [filterKey]: undefined })
         }

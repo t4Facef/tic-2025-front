@@ -251,8 +251,8 @@ export default function Usage(){
                                         </div>
                                         <div className="flex justify-between items-center p-3 bg-purple-50 rounded border-l-4 border-purple-500">
                                             <div>
-                                                <span className="font-medium">Apoios da Vaga</span>
-                                                <p className="text-sm text-gray-600">Recursos de suporte e benefícios oferecidos</p>
+                                                <span className="font-medium">Localização</span>
+                                                <p className="text-sm text-gray-600">Proximidade geográfica (remoto = máximo)</p>
                                             </div>
                                             <span className="text-purple-600 font-bold text-lg">10%</span>
                                         </div>

@@ -33,7 +33,7 @@ export default function Faq() {
         {
             category: "Vagas",
             title: "Como funciona o matching de vagas?",
-            description: `Nosso algoritmo considera:\n\n• <strong>Acessibilidade</strong>: 50% - Compatibilidade entre tipo de deficiência e adaptações oferecidas\n• <strong>Habilidades</strong>: 40% - Correspondência entre suas competências e requisitos da vaga\n• <strong>Apoios da Vaga</strong>: 10% - Recursos de suporte e benefícios oferecidos\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
+            description: `Nosso algoritmo considera:\n\n• <strong>Acessibilidade</strong>: 50% - Compatibilidade entre apoios oferecidos e suas necessidades\n• <strong>Habilidades</strong>: 40% - Correspondência entre suas competências e requisitos da vaga\n• <strong>Localização</strong>: 10% - Proximidade geográfica (vagas remotas sempre pontuam máximo)\n\nO percentual de compatibilidade ajuda a encontrar as melhores oportunidades.`
         },
         {
             category: "Vagas",
