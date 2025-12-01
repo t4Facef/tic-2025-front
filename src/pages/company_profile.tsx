@@ -348,7 +348,9 @@ export default function CompanyProfile() {
         description: companieInformation.descricao,
         history: companieInformation.historia,
         mission: companieInformation.missao,
-        location: `${companieInformation.endereco?.cidade}, ${companieInformation.endereco?.estado}`,
+        location: companieInformation.endereco 
+          ? `${companieInformation.endereco.cidade || 'Cidade não informada'}, ${companieInformation.endereco.estado || 'Estado não informado'}`
+          : 'Localização não informada',
         foundedYear: companieInformation.anoFundacao,
         sector: companieInformation.area,
         employeeCount: String(companieInformation.numFunc || 0),
@@ -713,7 +715,7 @@ export default function CompanyProfile() {
                                             description: vaga.descricao,
                                             skillsTags: vaga.habilidades,
                                             supportTags: vaga.apoios,
-                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            compatibility: -1, // Empresas não veem compatibilidade
                                             startDate: new Date(vaga.dataInicio),
                                             endDate: new Date(vaga.dataFim),
                                             typeContract: vaga.tipoContrato,

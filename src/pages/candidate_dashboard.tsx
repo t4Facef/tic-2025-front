@@ -1,7 +1,7 @@
 // [TODO] - Fazer com que quando direicionar pelo botão para a listagem de vagas colocar os filtros apropriados (descobrir como fazer algo assim)
 // [TODO] - Ajeitar tamanho das vagas + caixa de estatistica
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useAuth } from "../hooks/useAuth";
 import JobPositionDesktop from "../components/content/job_position_desktop";
@@ -26,77 +26,74 @@ export default function CandidateDashboard() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
-    useEffect(() => {
-        const fetchDashboardData = async () => {
-            try {
-                // Buscar estatísticas do candidato
-                const statsResponse = await fetch(`${API_BASE_URL}/api/estatisticas/candidato/${user?.id}`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-
-
-
-                if (!statsResponse.ok) {
-                    const errorText = await statsResponse.text()
-
-                    throw new Error(`Erro ${statsResponse.status}: ${errorText}`)
+    const fetchDashboardData = useCallback(async () => {
+        try {
+            // Buscar estatísticas do candidato
+            const statsResponse = await fetch(`${API_BASE_URL}/api/estatisticas/candidato/${user?.id}`, {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
+            })
 
-                const statsData = await statsResponse.json()
-                setStatistics(statsData)
-
-                // Buscar vagas recomendadas
-                const jobsResponse = await fetch(`${API_BASE_URL}/api/vagas/recomendadas?candidatoId=${user?.id}`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-
-
-
-                if (!jobsResponse.ok) {
-                    const errorText = await jobsResponse.text()
-
-                    throw new Error(`Erro ${jobsResponse.status}: ${errorText}`)
-                }
-
-                const jobsData = await jobsResponse.json()
-
-                setRecommendedJobs(jobsData)
-
-                // Buscar vagas que o candidato se inscreveu
-                const appliedJobsResponse = await fetch(`${API_BASE_URL}/api/vagas/candidato/${user?.id}/inscritas`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-
-
-
-                if (appliedJobsResponse.ok) {
-                    const appliedJobsData = await appliedJobsResponse.json()
-
-                    setAppliedJobs(appliedJobsData)
-                } else {
-                    console.warn('Erro ao buscar vagas aplicadas');
-                }
-
-            } catch (error) {
-                console.error('Erro ao buscar dados do dashboard:', error)
-                setError(true)
-            } finally {
-                setLoading(false)
+            if (!statsResponse.ok) {
+                const errorText = await statsResponse.text()
+                throw new Error(`Erro ${statsResponse.status}: ${errorText}`)
             }
-        }
 
-        if (user?.id && token) {
+            const statsData = await statsResponse.json()
+            setStatistics(statsData)
+
+            // Buscar vagas recomendadas
+            const jobsResponse = await fetch(`${API_BASE_URL}/api/vagas/recomendadas?candidatoId=${user?.id}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (!jobsResponse.ok) {
+                const errorText = await jobsResponse.text()
+                throw new Error(`Erro ${jobsResponse.status}: ${errorText}`)
+            }
+
+            const jobsData = await jobsResponse.json()
+            setRecommendedJobs(jobsData)
+
+            // Buscar vagas que o candidato se inscreveu
+            const appliedJobsResponse = await fetch(`${API_BASE_URL}/api/vagas/candidato/${user?.id}/inscritas`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (appliedJobsResponse.ok) {
+                const appliedJobsData = await appliedJobsResponse.json()
+                setAppliedJobs(appliedJobsData)
+            } else {
+                console.warn('Erro ao buscar vagas aplicadas');
+            }
+
+        } catch (error) {
+            console.error('Erro ao buscar dados do dashboard:', error)
+            setError(true)
+        } finally {
+            setLoading(false)
+        }
+    }, [user?.id])
+
+    const handleApplicationSuccess = () => {
+        // Recarregar dados após candidatura bem-sucedida
+        console.log('Callback de candidatura bem-sucedida chamado - recarregando dashboard');
+        setLoading(true);
+        fetchDashboardData()
+    }
+
+    useEffect(() => {
+            if (user?.id && token) {
             fetchDashboardData()
         } else {
             setLoading(false)
         }
-    }, [user?.id, token])
+    }, [user?.id, token, fetchDashboardData])
 
     if (loading) {
         return <div className="flex justify-center items-center h-64">Carregando...</div>
@@ -221,7 +218,7 @@ export default function CandidateDashboard() {
                                             description: vaga.descricao,
                                             skillsTags: vaga.habilidades,
                                             supportTags: vaga.apoios,
-                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            compatibility: vaga.compatibilidadeCalculada !== undefined ? Math.round(vaga.compatibilidadeCalculada * 100) : -1,
                                             startDate: new Date(vaga.dataInicio),
                                             endDate: new Date(vaga.dataFim),
                                             typeContract: vaga.tipoContrato,
@@ -232,7 +229,7 @@ export default function CandidateDashboard() {
                                             status: vaga.status,
                                             sector: vaga.setor
                                         }
-                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
+                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} onApplicationSuccess={handleApplicationSuccess} />
                                     })}
                                 </div>
                                 <div className="bg-slate-50 px-6 py-4 border-t border-slate-200">
@@ -297,7 +294,7 @@ export default function CandidateDashboard() {
                                             status: vaga.status,
                                             sector: vaga.setor
                                         }
-                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} />
+                                        return <JobPositionDesktop key={vaga.id} jobData={jobDataProps} onApplicationSuccess={handleApplicationSuccess} />
                                     })}
                                 </div>
                                 <div className="bg-gradient-to-r from-slate-50 to-gray-50 px-6 py-5 border-t border-slate-200">

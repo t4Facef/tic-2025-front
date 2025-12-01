@@ -266,7 +266,7 @@ export default function Jobs() {
                                             description: vaga.descricao,
                                             skillsTags: vaga.habilidades,
                                             supportTags: vaga.apoios,
-                                            compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                            compatibility: role?.toLowerCase() === 'empresa' ? -1 : Math.round((vaga.compatibilidadeCalculada || 0) * 100),
                                             startDate: new Date(vaga.dataInicio),
                                             endDate: new Date(vaga.dataFim),
                                             typeContract: vaga.tipoContrato,

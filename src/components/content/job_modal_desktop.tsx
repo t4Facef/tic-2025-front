@@ -21,9 +21,10 @@ interface JobModalDesktopProps {
   open: boolean;
   onClose: () => void;
   isEditing?: boolean;
+  onApplicationSuccess?: () => void;
 }
 
-export default function JobModalDesktop({ jobData, open, onClose, isEditing = false }: JobModalDesktopProps) {
+export default function JobModalDesktop({ jobData, open, onClose, isEditing = false, onApplicationSuccess }: JobModalDesktopProps) {
   const [imageError, setImageError] = useState(false);
   const { user, role } = useAuth();
   const navigate = useNavigate();
@@ -56,6 +57,11 @@ export default function JobModalDesktop({ jobData, open, onClose, isEditing = fa
       try {
         await inscreverEmVaga();
         setIsCompleted(true);
+        // Chamar callback para atualizar dashboard após candidatura bem-sucedida
+        console.log('Candidatura bem-sucedida, chamando callback:', !!onApplicationSuccess);
+        if (onApplicationSuccess) {
+          onApplicationSuccess();
+        }
       } catch (error) {
         console.error('Erro ao se inscrever na vaga:', error);
         const errorMessage = (error as Error).message || '';

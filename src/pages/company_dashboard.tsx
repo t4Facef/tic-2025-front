@@ -188,7 +188,7 @@ export default function CompanyDashboard() {
                                         description: vaga.descricao,
                                         skillsTags: vaga.habilidades,
                                         supportTags: vaga.apoios,
-                                        compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                        compatibility: -1, // Empresas não veem compatibilidade
                                         startDate: new Date(vaga.dataInicio),
                                         endDate: new Date(vaga.dataFim),
                                         typeContract: vaga.tipoContrato,
@@ -248,7 +248,7 @@ export default function CompanyDashboard() {
                                         description: vaga.descricao,
                                         skillsTags: vaga.habilidades,
                                         supportTags: vaga.apoios,
-                                        compatibility: Math.round((vaga.compatibilidadeCalculada || 0) * 100),
+                                        compatibility: -1, // Empresas não veem compatibilidade
                                         startDate: new Date(vaga.dataInicio),
                                         endDate: new Date(vaga.dataFim),
                                         typeContract: vaga.tipoContrato,

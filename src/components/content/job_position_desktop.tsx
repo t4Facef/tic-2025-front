@@ -8,9 +8,10 @@ import { JobData } from "../../types/vagas/vaga";
 interface JobPositionDesktopProps {
   jobData: JobData;
   isEditing?: boolean;
+  onApplicationSuccess?: () => void;
 }
 
-export default function JobPositionDesktop({ jobData, isEditing = false }: JobPositionDesktopProps) {
+export default function JobPositionDesktop({ jobData, isEditing = false, onApplicationSuccess }: JobPositionDesktopProps) {
   const [open, setOpen] = useState(false);
 
   if (!jobData) {
@@ -157,6 +158,7 @@ export default function JobPositionDesktop({ jobData, isEditing = false }: JobPo
         open={open}
         onClose={() => setOpen(false)}
         isEditing={isEditing}
+        onApplicationSuccess={onApplicationSuccess}
       />
     </>
   );

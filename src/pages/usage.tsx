@@ -194,22 +194,22 @@ export default function Usage(){
                                 <div className="space-y-4">
                                     <h4 className="font-semibold text-blue3">Status da Candidatura:</h4>
                                     <div className="space-y-3">
-                                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                            <div className="w-3 h-3 bg-blue1 rounded-full"></div>
                                             <div>
                                                 <span className="font-medium">Enviada</span>
                                                 <p className="text-sm text-gray-600">Sua candidatura foi recebida pela empresa</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
-                                            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                        <div className="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg border border-indigo-200">
+                                            <div className="w-3 h-3 bg-blue2 rounded-full"></div>
                                             <div>
                                                 <span className="font-medium">Em Análise</span>
                                                 <p className="text-sm text-gray-600">O recrutador está avaliando seu perfil</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border-2 border-gray-400">
+                                            <div className="w-3 h-3 bg-blue3 rounded-full"></div>
                                             <div>
                                                 <span className="font-medium">Aprovada</span>
                                                 <p className="text-sm text-gray-600">Parabéns! Você foi selecionado para a próxima etapa</p>
@@ -232,29 +232,29 @@ export default function Usage(){
                                     </div>
                                 </div>
                                 
-                                <div className="bg-white border rounded-lg p-6">
+                                <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                                     <h4 className="font-semibold mb-4">Critérios de Compatibilidade:</h4>
                                     <div className="space-y-4">
-                                        <div className="flex justify-between items-center p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                        <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-gray-200 border-l-4 border-l-blue3">
                                             <div>
-                                                <span className="font-medium">Acessibilidade</span>
+                                                <span className="font-medium text-gray-900">Acessibilidade</span>
                                                 <p className="text-sm text-gray-600">Compatibilidade entre deficiência e adaptações</p>
                                             </div>
-                                            <span className="text-green-600 font-bold text-lg">50%</span>
+                                            <span className="text-gray-900 font-bold text-lg">50%</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                        <div className="flex justify-between items-center p-3 bg-indigo-50 rounded-lg border border-gray-200 border-l-4 border-l-blue2">
                                             <div>
-                                                <span className="font-medium">Habilidades</span>
+                                                <span className="font-medium text-blue2">Habilidades</span>
                                                 <p className="text-sm text-gray-600">Correspondência entre competências e requisitos</p>
                                             </div>
-                                            <span className="text-blue-600 font-bold text-lg">40%</span>
+                                            <span className="text-blue2 font-bold text-lg">40%</span>
                                         </div>
-                                        <div className="flex justify-between items-center p-3 bg-purple-50 rounded border-l-4 border-purple-500">
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-gray-200 border-l-4 border-l-blue1">
                                             <div>
-                                                <span className="font-medium">Localização</span>
+                                                <span className="font-medium text-blue1">Localização</span>
                                                 <p className="text-sm text-gray-600">Proximidade geográfica (remoto = máximo)</p>
                                             </div>
-                                            <span className="text-purple-600 font-bold text-lg">10%</span>
+                                            <span className="text-blue1 font-bold text-lg">10%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -386,8 +386,8 @@ export default function Usage(){
                                 <div className="bg-white border rounded-lg p-6">
                                     <h4 className="font-semibold mb-4">Funcionalidades Disponíveis:</h4>
                                     <div className="space-y-4">
-                                        <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-slate-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
                                                 <Check size={16} />
                                             </div>
                                             <div>
@@ -396,8 +396,8 @@ export default function Usage(){
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-blue1 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
                                                 <X size={16} />
                                             </div>
                                             <div>
@@ -406,23 +406,23 @@ export default function Usage(){
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                                        <div className="flex items-start gap-3 p-3 bg-blue2 rounded-lg">
                                             <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
                                                 <Mail size={16} />
                                             </div>
                                             <div>
-                                                <h5 className="font-medium">Enviar Notificações</h5>
-                                                <p className="text-sm text-gray-600">Comunique-se diretamente com os candidatos aprovados ou recusados</p>
+                                                <h5 className="font-medium text-white">Enviar Notificações</h5>
+                                                <p className="text-sm text-blue1">Comunique-se diretamente com os candidatos aprovados ou recusados</p>
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-blue3 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-white rounded-full flex items-center justify-center text-blue3 text-xs md:text-sm font-semibold shrink-0">
                                                 <BarChart3 size={16} />
                                             </div>
                                             <div>
-                                                <h5 className="font-medium">Exportar Dados</h5>
-                                                <p className="text-sm text-gray-600">Baixe planilhas Excel com dados dos candidatos aprovados</p>
+                                                <h5 className="font-medium text-white">Exportar Dados</h5>
+                                                <p className="text-sm text-blue1">Baixe planilhas Excel com dados dos candidatos aprovados</p>
                                             </div>
                                         </div>
                                     </div>
@@ -506,8 +506,8 @@ export default function Usage(){
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-blue1 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
                                                 <Sparkles size={16} />
                                             </div>
                                             <div>
@@ -516,23 +516,23 @@ export default function Usage(){
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-blue2 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-blue3 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
                                                 <RotateCcw size={16} />
                                             </div>
                                             <div>
-                                                <h5 className="font-medium">Status de Candidatura</h5>
-                                                <p className="text-sm text-gray-600">Atualizações sobre aprovação, recusa ou próximas etapas</p>
+                                                <h5 className="font-medium text-white">Status de Candidatura</h5>
+                                                <p className="text-sm text-blue1">Atualizações sobre aprovação, recusa ou próximas etapas</p>
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
-                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-xs md:text-sm shrink-0">
+                                        <div className="flex items-start gap-3 p-3 bg-blue3 rounded-lg">
+                                            <div className="w-8 h-8 md:w-8 md:h-8 bg-white rounded-full flex items-center justify-center text-blue3 text-xs md:text-sm shrink-0">
                                                 <Zap size={16} />
                                             </div>
                                             <div>
-                                                <h5 className="font-medium">Atualizações da Plataforma</h5>
-                                                <p className="text-sm text-gray-600">Novos recursos, melhorias e comunicados importantes</p>
+                                                <h5 className="font-medium text-white">Atualizações da Plataforma</h5>
+                                                <p className="text-sm text-blue1">Novos recursos, melhorias e comunicados importantes</p>
                                             </div>
                                         </div>
                                     </div>

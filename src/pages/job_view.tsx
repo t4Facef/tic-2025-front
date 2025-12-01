@@ -16,7 +16,7 @@ interface errorFields {
 }
 
 export default function JobView() {
-    const { token } = useAuth();
+    const { token, role } = useAuth();
     const { id } = useParams()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
@@ -313,7 +313,7 @@ export default function JobView() {
                                 description: jobData.descricao,
                                 skillsTags: jobData.habilidades,
                                 supportTags: jobData.apoios,
-                                compatibility: Math.round((jobData.compatibilidade || 0) * 100),
+                                compatibility: role?.toLowerCase() === 'empresa' ? -1 : Math.round((jobData.compatibilidade || 0) * 100),
                                 startDate: new Date(jobData.dataInicio),
                                 endDate: new Date(jobData.dataFim),
                                 typeContract: jobData.tipoContrato,
