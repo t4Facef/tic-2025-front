@@ -4,7 +4,7 @@ import CompaniesRow from "../components/content/companies_row"
 import JobPositionMobile from "../components/content/job_position_mobile"
 import JobPositionDesktop from "../components/content/job_position_desktop"
 import ColdStartLoading from "../components/loading/ColdStartLoading";
-import { useColdStartDetection } from "../hooks/useColdStartDetection";
+import { useServerStatus } from "../hooks/useServerStatus";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
 
@@ -13,11 +13,14 @@ import { JobData, Vaga } from "../types/vagas/vaga";
 export default function Home() {
     const [companyIds, setCompanyIds] = useState<number[]>([])
     const [popularJobs, setPopularJobs] = useState<JobData[]>([]);
-    const coldStart = useColdStartDetection();
+    const serverStatus = useServerStatus({ 
+        enableColdStartScreen: true, 
+        skipInitialCheck: false 
+    });
     
     useEffect(() => {
         // Só executa se o servidor estiver disponível
-        if (coldStart.isLoading || coldStart.error) {
+        if (serverStatus.isLoading || serverStatus.error) {
             return;
         }
         
@@ -74,15 +77,15 @@ export default function Home() {
         }
         
         getPopularJobs()
-    }, [coldStart.isLoading, coldStart.error])
+    }, [serverStatus.isLoading, serverStatus.error])
     
     // Se está carregando ou há erro de conexão, mostra a tela de loading
-    if (coldStart.isLoading || coldStart.error) {
+    if (serverStatus.isLoading || serverStatus.error) {
         return (
             <ColdStartLoading 
-                retryCount={coldStart.retryCount}
-                onRetry={coldStart.retry}
-                hasError={coldStart.error}
+                retryCount={serverStatus.retryCount}
+                onRetry={serverStatus.retry}
+                hasError={serverStatus.error}
             />
         );
     }

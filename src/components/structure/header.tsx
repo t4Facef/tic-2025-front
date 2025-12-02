@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import HeaderButton from "../buttons/header_button";
 import UserInfo from "../profile/user_info";
+import { clearLastVisitedRoute } from "../../hooks/useRoutePersistence";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -11,6 +12,11 @@ interface HeaderProps {
 export default function Header({ showProfile = false }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const handleLogoClick = () => {
+    // Limpar persistência de rota ao clicar no logo
+    clearLastVisitedRoute();
+  };
+
   return (
     <header className="bg-gradient-to-r from-blue2 to-blue3 text-white shadow-lg z-50" role="banner">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,6 +24,7 @@ export default function Header({ showProfile = false }: HeaderProps) {
           {/* Logo */}
           <Link 
             to="/" 
+            onClick={handleLogoClick}
             className="flex items-center space-x-3 hover:opacity-90 transition-opacity group"
             aria-label="Apojobs - Ir para página inicial"
           >

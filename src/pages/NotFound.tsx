@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { clearLastVisitedRoute } from "../hooks/useRoutePersistence";
 
 export default function NotFound() {
   return (
@@ -11,6 +12,7 @@ export default function NotFound() {
         </p>
         <Link 
         to="/" 
+        onClick={() => clearLastVisitedRoute()}
         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
         Voltar para a Home

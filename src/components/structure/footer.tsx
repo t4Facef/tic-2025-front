@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { clearLastVisitedRoute } from "../../hooks/useRoutePersistence";;
 
 export default function Footer(){
     return (
@@ -19,7 +20,7 @@ export default function Footer(){
                 <div>
                     <h3 className="font-bold mb-4 text-blue1">Navegação</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><Link to="/" className="hover:text-blue4 transition-colors">Início</Link></li>
+                        <li><Link to="/" onClick={() => clearLastVisitedRoute()} className="hover:text-blue4 transition-colors">Início</Link></li>
                         <li><Link to="/jobs" className="hover:text-blue4 transition-colors">Vagas</Link></li>
                         <li><Link to="/about" className="hover:text-blue4 transition-colors">Sobre Nós</Link></li>
                         <li><Link to="/faq" className="hover:text-blue4 transition-colors">FAQ</Link></li>

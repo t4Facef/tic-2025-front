@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { API_BASE_URL } from '../config/api';
 
+let serverStatus: 'unknown' | 'available' | 'unavailable' = 'unknown';
+let lastCheckTime = 0;
+const CHECK_COOLDOWN = 30000; // 30 segundos
+
 interface ColdStartState {
   isLoading: boolean;
   isColdStart: boolean;
@@ -8,22 +12,26 @@ interface ColdStartState {
   retryCount: number;
 }
 
-interface UseColdStartOptions {
-  enabled?: boolean;
+interface UseServerStatusOptions {
+  enableColdStartScreen?: boolean;
+  skipInitialCheck?: boolean;
 }
 
-export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
-  const { enabled = true } = options;
+export const useServerStatus = (options: UseServerStatusOptions = {}) => {
+  const { enableColdStartScreen = false, skipInitialCheck = false } = options;
   
   const [state, setState] = useState<ColdStartState>({
-    isLoading: enabled,
+    isLoading: enableColdStartScreen && !skipInitialCheck,
     isColdStart: false,
     error: false,
     retryCount: 0
   });
 
-  const checkServerStatus = useCallback(async (attempt = 1): Promise<void> => {
-    if (!enabled) {
+  const checkServerStatus = useCallback(async (attempt = 1, force = false): Promise<void> => {
+    const now = Date.now();
+    
+    // Se já sabemos que o servidor está disponível e não é forçado, pular verificação
+    if (serverStatus === 'available' && !force && (now - lastCheckTime) < CHECK_COOLDOWN) {
       setState({
         isLoading: false,
         isColdStart: false,
@@ -33,19 +41,25 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
       return;
     }
 
+    if (!enableColdStartScreen && !force) {
+      return;
+    }
+
     const maxRetries = 6;
-    const baseDelay = 3000; // 3 segundos base
+    const baseDelay = 3000;
 
     try {
-      setState(prev => ({ 
-        ...prev, 
-        isLoading: true, 
-        retryCount: attempt,
-        isColdStart: attempt > 1 // Se é uma retry, provavelmente é cold start
-      }));
+      if (enableColdStartScreen) {
+        setState(prev => ({ 
+          ...prev, 
+          isLoading: true, 
+          retryCount: attempt,
+          isColdStart: attempt > 1
+        }));
+      }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout para dar tempo do servidor inicializar
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // Timeout menor para não travar
 
       const response = await fetch(`${API_BASE_URL}/api/auth/debug`, {
         method: 'GET',
@@ -58,6 +72,8 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
       clearTimeout(timeoutId);
 
       if (response.ok) {
+        serverStatus = 'available';
+        lastCheckTime = now;
         setState({
           isLoading: false,
           isColdStart: false,
@@ -74,41 +90,46 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
       console.log(`Tentativa ${attempt} de ${maxRetries} falhou:`, errorMessage);
       
       if (attempt < maxRetries) {
-        // Determina se é provável que seja cold start baseado no tipo de erro e tentativa
         const isColdStartLikely = 
           errorName === 'AbortError' || 
           errorMessage.includes('fetch') ||
           errorMessage.includes('network') ||
           attempt >= 2;
 
-        setState(prev => ({ 
-          ...prev, 
-          isColdStart: isColdStartLikely,
-          retryCount: attempt 
-        }));
+        if (enableColdStartScreen) {
+          setState(prev => ({ 
+            ...prev, 
+            isColdStart: isColdStartLikely,
+            retryCount: attempt 
+          }));
+        }
 
-        // Delay progressivo: 3s, 4s, 5s, 6s, 7s, 8s
         const delay = baseDelay + (attempt * 1000);
         setTimeout(() => {
-          checkServerStatus(attempt + 1);
+          checkServerStatus(attempt + 1, force);
         }, delay);
       } else {
+        serverStatus = 'unavailable';
         setState({
           isLoading: false,
           isColdStart: false,
-          error: true,
+          error: enableColdStartScreen,
           retryCount: attempt
         });
       }
     }
-  }, [enabled]);
+  }, [enableColdStartScreen]);
 
   useEffect(() => {
-    checkServerStatus();
-  }, [checkServerStatus]);
+    if (!skipInitialCheck) {
+      checkServerStatus();
+    }
+  }, [checkServerStatus, skipInitialCheck]);
 
   return {
     ...state,
-    retry: () => checkServerStatus(1)
+    retry: () => checkServerStatus(1, true),
+    checkStatus: () => checkServerStatus(1, true),
+    serverStatus
   };
 };
