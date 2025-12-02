@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { visitantesService } from "../../services/visitantes.service";
 import { useAuth } from "../../hooks/useAuth";
 import { Eye, Users, Calendar, TrendingUp } from "lucide-react";
+import VisitorCharts from "./visitor_charts";
 
 interface EstatisticasVisitantes {
   totalVisitantes: number;
@@ -15,6 +16,14 @@ interface EstatisticasVisitantes {
     _count: {
       id: number;
     };
+  }>;
+  visitantesPorSemana: Array<{
+    diaSemana: string;
+    total: number;
+  }>;
+  visitantesPorMes: Array<{
+    mes: string;
+    total: number;
   }>;
 }
 
@@ -183,6 +192,14 @@ export default function VisitorStats() {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Gráficos de Visitantes */}
+      {stats && stats.visitantesPorSemana && stats.visitantesPorMes && (
+        <VisitorCharts 
+          visitantesPorSemana={stats.visitantesPorSemana}
+          visitantesPorMes={stats.visitantesPorMes}
+        />
       )}
     </div>
   );

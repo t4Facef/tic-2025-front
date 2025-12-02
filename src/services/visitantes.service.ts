@@ -17,6 +17,14 @@ interface EstatisticasVisitantes {
       id: number;
     };
   }>;
+  visitantesPorSemana: Array<{
+    diaSemana: string;
+    total: number;
+  }>;
+  visitantesPorMes: Array<{
+    mes: string;
+    total: number;
+  }>;
 }
 
 export const visitantesService = {
