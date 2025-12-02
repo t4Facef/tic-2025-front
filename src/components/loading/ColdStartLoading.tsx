@@ -76,6 +76,14 @@ const ColdStartLoading: React.FC<ColdStartLoadingProps> = ({
                   Tempo estimado: {Math.max(60 - (retryCount * 10), 10)}s restantes
                 </div>
               </div>
+              {retryCount > 2 && (
+                <button
+                  onClick={onRetry}
+                  className="mt-4 bg-blue2 hover:bg-blue3 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
+                >
+                  Tentar Agora
+                </button>
+              )}
             </div>
           ) : (
             <p className="text-gray-600">

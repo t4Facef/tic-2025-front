@@ -5,6 +5,7 @@ import CreateAdminForm from "../components/admin/create_admin_form";
 import SmartAccessibilityInput from "../components/admin/smart_accessibility_input";
 import SmartBarreiraInput from "../components/admin/smart_barreira_input";
 import SmartDeleteConfirmation from "../components/admin/smart_delete_confirmation";
+import VisitorStats from "../components/admin/visitor_stats";
 import { UsageInfo } from "../hooks/useEntityUsage";
 import { API_BASE_URL } from "../config/api";
 import { api } from "../services/api"; // Serviço de API com autenticação
@@ -722,6 +723,11 @@ export default function AdminDashboard() {
                             </div>
                         </div>
                     </div>
+                )}
+
+                {/* Estatísticas de Visitantes */}
+                {currentView === 'overview' && (
+                    <VisitorStats />
                 )}
 
                 {/* Add Form */}

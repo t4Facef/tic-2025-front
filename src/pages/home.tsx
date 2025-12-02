@@ -5,6 +5,7 @@ import JobPositionMobile from "../components/content/job_position_mobile"
 import JobPositionDesktop from "../components/content/job_position_desktop"
 import ColdStartLoading from "../components/loading/ColdStartLoading";
 import { useServerStatus } from "../hooks/useServerStatus";
+import { useVisitorTracking } from "../hooks/useVisitorTracking";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
 
@@ -16,6 +17,12 @@ export default function Home() {
     const serverStatus = useServerStatus({ 
         enableColdStartScreen: true, 
         skipInitialCheck: false 
+    });
+    
+    // Tracking de visitantes - só registra se não estiver em cold start
+    useVisitorTracking({ 
+        origem: 'home-page', 
+        enabled: !serverStatus.isLoading && !serverStatus.error 
     });
     
     useEffect(() => {

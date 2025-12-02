@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { API_BASE_URL } from '../config/api';
+import { visitantesService } from '../services/visitantes.service';
 
 let serverStatus: 'unknown' | 'available' | 'unavailable' = 'unknown';
 let lastCheckTime = 0;
@@ -74,6 +75,14 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
       if (response.ok) {
         serverStatus = 'available';
         lastCheckTime = now;
+        
+        // Registrar visitante quando servidor fica disponível após cold start
+        if (enableColdStartScreen && attempt > 1) {
+          visitantesService.registrarVisitante({ 
+            origem: `cold-start-success-attempt-${attempt}` 
+          });
+        }
+        
         setState({
           isLoading: false,
           isColdStart: false,
