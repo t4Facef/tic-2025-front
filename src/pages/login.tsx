@@ -16,7 +16,7 @@ export default function Login() {
     const fetchLogin = async (email: string, senha: string) => {
         setMessage("🔄️ Processando...")
         try{
-            const res = await fetch(`http://localhost:3001/api/auth/login`, {
+            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

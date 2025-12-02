@@ -82,7 +82,7 @@ export default function JobModal({
 
 
 
-    const response = await fetch('http://localhost:3001/api/candidaturas', {
+    const response = await fetch(`${API_BASE_URL}/api/candidaturas`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

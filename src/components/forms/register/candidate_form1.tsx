@@ -84,7 +84,7 @@ export default function CandidateForm1({ formFunc, formId, initialData }: { form
 
             if(validateCPF(cleanedData.cpf)){
                 try{
-                    const responseCpf = await fetch(`http://localhost:3001/api/auth/check-cpf?cpf=${cleanedData.cpf}`)
+                    const responseCpf = await fetch(`${API_BASE_URL}/api/auth/check-cpf?cpf=${cleanedData.cpf}`)
                     const data = await responseCpf.json();
                     
                     if(data.exists){

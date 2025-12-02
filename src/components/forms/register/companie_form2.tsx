@@ -3,6 +3,7 @@ import { CompanieForm2Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 import { useFormValidation } from '../../../hooks/useFormValidation';
 import { formatPhone, cleanPhone } from '../../../utils/phone';
+import { API_BASE_URL } from '../../../config/api';
 
 export default function CompanieForm2({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm2Data) => void, formId: string, initialData?: CompanieForm2Data }) {
     const [form2, setForm2] = useState<CompanieForm2Data>(initialData || {} as CompanieForm2Data)
@@ -134,7 +135,7 @@ export default function CompanieForm2({ formFunc, formId, initialData }: { formF
             setEmailError('')
 
             try {
-                const responseEmail = await fetch(`http://localhost:3001/api/auth/check-email?email=${cleanedData.email}`)
+                const responseEmail = await fetch(`${API_BASE_URL}/api/auth/check-email?email=${cleanedData.email}`)
                 const data = await responseEmail.json();
 
                 if (data.exists) {

@@ -3,6 +3,7 @@ import { CompanieForm1Data } from "../../../types/forms/companie";
 import GenericFormField from "../generic_form_field";
 import { formatCNPJ, validateCNPJ } from "../../../utils/cnpj";
 import { useFormValidation } from '../../../hooks/useFormValidation';
+import { API_BASE_URL } from '../../../config/api';
 
 export default function CompanieForm1({ formFunc, formId, initialData }: { formFunc: (data: CompanieForm1Data) => void, formId: string, initialData?: CompanieForm1Data }) {
     const [form1, setForm1] = useState<CompanieForm1Data>(initialData || {} as CompanieForm1Data)
@@ -45,7 +46,7 @@ export default function CompanieForm1({ formFunc, formId, initialData }: { formF
 
             if (validateCNPJ(cleanedData.cnpj)) {
                 try {
-                    const responseCpf = await fetch(`http://localhost:3001/api/auth/check-cnpj?cnpj=${cleanedData.cnpj}`)
+                    const responseCpf = await fetch(`${API_BASE_URL}/api/auth/check-cnpj?cnpj=${cleanedData.cnpj}`)
                     const data = await responseCpf.json();
 
                     if (data.exists) {

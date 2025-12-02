@@ -9,7 +9,7 @@ export default function AuthEntry() {
     const navigate = useNavigate()
 
     async function handleContinue() {
-        const API_BASE_URL = 'http://localhost:3001'
+        // API_BASE_URL importado do config
         if (!email.trim()) {
             setNoEmail(true)
             return
