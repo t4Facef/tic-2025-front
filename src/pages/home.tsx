@@ -3,6 +3,8 @@ import GenericBlueButton from "../components/buttons/generic_blue_button"
 import CompaniesRow from "../components/content/companies_row"
 import JobPositionMobile from "../components/content/job_position_mobile"
 import JobPositionDesktop from "../components/content/job_position_desktop"
+import ColdStartLoading from "../components/loading/ColdStartLoading";
+import { useColdStartDetection } from "../hooks/useColdStartDetection";
 import { API_BASE_URL } from "../config/api";
 import { JobData, Vaga } from "../types/vagas/vaga";
 
@@ -11,8 +13,14 @@ import { JobData, Vaga } from "../types/vagas/vaga";
 export default function Home() {
     const [companyIds, setCompanyIds] = useState<number[]>([])
     const [popularJobs, setPopularJobs] = useState<JobData[]>([]);
+    const coldStart = useColdStartDetection();
     
     useEffect(() => {
+        // Só executa se o servidor estiver disponível
+        if (coldStart.isLoading || coldStart.error) {
+            return;
+        }
+        
         const getTopCompanies = async () => {
             try{
                 const res = await fetch(`${API_BASE_URL}/api/vagas/top-empresas`)
@@ -66,7 +74,19 @@ export default function Home() {
         }
         
         getPopularJobs()
-    }, [])
+    }, [coldStart.isLoading, coldStart.error])
+    
+    // Se está carregando ou há erro de conexão, mostra a tela de loading
+    if (coldStart.isLoading || coldStart.error) {
+        return (
+            <ColdStartLoading 
+                retryCount={coldStart.retryCount}
+                onRetry={coldStart.retry}
+                hasError={coldStart.error}
+            />
+        );
+    }
+    
     return (
         <div className="bg-white">
             {/* Desktop version (shows only on lg+) */}
