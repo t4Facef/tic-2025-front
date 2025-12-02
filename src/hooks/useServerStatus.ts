@@ -59,7 +59,7 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // Timeout menor para não travar
+      const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s por tentativa (máximo 36s total)
 
       const response = await fetch(`${API_BASE_URL}/api/auth/debug`, {
         method: 'GET',
