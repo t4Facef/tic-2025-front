@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import SkipNavigation from './components/accessibility/skip_navigation';
 import ErrorBoundary from './components/ErrorBoundary';
+import NavigationManager from './components/navigation/NavigationManager';
 import Home from './pages/home';
 import Layout from './components/structure/layout';
 import About from './pages/about';
@@ -36,7 +37,8 @@ export default function App() {
         <AuthProvider>
           <SkipNavigation />
           <BrowserRouter>
-      <Routes>
+            <NavigationManager />
+            <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home />}/>
           <Route path='/about' element={<About />}></Route>
