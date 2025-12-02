@@ -45,7 +45,7 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
       }));
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout para dar tempo do servidor inicializar
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout para dar tempo do servidor inicializar
 
       const response = await fetch(`${API_BASE_URL}/api/auth/debug`, {
         method: 'GET',
@@ -79,6 +79,7 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
           errorName === 'AbortError' || 
           errorMessage.includes('fetch') ||
           errorMessage.includes('network') ||
+          errorMessage.includes('signal is aborted') ||
           attempt >= 2;
 
         setState(prev => ({ 
@@ -87,8 +88,8 @@ export const useColdStartDetection = (options: UseColdStartOptions = {}) => {
           retryCount: attempt 
         }));
 
-        // Delay progressivo: 3s, 4s, 5s, 6s, 7s, 8s
-        const delay = baseDelay + (attempt * 1000);
+        // Backoff exponencial: 3s, 4.5s, 6.75s, 10s, 15s, 20s
+        const delay = Math.min(baseDelay * Math.pow(1.5, attempt - 1), 20000);
         setTimeout(() => {
           checkServerStatus(attempt + 1);
         }, delay);

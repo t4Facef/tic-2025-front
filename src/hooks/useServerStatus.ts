@@ -29,6 +29,8 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
   });
 
   const checkServerStatus = useCallback(async (attempt = 1, force = false): Promise<void> => {
+    console.log(`🔄 Verificando servidor - Tentativa ${attempt}, Force: ${force}`);
+    
     const now = Date.now();
     
     // Se já sabemos que o servidor está disponível e não é forçado, pular verificação
@@ -47,7 +49,7 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
     }
 
     const maxRetries = 6;
-    const baseDelay = 3000;
+    const baseDelay = 2000;
 
     try {
       if (enableColdStartScreen) {
@@ -55,13 +57,19 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
           ...prev, 
           isLoading: true, 
           retryCount: attempt,
-          isColdStart: attempt > 1
+          isColdStart: attempt > 1,
+          error: false // Sempre limpar erro ao tentar
         }));
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s por tentativa (máximo 36s total)
+      const timeoutId = setTimeout(() => {
+        console.log(`⏰ Timeout após 15s - Tentativa ${attempt}`);
+        controller.abort();
+      }, 15000);
 
+      console.log(`📡 Fazendo requisição para ${API_BASE_URL}/api/auth/debug`);
+      
       const response = await fetch(`${API_BASE_URL}/api/auth/debug`, {
         method: 'GET',
         headers: {
@@ -73,6 +81,7 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
       clearTimeout(timeoutId);
 
       if (response.ok) {
+        console.log('✅ Servidor disponível!');
         serverStatus = 'available';
         lastCheckTime = now;
         
@@ -96,28 +105,34 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       const errorName = error instanceof Error ? error.name : 'Error';
       
-      console.log(`Tentativa ${attempt} de ${maxRetries} falhou:`, errorMessage);
+      console.log(`❌ Tentativa ${attempt} de ${maxRetries} falhou:`, errorMessage);
       
       if (attempt < maxRetries) {
         const isColdStartLikely = 
           errorName === 'AbortError' || 
           errorMessage.includes('fetch') ||
           errorMessage.includes('network') ||
+          errorMessage.includes('signal is aborted') ||
           attempt >= 2;
 
         if (enableColdStartScreen) {
           setState(prev => ({ 
             ...prev, 
             isColdStart: isColdStartLikely,
-            retryCount: attempt 
+            retryCount: attempt,
+            error: false // Não marcar como erro ainda
           }));
         }
 
-        const delay = baseDelay + (attempt * 1000);
+        // Backoff exponencial: 2s, 3s, 4.5s, 6.75s, 10s, 15s
+        const delay = Math.min(baseDelay * Math.pow(1.5, attempt - 1), 15000);
+        console.log(`⏳ Aguardando ${delay}ms antes da próxima tentativa`);
+        
         setTimeout(() => {
           checkServerStatus(attempt + 1, force);
         }, delay);
       } else {
+        console.log('🚫 Máximo de tentativas atingido');
         serverStatus = 'unavailable';
         setState({
           isLoading: false,
@@ -129,6 +144,13 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
     }
   }, [enableColdStartScreen]);
 
+  // Função de retry que força uma nova verificação
+  const retry = useCallback(() => {
+    console.log('🔄 Retry manual iniciado');
+    serverStatus = 'unknown'; // Reset status
+    checkServerStatus(1, true);
+  }, [checkServerStatus]);
+
   useEffect(() => {
     if (!skipInitialCheck) {
       checkServerStatus();
@@ -137,7 +159,7 @@ export const useServerStatus = (options: UseServerStatusOptions = {}) => {
 
   return {
     ...state,
-    retry: () => checkServerStatus(1, true),
+    retry,
     checkStatus: () => checkServerStatus(1, true),
     serverStatus
   };
