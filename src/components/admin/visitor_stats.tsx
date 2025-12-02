@@ -88,48 +88,56 @@ export default function VisitorStats() {
 
       {/* Cards de estatísticas principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gradient-to-r from-blue1 to-blue2 text-white p-4 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Total Geral</p>
-              <p className="text-2xl font-bold">{stats.totalVisitantes.toLocaleString()}</p>
+              <p className="text-sm text-gray-600">Total Geral</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.totalVisitantes.toLocaleString()}</p>
             </div>
-            <Users className="w-8 h-8 opacity-80" />
+            <div className="bg-blue3 p-2 rounded-lg">
+              <Users className="w-5 h-5 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue2 to-blue3 text-white p-4 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Últimos 30 dias</p>
-              <p className="text-2xl font-bold">{stats.visitantesRecentes.toLocaleString()}</p>
+              <p className="text-sm text-gray-600">Últimos 30 dias</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.visitantesRecentes.toLocaleString()}</p>
             </div>
-            <Calendar className="w-8 h-8 opacity-80" />
+            <div className="bg-blue2 p-2 rounded-lg">
+              <Calendar className="w-5 h-5 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue3 to-blue4 text-white p-4 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Média Diária</p>
-              <p className="text-2xl font-bold">
+              <p className="text-sm text-gray-600">Média Diária</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {stats.visitantesPorDia.length > 0 
                   ? Math.round(stats.visitantesPorDia.reduce((acc, curr) => acc + Number(curr.total), 0) / stats.visitantesPorDia.length)
                   : 0
                 }
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 opacity-80" />
+            <div className="bg-blue4 p-2 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue4 to-blue2 text-white p-4 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-90">Fontes de Origem</p>
-              <p className="text-2xl font-bold">{stats.visitantesPorOrigem.length}</p>
+              <p className="text-sm text-gray-600">Fontes de Origem</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.visitantesPorOrigem.length}</p>
             </div>
-            <Eye className="w-8 h-8 opacity-80" />
+            <div className="bg-blue1 p-2 rounded-lg">
+              <Eye className="w-5 h-5 text-white" />
+            </div>
           </div>
         </div>
       </div>
