@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GenericBlueButton from "../components/buttons/generic_blue_button";
 import { useState } from "react";
 import { CircleX } from "lucide-react";
+import { API_BASE_URL } from '../config/api';
 
 export default function AuthEntry() {
     const [email, setEmail] = useState("")

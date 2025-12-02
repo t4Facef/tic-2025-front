@@ -4,6 +4,7 @@ import { CandidateForm1Data } from '../../../types/forms/candidate';
 import { formatCPF, validateCPF } from '../../../utils/cpf';
 import { useFormValidation } from '../../../hooks/useFormValidation';
 import { getMinBirthDate, getMaxBirthDate } from '../../../utils/date';
+import { API_BASE_URL } from '../../../config/api';
 
 export default function CandidateForm1({ formFunc, formId, initialData }: { formFunc: (data: CandidateForm1Data) => void, formId: string, initialData?: CandidateForm1Data }) {
     const [form1, setForm1] = useState<CandidateForm1Data>(initialData || {} as CandidateForm1Data)
