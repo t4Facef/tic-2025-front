@@ -19,18 +19,18 @@ interface EstatisticasVisitantes {
 }
 
 export default function VisitorStats() {
-  const { user } = useAuth();
+  const { token } = useAuth();
   const [stats, setStats] = useState<EstatisticasVisitantes | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
-      if (!user?.token) return;
+      if (!token) return;
       
       try {
         setLoading(true);
-        const data = await visitantesService.obterEstatisticas(user.token);
+        const data = await visitantesService.obterEstatisticas(token);
         setStats(data);
         setError(null);
       } catch {
@@ -41,7 +41,7 @@ export default function VisitorStats() {
     };
 
     fetchStats();
-  }, [user?.token]);
+  }, [token]);
 
   if (loading) {
     return (
